@@ -1,0 +1,22 @@
+env:
+  browser: true
+  es6: true
+  node: true
+extends:
+  - 'eslint:recommended'
+  - 'airbnb'
+  - 'plugin:react/recommended'
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+parserOptions:
+  ecmaVersion: 2018
+  sourceType: module
+  ecmaFeatures:
+    jsx: true
+rules: {
+  no-console: 'error',
+  indent: ['error', 4],
+  import/no-extraneous-dependencies: ["error", {"devDependencies": true}],
+  no-unused-vars: 0
+}

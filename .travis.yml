@@ -1,0 +1,25 @@
+language: php
+php:
+    - '7.3'
+before_install:
+    - if [ -d "./.idea" ]; then echo "Forbidden idea folder found ! Please, ignore them globaly..."; exit 2; fi
+    - if [ -d "./.vscode" ]; then echo "Forbidden vscode folder found ! Please, ignore them globaly..."; exit 2; fi
+    - if [ -d "./.env.local" ]; then echo "Forbidden configuration file found !"; exit 2; fi
+    - if [ -d "./vendor" ]; then echo "Forbidden external libs folder found !"; exit 2; fi
+    - if [ $(find ./ -name .DS_Store) ]; then echo "Forbidden MacOS boring file found ! Please, ignore them globaly..."; exit 2; fi
+install:
+    - composer install
+    - yarn --ignore-engines install
+script:
+    - ./bin/phpcs
+    - ./bin/phpstan analyse src --level max
+    - ./bin/phpmd src text phpmd.xml
+    - ./bin/eslint assets/js
+    - ./bin/sass-lint -c sass-linter.yml -v
+notifications:
+    email:
+        - guillaume.harari@wildcodeschool.fr
+branches:
+    only:
+        - master
+        - dev

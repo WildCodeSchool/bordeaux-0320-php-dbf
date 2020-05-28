@@ -1,0 +1,9 @@
+includes:
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+    - vendor/phpstan/phpstan-doctrine/rules.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+parameters:
+    autoload_directories:
+        - %rootDir%/../../../src/Migrations 
+    excludes_analyse:
+        - src/DataFixtures
