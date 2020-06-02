@@ -28,19 +28,19 @@ class CallTransfer
     private $comment;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="callTransfers")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="callTransfersBy")
      * @ORM\JoinColumn(nullable=false)
      */
     private $byWhom;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="callTransfers")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="callTransfersFrom")
      * @ORM\JoinColumn(nullable=false)
      */
     private $fromWhom;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="callTransfers")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="callTransfersTo")
      * @ORM\JoinColumn(nullable=false)
      */
     private $toWhom;

@@ -62,7 +62,17 @@ class User
     /**
      * @ORM\OneToMany(targetEntity=CallTransfer::class, mappedBy="byWhom")
      */
-    private $callTransfers;
+    private $callTransfersBy;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CallTransfer::class, mappedBy="fromWhom")
+     */
+    private $callTransfersFrom;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CallTransfer::class, mappedBy="toWhom")
+     */
+    private $callTransfersTo;
 
     /**
      * @ORM\ManyToMany(targetEntity=Call::class, mappedBy="recipient")
@@ -77,7 +87,9 @@ class User
     public function __construct()
     {
         $this->calls = new ArrayCollection();
-        $this->callTransfers = new ArrayCollection();
+        $this->callTransfersBy = new ArrayCollection();
+        $this->callTransfersTo = new ArrayCollection();
+        $this->callTransfersFrom = new ArrayCollection();
         $this->callsToUser = new ArrayCollection();
         $this->rightByLocations = new ArrayCollection();
     }
@@ -205,28 +217,94 @@ class User
     /**
      * @return Collection|CallTransfer[]
      */
-    public function getCallTransfers(): Collection
+    public function getCallTransfersBy(): Collection
     {
-        return $this->callTransfers;
+        return $this->callTransfersBy;
     }
 
-    public function addCallTransfer(CallTransfer $callTransfer): self
+    /**
+     * @return Collection|CallTransfer[]
+     */
+    public function getCallTransfersTo(): Collection
     {
-        if (!$this->callTransfers->contains($callTransfer)) {
-            $this->callTransfers[] = $callTransfer;
+        return $this->callTransfersTo;
+    }
+
+    /**
+     * @return Collection|CallTransfer[]
+     */
+    public function getCallTransfersFrom(): Collection
+    {
+        return $this->callTransfersFrom;
+    }
+
+    ////////////////////
+    public function addCallTransferBy(CallTransfer $callTransfer): self
+    {
+        if (!$this->callTransfersBy->contains($callTransfer)) {
+            $this->callTransfersBy[] = $callTransfer;
             $callTransfer->setByWhom($this);
         }
 
         return $this;
     }
 
-    public function removeCallTransfer(CallTransfer $callTransfer): self
+    public function removeCallTransferBy(CallTransfer $callTransfer): self
     {
-        if ($this->callTransfers->contains($callTransfer)) {
-            $this->callTransfers->removeElement($callTransfer);
+        if ($this->callTransfersBy->contains($callTransfer)) {
+            $this->callTransfersBy->removeElement($callTransfer);
             // set the owning side to null (unless already changed)
             if ($callTransfer->getByWhom() === $this) {
                 $callTransfer->setByWhom(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    ////////////////////
+    public function addCallTransferTo(CallTransfer $callTransfer): self
+    {
+        if (!$this->callTransfersTo->contains($callTransfer)) {
+            $this->callTransfersTo[] = $callTransfer;
+            $callTransfer->setToWhom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCallTransferTo(CallTransfer $callTransfer): self
+    {
+        if ($this->callTransfersTo->contains($callTransfer)) {
+            $this->callTransfersTo->removeElement($callTransfer);
+            // set the owning side to null (unless already changed)
+            if ($callTransfer->getToWhom() === $this) {
+                $callTransfer->setToWhom(null);
+            }
+        }
+
+        return $this;
+    }
+
+    ////////////////////
+    public function addCallTransferFrom(CallTransfer $callTransfer): self
+    {
+        if (!$this->callTransfersFrom->contains($callTransfer)) {
+            $this->callTransfersFrom[] = $callTransfer;
+            $callTransfer->setFromWhom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCallTransferFrom(CallTransfer $callTransfer): self
+    {
+        if ($this->callTransfersFrom->contains($callTransfer)) {
+            $this->callTransfersFrom->removeElement($callTransfer);
+            // set the owning side to null (unless already changed)
+            if ($callTransfer->getFromWhom() === $this) {
+                $callTransfer->setFromWhom(null);
             }
         }
 
