@@ -10,6 +10,8 @@
 /.idea
 .DS_store
 /.DS_store
+.DS_Store
+/.DS_Store
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
