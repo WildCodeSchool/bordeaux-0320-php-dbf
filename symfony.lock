@@ -165,9 +165,6 @@
     "pdepend/pdepend": {
         "version": "2.5.2"
     },
-    "pelmered/fake-car": {
-        "version": "1.4.0"
-    },
     "php": {
         "version": "7.4"
     },
