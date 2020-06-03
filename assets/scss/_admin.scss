@@ -61,3 +61,12 @@
   }
 }
 
+.results {
+  display:inline-block;
+  padding-top:50px;
+  font-size:1.3rem;
+  text-align: left;
+  opacity:0;
+  animation: fadeout 4s ease-in-out;
+}
+
