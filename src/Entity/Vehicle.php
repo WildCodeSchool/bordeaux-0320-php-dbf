@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\VehicleRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=VehicleRepository::class)
+ *  @ORM\HasLifecycleCallbacks()
  */
 class Vehicle
 {
@@ -106,10 +108,15 @@ class Vehicle
         return $this->createdAt;
     }
 
+    /**
+     * @param \DateTimeInterface $createdAt
+     * @return $this
+     * @throws \Exception
+     * @ORM\PrePersist()
+     */
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new DateTime();
         return $this;
     }
 
