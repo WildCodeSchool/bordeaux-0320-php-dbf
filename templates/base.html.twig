@@ -10,11 +10,9 @@
         {% endblock %}
     </head>
 
-
-
     <body>
+    {% block navbar %}
     <header class="paddleft">
-
         <nav class="noshadow">
             <div class="nav-wrapper  white noshadow">
                 <ul id="" class="left  noshadow">
@@ -25,7 +23,7 @@
                     </li>
                 </ul>
                 <ul id="nav-mobile" class="right hide-on-med-and-down noshadow">
-                    <li><a href="connect.html" class="black-text"><i class="material-icons left">logout</i>déconnexion</a></li>
+                    <li><a href="#" class="black-text"><i class="material-icons left">logout</i>déconnexion</a></li>
                 </ul>
             </div>
         </nav>
@@ -55,11 +53,14 @@
             <li ><a href="gestions.html"><i class="material-icons orange-text">insert_chart</i>Statistiques</a></li>
             <li><a href="#!"><i class="material-icons black-text">description</i>Tous les appels</a></li>
         </ul>
-    </header>
 
+    </header>
+    {% endblock %}
         {% block body %}{% endblock %}
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
+            {{ encore_entry_script_tags('materialize') }}
+            {{ encore_entry_script_tags('base') }}
         {% endblock %}
     </body>
 </html>
