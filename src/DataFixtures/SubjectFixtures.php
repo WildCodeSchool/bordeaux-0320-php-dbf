@@ -22,7 +22,7 @@ class SubjectFixtures extends Fixture implements DependentFixtureInterface
         ['Tarifs', 'tarif'],
     ];
 
-    const CITY_REF = [null, 0, 1, 2, 3];
+    const CITY_REF = [0, 1, 2, 3];
 
     public function load(ObjectManager $manager)
     {
@@ -31,7 +31,7 @@ class SubjectFixtures extends Fixture implements DependentFixtureInterface
             $subject = new Subject();
             $subject->setName($value[0]);
             $subject->setIsForAppWorkshop(rand(0, 1));
-            $subject->setCity($this->getReference('city_' . self::CITY_REF[rand(0, 4)]));
+            $subject->setCity($this->getReference('city_' . self::CITY_REF[rand(0, 3)]));
             $manager->persist($subject);
             $this->addReference('subject_' . $key, $subject);
             $key++;

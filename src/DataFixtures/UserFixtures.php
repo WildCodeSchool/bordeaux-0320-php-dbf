@@ -15,9 +15,9 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create('fr_FR');
-        for ($i = 0; $i < count(self::NUMBER_OF_USERS); $i++) {
+        for ($i = 0; $i < self::NUMBER_OF_USERS; $i++) {
             $user = new User();
-            $user->setFirstname($faker->name);
+            $user->setLastname($faker->name);
             $user->setFirstname($faker->firstName);
             $user->setEmail($faker->email);
             $user->setPhone($faker->phoneNumber);
