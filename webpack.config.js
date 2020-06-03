@@ -25,6 +25,8 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('materialize', './assets/js/materialize.js')
+    .addEntry('n-adminjs', './assets/js/n-admin.js')
+
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')
 
@@ -71,7 +73,7 @@ Encore
 
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
-    //.addEntry('admin', './assets/js/admin.js')
+    //.addEntry('admin', './assets/js/n-admin.js')
 ;
 
 module.exports = Encore.getWebpackConfig();

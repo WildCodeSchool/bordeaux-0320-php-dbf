@@ -1,0 +1,63 @@
+.admin-card .card-tabs ul.tabs li.tab a.active {
+  color:#000 !important;
+}
+
+.card-tabs {
+  ul.tabs {
+    li.tab {
+      a.active {
+        background:none;
+      }
+    }
+  }
+}
+
+#users-card-admin {
+  $coloru : #ff9800;
+  .indicator {
+    background:$coloru;
+  }
+}
+#call-card-admin {
+  $colorc : #009688;
+  .indicator {
+    background:$colorc;
+  }
+}
+#civil-card-admin {
+  $colorci : #03a9f4;
+  .indicator {
+    background:$colorci;
+  }
+}
+#clients-card-admin {
+  $colorcl : #8bc34a;
+  .indicator {
+    background:$colorcl;
+  }
+}
+#comments-card-admin {
+  $colorco : #f44336;
+  .indicator {
+    background:$colorco;
+  }
+}
+#divers-card-admin {
+  $colord : #00bcd4;
+  .indicator {
+    background:$colord;
+  }
+}
+#locations-card-admin {
+  $colorl : #795548;
+  .indicator {
+    background:$colorl;
+  }
+}
+#subjects-card-admin {
+  $colors : #ffc107;
+  .indicator {
+    background:$colors;
+  }
+}
+
