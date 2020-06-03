@@ -4,7 +4,6 @@
 namespace App\DataFixtures;
 
 use App\Entity\RecallPeriod;
-use Faker;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 

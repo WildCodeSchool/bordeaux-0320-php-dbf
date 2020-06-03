@@ -4,11 +4,12 @@
 namespace App\DataFixtures;
 
 use App\Entity\Subject;
-use Faker;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\DataFixtures\CityFixtures;
 use Doctrine\Persistence\ObjectManager;
 
-class SubjectFixtures extends Fixture
+class SubjectFixtures extends Fixture implements DependentFixtureInterface
 {
 
     const SUBJECTS = [
@@ -25,15 +26,21 @@ class SubjectFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+        $key = 0;
         foreach (self::SUBJECTS as $value) {
             $subject = new Subject();
             $subject->setName($value[0]);
             $subject->setIsForAppWorkshop(rand(0, 1));
-            $subject->setCity($this->getReference());
-
+            $subject->setCity($this->getReference('city_' . self::CITY_REF[rand(0, 4)]));
             $manager->persist($subject);
-            $this->addReference('city_' . self::CITY_REF[rand(0, 4)], $subject);
+            $this->addReference('subject_' . $key, $subject);
+            $key++;
         }
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return [CityFixtures::class];
     }
 }
