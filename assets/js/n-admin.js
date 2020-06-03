@@ -28,5 +28,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const modalAddClient   = document.getElementById('modal-add-client');
     const instanceModalAddCLient = M.Modal.init(modalAddClient, {});
-    instanceModalAddCLient
 });
