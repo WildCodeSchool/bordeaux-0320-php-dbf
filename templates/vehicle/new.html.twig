@@ -4,15 +4,12 @@
 
 {% block body %}
     <div class="container">
-    <h1>Create new Vehicle</h1>
-    {{ include('vehicle/_form.html.twig') }}
+        <h1>Create new Vehicle</h1>
+        {{ include('vehicle/_form.html.twig') }}
     </div>
 
 {% endblock %}
  {% block javascripts %}
-
      {{ encore_entry_script_tags('switch3') }}
-     {{ encore_entry_script_tags('switchHasCome') }}
-
      {{ parent() }}
  {% endblock %}
