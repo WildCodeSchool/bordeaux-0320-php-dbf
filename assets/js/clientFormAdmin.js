@@ -1,11 +1,11 @@
 class AjaxTools {
-    constructor(url) {
-        this.url     = url
+    constructor(urlToAdd, urlToShow) {
+        this.urlToAdd     = urlToAdd
+        this.urlToShow    = urlToShow
     }
 
     sendData(data, action) {
-        const thisClass = this
-        fetch(this.url, {
+        fetch(this.urlToAdd, {
             method      : 'POST',
             mode        : "same-origin",
             credentials : "same-origin",
@@ -20,7 +20,7 @@ class AjaxTools {
     }
 
     getData(action) {
-        fetch(this.url, {
+        fetch(this.urlToShow, {
             method      : 'POST',
         })
             .then((response) => {
@@ -30,18 +30,29 @@ class AjaxTools {
                 action (data)
             });
     }
+
+    getName(client) {
+        const elements   = client.split('(');
+        return elements[0];
+    }
+
+    getId(client) {
+        const elements   = client.split('(');
+        const id           = elements[1].split(')');
+        return id[0];
+    }
 }
 
 
 document.addEventListener('DOMContentLoaded', () => {
+    const autocompleteClients  = document.getElementById('autocomplete-client-name');
+    const clientAjaxer         = new AjaxTools('/admin/addclient', '/admin/client/list');
 
 // Edition client ///////////////////////////////////////////////////
-    const autocompleteClients  = document.getElementById('autocomplete-client-name');
-    const clientGetter = new AjaxTools('/admin/client/list');
-    clientGetter.getData((data) => {
+    clientAjaxer.getData((data) => {
         M.Autocomplete.init(autocompleteClients,
     {
-                data : JSON.parse(data);
+                data : JSON.parse(data)
             }
         )
     });
@@ -49,11 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
     autocompleteClients.addEventListener('change', (e) => {
         const formZone   = document.getElementById('form-edit-client');
         const client     = e.target.value
-        const elements   = client.split('(');
-        const clientName = elements[0];
-        let id           = elements[1].split(')');
-        id               = id[0];
-        formZone.innerHTML = '<h6>' + clientName + ' <span class="secondary-content">ID : ' + id + ' </span></h6>'
+        formZone.innerHTML = '<h6>' + clientAjaxer.getName(client) +
+            ' <span class="secondary-content">ID : ' + clientAjaxer.getId(client) +
+            ' </span></h6>'
     })
 
 
@@ -70,17 +79,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const postcode = document.getElementById('client_postcode');
 
         const data = {
-            'civility': civility.value,
-            'name'    : name.value,
-            'phone'   : phone.value,
-            'phone2'  : phone2.value,
-            'email'   : email.value,
-            'postcode': postcode.value
+            'civility' : civility.value,
+            'name'     : name.value,
+            'phone'    : phone.value,
+            'phone2'   : phone2.value,
+            'email'    : email.value,
+            'postcode' : postcode.value
         }
-        const adder = new AjaxTools('/admin/addclient');
-        adder.sendData(data, () => {
+
+        clientAjaxer.sendData(data, () => {
             M.toast({ html: 'Client ajouté à la base de données' });
-            clientGetter.getData((data) => {
+            clientAjaxer.getData((data) => {
                 autocompletorClients = M.Autocomplete.init(autocompleteClients, {
                     data : JSON.parse(data)
                 });

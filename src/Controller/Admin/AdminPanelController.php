@@ -36,7 +36,7 @@ class AdminPanelController extends AbstractController
     }
 
     /**
-     * @Route("/addclient", name="admin_addclient")
+     * @Route("/addclient")
      */
     public function addClient(CivilityRepository $civilityRepository)
     {

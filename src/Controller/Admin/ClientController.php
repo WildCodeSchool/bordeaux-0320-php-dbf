@@ -64,19 +64,18 @@ class ClientController extends AbstractController
      */
     public function edit(Request $request, Client $client): Response
     {
-            $form = $this->createForm(ClientType::class, $client);
-            $form->handleRequest($request);
+        $form = $this->createForm(ClientType::class, $client);
+        $form->handleRequest($request);
 
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->getDoctrine()->getManager()->flush();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+            return $this->redirectToRoute('client_index');
+        }
 
-                return $this->redirectToRoute('client_index');
-            }
-
-            return $this->render('client/edit.html.twig', [
-                'client' => $client,
-                'form' => $form->createView(),
-            ]);
+        return $this->render('client/edit.html.twig', [
+            'client' => $client,
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -96,15 +95,13 @@ class ClientController extends AbstractController
     /**
      * @Route("/list", name="list", methods={"POST"})
      */
-    public function listAllClients (ClientRepository $clientRepository): JsonResponse
+    public function listAllClients(ClientRepository $clientRepository): JsonResponse
     {
         $clients  = $clientRepository->findAll();
         $dataList = [];
         foreach ($clients as $client) {
             $dataList[$client->getName() . ' (' . $client->getId() . ')'] = null;
         }
-        $response = new JsonResponse($dataList);
-
-        return $response;
+        return new JsonResponse($dataList);
     }
 }

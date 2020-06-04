@@ -24,10 +24,6 @@ Encore
      * and one CSS file (e.g. app.css) if you JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
-    .addEntry('materialize', './assets/js/materialize.js')
-    .addEntry('n-admin', './assets/js/n-admin.js')
-    .addEntry('base', './assets/js/base.js')
-    .addEntry('n-adminClient', './assets/js/n-clientFormAdmin.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -70,7 +66,7 @@ Encore
 
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
-    //.addEntry('admin', './assets/js/n-admin.js')
+    //.addEntry('admin', './assets/js/admin.js')
 ;
 
 module.exports = Encore.getWebpackConfig();
