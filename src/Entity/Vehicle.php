@@ -109,12 +109,11 @@ class Vehicle
     }
 
     /**
-     * @param \DateTimeInterface $createdAt
      * @return $this
      * @throws \Exception
      * @ORM\PrePersist()
      */
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(): self
     {
         $this->createdAt = new DateTime();
         return $this;

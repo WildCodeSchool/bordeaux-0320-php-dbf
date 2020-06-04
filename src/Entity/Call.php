@@ -251,11 +251,10 @@ class Call
 
     /**
      * @ORM\PrePersist
-     * @param \DateTimeInterface $createdAt
      * @return $this
      * @throws Exception
      */
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(): self
     {
         $this->createdAt = new DateTime();
         return $this;

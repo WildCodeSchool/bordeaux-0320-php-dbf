@@ -52,7 +52,8 @@
                             </select>
                         </div>
                     </div>
-                </div></div>
+                </div>
+            </div>
         </li>
         <li>
             <div class="collapsible-header">
@@ -74,7 +75,7 @@
         </li>
         <li>
             <div class="collapsible-header"><h5><i class="material-icons">person_pin</i>Destinataire</h5>
-                <div class="input-field col s12 l8">
+                <div class="input-field col s12 l8 ">
                     <select>
                         <option value="" disabled selected>Concessions</option>
                         <option value="1">Bordeaux</option>
@@ -85,7 +86,7 @@
                 </div>
             </div>
             <div class="collapsible-body"><div class="row">
-                    <div class="input-field col s12 l4">
+                    <div class="input-field col s12 l4 offset-l2">
                         <select>
                             <option value="" disabled selected>Plaque</option>
                             <option value="1">Bordeaux</option>
@@ -96,7 +97,7 @@
                     <div class="input-field col s12 l4">
                         {{ form_widget(form.service) }}
                     </div>
-                    <div class="input-field col s12 l6">
+                    <div class="input-field col s12 l6  offset-l2">
                         {{ form_widget(form.recipient)}}
                     </div>
                 </div></div>
@@ -105,11 +106,17 @@
             <div class="collapsible-header"><h5><i class="material-icons">phone_forwarded</i>Rappel</h5></div>
             <div class="collapsible-body">
                 <div class="row">
-                    <div class="col input-field l3">
-                        {{form_widget(form.recallDate)}}
+                    {{form_widget(form.recallDate)}}
+                    <div class="col input-field s3 offset-s2">
+                        <input type="date" id="rappel" name="rappel"  required />
+                        <label for="rappel">Jour</label>
                     </div>
-                    <div class="col input-field l4">
+                    <div class="col input-field s4">
                         {{form_widget(form.recallPeriod)}}
+                    </div>
+                    <div class="col input-field s3">
+                        <input type="time" id="rappel2" name="rappel"  required />
+                        <label for="rappel2">Heure</label>
                     </div>
                 </div>
             </div>

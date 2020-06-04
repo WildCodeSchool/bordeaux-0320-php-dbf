@@ -1,0 +1,86 @@
+* {
+  --color-main    : #999;
+  --color-second  : #fff;
+  --color-primary : #414141;
+  --color-red     : #ef5350;
+  --color-green   : #8bc34a;
+}
+#switcher{
+  width: 80px;
+}
+.switch3-container {
+  width:100%;
+  padding:0;
+}
+
+.switch3-bar {
+  display:block;
+  min-width:100%;
+  min-height:26px;
+  width:100%;
+  height:26px;
+  border-radius:200px;
+  background:var(--color-second);
+  border:2px solid var(--color-main);
+  position:relative;
+}
+
+.switch3-bar:hover {
+  cursor:pointer;
+}
+
+.switch3-cursor {
+  position:absolute;
+  display:block;
+  height:16px;
+  margin-top:3px;
+  width:16px;
+  border-radius: 50%;
+  transition:all 0.3s ease-in-out;
+}
+.switch3-cursor.pos-0 {
+  left:4px;
+  transition:all 0.3s ease-in-out;
+  background: var(--color-red);
+}
+.switch3-cursor.pos-1 {
+  left:calc(50% - 8px);
+  transition:all 0.3s ease-in-out;
+  background: var(--color-primary);
+
+}
+.switch3-cursor.pos-2 {
+  left: calc(100% - 20px);
+  transition:all 0.3s ease-in-out;
+  background: var(--color-green);
+}
+
+.switch3-label {
+  display:block;
+  width:33%;
+  margin:0;
+  padding:0;
+  color:var(--color-main);
+  text-transform : lowercase;
+  font-weight: bold;
+  float:left;
+  transition:all 0.3s ease-in-out;
+  min-height:30px;
+  font-weight: normal;
+}
+
+.switch3-label.active {
+  color:var(--color-primary);
+  font-weight: bold;
+}
+.switch3-label:first-of-type {
+  text-align:left;
+  padding-left:3px;
+}
+.switch3-label:nth-child(3) {
+  text-align:center;
+}
+.switch3-label:last-of-type {
+  text-align:right;
+  padding-right:3px;
+}

@@ -27,6 +27,8 @@ Encore
     .addEntry('materialize', './assets/js/materialize.js')
     .addEntry('n-adminjs', './assets/js/n-admin.js')
     .addEntry('base', './assets/js/base.js')
+    .addEntry('switch3', './assets/js/switch3.js')
+    .addEntry('switchHasCome', './assets/js/switchHasCome.js')
 
 
 

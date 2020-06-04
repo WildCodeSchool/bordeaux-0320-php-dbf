@@ -1,4 +1,31 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+<div class="row">
+    <div class="col input-field s7">
+        {{ form_row(form.client) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col input-field s3 ">
+        {{ form_label(form.immatriculation) }}
+        {{ form_widget(form.immatriculation) }}
+    </div>
+    <div class="col input-field s3">
+        {{ form_label(form.chassis) }}
+        {{ form_widget(form.chassis) }}
+    </div>
+    <div>
+        {{ form_row(form.hasCome) }}
+    </div>
+</div>
+    <div class="row">
+    <div class="col s3 ">
+        <p>Déjà passé en atelier ?</p>
+        <div id="switcher">
+        </div>
+    </div>
+    </div>
+
+<button class="btn">{{ button_label|default('Ajouter') }}</button>
+
 {{ form_end(form) }}

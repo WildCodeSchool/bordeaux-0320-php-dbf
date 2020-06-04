@@ -13,6 +13,9 @@ use App\Entity\User;
 use App\Entity\Vehicle;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -23,9 +26,7 @@ class CallType extends AbstractType
     {
         $builder
 
-            ->add('recallDate', null, [
-                'date_format'=>'yyyy-MM-dd',
-            ])
+            ->add('recallDate', HiddenType::class, ['attr' => ['id' => 'reCallDate']])
             ->add('freeComment', TextType::class, [
                 'label' => 'commentaire éventuel'
             ])
