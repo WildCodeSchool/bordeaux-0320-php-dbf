@@ -24,7 +24,7 @@ class VehicleFixtures extends Fixture implements DependentFixtureInterface
             $vehicle->setClient($this->getReference('client_'. $i));
             $vehicle->setImmatriculation($plaque);
             $vehicle->setChassis(rand(1000000, 150000000));
-            $vehicle->setHasCome($faker->boolean);
+            $vehicle->setHasCome(rand(0, 2));
             $vehicle->setCreatedAt($faker->dateTime);
             $manager->persist($vehicle);
             $this->addReference('vehicle_' . $i, $vehicle);
