@@ -22,4 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let civilTabs        = document.querySelector('#civil-tabs');
     let civilInstance    = M.Tabs.init(civilTabs, {});
+
+    let selects            = document.querySelectorAll('select');
+    let instancesOfSelects = M.FormSelect.init(selects, {});
+
+    const modalAddClient   = document.getElementById('modal-add-client');
+    const instanceModalAddCLient = M.Modal.init(modalAddClient, {});
+    instanceModalAddCLient
 });
