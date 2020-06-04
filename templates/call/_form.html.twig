@@ -37,7 +37,7 @@
                             <label for="email">Email</label>
                         </div>
                         <div class="input-field col s12 l4">
-                            {{ form_widget(form.vehicle) }}
+                           {{ form_widget(form.vehicle) }}
                         </div>
                         <div class="input-field col s12 l4">
                             <input id="chassis" type="text" class="validate">
@@ -108,15 +108,15 @@
                 <div class="row">
                     {{form_widget(form.recallDate)}}
                     <div class="col input-field s3 offset-s2">
-                        <input type="date" id="rappel" name="rappel"  required />
-                        <label for="rappel">Jour</label>
+                        <input type="date" id="recallDay" name="rappel"  required />
+                        <label for="RecallDay">Jour</label>
                     </div>
                     <div class="col input-field s4">
                         {{form_widget(form.recallPeriod)}}
                     </div>
                     <div class="col input-field s3">
-                        <input type="time" id="rappel2" name="rappel"  required />
-                        <label for="rappel2">Heure</label>
+                        <input type="time" id="recallHour" name="rappel"  required />
+                        <label for="recallHour">Heure</label>
                     </div>
                 </div>
             </div>

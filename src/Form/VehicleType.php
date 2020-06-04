@@ -21,7 +21,7 @@ class VehicleType extends AbstractType
             ])
             ->add('chassis')
             ->add('hasCome', HiddenType::class, [
-                'attr' => ['id' => 'hasCome']
+                'data' => 'abcdef',
             ])
             ->add('client', EntityType::class, [
                 'class'=> Client::class,

@@ -32,7 +32,7 @@ class Vehicle
     private $chassis;
 
     /**
-     * @ORM\Column(type="string", length=15, nullable=false)
+     * @ORM\Column(type="integer", nullable=false)
      */
     private $hasCome;
 
@@ -91,12 +91,12 @@ class Vehicle
         return $this;
     }
 
-    public function getHasCome(): ?bool
+    public function getHasCome(): ?int
     {
         return $this->hasCome;
     }
 
-    public function setHasCome(bool $hasCome): self
+    public function setHasCome(int $hasCome): self
     {
         $this->hasCome = $hasCome;
 

@@ -41,7 +41,7 @@ class CallController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             if (!$call->getCreatedAt()) {
-                $call->setCreatedAt(new DateTime());
+                $call->setCreatedAt();
             }
             //add isUrgent
             $entityManager->persist($call);

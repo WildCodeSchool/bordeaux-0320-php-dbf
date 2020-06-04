@@ -56,6 +56,9 @@
     </header>
     {% endblock %}
     <main class="paddleft">
+        {% for message in app.flashes('success') %}
+            {{ message }}
+        {% endfor %}
         {% block body %}{% endblock %}
     </main>
     <footer>

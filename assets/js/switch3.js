@@ -1,6 +1,6 @@
 class Switch3 {
 
-    constructor(labels, values, renderZoneId, initVal= 0, name = 'switch3', destinationInputId = null, initPosition) {
+    constructor(labels, values, renderZoneId, initVal= 0, name = 'switch3', destinationInputId = null) {
         this.labels         = labels;
         this.values         = values;
         this.renderZone     = document.getElementById(renderZoneId);
@@ -10,7 +10,7 @@ class Switch3 {
         this.centerPosition = 1;
         this.rightPosition  = 2;
         this.name           = name;
-        this.initPosition   = initPosition;
+        this.initPosition   = this.values.indexOf(this.initVal);
     }
 
     init() {
@@ -90,6 +90,6 @@ class Switch3 {
 
 document.addEventListener('DOMContentLoaded', () => {
     const switcher = new Switch3(['non', '?', 'oui'], [2, 0, 1], 'switcher', 0,
-        '', 'vehicle_hasCome', 1);
+        '', 'vehicle_hasCome');
     switcher.init();
 })

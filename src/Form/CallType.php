@@ -13,6 +13,7 @@ use App\Entity\User;
 use App\Entity\Vehicle;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -35,11 +36,9 @@ class CallType extends AbstractType
                 'choice_label' => 'name',
                 'by_reference' => false,
                 ])
-            ->add('vehicle', EntityType::class, [
-                'class' => Vehicle::class,
-                'choice_label' => 'immatriculation',
-                'by_reference' => false,
-                'label' => 'immatriculation',
+            ->add('vehicle', CollectionType::class, [
+                'entry_type' => VehicleType::class,
+                'entry_options' => ['label' => false],
             ])
             ->add('subject', EntityType::class, [
                 'class' => Subject::class,
