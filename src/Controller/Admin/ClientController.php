@@ -9,14 +9,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
- * @Route("/admin/client")
+ * @Route("/admin/client",  name="admin_client_")
  */
 class ClientController extends AbstractController
 {
     /**
-     * @Route("/", name="client_index", methods={"GET"})
+     * @Route("/", name="index", methods={"GET"})
      */
     public function index(ClientRepository $clientRepository): Response
     {
@@ -26,7 +27,7 @@ class ClientController extends AbstractController
     }
 
     /**
-     * @Route("/add", name="client_add", methods={"GET","POST"})
+     * @Route("/add", name="add", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
@@ -49,7 +50,7 @@ class ClientController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="client_show", methods={"GET"})
+     * @Route("/{id}", name="show", methods={"GET"})
      */
     public function show(Client $client): Response
     {
@@ -59,7 +60,7 @@ class ClientController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="client_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Client $client): Response
     {
@@ -68,7 +69,6 @@ class ClientController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
             return $this->redirectToRoute('client_index');
         }
 
@@ -79,7 +79,7 @@ class ClientController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="client_delete", methods={"DELETE"})
+     * @Route("/{id}", name="delete", methods={"DELETE"})
      */
     public function delete(Request $request, Client $client): Response
     {
@@ -90,5 +90,18 @@ class ClientController extends AbstractController
         }
 
         return $this->redirectToRoute('client_index');
+    }
+
+    /**
+     * @Route("/list", name="list", methods={"POST"})
+     */
+    public function listAllClients(ClientRepository $clientRepository): JsonResponse
+    {
+        $clients  = $clientRepository->findAll();
+        $dataList = [];
+        foreach ($clients as $client) {
+            $dataList[$client->getName() . ' (' . $client->getId() . ')'] = null;
+        }
+        return new JsonResponse($dataList);
     }
 }

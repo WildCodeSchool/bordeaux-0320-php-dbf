@@ -8,7 +8,15 @@
 // any CSS you require will output into a single css file (app.css in this case)
 require('../scss/app.scss');
 
+
 // Need jQuery? Install it with "yarn add jquery", then uncomment to require it.
 // const $ = require('jquery');
 
+
+require('./materialize.js');
+require('./base.js');
+require('./admin.js');
+require('./clientFormAdmin');
+
 require('../js/switchHasCome');
+
