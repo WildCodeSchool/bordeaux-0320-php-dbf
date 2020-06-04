@@ -1,0 +1,128 @@
+{{ form_start(form) }}
+
+<div class="row" >
+    <ul class="collapsible">
+        <li>
+            <div class="collapsible-header row">
+                <h5 class="col s4"><i class="material-icons">person</i>Client</h5>
+                <div class="col s8">
+                    <input type="tel" >
+                    <label for="phone1">Téléphone</label>
+                </div>
+            </div>
+            <div class="collapsible-body">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="input-field col s12 l3">
+                            <select required>
+                                <option value="" selected>Monsieur</option>
+                                <option value="1">Madame</option>
+                                <option value="2">Mme, M</option>
+                                <option value="4">Société</option>
+                            </select>
+                        </div>
+                        <div class="input-field col s6 l9">
+                            {{ form_widget(form.client)}}
+                        </div>
+                        <div class="input-field col s12 l4">
+                            <input id="phone1" type="tel" class="validate" required>
+                            <label for="phone1">Téléphone 1</label>
+                        </div>
+                        <div class="input-field col s12 l4">
+                            <input id="phone2" type="tel" class="validate">
+                            <label for="phone2">Téléphone 2</label>
+                        </div>
+                        <div class="input-field col s12 l4">
+                            <input id="email" type="email" class="validate">
+                            <label for="email">Email</label>
+                        </div>
+                        <div class="input-field col s12 l4">
+                           {{ form_widget(form.vehicle) }}
+                        </div>
+                        <div class="input-field col s12 l4">
+                            <input id="chassis" type="text" class="validate">
+                            <label for="chassis">Châssis</label>
+                        </div>
+                        <div class="input-field col s12 l4">
+                            <select class="form-control" name="motif" id="motif" required>
+                                <option value="" disabled selected>Déjà passé en atelier ?</option>
+                                <option value="1">Oui</option>
+                                <option value="2">Non</option>
+                                <option value="2">Ne sait pas </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header">
+                <h5><i class="material-icons">phone</i>Appel</h5>
+                <div class="col s8">
+                    {{form_widget(form.subject)}}
+                </div>
+            </div>
+            <div class="collapsible-body">
+                <div class="row">
+                    <div class="input-field col s12 l4">
+                        {{ form_widget(form.comment) }}
+                    </div>
+                    <div class="input-field col s12 l8">
+                        {{ form_widget(form.freeComment) }}
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="collapsible-header"><h5><i class="material-icons">person_pin</i>Destinataire</h5>
+                <div class="input-field col s12 l8 ">
+                    <select>
+                        <option value="" disabled selected>Concessions</option>
+                        <option value="1">Bordeaux</option>
+                        <option value="2">Mérignac</option>
+                        <option value="3">Artigues</option>
+                        <option value="4">La Teste</option>
+                    </select>
+                </div>
+            </div>
+            <div class="collapsible-body"><div class="row">
+                    <div class="input-field col s12 l4 offset-l2">
+                        <select>
+                            <option value="" disabled selected>Plaque</option>
+                            <option value="1">Bordeaux</option>
+                            <option value="2">Toulouse</option>
+                            <option value="3">Montpellier</option>
+                        </select>
+                    </div>
+                    <div class="input-field col s12 l4">
+                        {{ form_widget(form.service) }}
+                    </div>
+                    <div class="input-field col s12 l6  offset-l2">
+                        {{ form_widget(form.recipient)}}
+                    </div>
+                </div></div>
+        </li>
+        <li>
+            <div class="collapsible-header"><h5><i class="material-icons">phone_forwarded</i>Rappel</h5></div>
+            <div class="collapsible-body">
+                <div class="row">
+                    {{form_widget(form.recallDate)}}
+                    <div class="col input-field s3 offset-s2">
+                        <input type="date" id="recallDay" name="rappel"  required />
+                        <label for="RecallDay">Jour</label>
+                    </div>
+                    <div class="col input-field s4">
+                        {{form_widget(form.recallPeriod)}}
+                    </div>
+                    <div class="col input-field s3">
+                        <input type="time" id="recallHour" name="rappel"  required />
+                        <label for="recallHour">Heure</label>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<button class="btn">{{ button_label|default('Ajouter') }}</button>
+
+{{ form_end(form) }}

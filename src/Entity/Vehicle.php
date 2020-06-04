@@ -3,12 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\VehicleRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=VehicleRepository::class)
+ *  @ORM\HasLifecycleCallbacks()
  */
 class Vehicle
 {
@@ -30,7 +32,7 @@ class Vehicle
     private $chassis;
 
     /**
-     * @ORM\Column(type="string", length=15, nullable=false)
+     * @ORM\Column(type="integer", nullable=false)
      */
     private $hasCome;
 
@@ -89,12 +91,12 @@ class Vehicle
         return $this;
     }
 
-    public function getHasCome(): ?bool
+    public function getHasCome(): ?int
     {
         return $this->hasCome;
     }
 
-    public function setHasCome(bool $hasCome): self
+    public function setHasCome(int $hasCome): self
     {
         $this->hasCome = $hasCome;
 
@@ -106,10 +108,14 @@ class Vehicle
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @return $this
+     * @throws \Exception
+     * @ORM\PrePersist()
+     */
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new DateTime();
         return $this;
     }
 

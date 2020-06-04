@@ -3,12 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\CallRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 /**
  * @ORM\Entity(repositoryClass=CallRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(name="`call`")
  */
 class Call
@@ -246,10 +249,14 @@ class Call
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @ORM\PrePersist
+     * @return $this
+     * @throws Exception
+     */
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new DateTime();
         return $this;
     }
 
