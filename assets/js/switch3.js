@@ -1,4 +1,4 @@
-class Switch3 {
+ export class Switch3 {
 
     constructor(labels, values, renderZoneId, initVal= 0, name = 'switch3', destinationInputId = null) {
         this.labels         = labels;
@@ -12,6 +12,7 @@ class Switch3 {
         this.name           = name;
         this.initPosition   = this.values.indexOf(this.initVal);
     }
+
 
     init() {
         this.render();
@@ -87,3 +88,4 @@ class Switch3 {
         return this;
     }
 }
+

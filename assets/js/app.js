@@ -15,8 +15,8 @@ require('../scss/app.scss');
 
 require('./materialize.js');
 require('./base.js');
+require('../js/switchHasCome');
 require('./admin.js');
 require('./clientFormAdmin');
 
-require('../js/switchHasCome');
 
