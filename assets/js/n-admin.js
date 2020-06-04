@@ -26,6 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let selects            = document.querySelectorAll('select');
     let instancesOfSelects = M.FormSelect.init(selects, {});
 
-    const modalAddClient   = document.getElementById('modal-add-client');
+    const modalAddClient         = document.getElementById('modal-add-client');
     const instanceModalAddCLient = M.Modal.init(modalAddClient, {});
+
+    const modalEditClient         = document.getElementById('modal-edit-client');
+    const instanceModalEditCLient = M.Modal.init(modalEditClient, {});
+
 });

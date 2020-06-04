@@ -26,10 +26,8 @@ Encore
     .addEntry('app', './assets/js/app.js')
     .addEntry('materialize', './assets/js/materialize.js')
     .addEntry('n-admin', './assets/js/n-admin.js')
-    .addEntry('n-adminClient', './assets/js/n-clientFormAdmin.js')
     .addEntry('base', './assets/js/base.js')
-
-
+    .addEntry('n-adminClient', './assets/js/n-clientFormAdmin.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
