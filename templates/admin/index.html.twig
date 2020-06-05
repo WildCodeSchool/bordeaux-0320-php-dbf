@@ -1,0 +1,44 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Admin dashboard{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row center-align">
+            <h1>Admin dashboard</h1>
+    </div>
+
+    <div class="row">
+        <div class="col s12 l3 admin-card" id="users-card-admin">
+            {% include 'admin/admin_components/_users.html.twig' %}
+        </div>
+        <div class="col s12 l3 admin-card" id="call-card-admin">
+            {% include 'admin/admin_components/_calls.html.twig' %}
+        </div>
+        <div class="col s12 l3 admin-card" id="locations-card-admin">
+            {% include 'admin/admin_components/_locations.html.twig' %}
+
+        </div>
+        <div class="col s12 l3 admin-card" id="divers-card-admin">
+            {% include 'admin/admin_components/_divers.html.twig' %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12 l3 admin-card" id="civil-card-admin">
+            {% include 'admin/admin_components/_civilities.html.twig' %}
+        </div>
+        <div class="col s12 l3 admin-card" id="subjects-card-admin">
+            {% include 'admin/admin_components/_subjects.html.twig' %}
+        </div>
+        <div class="col s12 l3 admin-card" id="comments-card-admin">
+            {% include 'admin/admin_components/_comments.html.twig' %}
+        </div>
+        <div class="col s12 l3 admin-card" id="clients-card-admin">
+            {% include 'admin/admin_components/_clients.html.twig' %}
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

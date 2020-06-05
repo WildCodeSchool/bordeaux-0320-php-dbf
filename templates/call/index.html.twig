@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Call index{% endblock %}
+
+{% block body %}
+    <h1>Call index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>IsUrgent</th>
+                <th>IsProcessEnded</th>
+                <th>IsAppointmentTaken</th>
+                <th>CreatedAt</th>
+                <th>RecallDate</th>
+                <th>FreeComment</th>
+                <th>Source</th>
+                <th>Internet</th>
+                <th>IsProcessed</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for call in calls %}
+            <tr>
+                <td>{{ call.id }}</td>
+                <td>{{ call.isUrgent ? 'Yes' : 'No' }}</td>
+                <td>{{ call.isProcessEnded ? 'Yes' : 'No' }}</td>
+                <td>{{ call.isAppointmentTaken ? 'Yes' : 'No' }}</td>
+                <td>{{ call.createdAt ? call.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ call.recallDate ? call.recallDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ call.freeComment }}</td>
+                <td>{{ call.source }}</td>
+                <td>{{ call.internet }}</td>
+                <td>{{ call.isProcessed ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('call_show', {'id': call.id}) }}">show</a>
+                    <a href="{{ path('call_edit', {'id': call.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('call_add') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
+    </head>
+
+
+
+    <body>
+    <header class="">
+        <nav class="noshadow">
+            <div class="nav-wrapper  white noshadow">
+                <ul id="" class="left  noshadow">
+                    <li>
+                        <a href="#" class="black-text" data-action="hide" id="control-sidebar">
+                           <i class="material-icons left">chevron_left</i> Back to easy-auto
+                        </a>
+                    </li>
+                </ul>
+                <ul id="nav-mobile" class="right hide-on-med-and-down noshadow">
+                    <li><a href="connect.html" class="black-text"><i class="material-icons left">logout</i>déconnexion</a></li>
+                </ul>
+            </div>
+        </nav>
+
+    </header>
+
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+    <footer>
+
+    </footer>
+        {% block javascripts %}
+            {{ encore_entry_script_tags('app') }}
+        {% endblock %}
+    </body>
+</html>

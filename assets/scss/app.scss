@@ -1,9 +1,41 @@
+/* Materialize import CSS */
+@import "~materialize-css/sass/materialize.scss";
+
 @import "vars";
 
-body {
-    background-color: $secondary-color;
+@import "switch3";
+@import "animations";
+
+.paddleft {
+    padding-left: 300px;
+}
+.paddleft.large {
+    padding-left: 10px;
 }
 
-a {
-    color: $warm-color;
+.flex {
+    display: flex;
+    align-items: center;
 }
+
+.flex-hz-center {
+    justify-content: center;
+}
+
+.connectrow {
+    height:80vh;
+}
+
+.nomApp {
+    font-size:2rem;
+}
+
+.container {
+    width:90%;
+}
+
+h3.treat {
+   text-align: center;
+ }
+
+@import "admin";
