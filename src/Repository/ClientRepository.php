@@ -19,6 +19,20 @@ class ClientRepository extends ServiceEntityRepository
         parent::__construct($registry, Client::class);
     }
 
+    /**
+     * @return Client[] Returns an array of Client objects
+     */
+
+    public function findAllOrderBy($field, $order = 'ASC', $limit = null)
+    {
+        $query = $this->createQueryBuilder('c')
+            ->orderBy('c.' . $field, $order);
+        if ($limit) {
+            $query->setMaxResults($limit);
+        }
+        return $query->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Client[] Returns an array of Client objects
     //  */

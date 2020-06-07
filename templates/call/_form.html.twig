@@ -6,7 +6,7 @@
             <div class="collapsible-header row">
                 <h5 class="col s4"><i class="material-icons">person</i>Client</h5>
                 <div class="col s8">
-                    <input type="tel" >
+                    <input type="tel" id="add-call-for-phone">
                     <label for="phone1">Téléphone</label>
                 </div>
             </div>
@@ -74,33 +74,12 @@
             </div>
         </li>
         <li>
-            <div class="collapsible-header"><h5><i class="material-icons">person_pin</i>Destinataire</h5>
-                <div class="input-field col s12 l8 ">
-                    <select>
-                        <option value="" disabled selected>Concessions</option>
-                        <option value="1">Bordeaux</option>
-                        <option value="2">Mérignac</option>
-                        <option value="3">Artigues</option>
-                        <option value="4">La Teste</option>
-                    </select>
-                </div>
+            <div class="collapsible-header">
+                <i class="material-icons">person_pin</i>Destinataire
             </div>
-            <div class="collapsible-body"><div class="row">
-                    <div class="input-field col s12 l4 offset-l2">
-                        <select>
-                            <option value="" disabled selected>Plaque</option>
-                            <option value="1">Bordeaux</option>
-                            <option value="2">Toulouse</option>
-                            <option value="3">Montpellier</option>
-                        </select>
-                    </div>
-                    <div class="input-field col s12 l4">
-                        {{ form_widget(form.service) }}
-                    </div>
-                    <div class="input-field col s12 l6  offset-l2">
-                        {{ form_widget(form.recipient)}}
-                    </div>
-                </div></div>
+            <div class="collapsible-body" id="recipient_form">
+                {% include 'call/_form_recipients.html.twig' %}
+            </div>
         </li>
         <li>
             <div class="collapsible-header"><h5><i class="material-icons">phone_forwarded</i>Rappel</h5></div>

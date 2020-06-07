@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Entity\Concession;
+use App\Entity\City;
+use App\Entity\Service;
 use App\Repository\CallRepository;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -136,6 +139,25 @@ class Call
         return $this->id;
     }
 
+    public function getService()
+    {
+        return $this->service;
+    }
+
+    public function getConcession()
+    {
+        if ($this->getService()) {
+            return $this->getService()->getConcession();
+        }
+    }
+
+    public function getCity()
+    {
+        if ($this->getConcession()) {
+            return $this->getConcession()->getTown();
+        }
+    }
+
     public function getClient(): ?Client
     {
         return $this->client;
@@ -144,7 +166,6 @@ class Call
     public function setClient(?Client $client): self
     {
         $this->client = $client;
-
         return $this;
     }
 
@@ -156,7 +177,6 @@ class Call
     public function setVehicle(?Vehicle $vehicle): self
     {
         $this->vehicle = $vehicle;
-
         return $this;
     }
 
@@ -220,10 +240,6 @@ class Call
         return $this;
     }
 
-    public function getService(): ?Service
-    {
-        return $this->service;
-    }
 
     public function setService(?Service $service): self
     {
