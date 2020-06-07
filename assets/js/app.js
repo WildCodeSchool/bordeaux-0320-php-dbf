@@ -18,5 +18,6 @@ require('./base.js');
 require('../js/switchHasCome');
 require('./admin.js');
 require('./clientFormAdmin');
+require('./recipientForm');
 
 

@@ -10,19 +10,28 @@ use App\Entity\RecallPeriod;
 use App\Entity\Service;
 use App\Entity\Subject;
 use App\Entity\User;
-use App\Entity\Vehicle;
+use App\Repository\CityRepository;
+use App\Repository\ConcessionRepository;
+use App\Repository\ServiceRepository;
+use App\Repository\UserRepository;
+use App\Service\DataMaker;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
+
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CallType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -52,25 +61,15 @@ class CallType extends AbstractType
                 'by_reference' => false,
                 'label' => 'Type'
             ])
-            ->add('service', EntityType::class, [
-                'class' => Service::class,
-                'choice_label' => 'name',
-                'by_reference' => false,
-                'label' => 'Service',
-            ])
             ->add('recallPeriod', EntityType::class, [
                 'class'=> RecallPeriod::class,
                 'choice_label' => 'name',
                 'by_reference' => false,
             ])
-            ->add('recipient', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'lastname',
-                'by_reference' => false,
-                'label' => 'Destinataire',
-            ])
         ;
     }
+
+
 
     public function configureOptions(OptionsResolver $resolver)
     {

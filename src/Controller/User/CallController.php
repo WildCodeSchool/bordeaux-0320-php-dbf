@@ -4,9 +4,12 @@ namespace App\Controller\User;
 
 use App\Entity\Call;
 use App\Form\CallType;
+use App\Form\RecipientType;
 use App\Repository\CallRepository;
-use DateTime;
+use App\Repository\ClientRepository;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,8 +37,11 @@ class CallController extends AbstractController
      */
     public function add(Request $request): Response
     {
-        $call = new Call();
-        $form = $this->createForm(CallType::class, $call);
+        $call          = new Call();
+        $form          = $this->createForm(CallType::class, $call);
+
+        $recipientForm = $this->createForm(RecipientType::class, $call);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -51,8 +57,9 @@ class CallController extends AbstractController
         }
 
         return $this->render('call/add.html.twig', [
-            'call' => $call,
-            'form' => $form->createView(),
+            'call'          => $call,
+            'form'          => $form->createView(),
+            'recipientForm' => $recipientForm->createView(),
         ]);
     }
 
@@ -98,5 +105,31 @@ class CallController extends AbstractController
         }
 
         return $this->redirectToRoute('call_index');
+    }
+
+    /**
+     * @Route("/recipient/form", name="recipient_form", methods={"POST"})
+     */
+    public function recipientForm(): Response
+    {
+        $call          = new Call();
+        $recipientForm = $this->createForm(RecipientType::class, $call);
+
+        return $this->render('call/_form_recipients.html.twig', [
+            'recipientForm' => $recipientForm->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/search/{phoneNumber}", name="search_calls_for_numbers", methods={"GET"})
+     */
+    public function listAllClients(
+        ClientRepository $clientRepository,
+        CallRepository $callRepository,
+        $phoneNumber
+    ): JsonResponse {
+        $client = $clientRepository->findOneByPhone($phoneNumber);
+        $calls = $callRepository->callsOnTheWayForClient($client->getId());
+        return new JsonResponse($calls);
     }
 }
