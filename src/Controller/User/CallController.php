@@ -123,7 +123,7 @@ class CallController extends AbstractController
     /**
      * @Route("/search/{phoneNumber}", name="search_calls_for_numbers", methods={"GET"})
      */
-    public function listAllClients(
+    public function listAllCallsOnTheWayByPhoneNumber(
         ClientRepository $clientRepository,
         CallRepository $callRepository,
         $phoneNumber
