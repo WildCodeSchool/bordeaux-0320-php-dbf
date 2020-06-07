@@ -139,14 +139,23 @@ class Call
         return $this->id;
     }
 
-    public function getConcession(): Concession
+    public function getService()
     {
-        return $this->getService()->getConcession();
+        return $this->service;
     }
 
-    public function getCity(): City
+    public function getConcession()
     {
-        return $this->getConcession()->getTown();
+        if ($this->getService()) {
+            return $this->getService()->getConcession();
+        }
+    }
+
+    public function getCity()
+    {
+        if ($this->getConcession()) {
+            return $this->getConcession()->getTown();
+        }
     }
 
     public function getClient(): ?Client
@@ -231,10 +240,6 @@ class Call
         return $this;
     }
 
-    public function getService(): Service
-    {
-        return $this->service;
-    }
 
     public function setService(?Service $service): self
     {
