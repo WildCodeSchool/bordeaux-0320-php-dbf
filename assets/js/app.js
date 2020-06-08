@@ -19,6 +19,6 @@ require('../js/switchHasCome');
 require('./admin.js');
 require('./clientFormAdmin');
 require('./recipientForm');
-//require('./prePostForm');
+require('./searchClientByPhone');
 
 

@@ -124,8 +124,19 @@ class CallController extends AbstractController
         CallRepository $callRepository,
         $phoneNumber
     ): JsonResponse {
-        $client = $clientRepository->findOneByPhone($phoneNumber);
-        $calls = $callRepository->callsOnTheWayForClient($client->getId());
-        return new JsonResponse($calls);
+
+        $client  = $clientRepository->findOneByPhone($phoneNumber);
+        //$calls = $callRepository->callsOnTheWayForClient($client->getId());
+        if ($client) {
+            return new JsonResponse([
+                'client_id' => $client->getId(),
+                'client_name' => $client->getName(),
+                'client_phone' => $client->getPhone()
+            ]);
+        } else {
+            return new JsonResponse([
+                'client_id' => null,
+            ]);
+        }
     }
 }
