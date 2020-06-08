@@ -2,18 +2,24 @@ class recipientsAjaxTool {
     constructor(url) {
         this.urlToAdd     = url
         this.init()
-
     }
 
     init(data = null) {
-        this.citySelectorId       = 'recipient_city'
-        this.concessionSelectorId = 'recipient_concession'
-        this.serviceSelectorId    = 'recipient_service'
-        this.formId               = 'recipient_form'
+        this.citySelectorId       = 'call_city'
+        this.concessionSelectorId = 'call_concession'
+        this.serviceSelectorId    = 'call_service'
+        this.concessionZoneId     = 'recipient-concession'
+        this.serviceZoneId        = 'recipient-service'
+        this.recipientZoneId      = 'recipient-recipient'
+        this.authorizedToPost     = true
+
         this.citySelector         = document.getElementById(this.citySelectorId);
         this.concessionSelector   = document.getElementById(this.concessionSelectorId);
         this.serviceSelector      = document.getElementById(this.serviceSelectorId);
-        this.recipientForm        = document.getElementById(this.formId);
+        this.concessionZone       = document.getElementById(this.concessionZoneId);
+        this.serviceZone          = document.getElementById(this.serviceZoneId);
+        this.recipientZone        = document.getElementById(this.recipientZoneId);
+
         if (data) {
             this.values = data
         } else {
@@ -23,13 +29,15 @@ class recipientsAjaxTool {
                 'Service' : 0,
             }
         }
-        console.log(this.values)
-        this.selectCity()
+
+        this.selectValueInSelect(this.citySelector, this.values.City)
+
         if (this.concessionSelector) {
-            this.selectConcession()
+            this.selectValueInSelect(this.concessionSelector, this.values.Concession)
         }
+
         if (this.serviceSelector) {
-            this.selectService()
+            this.selectValueInSelect(this.serviceSelector, this.values.Service)
         }
 
         this.initializeSelects()
@@ -38,43 +46,59 @@ class recipientsAjaxTool {
             const postdata = {
                 'City' : this.citySelector.value
             }
-            this.sendData(postdata, (data) => {
-                this.recipientForm.innerHTML = data
-                this.init(postdata)
-            })
+            if (this.authorizedToPost) {
+                this.authorizedToPost = false;
+                this.sendData(postdata, (data) => {
+                    this.concessionZone.innerHTML = '<b>Choisir une concession</b><br>' + this.getHtmlElement(data, 'call_concession');
+                    this.serviceZone.innerHTML = "";
+                    this.recipientZone.innerHTML = "";
+                    this.init(postdata)
+                })
+            }
         })
+
         if (this.concessionSelector) {
             this.concessionSelector.addEventListener('change', () => {
                 const postdata = {
-                    'City': this.citySelector.value,
-                    'Concession': this.concessionSelector.value
+                    'City'       : this.citySelector.value,
+                    'Concession' : this.concessionSelector.value
                 }
-                this.sendData(postdata, (data) => {
-                    this.recipientForm.innerHTML = data
-                    this.init(postdata)
-                })
+                if (this.authorizedToPost) {
+                    this.authorizedToPost = false;
+                    this.sendData(postdata, (data) => {
+                        this.serviceZone.innerHTML = data;
+                        this.serviceZone.innerHTML = '<b>Choisir un service</b><br>' + this.getHtmlElement(data, 'call_service');
+                        this.recipientZone.innerHTML = "";
+                        this.init(postdata)
+                    })
+                }
+
             })
         }
 
         if (this.serviceSelector) {
             this.serviceSelector.addEventListener('change', () => {
                 const postdata = {
-                    'City': this.citySelector.value,
-                    'Concession': this.concessionSelector.value,
-                    'Service': this.serviceSelector.value
+                    'City'       : this.citySelector.value,
+                    'Concession' : this.concessionSelector.value,
+                    'Service'    : this.serviceSelector.value
                 }
-                this.sendData(postdata, (data) => {
-                    this.recipientForm.innerHTML = data
-                    this.init(postdata)
-                })
+                if (this.authorizedToPost) {
+                    this.authorizedToPost = false;
+                    this.sendData(postdata, (data) => {
+                        this.recipientZone.innerHTML = '<b>Choisir un destinataire</b><br>' + this.getHtmlElement(data, 'call_recipient');
+                        this.init(postdata)
+                    })
+                }
             })
         }
     }
 
-    parseHtml (html) {
-        const parser = new DOMParser();
-        const result = parser.parseFromString(html, "text/html");
-        return result;
+    getHtmlElement(html, elemId) {
+        const parser  = new DOMParser();
+        const result  = parser.parseFromString(html, "text/html");
+        const domElem = result.getElementById(elemId);
+        return domElem.outerHTML;
     }
 
     sendData(data, action) {
@@ -91,27 +115,14 @@ class recipientsAjaxTool {
         .then(function (response) {
             return response.text();
         }).then(function (html) {
+
             action(html);
         });
     }
 
-    selectCity () {
-        if ( this.citySelector.querySelector('option[value="' + this.values.City + '"]')) {
-            this.citySelector.querySelector('option[value="' + this.values.City + '"]')
-                .setAttribute('selected', 'selected');
-        }
-    }
-
-    selectConcession () {
-        if (this.concessionSelector.querySelector('option[value="' + this.values.Concession + '"]') && this.values.Concession !== 0) {
-            this.concessionSelector.querySelector('option[value="' + this.values.Concession + '"]')
-                .setAttribute('selected', 'selected');
-        }
-    }
-
-    selectService () {
-        if (this.serviceSelector.querySelector('option[value="' + this.values.Service + '"]') && this.values.Service !== 0) {
-            this.serviceSelector.querySelector('option[value="' + this.values.Service + '"]')
+    selectValueInSelect(selector, selectorValues) {
+        if ( selector.querySelector('option[value="' + selectorValues + '"]')) {
+            selector.querySelector('option[value="' + selectorValues + '"]')
                 .setAttribute('selected', 'selected');
         }
     }
@@ -124,6 +135,6 @@ class recipientsAjaxTool {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    const clientAjaxer         = new recipientsAjaxTool('/call/recipient/form', '');
+    const clientAjaxer         = new recipientsAjaxTool('/call/add', '');
 
 });
