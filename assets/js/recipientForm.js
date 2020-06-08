@@ -30,13 +30,14 @@ class recipientsAjaxTool {
             }
         }
 
-        this.selectCity()
+        this.selectValueInSelect(this.citySelector, this.values.City)
 
         if (this.concessionSelector) {
-            this.selectConcession()
+            this.selectValueInSelect(this.concessionSelector, this.values.Concession)
         }
+
         if (this.serviceSelector) {
-            this.selectService()
+            this.selectValueInSelect(this.serviceSelector, this.values.Service)
         }
 
         this.initializeSelects()
@@ -119,23 +120,9 @@ class recipientsAjaxTool {
         });
     }
 
-    selectCity () {
-        if ( this.citySelector.querySelector('option[value="' + this.values.City + '"]')) {
-            this.citySelector.querySelector('option[value="' + this.values.City + '"]')
-                .setAttribute('selected', 'selected');
-        }
-    }
-
-    selectConcession () {
-        if (this.concessionSelector.querySelector('option[value="' + this.values.Concession + '"]') && this.values.Concession !== 0) {
-            this.concessionSelector.querySelector('option[value="' + this.values.Concession + '"]')
-                .setAttribute('selected', 'selected');
-        }
-    }
-
-    selectService () {
-        if (this.serviceSelector.querySelector('option[value="' + this.values.Service + '"]') && this.values.Service !== 0) {
-            this.serviceSelector.querySelector('option[value="' + this.values.Service + '"]')
+    selectValueInSelect(selector, selectorValues) {
+        if ( selector.querySelector('option[value="' + selectorValues + '"]')) {
+            selector.querySelector('option[value="' + selectorValues + '"]')
                 .setAttribute('selected', 'selected');
         }
     }

@@ -3,7 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Call;
-use App\Entity\City;
 use App\Entity\Client;
 use App\Entity\Comment;
 use App\Entity\RecallPeriod;
@@ -19,12 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
-use \Symfony\Component\Form\FormInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CallType extends AbstractType
@@ -70,12 +64,14 @@ class CallType extends AbstractType
                 'entry_options' => ['label' => false],
             ])
             ->add('city', ChoiceType::class, [
-                'choices' => $this->getAllCities()
+                'choices' => $this->getAllCities(),
+                'mapped'  => false
             ]);
         if (isset($data->City)) {
             $builder->
             add('concession', ChoiceType::class, [
-                'choices'      => $this->getConcessions($data->City),
+                'choices' => $this->getConcessions($data->City),
+                'mapped'  => false
             ]);
         }
         if (isset($data->Concession)) {
