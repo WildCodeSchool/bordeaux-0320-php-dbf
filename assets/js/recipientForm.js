@@ -2,7 +2,6 @@ class recipientsAjaxTool {
     constructor(url) {
         this.urlToAdd     = url
         this.init()
-
     }
 
     init(data = null) {
@@ -12,6 +11,7 @@ class recipientsAjaxTool {
         this.concessionZoneId     = 'recipient-concession'
         this.serviceZoneId        = 'recipient-service'
         this.recipientZoneId      = 'recipient-recipient'
+        this.authorizedToPost     = true
 
         this.citySelector         = document.getElementById(this.citySelectorId);
         this.concessionSelector   = document.getElementById(this.concessionSelectorId);
@@ -45,13 +45,15 @@ class recipientsAjaxTool {
             const postdata = {
                 'City' : this.citySelector.value
             }
-            this.sendData(postdata, (data) => {
-                console.log(data)
-                this.concessionZone.innerHTML = '<b>Choisir une concession</b><br>' + this.getHtmlElement(data, 'call_concession');
-                this.serviceZone.innerHTML    = "";
-                this.recipientZone.innerHTML  = "";
-                this.init(postdata)
-            })
+            if (this.authorizedToPost) {
+                this.authorizedToPost = false;
+                this.sendData(postdata, (data) => {
+                    this.concessionZone.innerHTML = '<b>Choisir une concession</b><br>' + this.getHtmlElement(data, 'call_concession');
+                    this.serviceZone.innerHTML = "";
+                    this.recipientZone.innerHTML = "";
+                    this.init(postdata)
+                })
+            }
         })
 
         if (this.concessionSelector) {
@@ -60,12 +62,16 @@ class recipientsAjaxTool {
                     'City'       : this.citySelector.value,
                     'Concession' : this.concessionSelector.value
                 }
-                this.sendData(postdata, (data) => {
-                    this.serviceZone.innerHTML = data;
-                    this.serviceZone.innerHTML    = '<b>Choisir un service</b><br>' + this.getHtmlElement(data,'call_service');
-                    this.recipientZone.innerHTML  = "";
-                    this.init(postdata)
-                })
+                if (this.authorizedToPost) {
+                    this.authorizedToPost = false;
+                    this.sendData(postdata, (data) => {
+                        this.serviceZone.innerHTML = data;
+                        this.serviceZone.innerHTML = '<b>Choisir un service</b><br>' + this.getHtmlElement(data, 'call_service');
+                        this.recipientZone.innerHTML = "";
+                        this.init(postdata)
+                    })
+                }
+
             })
         }
 
@@ -76,10 +82,13 @@ class recipientsAjaxTool {
                     'Concession' : this.concessionSelector.value,
                     'Service'    : this.serviceSelector.value
                 }
-                this.sendData(postdata, (data) => {
-                    this.recipientZone.innerHTML = '<b>Choisir un destinataire</b><br>' + this.getHtmlElement(data, 'call_recipient');
-                    this.init(postdata)
-                })
+                if (this.authorizedToPost) {
+                    this.authorizedToPost = false;
+                    this.sendData(postdata, (data) => {
+                        this.recipientZone.innerHTML = '<b>Choisir un destinataire</b><br>' + this.getHtmlElement(data, 'call_recipient');
+                        this.init(postdata)
+                    })
+                }
             })
         }
     }
