@@ -78,7 +78,18 @@
                 <i class="material-icons">person_pin</i>Destinataire
             </div>
             <div class="collapsible-body" id="recipient_form">
-                {% include 'call/_form_recipients.html.twig' %}
+                <div class="row">
+                    <div class="col s3" id="recipient-city">
+                        <b>Choisir une plaque</b><br>
+                        {{form_widget(form.city)}}
+                    </div>
+                    <div class="col s3" id="recipient-concession">
+                    </div>
+                    <div class="col s3" id="recipient-service">
+                    </div>
+                    <div class="col s3" id="recipient-recipient">
+                    </div>
+                </div>
             </div>
         </li>
         <li>

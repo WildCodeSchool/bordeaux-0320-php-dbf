@@ -40,8 +40,6 @@ class CallController extends AbstractController
         $call          = new Call();
         $form          = $this->createForm(CallType::class, $call);
 
-        $recipientForm = $this->createForm(RecipientType::class, $call);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -59,7 +57,6 @@ class CallController extends AbstractController
         return $this->render('call/add.html.twig', [
             'call'          => $call,
             'form'          => $form->createView(),
-            'recipientForm' => $recipientForm->createView(),
         ]);
     }
 
