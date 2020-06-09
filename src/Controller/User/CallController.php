@@ -118,14 +118,17 @@ class CallController extends AbstractController
 
     /**
      * @Route("/search/{phoneNumber}", name="search_calls_for_numbers", methods={"GET"})
+     * @param ClientRepository $clientRepository
+     * @param CallRepository $callRepository
+     * @param $phoneNumber
+     * @return JsonResponse
      */
     public function listAllCallsOnTheWayByPhoneNumber(
         ClientRepository $clientRepository,
         CallRepository $callRepository,
         $phoneNumber
     ): JsonResponse {
-
-        $client  = $clientRepository->findOneByPhone($phoneNumber);
+        $client = $clientRepository->findOneByPhone($phoneNumber);
         //$calls = $callRepository->callsOnTheWayForClient($client->getId());
         if ($client) {
             return new JsonResponse([
