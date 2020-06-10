@@ -39,6 +39,7 @@ class SubjectController extends AbstractController
             $entityManager->persist($subject);
             $entityManager->flush();
 
+
             return $this->redirectToRoute('subject_index');
         }
 
