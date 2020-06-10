@@ -53,12 +53,12 @@ class Call
     private $isUrgent;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isProcessEnded;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isAppointmentTaken;
 
@@ -112,18 +112,18 @@ class Call
     private $internet;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isProcessed;
 
     /**
-     * @ORM\OneToMany(targetEntity=CallTransfer::class, mappedBy="referedCall", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=CallTransfer::class, mappedBy="referedCall", orphanRemoval=true)
      */
     private $callTransfers;
 
     /**
      * @ORM\OneToMany(targetEntity=CallProcessing::class, mappedBy="referedCall",
-     *     orphanRemoval=true, cascade={"persist"})
+     *     orphanRemoval=true)
      */
     private $callProcessings;
 
