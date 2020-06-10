@@ -1,12 +1,5 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Vehicle index{% endblock %}
-
-{% block body %}
-    <h1>Vehicle index</h1>
-
-
-    <table class="table">
+    <table class="table highlight">
         <thead>
             <tr>
                 <th>Id</th>
@@ -39,6 +32,3 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('vehicle_new') }}">Create new</a>
-{% endblock %}

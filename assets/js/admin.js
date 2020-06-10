@@ -32,4 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalEditClient         = document.getElementById('modal-edit-client');
     const instanceModalEditCLient = M.Modal.init(modalEditClient, {});
 
+    const modalShowVehicles         = document.getElementById('modal-show-vehicles');
+    const instanceModalShowVehicles = M.Modal.init(modalShowVehicles, {});
+
 });

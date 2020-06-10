@@ -18,6 +18,8 @@ class VehicleController extends AbstractController
 {
     /**
      * @Route("/", name="vehicle_index", methods={"GET"})
+     * @param VehicleRepository $vehicleRepository
+     * @return Response
      */
     public function index(VehicleRepository $vehicleRepository): Response
     {
