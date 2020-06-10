@@ -20,7 +20,6 @@ class CivilityType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Civility::class,
-            'attr' => ['id' => 'civility-form']
         ]);
     }
 }

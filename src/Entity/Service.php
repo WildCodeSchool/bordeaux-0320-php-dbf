@@ -63,7 +63,7 @@ class Service
         return $this;
     }
 
-    public function getConcession(): Concession
+    public function getConcession(): ?Concession
     {
         return $this->concession;
     }

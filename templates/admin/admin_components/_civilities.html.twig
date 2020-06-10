@@ -16,7 +16,6 @@
         </div>
         <div id="civil-add">
             <a  href="#modal-add-civility" class="btn modal-trigger light-blue"><i class="material-icons">add</i></a>
-            <a href="#modal-edit-civility" class="btn light-blue darken-2"><i class="material-icons">edit</i></a>
         </div>
     </div>
 </div>
@@ -26,24 +25,10 @@
 
 <div id="modal-add-civility" class="modal">
     <div class="modal-content">
-        <h4>Ajouter une civilité</h4>
+        <h4 class="center-align">Ajouter une civilité</h4>
         <div class="row">
             <div class="col s10 offset-s1">
                 {% include 'civility/new.html.twig' %}
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- MODALE EDIT civilité -->
-
-<div id="modal-edit-civility" class="modal">
-    <div class="modal-content">
-        <h4>Editer une civilité</h4>
-        <div class="row">
-            <div class="col s10 offset-s1">
-                {% include 'civility/edit.html.twig' %}
             </div>
         </div>
     </div>
