@@ -38,5 +38,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalAddService = document.getElementById('modal-add-service');
     const instanceModalAddService = M.Modal.init(modalAddService, {});
 
+    const modalListService = document.getElementById('modal-list-service');
+    const instanceModalListService = M.Modal.init(modalListService, {});
 
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("service-button").addEventListener("click", function (e) {
+        e.preventDefault();
+        const name = document.getElementById('service_name').value;
+        const concession = document.getElementById('service_concession').value;
+        if (name && concession) {
+            M.toast({html: 'I am a toast!', classes: 'rounded'});
+        }
+    })
+});
+*/
+

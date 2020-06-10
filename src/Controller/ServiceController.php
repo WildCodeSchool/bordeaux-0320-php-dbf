@@ -39,6 +39,7 @@ class ServiceController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($service);
             $entityManager->flush();
+            $this->addFlash('success', 'Vous avez bien ajouté une civilité');
             return $this->redirectToRoute('adminadmin_dashboard');
         }
 

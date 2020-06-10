@@ -20,6 +20,7 @@
         <div id="locations-service">
             <div>
                 <a href="#modal-add-service" class="btn modal-trigger brown lighten-1"><i class="material-icons">add</i></a>
+                <a href="#modal-list-service" class="btn modal-trigger brown lighten-1">Liste</a>
             </div>
         </div>
     </div>
@@ -35,6 +36,16 @@
         <div class="row">
             <div class="col s10 offset-s1">
                 {% include 'service/new.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modal-list-service" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'service/index.html.twig' %}
             </div>
         </div>
     </div>

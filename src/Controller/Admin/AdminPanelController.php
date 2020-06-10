@@ -30,15 +30,20 @@ class AdminPanelController extends AbstractController
     public function index(Request $request): Response
     {
         $client = new Client();
+        $civilities = $this->getDoctrine()->getRepository(Civility::class);
+        $services = $this->getDoctrine()->getRepository(Service::class);
         $formClient = $this->createForm(ClientType::class, $client);
         $formClient->handleRequest($request);
         $formCivility = $this->createForm(CivilityType::class);
         $formService = $this->createForm(ServiceType::class);
+
         return $this->render('admin/index.html.twig', [
             'client' => $client,
             'form' => $formClient->createView(),
+            'services'=> $services->findAll(),
             'form_civility' => $formCivility->createView(),
             'form_service' => $formService->createView(),
+            'civilities' => $civilities->findAll()
         ]);
     }
 

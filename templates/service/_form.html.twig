@@ -1,4 +1,4 @@
-{{ form_start(form_service, {'action': path('service_new')})}}
-    {{ form_widget(form_service) }}
-    <button class="btn modal-close">{{ button_label|default('Sauvegarder') }}</button>
-{{ form_end(form_service) }}
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+<button class="btn" >{{ button_label|default('Sauvegarder') }}</button>
+{{ form_end(form) }}

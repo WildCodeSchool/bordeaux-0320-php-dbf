@@ -12,7 +12,15 @@
     </div>
     <div class="card-content grey lighten-4">
         <div id="civil-list">
-            liste des civilités existantes (select)
+            <div class="input-field ">
+                <label for="service"></label>
+                <select>
+            {% for civility in civilities %}
+                <option value="{{ loop.index }}">{{ civility.name }}</option>
+            {% endfor %}
+                </select>
+            </div>
+
         </div>
         <div id="civil-add">
             <a  href="#modal-add-civility" class="btn modal-trigger light-blue"><i class="material-icons">add</i></a>
