@@ -1,0 +1,26 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col input-field s6">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col input-field s6">
+        {{ form_widget(form.city) }}
+        {{ form_label(form.city) }}
+
+    </div>
+</div>
+<div class="row">
+    <div class="col input-field s6">
+
+        {{ form_widget(form.isForAppWorkshop) }}
+        {{ form_label(form.isForAppWorkshop) }}
+
+    </div>
+</div>
+
+    <button class="btn btn-aligned">{{ button_label|default('Ajouter') }} <i class="material-icons right">save</i> </button>
+
+{{ form_end(form) }}

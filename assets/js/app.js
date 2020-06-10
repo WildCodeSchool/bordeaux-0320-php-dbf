@@ -20,5 +20,6 @@ require('./AddCall');
 require('./admin.js');
 require('./clientFormAdmin');
 require('./recipientForm');
+require('./searchClientByPhone');
 
 
