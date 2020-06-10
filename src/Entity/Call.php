@@ -2,15 +2,13 @@
 
 namespace App\Entity;
 
-use App\Entity\Concession;
-use App\Entity\City;
-use App\Entity\Service;
 use App\Repository\CallRepository;
-use DateTime;
+use \DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CallRepository::class)
@@ -27,7 +25,7 @@ class Call
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="calls",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
@@ -82,9 +80,15 @@ class Call
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $recallDate;
+
+    /**
+     * @ORM\Column(type="time")
+     */
+    private $recallHour;
+
 
     /**
      * @ORM\ManyToOne(targetEntity=RecallPeriod::class, inversedBy="calls")
@@ -281,11 +285,26 @@ class Call
         return $this->recallDate;
     }
 
-    public function setRecallDate(\DateTimeInterface $recallDate): self
+    public function setRecallDate(DateTime $recallDate): self
     {
         $this->recallDate = $recallDate;
-
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecallHour()
+    {
+        return $this->recallHour;
+    }
+
+    /**
+     * @param mixed $recallHour
+     */
+    public function setRecallHour($recallHour): void
+    {
+        $this->recallHour = $recallHour;
     }
 
     public function getRecallPeriod(): ?RecallPeriod
@@ -295,7 +314,7 @@ class Call
 
     public function setRecallPeriod(?RecallPeriod $recallPeriod): self
     {
-        $this->recallDate = $recallPeriod;
+        $this->recallPeriod = $recallPeriod;
 
         return $this;
     }

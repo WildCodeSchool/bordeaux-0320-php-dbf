@@ -39,15 +39,16 @@ class CallController extends AbstractController
     {
         $call          = new Call();
         $form          = $this->createForm(CallType::class, $call);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            if (!$call->getCreatedAt()) {
-                $call->setCreatedAt();
-            }
             //add isUrgent
+            $data = $form->getData();
+            dd($data);
             $entityManager->persist($call);
+
             $entityManager->flush();
 
             return $this->redirectToRoute('call_index');
@@ -61,6 +62,8 @@ class CallController extends AbstractController
 
     /**
      * @Route("/{id}", name="call_show", methods={"GET"})
+     * @param Call $call
+     * @return Response
      */
     public function show(Call $call): Response
     {
@@ -71,6 +74,9 @@ class CallController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="call_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Call $call
+     * @return Response
      */
     public function edit(Request $request, Call $call): Response
     {
@@ -91,6 +97,9 @@ class CallController extends AbstractController
 
     /**
      * @Route("/{id}", name="call_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Call $call
+     * @return Response
      */
     public function delete(Request $request, Call $call): Response
     {
