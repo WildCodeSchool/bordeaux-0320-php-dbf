@@ -38,7 +38,7 @@ class CivilityController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($civility);
             $entityManager->flush();
-            return $this->redirectToRoute('adminadmin_dashboard');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('civility/new.html.twig', [
