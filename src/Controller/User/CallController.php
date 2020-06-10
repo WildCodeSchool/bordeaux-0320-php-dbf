@@ -47,8 +47,8 @@ class CallController extends AbstractController
             //add isUrgent
             $data = $form->getData();
             dd($data);
-            $entityManager->persist($call);
 
+            $entityManager->persist($call);
             $entityManager->flush();
 
             return $this->redirectToRoute('call_index');
