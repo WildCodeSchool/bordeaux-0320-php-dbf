@@ -40,7 +40,7 @@ class ServiceController extends AbstractController
             $entityManager->persist($service);
             $entityManager->flush();
             $this->addFlash('success', 'Vous avez bien ajouté une civilité');
-            return $this->redirectToRoute('adminadmin_dashboard');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('service/new.html.twig', [
