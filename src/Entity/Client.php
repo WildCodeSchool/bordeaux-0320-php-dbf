@@ -10,6 +10,7 @@ use \DateTime;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Client
 {
@@ -62,12 +63,12 @@ class Client
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Vehicle::class, mappedBy="client")
+     * @ORM\OneToMany(targetEntity=Vehicle::class, mappedBy="client",cascade={"persist"})
      */
     private $vehicles;
 
     /**
-     * @ORM\OneToMany(targetEntity=Call::class, mappedBy="client", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Call::class, mappedBy="client", orphanRemoval=true, cascade={"persist"})
      */
     private $calls;
 
@@ -161,11 +162,12 @@ class Client
 
     /**
      * @ORM\PrePersist
+     * @return Client
+     * @throws \Exception
      */
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(): self
     {
         $this->createdAt = new DateTime();
-
         return $this;
     }
 

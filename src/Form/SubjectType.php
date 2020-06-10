@@ -2,40 +2,41 @@
 
 namespace App\Form;
 
-use App\Entity\Client;
-use App\Entity\Vehicle;
+use App\Entity\City;
+use App\Entity\Subject;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VehicleType extends AbstractType
+class SubjectType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('immatriculation', TextType::class, [
-                'label' => 'Immatriculation'
+            ->add('name', TextType::class, [
+                'label' => 'motifs'
             ])
-            ->add('chassis', TextType::class, [
-                'label'=>'Chassis',
-                'required'   => false,
+            ->add('isForAppWorkshop', ChoiceType::class, [
+                'choices'  => [
+                    'Oui' => true,
+                    'Non' => false,
+                ],
+                'label' => 'Rendez-vous en atelier'
             ])
-            ->add('hasCome', HiddenType::class)
-            ->add('client', EntityType::class, [
-                'class'=> Client::class,
+            ->add('city', EntityType::class, ['class' => City::class,
                 'choice_label' => 'name',
-                'by_reference' => false,
-            ])
+                'label' => 'Plaque'])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Vehicle::class,
+            'data_class' => Subject::class,
         ]);
     }
 }
