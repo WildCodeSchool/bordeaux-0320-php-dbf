@@ -45,7 +45,7 @@ class AdminPanelController extends AbstractController
             'services'=> $services->findAll(),
             'form_civility' => $formCivility->createView(),
             'form_service' => $formService->createView(),
-            'civilities' => $civilities->findAll()
+            'civilities' => $civilities->findAll(),
             'vehicles' => $vehicleRepository->findAll(),
         ]);
     }
