@@ -31,19 +31,19 @@ class Call
     private $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Vehicle::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=Vehicle::class, inversedBy="calls", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $vehicle;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Subject::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=Subject::class, inversedBy="calls", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $subject;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="calls", cascade={"persist"})
      */
     private $comment;
 
@@ -63,13 +63,13 @@ class Call
     private $isAppointmentTaken;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="calls", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $service;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="calls", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -91,7 +91,7 @@ class Call
 
 
     /**
-     * @ORM\ManyToOne(targetEntity=RecallPeriod::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=RecallPeriod::class, inversedBy="calls", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $recallPeriod;
@@ -117,12 +117,13 @@ class Call
     private $isProcessed;
 
     /**
-     * @ORM\OneToMany(targetEntity=CallTransfer::class, mappedBy="referedCall", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=CallTransfer::class, mappedBy="referedCall", orphanRemoval=true, cascade={"persist"})
      */
     private $callTransfers;
 
     /**
-     * @ORM\OneToMany(targetEntity=CallProcessing::class, mappedBy="referedCall", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=CallProcessing::class, mappedBy="referedCall",
+     *     orphanRemoval=true, cascade={"persist"})
      */
     private $callProcessings;
 

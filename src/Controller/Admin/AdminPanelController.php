@@ -9,6 +9,7 @@ use App\Form\CivilityType;
 use App\Form\ClientType;
 use App\Form\ServiceType;
 use App\Repository\CivilityRepository;
+use App\Repository\VehicleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Variable;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,11 +24,12 @@ class AdminPanelController extends AbstractController
 {
 
     /**
-     * @Route("/", name="admin_dashboard")
+     * @Route("/", name="_dashboard")
      * @param Request $request
+     * @param VehicleRepository $vehicleRepository
      * @return Response
      */
-    public function index(Request $request): Response
+    public function index(Request $request, VehicleRepository $vehicleRepository): Response
     {
         $client = new Client();
         $civilities = $this->getDoctrine()->getRepository(Civility::class);
@@ -44,11 +46,14 @@ class AdminPanelController extends AbstractController
             'form_civility' => $formCivility->createView(),
             'form_service' => $formService->createView(),
             'civilities' => $civilities->findAll()
+            'vehicles' => $vehicleRepository->findAll(),
         ]);
     }
 
     /**
      * @Route("/addclient")
+     * @param CivilityRepository $civilityRepository
+     * @throws \Exception
      */
     public function addClient(CivilityRepository $civilityRepository)
     {
@@ -64,7 +69,7 @@ class AdminPanelController extends AbstractController
         $client->setPhone2($post['phone2']);
         $client->setPostcode($post['postcode']);
         $client->setEmail($post['email']);
-        $client->setCreatedAt(new DateTime());
+        $client->setCreatedAt();
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($client);
         $entityManager->flush();

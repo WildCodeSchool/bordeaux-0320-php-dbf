@@ -40,6 +40,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const modalListService = document.getElementById('modal-list-service');
     const instanceModalListService = M.Modal.init(modalListService, {});
+  
+    const modalShowVehicles         = document.getElementById('modal-show-vehicles');
+    const instanceModalShowVehicles = M.Modal.init(modalShowVehicles, {});
 
 })
 
@@ -57,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 /*
+
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("service-button").addEventListener("click", function (e) {
         e.preventDefault();
