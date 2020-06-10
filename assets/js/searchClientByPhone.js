@@ -1,3 +1,5 @@
+import { Switch3 } from 'triswitch';
+
 const sendData = (phone, action) => {
     fetch('/call/search/' + phone, {
         method      : 'GET',
@@ -12,40 +14,106 @@ const sendData = (phone, action) => {
         });
 }
 
+const hydrateForm = (data) => {
+    for (var [key, value] of Object.entries(data)){
+        if (document.getElementById('call_' + key)) {
+            document.getElementById('call_' + key).value = value
+        }
+    }
+}
+
+const hydrateVehicle = (data) => {
+    for (var [key, value] of Object.entries(data)){
+        if (document.getElementById('call_' + key)) {
+            document.getElementById('call_' + key).value = value
+        }
+    }
+    document.getElementById('switcher_add_call').innerHTML = '';
+    let switcherAddCallVehicle = new Switch3(['non', '?', 'oui'], [2, 0, 1], 'switcher_add_call', data.vehicle_hasCome,
+        '', 'call_vehicle_hasCome');
+    switcherAddCallVehicle.init();
+}
+
+const initVehicleAdders = (dataTotal) => {
+    const buttons = document.getElementsByClassName('valid-vehicle');
+    for (let i = 0; i<buttons.length; i++) {
+        buttons[i].addEventListener('click', (e) => {
+            const data = {
+                'vehicle_immatriculation' : e.target.dataset.immatriculation,
+                'vehicle_chassis'         : e.target.dataset.chassis,
+                'vehicle_hasCome'         : e.target.dataset.hascome,
+            }
+            hydrateVehicle(data);
+            alertForCalls(dataTotal);
+        })
+    }
+}
+
+
+const alertForCalls = (data) => {
+    if (data.calls) {
+        const modalClientPhone = document.getElementById('modal-callclient-phone');
+        const modalForPhoneAlert = M.Modal.init(modalClientPhone);
+        const tableForCalls = document.getElementById('calls-on-the-way-for-phone');
+        document.getElementById('callclient-civility').innerHTML = data.client.client_civility
+        document.getElementById('callclient-name').innerHTML = data.client.client_name
+        document.getElementById('callclient-count').innerHTML = data.calls.length + ' appel';
+        document.getElementById('callclient-count').innerHTML += data.calls.length > 1 ? 's' : ''
+        document.getElementById('callclient-phone').innerHTML = data.client.client_phone
+
+        tableForCalls.innerHTML = '';
+
+        data.calls.forEach((call) => {
+            let html = '<tr>' +
+                '<td>' + call.call_subject + '</td>' +
+                '<td>' + call.call_comment + '</td>' +
+                '<td>' + call.call_date + '</td>' +
+                '<td>' + call.call_hour + '</td>' +
+                '<td>' + call.call_vehicule + '</td>' +
+                '<td><a class="btn light-blue" data-call="' + call.call_id + '">continuer</a></td>' +
+                '</tr>'
+            tableForCalls.innerHTML = tableForCalls.innerHTML + html
+        })
+        modalForPhoneAlert.open()
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const phoneNumberField = document.getElementById('call_client_phone');
-    const modalClientPhone = document.getElementById('modal-callclient-phone');
-    const tableForCalls = document.getElementById('calls-on-the-way-for-phone');
-    const modalForPhoneAlert = M.Modal.init(modalClientPhone);
+
+    const modalVehicles = document.getElementById('modal-callclient-vehicles');
+    const tableForVehicles = document.getElementById('client-vehicles-table');
+    const modalForVehicles = M.Modal.init(modalVehicles);
+
     phoneNumberField.addEventListener('change', (e) => {
         const phoneNumber = phoneNumberField.value;
         sendData(phoneNumber, (data) => {
             data = JSON.parse(data);
             data = data[0];
-            if (data.calls) {
-                document.getElementById('callclient-civility').innerHTML = data.client.client_civility
-                document.getElementById('callclient-name').innerHTML     = data.client.client_name
-                document.getElementById('callclient-count').innerHTML    = data.calls.length + ' appel';
-                document.getElementById('callclient-count').innerHTML   += data.calls.length>1 ? 's' : ''
-                document.getElementById('callclient-phone').innerHTML     = data.client.client_phone
-
-                tableForCalls.innerHTML ='';
-
-                data.calls.forEach((call) => {
-                    let html = '<tr>' +
-                        '<td colspan="">' + call.call_subject + '</td>' +
-                        '<td colspan="">' + call.call_comment + '</td>' +
-                        '<td colspan="">' + call.call_date + '</td>' +
-                        '<td colspan="">' + call.call_hour + '</td>' +
-                        '<td colspan="">' + call.call_vehicule + '</td>' +
-                        '<td colspan=""><a class="btn light-blue" data-call="' + call.call_id + '">continuer</a></td>' +
-                        '</tr>'
-                    tableForCalls.innerHTML = tableForCalls.innerHTML + html
-                })
-                modalForPhoneAlert.open()
-            } else {
-
+            if (data.client) {
+                hydrateForm(data.client)
+                if (data.client.vehicles.length<=1) {
+                    hydrateForm(data.client.vehicles[0])
+                } else {
+                    tableForVehicles.innerHTML ='';
+                    data.client.vehicles.forEach((vehicle) => {
+                        let html = '<tr>' +
+                            '<td>' + vehicle.vehicle_immatriculation + '</td>' +
+                            '<td>' + vehicle.vehicle_chassis + '</td>' +
+                            '<td><a class="btn light-blue valid-vehicle modal-close" data-immatriculation="' + vehicle.vehicle_immatriculation + '"' +
+                            ' data-chassis="' + vehicle.vehicle_chassis + '" data-hascome="'+ vehicle.vehicle_hasCome +'">valider</a></td>' +
+                            '<td><a class="#"><i class="material-icons red-text">delete</i></a></td>' +
+                            '</tr>'
+                        tableForVehicles.innerHTML = tableForVehicles.innerHTML + html
+                        initVehicleAdders(data);
+                    })
+                    modalForVehicles.open()
+                }
             }
+            if (data.client.vehicles.length === 0) {
+                alertForCalls(data)
+            }
+
         });
     });
 })
