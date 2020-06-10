@@ -19,7 +19,7 @@ class AdminPanelController extends AbstractController
 {
 
     /**
-     * @Route("/", name="admin_dashboard")
+     * @Route("/", name="_dashboard")
      * @param Request $request
      * @param VehicleRepository $vehicleRepository
      * @return Response

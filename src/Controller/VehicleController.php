@@ -30,7 +30,8 @@ class VehicleController extends AbstractController
 
     /**
      * @Route("/new", name="vehicle_new", methods={"GET","POST"})
-     * @throws \Exception
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -56,6 +57,8 @@ class VehicleController extends AbstractController
 
     /**
      * @Route("/{id}", name="vehicle_show", methods={"GET"})
+     * @param Vehicle $vehicle
+     * @return Response
      */
     public function show(Vehicle $vehicle): Response
     {
@@ -66,6 +69,9 @@ class VehicleController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="vehicle_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Vehicle $vehicle
+     * @return Response
      */
     public function edit(Request $request, Vehicle $vehicle): Response
     {

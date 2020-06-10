@@ -8,7 +8,6 @@
                 <th>HasCome</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
-                <th>actions</th>
             </tr>
         </thead>
         <tbody>
@@ -20,10 +19,6 @@
                 <td>{{ vehicle.hasCome }}</td>
                 <td>{{ vehicle.createdAt ? vehicle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ vehicle.updatedAt ? vehicle.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('vehicle_show', {'id': vehicle.id}) }}">show</a>
-                    <a href="{{ path('vehicle_edit', {'id': vehicle.id}) }}">edit</a>
-                </td>
             </tr>
         {% else %}
             <tr>
