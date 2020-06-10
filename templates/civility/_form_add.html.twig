@@ -1,0 +1,4 @@
+{{ form_start(form_civility, {'action': path('civility_new')})}}
+    {{ form_widget(form_civility) }}
+    <button class="btn modal-close" id="civility-button">{{ button_label|default('Sauvegarder') }}</button>
+{{ form_end(form_civility) }}

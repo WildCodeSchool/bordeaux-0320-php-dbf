@@ -15,6 +15,7 @@ require('../scss/app.scss');
 
 require('./materialize.js');
 require('./base.js');
+require('../js/civilityForm.js');
 require('../js/switchHasCome');
 require('./admin.js');
 require('./clientFormAdmin');

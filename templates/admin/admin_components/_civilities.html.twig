@@ -7,6 +7,7 @@
         <ul class="tabs tabs-fixed-width"  id="civil-tabs">
             <li class="tab" id="civil-tab-1"><a href="#civil-list" class="active light-blue-text">Liste</a></li>
             <li class="tab" id="civil-tab-2"><a href="#civil-add" class="light-blue-text" >Ajouter</a></li>
+
         </ul>
     </div>
     <div class="card-content grey lighten-4">
@@ -14,7 +15,36 @@
             liste des civilités existantes (select)
         </div>
         <div id="civil-add">
-            formulaire ajout
+            <a  href="#modal-add-civility" class="btn modal-trigger light-blue"><i class="material-icons">add</i></a>
+            <a href="#modal-edit-civility" class="btn light-blue darken-2"><i class="material-icons">edit</i></a>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODALE AJOUT civilité -->
+
+<div id="modal-add-civility" class="modal">
+    <div class="modal-content">
+        <h4>Ajouter une civilité</h4>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'civility/new.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- MODALE EDIT civilité -->
+
+<div id="modal-edit-civility" class="modal">
+    <div class="modal-content">
+        <h4>Editer une civilité</h4>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'civility/edit.html.twig' %}
+            </div>
         </div>
     </div>
 </div>

@@ -2,10 +2,13 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Civility;
 use App\Entity\Client;
+use App\Form\CivilityType;
 use App\Form\ClientType;
 use App\Repository\CivilityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Variable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -27,11 +30,12 @@ class AdminPanelController extends AbstractController
         $client = new Client();
         $formClient = $this->createForm(ClientType::class, $client);
         $formClient->handleRequest($request);
-
+        $formCivility = $this->createForm(CivilityType::class);
 
         return $this->render('admin/index.html.twig', [
             'client' => $client,
             'form' => $formClient->createView(),
+            'form_civility' => $formCivility->createView(),
         ]);
     }
 
