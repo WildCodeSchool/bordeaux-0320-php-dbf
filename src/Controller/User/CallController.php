@@ -7,7 +7,7 @@ use App\Form\CallType;
 use App\Form\RecipientType;
 use App\Repository\CallRepository;
 use App\Repository\ClientRepository;
-use Doctrine\ORM\EntityManager;
+use App\Service\CallOnTheWayDataMaker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +39,7 @@ class CallController extends AbstractController
     {
         $call          = new Call();
         $form          = $this->createForm(CallType::class, $call);
-        $recipientForm = $this->createForm(RecipientType::class, $call);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -57,7 +57,6 @@ class CallController extends AbstractController
         return $this->render('call/add.html.twig', [
             'call'          => $call,
             'form'          => $form->createView(),
-            'recipientForm' => $recipientForm->createView(),
         ]);
     }
 
@@ -128,14 +127,31 @@ class CallController extends AbstractController
 
     /**
      * @Route("/search/{phoneNumber}", name="search_calls_for_numbers", methods={"GET"})
+     * @param ClientRepository $clientRepository
+     * @param CallRepository $callRepository
+     * @param CallOnTheWayDataMaker $callOnTheWayDataMaker
+     * @return JsonResponse
      */
     public function listAllCallsOnTheWayByPhoneNumber(
         ClientRepository $clientRepository,
         CallRepository $callRepository,
+        CallOnTheWayDataMaker $callOnTheWayDataMaker,
         $phoneNumber
     ): JsonResponse {
         $client = $clientRepository->findOneByPhone($phoneNumber);
-        $calls = $callRepository->callsOnTheWayForClient($client->getId());
-        return new JsonResponse($calls);
+
+        $data = ['client' => [
+            'client_id' => null]
+        ];
+
+        if ($client) {
+            $data   = $callOnTheWayDataMaker->arrayMaker(
+                $client,
+                $callRepository->callsOnTheWayForClient($client->getId())
+            );
+        }
+        return new JsonResponse([
+            $data
+        ]);
     }
 }

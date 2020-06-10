@@ -1,75 +1,139 @@
-{{ form_start(form) }}
-<div class="row" >
-    <div class="col s3">
-        <div class="row">
-            <h5><i class="material-icons">person</i>Client</h5>
-            <div class="col s12">
-                {{ form_label(form.client.phone) }}
-                {{ form_widget(form.client.phone) }}
+{{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+
+    <div class="row">
+        <!-- CLIENT ----->
+        <div class="col s8">
+                <h5 class="light-blue-text"><i class="material-icons left">person</i> Client</h5>
+                <div class="row">
+                    <div class="input-field col s5">
+                        {{ form_label(form.client.phone) }}
+                        {{ form_widget(form.client.phone) }}
+                    </div>
+                    <div class=" input-field col s5">
+                        {{ form_label(form.client.phone2) }}
+                        {{ form_widget(form.client.phone2) }}
+                    </div>
+                    <div class=" input-field col s2">
+                        {{ form_label(form.client.postcode) }}
+                        {{ form_widget(form.client.postcode) }}
+                    </div>
+                </div>
+                <div class=" input-field col s1">
+                    {{ form_widget(form.client.civility) }}
+                </div>
+                <div class=" input-field col s5">
+                    {{ form_label(form.client.name) }}
+                    {{ form_widget(form.client.name) }}
+                </div>
+                <div class=" input-field col s6">
+                    {{ form_label(form.client.email) }}
+                    {{ form_widget(form.client.email) }}
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class=" input-field col s12">
-                {{ form_widget(form.client)}}
-            </div>
-            <div class="input-field col s12 ">
+        <!-- VEHICLE ----->
+        <div class="col s4">
+            <h5 class="light-blue-text"><i class="material-icons left">directions_car</i> Véhicule</h5>
+            <div class="input-field col s6 ">
                 {{ form_label(form.vehicle.immatriculation) }}
                 {{ form_widget(form.vehicle.immatriculation) }}
+            </div>
+            <div class="input-field col s6 ">
+                {{ form_widget(form.vehicle.hasCome) }}
+                <small>Déja passé en atelier ?</small><br>
+                <div class="col s9">
+                    <div id="switcher_add_call"></div>
+                </div>
             </div>
             <div class="input-field col s12 ">
                 {{ form_label(form.vehicle.chassis) }}
                 {{ form_widget(form.vehicle.chassis) }}
             </div>
-            <div class="input-field col s6 ">
-                {{ form_widget(form.vehicle.hasCome) }}
-                <p>Déjà passé en atelier ?</p>
-                <div id="switcher_add_call"></div>
-            </div>
+
         </div>
     </div>
-    <div class="col s3">
-        <div class="row">
-            <h5><i class="material-icons">phone</i>Appel</h5>
-            <div class="col s12">
-                {{form_widget(form.subject)}}
-            </div>
+    <!-- DESTINATAIRES ----->
+    <div class="row">
+        <h5 class="light-blue-text"><i class="material-icons left">person_pin</i> Destinataire</h5>
+        <div class="col s3" id="recipient-city">
+            <small>Choisir une plaque</small><br>
+            {{form_widget(form.city)}}
         </div>
-        <div class="row">
-            <div class="input-field col s12 ">
-                {{ form_widget(form.comment) }}
+        <div class="col s3" id="recipient-concession">
+        </div>
+        <div class="col s3" id="recipient-service">
+        </div>
+        <div class="col s3" id="recipient-recipient">
+        </div>
+    </div>
+    <div class="row">
+        <!-- OBJET ----->
+        <div class="col s9">
+        <h5 class="light-blue-text"><i class="material-icons left">phone</i> objet de l'appel</h5>
+            <div class="col s6">
+                    {{form_widget(form.subject)}}
             </div>
-            <div class="input-field col s12">
+            <div class="col s6">
+                    {{ form_widget(form.comment) }}
+            </div>
+            <div class="col s12">
                 {{ form_label(form.freeComment) }}
                 {{ form_widget(form.freeComment) }}
             </div>
         </div>
-    </div>
-    <div class="col s3">
-        <h5><i class="material-icons">person_pin</i>Destinataire</h5>
-        <div class="input-field col s12" id="recipient_form">
-            {% include 'call/_form_recipients.html.twig' %}
-        </div>
-    </div>
-    <div class="col s3">
-        <h5><i class="material-icons">phone_forwarded</i>Rappel</h5>
-        <div class="row">
-            {{form_widget(form.recallDate)}}
-            <!--<div class="col input-field s12">
-                <input type="date" id="recallDay" name="recallDay"  required />
-                <label for="recallDay">Jour</label>
-            </div>-->
-            <div class="col input-field s12">
+        <!-- RAPPEL ----->
+        <div class="col s3">
+            <h5 class="light-blue-text"><i class="material-icons left">phone_forwarded</i> Rappel</h5>
+            <div class="col s4">
+                {{form_widget(form.recallDate.day)}}
+            </div>
+            <div class="col s4">
+                {{form_widget(form.recallDate.month)}}
+            </div>
+            <div class="col s4">
+                {{form_widget(form.recallDate.year)}}
+            </div>
+            <div class="col s6">
                 {{form_widget(form.recallPeriod)}}
             </div>
-            {{ form_widget(form.recallHour) }}
-            <!--
-            <div class="col input-field s12">
-                <input type="time" id="recallHour" name="recallHour"  required />
-                <label for="recallHour">Heure</label>
-            </div>-->
+            <div class="col s3">
+                {{ form_widget(form.recallHour.hour) }}
+            </div>
+            <div class="col s3">
+                {{ form_widget(form.recallHour.minute) }}
+            </div>
         </div>
     </div>
+<div class="row center-align">
+    <button class="btn light-blue">{{ button_label|default('Ajouter') }}</button>
 </div>
-<button class="btn">{{ button_label|default('Ajouter') }}</button>
 
 {{ form_end(form) }}
+
+
+<div id="modal-callclient-phone" class="modal">
+    <div class="modal-content">
+        <h4>Alerte</h4>
+        <p class="flow-text">Il semble que
+            <span id="callclient-civility"></span>
+            <span id="callclient-name"></span> ait déja
+            <span id="callclient-count"></span> en cours
+            pour ce numéro : <b><span id="callclient-phone"></span></b>
+        </p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sujet</th><th>Commentaire</th><th>Le</th><th>à</th><th>Véhicule</th><th></th>
+                </tr>
+            </thead>
+            <tbody id="calls-on-the-way-for-phone">
+
+            </tbody>
+        </table>
+        <p>
+            <a class="btn light-blue darken-2 modal-close left"><i class="material-icons left">add</i> Créer un nouvel appel</a>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">fermer</a>
+    </div>
+</div>
