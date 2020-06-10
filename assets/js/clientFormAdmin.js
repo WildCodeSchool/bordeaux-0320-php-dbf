@@ -65,7 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ' </span></h6>'
     })
 
-
 // Ajout client ///////////////////////////////////////////////////
     const button = document.getElementById('client-button');
 
