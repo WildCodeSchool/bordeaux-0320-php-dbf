@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class RecallPeriod
 {
+    const AVANT = 'avant';
+    const AUTOUR_DE = 'autourde';
+    const APRES = 'apres';
+    const DES_QUE_POSSIBLE = 'desquepossible';
+    const URGENT = 'urgent';
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
