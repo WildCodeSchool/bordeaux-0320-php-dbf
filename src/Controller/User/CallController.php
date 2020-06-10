@@ -7,7 +7,7 @@ use App\Form\CallType;
 use App\Form\RecipientType;
 use App\Repository\CallRepository;
 use App\Repository\ClientRepository;
-use Doctrine\ORM\EntityManager;
+use App\Service\CallOnTheWayDataMaker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -129,25 +129,29 @@ class CallController extends AbstractController
      * @Route("/search/{phoneNumber}", name="search_calls_for_numbers", methods={"GET"})
      * @param ClientRepository $clientRepository
      * @param CallRepository $callRepository
+     * @param CallOnTheWayDataMaker $callOnTheWayDataMaker
      * @return JsonResponse
      */
     public function listAllCallsOnTheWayByPhoneNumber(
         ClientRepository $clientRepository,
         CallRepository $callRepository,
+        CallOnTheWayDataMaker $callOnTheWayDataMaker,
         $phoneNumber
     ): JsonResponse {
         $client = $clientRepository->findOneByPhone($phoneNumber);
-        //$calls = $callRepository->callsOnTheWayForClient($client->getId());
+
+        $data = ['client' => [
+            'client_id' => null]
+        ];
+
         if ($client) {
-            return new JsonResponse([
-                'client_id' => $client->getId(),
-                'client_name' => $client->getName(),
-                'client_phone' => $client->getPhone()
-            ]);
-        } else {
-            return new JsonResponse([
-                'client_id' => null,
-            ]);
+            $data   = $callOnTheWayDataMaker->arrayMaker(
+                $client,
+                $callRepository->callsOnTheWayForClient($client->getId())
+            );
         }
+        return new JsonResponse([
+            $data
+        ]);
     }
 }

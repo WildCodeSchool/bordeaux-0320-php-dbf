@@ -49,7 +49,7 @@ class recipientsAjaxTool {
             if (this.authorizedToPost) {
                 this.authorizedToPost = false;
                 this.sendData(postdata, (data) => {
-                    this.concessionZone.innerHTML = '<b>Choisir une concession</b><br>' + this.getHtmlElement(data, 'call_concession');
+                    this.concessionZone.innerHTML = '<small>Choisir une concession</small><br>' + this.getHtmlElement(data, 'call_concession');
                     this.serviceZone.innerHTML = "";
                     this.recipientZone.innerHTML = "";
                     this.init(postdata)
@@ -67,7 +67,7 @@ class recipientsAjaxTool {
                     this.authorizedToPost = false;
                     this.sendData(postdata, (data) => {
                         this.serviceZone.innerHTML = data;
-                        this.serviceZone.innerHTML = '<b>Choisir un service</b><br>' + this.getHtmlElement(data, 'call_service');
+                        this.serviceZone.innerHTML = '<small>Choisir un service</small><br>' + this.getHtmlElement(data, 'call_service');
                         this.recipientZone.innerHTML = "";
                         this.init(postdata)
                     })
@@ -86,7 +86,7 @@ class recipientsAjaxTool {
                 if (this.authorizedToPost) {
                     this.authorizedToPost = false;
                     this.sendData(postdata, (data) => {
-                        this.recipientZone.innerHTML = '<b>Choisir un destinataire</b><br>' + this.getHtmlElement(data, 'call_recipient');
+                        this.recipientZone.innerHTML = '<small>Choisir un destinataire</small><br>' + this.getHtmlElement(data, 'call_recipient');
                         this.init(postdata)
                     })
                 }
