@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveaux Motifs{% endblock %}
+
+{% block body %}
+    <h1>Création d'un motif</h1>
+
+    {{ include('subject/_form.html.twig') }}
+<p></p>
+    <a href="{{ path('subject_index') }}">Liste des motifs</a>
+{% endblock %}
