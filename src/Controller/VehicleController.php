@@ -38,9 +38,7 @@ class VehicleController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            if (!$vehicle->getCreatedAt()) {
-                $vehicle->setCreatedAt();
-            }
+
             $entityManager->persist($vehicle);
             $entityManager->flush();
             $this->addFlash('success', 'Vous avez bien ajouté un véhicule');
