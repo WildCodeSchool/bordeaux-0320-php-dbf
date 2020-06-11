@@ -40,9 +40,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const modalListService = document.getElementById('modal-list-service');
     const instanceModalListService = M.Modal.init(modalListService, {});
-  
+
     const modalShowVehicles         = document.getElementById('modal-show-vehicles');
     const instanceModalShowVehicles = M.Modal.init(modalShowVehicles, {});
+
+    const modalListConcession = document.getElementById('modal-list-concession');
+    const instanceModalListConcession = M.Modal.init(modalListConcession, {});
+
+    const modalAddConcession = document.getElementById('modal-add-concession');
+    const instanceModalAddConcession = M.Modal.init(modalAddConcession, {});
 
 })
 

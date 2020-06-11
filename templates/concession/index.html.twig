@@ -1,0 +1,41 @@
+
+    <h1>Concession index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Postcode</th>
+                <th>City</th>
+                <th>Brand</th>
+                <th>Phone</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for concession in concessions %}
+            <tr>
+                <td>{{ concession.id }}</td>
+                <td>{{ concession.name }}</td>
+                <td>{{ concession.address }}</td>
+                <td>{{ concession.postcode }}</td>
+                <td>{{ concession.city }}</td>
+                <td>{{ concession.brand }}</td>
+                <td>{{ concession.phone }}</td>
+                <td>
+                    <a href="{{ path('concession_show', {'id': concession.id}) }}">show</a>
+                    <a href="{{ path('concession_edit', {'id': concession.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('concession_new') }}">Create new</a>
+
