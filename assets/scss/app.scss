@@ -45,6 +45,12 @@ h3.treat {
 .input-field {
   margin-top:0;
   margin-bottom:0;
+  position:relative;
 }
 
+.copyer {
+  position:absolute;
+  right:20px;
+  top:10px;
+}
 @import "admin";
