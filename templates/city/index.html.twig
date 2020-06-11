@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}City index{% endblock %}
+
+{% block body %}
+    <h1>Liste des plaques</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Plaques</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for city in cities %}
+            <tr>
+                <td>{{ city.id }}</td>
+                <td>{{ city.name }}</td>
+                <td>
+                    <a href="{{ path('city_show', {'id': city.id}) }}"><i class="material-icons">visibility</i></a>
+                    <a href="{{ path('city_edit', {'id': city.id}) }}"> <i class="material-icons">edit</i> </a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('city_new') }}">Ajouter une nouvelle plaque</a>
+{% endblock %}

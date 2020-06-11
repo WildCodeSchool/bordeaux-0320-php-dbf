@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comment index{% endblock %}
+
+{% block body %}
+    <h1>Liste des commentaires</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Commentaires</th>
+                <th>Identifier</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <td>{{ comment.id }}</td>
+                <td>{{ comment.name }}</td>
+                <td>{{ comment.identifier }}</td>
+                <td>
+                    <a href="{{ path('comment_show', {'id': comment.id}) }}"><i class="material-icons">visibility</i></a>
+                    <a href="{{ path('comment_edit', {'id': comment.id}) }}"><i class="material-icons">edit</i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('comment_new') }}">Nouveau commentaire</a>
+{% endblock %}
