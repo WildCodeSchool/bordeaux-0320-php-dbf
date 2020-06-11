@@ -29,8 +29,9 @@ const hydrateVehicle = (data) => {
         }
     }
     document.getElementById('switcher_add_call').innerHTML = '';
-    const switchValues = ['2','0','1']
-    const switcherAddCallVehicle = new Switch3(['non', '?', 'oui'], switchValues, 'switcher_add_call', data.vehicle_hasCome,
+    const switchValues = [2,0,1]
+    const switchInitVal = parseInt(data.vehicle_hasCome)
+    const switcherAddCallVehicle = new Switch3(['non', '?', 'oui'], switchValues, 'switcher_add_call', switchInitVal,
         '', 'call_vehicle_hasCome');
     switcherAddCallVehicle.init();
 }
