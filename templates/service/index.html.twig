@@ -1,15 +1,12 @@
 
+    <h1 class="center-align">Services</h1>
 
-{% block title %}Service index{% endblock %}
-
-
-    <h1>Service index</h1>
-
-    <table class="table">
+    <table class="table highlight">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Concession</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -18,6 +15,7 @@
             <tr>
                 <td>{{ service.id }}</td>
                 <td>{{ service.name }}</td>
+                <td> {{service.concession.name }}</td>
                 <td>
                     <a href="{{ path('service_show', {'id': service.id}) }}">show</a>
                     <a href="{{ path('service_edit', {'id': service.id}) }}">edit</a>

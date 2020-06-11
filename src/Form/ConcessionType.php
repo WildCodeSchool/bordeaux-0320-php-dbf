@@ -24,7 +24,7 @@ class ConcessionType extends AbstractType
             ->add('town', EntityType::class, [
                 'class'=> City::class,
                 'choice_label'=> 'name',
-                'label'=> 'Nom de ville de la plaque'
+                'label'=> 'Nom de la plaque'
             ])
         ;
     }
