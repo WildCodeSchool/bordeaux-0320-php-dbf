@@ -52,10 +52,10 @@ class CallController extends AbstractController
             if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
                 $call->setIsUrgent(true);
             }
+
             $client = $call->getClient();
             $vehicle = $call->getVehicle();
             $vehicle->setClient($client);
-            dd($call);
 
             $entityManager->persist($call);
             $entityManager->flush();
