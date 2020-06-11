@@ -8,6 +8,7 @@
                     <div class="input-field col s5">
                         {{ form_label(form.client.phone) }}
                         {{ form_widget(form.client.phone) }}
+                        <a class="copyer left" href="#" data-copy="call_client_phone"><i class="material-icons tiny">content_copy</i></a>
                     </div>
                     <div class=" input-field col s5">
                         {{ form_label(form.client.phone2) }}
@@ -18,14 +19,14 @@
                         {{ form_widget(form.client.postcode) }}
                     </div>
                 </div>
-                <div class=" input-field col s1">
+                <div class=" input-field col s2">
                     {{ form_widget(form.client.civility) }}
                 </div>
                 <div class=" input-field col s5">
                     {{ form_label(form.client.name) }}
                     {{ form_widget(form.client.name) }}
                 </div>
-                <div class=" input-field col s6">
+                <div class=" input-field col s5">
                     {{ form_label(form.client.email) }}
                     {{ form_widget(form.client.email) }}
                 </div>
@@ -53,16 +54,18 @@
     </div>
     <!-- DESTINATAIRES ----->
     <div class="row">
-        <h5 class="light-blue-text"><i class="material-icons left">person_pin</i> Destinataire</h5>
-        <div class="col s3" id="recipient-city">
-            <small>Choisir une plaque</small><br>
-            {{form_widget(form.city)}}
-        </div>
-        <div class="col s3" id="recipient-concession">
-        </div>
-        <div class="col s3" id="recipient-service">
-        </div>
-        <div class="col s3" id="recipient-recipient">
+        <div class="col s12">
+            <h5 class="light-blue-text"><i class="material-icons left">person_pin</i> Destinataire</h5>
+            <div class="col s3" id="recipient-city">
+                <small>Choisir une plaque</small><br>
+                {{form_widget(form.city)}}
+            </div>
+            <div class="col s3" id="recipient-concession">
+            </div>
+            <div class="col s3" id="recipient-service">
+            </div>
+            <div class="col s3" id="recipient-recipient">
+            </div>
         </div>
     </div>
     <div class="row">
