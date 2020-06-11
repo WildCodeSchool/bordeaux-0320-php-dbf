@@ -47,13 +47,13 @@ class Vehicle
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="vehicles",cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="vehicles")
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
 
     /**
-     * @ORM\OneToMany(targetEntity=Call::class, mappedBy="vehicle",cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Call::class, mappedBy="vehicle")
      */
     private $calls;
 

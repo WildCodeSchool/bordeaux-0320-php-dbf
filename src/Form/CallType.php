@@ -10,6 +10,7 @@ use App\Repository\CityRepository;
 use App\Repository\ConcessionRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
+use DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -109,11 +110,11 @@ class CallType extends AbstractType
         ->add('recallDate', DateType::class, [
             'label'=>'date de rappel',
             'widget' => 'single_text',
-            'data' => new \DateTime(),
+            'data' => new DateTime(),
             ])
         ->add('recallHour', TimeType::class, [
             'label'=>'heure de rappel',
-            'data' => new \DateTime(),
+            'data' => new DateTime(),
             'minutes'=>[ 0, 15, 30, 45],
         ])
         ->add('recallPeriod', EntityType::class, [
