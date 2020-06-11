@@ -6,8 +6,8 @@
     <h1>Modification des commentaires</h1>
 
     {{ include('comment/_form.html.twig', {'button_label': 'Modifier'}) }}
-
-    <a href="{{ path('comment_index') }}">Retour à la liste</a>
-
+    <br>
     {{ include('comment/_delete_form.html.twig') }}
+    <br>
+    <a href="{{ path('comment_index') }}">Retour à la liste</a>
 {% endblock %}
