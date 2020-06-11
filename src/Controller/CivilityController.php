@@ -34,6 +34,7 @@ class CivilityController extends AbstractController
         $civility = new Civility();
         $formCivility = $this->createForm(CivilityType::class, $civility);
         $formCivility->handleRequest($request);
+
         if ($formCivility->isSubmitted() && $formCivility->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($civility);
