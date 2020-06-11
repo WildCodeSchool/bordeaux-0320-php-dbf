@@ -18,7 +18,6 @@ const hydrateForm = (data) => {
     for (var [key, value] of Object.entries(data)){
         if (document.getElementById('call_' + key)) {
             document.getElementById('call_' + key).value = value
-            //document.querySelector('label[for="call_' + key + '"]').classList.add('active')
         }
     }
 }
@@ -81,6 +80,10 @@ const alertForCalls = (data) => {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const labels = document.getElementsByTagName('label');
+    for (let i = 0; i < labels.length; i++) {
+        labels[i].classList.add('active');
+    }
     const phoneNumberField = document.getElementById('call_client_phone');
     const modalVehicles = document.getElementById('modal-callclient-vehicles');
     const tableForVehicles = document.getElementById('client-vehicles-table');

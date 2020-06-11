@@ -49,7 +49,7 @@ class CallType extends AbstractType
 
         $builder
             ->add('freeComment', TextType::class, [
-                'label' => 'commentaire éventuel',
+                'label' => 'Commentaire éventuel',
                 'required'   => false,
             ])
             ->add('city', ChoiceType::class, [
