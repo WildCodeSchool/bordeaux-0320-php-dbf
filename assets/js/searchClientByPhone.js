@@ -29,7 +29,8 @@ const hydrateVehicle = (data) => {
         }
     }
     document.getElementById('switcher_add_call').innerHTML = '';
-    let switcherAddCallVehicle = new Switch3(['non', '?', 'oui'], [2, 0, 1], 'switcher_add_call', data.vehicle_hasCome,
+    const switchValues = ['2','0','1']
+    const switcherAddCallVehicle = new Switch3(['non', '?', 'oui'], switchValues, 'switcher_add_call', data.vehicle_hasCome,
         '', 'call_vehicle_hasCome');
     switcherAddCallVehicle.init();
 }
@@ -48,7 +49,6 @@ const initVehicleAdders = (dataTotal) => {
         })
     }
 }
-
 
 const alertForCalls = (data) => {
     if (data.calls) {
@@ -80,7 +80,6 @@ const alertForCalls = (data) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     const phoneNumberField = document.getElementById('call_client_phone');
-
     const modalVehicles = document.getElementById('modal-callclient-vehicles');
     const tableForVehicles = document.getElementById('client-vehicles-table');
     const modalForVehicles = M.Modal.init(modalVehicles);
@@ -92,8 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
             data = data[0];
             if (data.client) {
                 hydrateForm(data.client)
-                if (data.client.vehicles.length<=1) {
+                if (data.client.vehicles.length <= 1) {
                     hydrateForm(data.client.vehicles[0])
+                    alertForCalls(data.calls)
                 } else {
                     tableForVehicles.innerHTML ='';
                     data.client.vehicles.forEach((vehicle) => {
@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     modalForVehicles.open()
                 }
             }
-            if (data.client.vehicles.length === 0) {
+            if (data.client.vehicles.length === 1) {
                 alertForCalls(data)
             }
 
