@@ -83,15 +83,10 @@
         <!-- RAPPEL ----->
         <div class="col s3">
             <h5 class="light-blue-text"><i class="material-icons left">phone_forwarded</i> Rappel</h5>
-            <div class="col s4">
-                {{form_widget(form.recallDate.day)}}
+            <div class="col s12">
+                {{form_widget(form.recallDate)}}
             </div>
-            <div class="col s4">
-                {{form_widget(form.recallDate.month)}}
-            </div>
-            <div class="col s4">
-                {{form_widget(form.recallDate.year)}}
-            </div>
+
             <div class="col s6">
                 {{form_widget(form.recallPeriod)}}
             </div>

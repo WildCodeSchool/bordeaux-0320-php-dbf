@@ -55,6 +55,7 @@ class CallController extends AbstractController
             $client = $call->getClient();
             $vehicle = $call->getVehicle();
             $vehicle->setClient($client);
+            dd($call);
 
             $entityManager->persist($call);
             $entityManager->flush();

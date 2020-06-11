@@ -106,7 +106,10 @@ class CallType extends AbstractType
             'by_reference' => false,
             'label' => 'Type'
         ])
-        ->add('recallDate', DateType::class, ['label'=>'date de rappel'])
+        ->add('recallDate', DateType::class, [
+            'label'=>'date de rappel',
+            'widget' => 'single_text',
+            ])
         ->add('recallHour', TimeType::class, ['label'=>'heure de rappel'])
         ->add('recallPeriod', EntityType::class, [
             'class'=> RecallPeriod::class,
