@@ -112,7 +112,7 @@ class Concession
         return $this;
     }
 
-    public function getCity(): string
+    public function getCity(): ?string
     {
         return $this->city;
     }
@@ -148,7 +148,7 @@ class Concession
         return $this;
     }
 
-    public function getTown(): City
+    public function getTown(): ?City
     {
         return $this->town;
     }

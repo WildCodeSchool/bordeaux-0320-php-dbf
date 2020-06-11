@@ -4,9 +4,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\Civility;
 use App\Entity\Client;
+use App\Entity\Concession;
 use App\Entity\Service;
 use App\Form\CivilityType;
 use App\Form\ClientType;
+use App\Form\ConcessionType;
 use App\Form\ServiceType;
 use App\Repository\CivilityRepository;
 use App\Repository\VehicleRepository;
@@ -34,10 +36,12 @@ class AdminPanelController extends AbstractController
         $client = new Client();
         $civilities = $this->getDoctrine()->getRepository(Civility::class);
         $services = $this->getDoctrine()->getRepository(Service::class);
+        $concessions = $this->getDoctrine()->getRepository(Concession::class);
         $formClient = $this->createForm(ClientType::class, $client);
         $formClient->handleRequest($request);
         $formCivility = $this->createForm(CivilityType::class);
         $formService = $this->createForm(ServiceType::class);
+        $formConcession = $this->createForm(ConcessionType::class);
 
         return $this->render('admin/index.html.twig', [
             'client' => $client,
@@ -45,7 +49,9 @@ class AdminPanelController extends AbstractController
             'services'=> $services->findAll(),
             'form_civility' => $formCivility->createView(),
             'form_service' => $formService->createView(),
+            'form_concession'=> $formConcession->createView(),
             'civilities' => $civilities->findAll(),
+            'concessions'=> $concessions->findAll(),
             'vehicles' => $vehicleRepository->findAll(),
         ]);
     }

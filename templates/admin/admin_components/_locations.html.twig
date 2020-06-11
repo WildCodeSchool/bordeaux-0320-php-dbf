@@ -15,12 +15,13 @@
             gestion plaques
         </div>
         <div id="locations-concession">
-            gestion concessions
+            <a href="#modal-add-concession" class="btn modal-trigger brown lighten-2"><i class="material-icons">add</i></a>
+            <a href="#modal-list-concession" class="btn modal-trigger brown">Liste</a>
         </div>
         <div id="locations-service">
             <div>
-                <a href="#modal-add-service" class="btn modal-trigger brown lighten-1"><i class="material-icons">add</i></a>
-                <a href="#modal-list-service" class="btn modal-trigger brown lighten-1">Liste</a>
+                <a href="#modal-add-service" class="btn modal-trigger brown darken-1"><i class="material-icons">add</i></a>
+                <a href="#modal-list-service" class="btn modal-trigger brown lighten-2">Liste</a>
             </div>
         </div>
     </div>
@@ -28,7 +29,7 @@
 
 
 
-
+<!-- MODALE AJOUT service -->
 
 <div id="modal-add-service" class="modal">
     <div class="modal-content">
@@ -41,11 +42,34 @@
     </div>
 </div>
 
+<!-- MODALE LISTE service -->
 <div id="modal-list-service" class="modal">
     <div class="modal-content">
         <div class="row">
             <div class="col s10 offset-s1">
                 {% include 'service/index.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE LISTE concession -->
+<div id="modal-list-concession" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'concession/index.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE AJOUT concession -->
+<div id="modal-add-concession" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'concession/new.html.twig' %}
             </div>
         </div>
     </div>
