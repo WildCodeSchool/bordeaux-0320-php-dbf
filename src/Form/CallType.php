@@ -10,6 +10,7 @@ use App\Repository\CityRepository;
 use App\Repository\ConcessionRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
+use DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -106,8 +107,16 @@ class CallType extends AbstractType
             'by_reference' => false,
             'label' => 'Type'
         ])
-        ->add('recallDate', DateType::class, ['label'=>'date de rappel'])
-        ->add('recallHour', TimeType::class, ['label'=>'heure de rappel'])
+        ->add('recallDate', DateType::class, [
+            'label'=>'date de rappel',
+            'widget' => 'single_text',
+            'data' => new DateTime(),
+            ])
+        ->add('recallHour', TimeType::class, [
+            'label'=>'heure de rappel',
+            'data' => new DateTime(),
+            'minutes'=>[ 0, 15, 30, 45],
+        ])
         ->add('recallPeriod', EntityType::class, [
             'class'=> RecallPeriod::class,
             'choice_label' => 'name',
@@ -115,6 +124,11 @@ class CallType extends AbstractType
         ])
         ->add('createdAt', HiddenType::class)
         ;
+        /**
+        $builder->get('client')->addEventListener(
+            For
+        )
+         * **/
     }
 
     public function getAllCities()
