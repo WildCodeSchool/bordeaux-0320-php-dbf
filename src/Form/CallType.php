@@ -113,9 +113,10 @@ class CallType extends AbstractType
             'data' => new DateTime(),
             ])
         ->add('recallHour', TimeType::class, [
+            'widget'=>'single_text',
             'label'=>'heure de rappel',
             'data' => new DateTime(),
-            'minutes'=>[ 0, 15, 30, 45],
+            'attr' => ['min' => "8:00", 'max'=>"20:00"],
         ])
         ->add('recallPeriod', EntityType::class, [
             'class'=> RecallPeriod::class,
