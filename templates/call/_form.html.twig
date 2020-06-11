@@ -4,10 +4,11 @@
         <!-- CLIENT ----->
         <div class="col s8">
                 <h5 class="light-blue-text"><i class="material-icons left">person</i> Client</h5>
-                <div class="row">
+                <div class="row mgt15">
                     <div class="input-field col s5">
                         {{ form_label(form.client.phone) }}
                         {{ form_widget(form.client.phone) }}
+                        <a class="copyer" href="#" data-copy="call_client_phone"><i class="material-icons">content_copy</i></a>
                     </div>
                     <div class=" input-field col s5">
                         {{ form_label(form.client.phone2) }}
@@ -18,66 +19,79 @@
                         {{ form_widget(form.client.postcode) }}
                     </div>
                 </div>
-                <div class=" input-field col s1">
-                    {{ form_widget(form.client.civility) }}
-                </div>
-                <div class=" input-field col s5">
-                    {{ form_label(form.client.name) }}
-                    {{ form_widget(form.client.name) }}
-                </div>
-                <div class=" input-field col s6">
-                    {{ form_label(form.client.email) }}
-                    {{ form_widget(form.client.email) }}
+                <div class="row">
+                    <div class=" input-field col s2">
+                        {{ form_widget(form.client.civility) }}
+                    </div>
+                    <div class=" input-field col s5">
+                        {{ form_label(form.client.name) }}
+                        {{ form_widget(form.client.name) }}
+                    </div>
+                    <div class=" input-field col s5">
+                        {{ form_label(form.client.email) }}
+                        {{ form_widget(form.client.email) }}
+                    </div>
                 </div>
             </div>
         <!-- VEHICLE ----->
         <div class="col s4">
             <h5 class="light-blue-text"><i class="material-icons left">directions_car</i> Véhicule</h5>
-            <div class="input-field col s6 ">
-                {{ form_label(form.vehicle.immatriculation) }}
-                {{ form_widget(form.vehicle.immatriculation) }}
-            </div>
-            <div class="input-field col s6 ">
-                {{ form_widget(form.vehicle.hasCome) }}
-                <small>Déja passé en atelier ?</small><br>
-                <div class="col s9">
-                    <div id="switcher_add_call"></div>
+            <div class="row mgt15">
+                <div class="input-field col s6 ">
+                    {{ form_label(form.vehicle.immatriculation) }}
+                    {{ form_widget(form.vehicle.immatriculation) }}
+                    <a class="copyer" href="#" data-copy="call_vehicle_immatriculation"><i class="material-icons">content_copy</i></a>
                 </div>
-            </div>
-            <div class="input-field col s12 ">
-                {{ form_label(form.vehicle.chassis) }}
-                {{ form_widget(form.vehicle.chassis) }}
+                <div class="input-field col s6 ">
+                    {{ form_label(form.vehicle.chassis) }}
+                    {{ form_widget(form.vehicle.chassis) }}
+                    <a class="copyer" href="#" data-copy="call_vehicle_chassis"><i class="material-icons">content_copy</i></a>
+                </div>
+                <div class="input-field col s12 ">
+                    {{ form_widget(form.vehicle.hasCome) }}
+                    <small class="grey-text text-lighten_2">Déja passé en atelier ?</small><br>
+                    <div class="col s4">
+                        <div id="switcher_add_call"></div>
+                    </div>
+                </div>
+
             </div>
 
         </div>
     </div>
     <!-- DESTINATAIRES ----->
     <div class="row">
-        <h5 class="light-blue-text"><i class="material-icons left">person_pin</i> Destinataire</h5>
-        <div class="col s3" id="recipient-city">
-            <small>Choisir une plaque</small><br>
-            {{form_widget(form.city)}}
-        </div>
-        <div class="col s3" id="recipient-concession">
-        </div>
-        <div class="col s3" id="recipient-service">
-        </div>
-        <div class="col s3" id="recipient-recipient">
+        <div class="col s12">
+            <h5 class="light-blue-text"><i class="material-icons left">person_pin</i> Destinataire</h5>
+            <div class="row">
+                <div class="col s3 input-field" id="recipient-city">
+                    <small class="grey-text">Choisir une plaque</small><br>
+                    {{form_widget(form.city)}}
+                </div>
+                <div class="col s3" id="recipient-concession">
+                </div>
+                <div class="col s3" id="recipient-service">
+                </div>
+                <div class="col s3" id="recipient-recipient">
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
         <!-- OBJET ----->
         <div class="col s9">
-        <h5 class="light-blue-text"><i class="material-icons left">phone</i> objet de l'appel</h5>
-            <div class="col s6">
-                    {{form_widget(form.subject)}}
-            </div>
-            <div class="col s6">
-                    {{ form_widget(form.comment) }}
-            </div>
-            <div class="col s12">
-                {{ form_label(form.freeComment) }}
-                {{ form_widget(form.freeComment) }}
+        <h5 class="light-blue-text"><i class="material-icons left">phone</i> Objet de l'appel</h5>
+            <div class="row">
+                <div class="col s6">
+                        {{form_widget(form.subject)}}
+                </div>
+                <div class="col s6">
+                        {{ form_widget(form.comment) }}
+                </div>
+                <div class="col s12">
+                    {{ form_label(form.freeComment) }}
+                    {{ form_widget(form.freeComment) }}
+                </div>
             </div>
         </div>
         <!-- RAPPEL ----->
@@ -107,12 +121,15 @@
 
 <div id="modal-callclient-phone" class="modal">
     <div class="modal-content">
-        <h4>Alerte</h4>
+        <h4 class="light-blue-text">Information</h4>
         <p class="flow-text">Il semble que
-            <span id="callclient-civility"></span>
-            <span id="callclient-name"></span> ait déja
-            <span id="callclient-count"></span> en cours
-            pour ce numéro : <b><span id="callclient-phone"></span></b>
+            <span class="callclient-marked light-blue lighten-3">
+                <span id="callclient-civility"></span>
+                <span id="callclient-name"></span>
+            </span>
+            ait déja
+            <span id="callclient-count" class="callclient-marked light-blue lighten-3"></span> en cours
+            pour ce numéro : <span id="callclient-phone" class="callclient-marked light-blue lighten-3"></span>
         </p>
         <table>
             <thead>
@@ -127,6 +144,30 @@
         <p>
             <a class="btn light-blue darken-2 modal-close left"><i class="material-icons left">add</i> Créer un nouvel appel</a>
         </p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">fermer</a>
+    </div>
+</div>
+
+
+<div id="modal-callclient-vehicles" class="modal">
+    <div class="modal-content">
+        <h4 class="light-blue-text">Information</h4>
+        <p class="flow-text">
+            <b>Il semble que ce client possède plusieurs véhicules</b><br>
+            Lequel est concerné par cet appel ?
+        </p>
+        <table>
+            <thead>
+            <tr>
+                <th>Immat</th><th>N°Chassis</th><th></th><th></th>
+            </tr>
+            </thead>
+            <tbody id="client-vehicles-table">
+
+            </tbody>
+        </table>
     </div>
     <div class="modal-footer">
         <a href="#!" class="modal-close waves-effect waves-green btn-flat">fermer</a>
