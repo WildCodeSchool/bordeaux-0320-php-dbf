@@ -100,7 +100,8 @@ class recipientsAjaxTool {
                         this.init(postdata)
                     })
                 }
-                this.serviceField.value = this.serviceSelector.value;
+                console.log(this.serviceSelector.value)
+                this.serviceField.value = this.serviceSelector.value
             })
         }
 
@@ -117,6 +118,7 @@ class recipientsAjaxTool {
         const domElem = result.getElementById(elemId);
         return domElem.outerHTML;
     }
+
 
     addLoader() {
         return '<div class="progress grey lighten-3 mgt30">\n' +
@@ -143,9 +145,9 @@ class recipientsAjaxTool {
         });
     }
 
-    selectValueInSelect(selector, selectorValues) {
-        if ( selector.querySelector('option[value="' + selectorValues + '"]')) {
-            selector.querySelector('option[value="' + selectorValues + '"]')
+    selectValueInSelect(selector, selectorValue) {
+        if ( selector.querySelector('option[value="' + selectorValue + '"]')) {
+            selector.querySelector('option[value="' + selectorValue + '"]')
                 .setAttribute('selected', 'selected');
         }
     }

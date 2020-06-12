@@ -58,9 +58,11 @@ class CallType extends AbstractType
                 'choices' => $this->getAllCities(),
                 'mapped'  => false
             ])
-            ->add('service', HiddenType::class, [
+            ->add('service', ChoiceType::class, [
+                'choices' => $this->getServices()
             ])
-            ->add('recipient', HiddenType::class, [
+            ->add('recipient', ChoiceType::class, [
+                'choices' => $this->getRecipients()
             ]);
         if (isset($data->City)) {
             $builder->
@@ -167,16 +169,18 @@ class CallType extends AbstractType
 
     public function getServices($concessionId = null)
     {
-        if (!$concessionId) {
+        if (is_null($concessionId)) {
             $services = $this->serviceRepository->findAll();
+
         } else {
             $services = $this->serviceRepository->findBy(['concession' => $concessionId]);
         }
         $choices = [];
         $choices['Choisir un service'] = '';
         foreach ($services as $service) {
-            $choices[$service->getName()] = $service->getId();
+            $choices[$service->getName().$service->getId()] = $service->getId();
         }
+
         return $choices;
     }
 
@@ -184,7 +188,7 @@ class CallType extends AbstractType
 
     public function getRecipients($serviceId = null)
     {
-        if (!$serviceId) {
+        if (is_null($serviceId)) {
             $recipients = $this->userRepository->findAll();
         } else {
             $recipients = $this->userRepository->findBy(['service' => $serviceId]);

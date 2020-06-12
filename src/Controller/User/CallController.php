@@ -8,6 +8,7 @@ use App\Form\CallType;
 use App\Form\RecipientType;
 use App\Repository\CallRepository;
 use App\Repository\ClientRepository;
+use App\Repository\ServiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\CallOnTheWayDataMaker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -39,14 +40,14 @@ class CallController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, EntityManagerInterface $entityManager, ServiceRepository $serviceRepository): Response
     {
         $call          = new Call();
         $form          = $this->createForm(CallType::class, $call);
-        //dd($request);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             //add isUrgent
             $call->setIsUrgent(false);
             if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
