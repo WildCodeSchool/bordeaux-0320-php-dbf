@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\CallRepository;
-use DateTime;
+use \DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CallRepository::class)
@@ -24,25 +25,25 @@ class Call
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=Client::class, inversedBy="calls",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $client;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Vehicle::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=Vehicle::class, inversedBy="calls", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $vehicle;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Subject::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=Subject::class, inversedBy="calls", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $subject;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=Comment::class, inversedBy="calls", cascade={"persist"})
      */
     private $comment;
 
@@ -52,23 +53,23 @@ class Call
     private $isUrgent;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isProcessEnded;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isAppointmentTaken;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="calls", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $service;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="calls")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="calls", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
@@ -79,12 +80,18 @@ class Call
     private $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $recallDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity=RecallPeriod::class, inversedBy="calls")
+     * @ORM\Column(type="time")
+     */
+    private $recallHour;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity=RecallPeriod::class, inversedBy="calls", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $recallPeriod;
@@ -105,7 +112,7 @@ class Call
     private $internet;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isProcessed;
 
@@ -115,7 +122,8 @@ class Call
     private $callTransfers;
 
     /**
-     * @ORM\OneToMany(targetEntity=CallProcessing::class, mappedBy="referedCall", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=CallProcessing::class, mappedBy="referedCall",
+     *     orphanRemoval=true)
      */
     private $callProcessings;
 
@@ -136,6 +144,25 @@ class Call
         return $this->id;
     }
 
+    public function getService()
+    {
+        return $this->service;
+    }
+
+    public function getConcession()
+    {
+        if ($this->getService()) {
+            return $this->getService()->getConcession();
+        }
+    }
+
+    public function getCity()
+    {
+        if ($this->getConcession()) {
+            return $this->getConcession()->getTown();
+        }
+    }
+
     public function getClient(): ?Client
     {
         return $this->client;
@@ -144,7 +171,6 @@ class Call
     public function setClient(?Client $client): self
     {
         $this->client = $client;
-
         return $this;
     }
 
@@ -156,7 +182,6 @@ class Call
     public function setVehicle(?Vehicle $vehicle): self
     {
         $this->vehicle = $vehicle;
-
         return $this;
     }
 
@@ -220,10 +245,6 @@ class Call
         return $this;
     }
 
-    public function getService(): ?Service
-    {
-        return $this->service;
-    }
 
     public function setService(?Service $service): self
     {
@@ -265,11 +286,26 @@ class Call
         return $this->recallDate;
     }
 
-    public function setRecallDate(\DateTimeInterface $recallDate): self
+    public function setRecallDate(DateTime $recallDate): self
     {
         $this->recallDate = $recallDate;
-
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRecallHour()
+    {
+        return $this->recallHour;
+    }
+
+    /**
+     * @param mixed $recallHour
+     */
+    public function setRecallHour($recallHour): void
+    {
+        $this->recallHour = $recallHour;
     }
 
     public function getRecallPeriod(): ?RecallPeriod
@@ -279,7 +315,7 @@ class Call
 
     public function setRecallPeriod(?RecallPeriod $recallPeriod): self
     {
-        $this->recallDate = $recallPeriod;
+        $this->recallPeriod = $recallPeriod;
 
         return $this;
     }

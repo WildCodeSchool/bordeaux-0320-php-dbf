@@ -5,9 +5,9 @@
 {% block body %}
     <h1>Edit Vehicle</h1>
 
-    {{ include('vehicle/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('vehicle/_form_add.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('vehicle_index') }}">back to list</a>
+    <a href="{{ path('adminadmin_dashboard') }}">back to list</a>
 
     {{ include('vehicle/_delete_form.html.twig') }}
 {% endblock %}

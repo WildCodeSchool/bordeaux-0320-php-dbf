@@ -19,6 +19,7 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $faker = Faker\Factory::create('fr_FR');
+
         for ($i = 0; $i < 30; $i++) {
             $client = new Client();
             $client->setName($faker->name);

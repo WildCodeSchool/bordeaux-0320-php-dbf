@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Civility index{% endblock %}
+
+{% block body %}
+    <h1>Civility index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for civility in civilities %}
+            <tr>
+                <td>{{ civility.id }}</td>
+                <td>{{ civility.name }}</td>
+                <td>
+                    <a href="{{ path('civility_show', {'id': civility.id}) }}">show</a>
+                    <a href="{{ path('civility_edit', {'id': civility.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('civility_new') }}">Create new</a>
+{% endblock %}

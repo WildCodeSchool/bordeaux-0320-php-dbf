@@ -15,7 +15,7 @@
              <a href="#modal-edit-client" class="btn modal-trigger light-green darken-2"><i class="material-icons">edit</i></a>
         </div>
         <div id="clients-vehicles">
-            Véhicules enregistrés
+            <a href="#modal-show-vehicles" class="btn modal-trigger light-green darken-3"><i class="material-icons">commute</i>Véhicules enregistrés</a>
         </div>
     </div>
 </div>
@@ -50,6 +50,20 @@
         <div class="row">
             <div class="col s10 offset-s1" id="form-edit-client">
                 Un formulaire se chargera ici en fonction du client choisi
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FENETRE MODALE AFFICHAGE LISTE VEHICULES -->
+
+
+<div id="modal-show-vehicles" class="modal">
+    <div class="modal-content">
+        <h4 class="center-align">Véhicules enregistrés</h4>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'vehicle/index.html.twig' %}
             </div>
         </div>
     </div>

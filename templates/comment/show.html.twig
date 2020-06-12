@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Comment{% endblock %}
+
+{% block body %}
+    <h1>Commentaire</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ comment.id }}</td>
+            </tr>
+            <tr>
+                <th>Commentaire</th>
+                <td>{{ comment.name }}</td>
+            </tr>
+            <tr>
+                <th>Identifier</th>
+                <td>{{ comment.identifier }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('comment_edit', {'id': comment.id}) }}"></a>
+    <br>
+    {{ include('comment/_delete_form.html.twig') }}
+    <br>
+    <a href="{{ path('comment_index') }}">Retour à la liste</a>
+{% endblock %}

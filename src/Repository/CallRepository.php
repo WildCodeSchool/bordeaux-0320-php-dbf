@@ -3,8 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Call;
+use App\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
+use \DateTime;
+use \DateInterval;
 
 /**
  * @method Call|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +21,24 @@ class CallRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Call::class);
+    }
+
+
+    public function callsOnTheWayForClient($clientId)
+    {
+        $date = new DateTime('now');
+        $dateLimit = $date->sub(new DateInterval('P7D'));
+
+        return $this->createQueryBuilder('c')
+            ->Where('c.client = :client')
+            ->setParameter('client', $clientId)
+            ->andWhere('c.createdAt >= :limitDate')
+            ->setParameter('limitDate', $dateLimit)
+            ->orderBy('c.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     // /**

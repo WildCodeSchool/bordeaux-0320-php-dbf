@@ -19,10 +19,11 @@ class VehicleType extends AbstractType
             ->add('immatriculation', TextType::class, [
                 'label' => 'Immatriculation'
             ])
-            ->add('chassis')
-            ->add('hasCome', HiddenType::class, [
-                'data' => 'abcdef',
+            ->add('chassis', TextType::class, [
+                'label'=>'Chassis',
+                'required'   => false,
             ])
+            ->add('hasCome', HiddenType::class)
             ->add('client', EntityType::class, [
                 'class'=> Client::class,
                 'choice_label' => 'name',

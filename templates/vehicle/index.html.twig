@@ -1,12 +1,5 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Vehicle index{% endblock %}
-
-{% block body %}
-    <h1>Vehicle index</h1>
-
-
-    <table class="table">
+    <table class="table highlight">
         <thead>
             <tr>
                 <th>Id</th>
@@ -15,7 +8,7 @@
                 <th>HasCome</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
-                <th>actions</th>
+                <th>Client</th>
             </tr>
         </thead>
         <tbody>
@@ -27,10 +20,7 @@
                 <td>{{ vehicle.hasCome }}</td>
                 <td>{{ vehicle.createdAt ? vehicle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ vehicle.updatedAt ? vehicle.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('vehicle_show', {'id': vehicle.id}) }}">show</a>
-                    <a href="{{ path('vehicle_edit', {'id': vehicle.id}) }}">edit</a>
-                </td>
+                <td>{{ vehicle.client.name }}</td>
             </tr>
         {% else %}
             <tr>
@@ -39,6 +29,3 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('vehicle_new') }}">Create new</a>
-{% endblock %}

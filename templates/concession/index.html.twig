@@ -1,0 +1,43 @@
+
+    <h1 class="center-align">Concessions</h1>
+<div class="container c-index">
+    <table class="table highlight">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Addresse</th>
+                <th>Postcode</th>
+                <th>Ville</th>
+                <th>Marque</th>
+                <th>Phone</th>
+                <th>Plaque</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for concession in concessions %}
+            <tr>
+                <td>{{ concession.id }}</td>
+                <td>{{ concession.name }}</td>
+                <td>{{ concession.address }}</td>
+                <td>{{ concession.postcode }}</td>
+                <td>{{ concession.city }}</td>
+                <td>{{ concession.brand }}</td>
+                <td>{{ concession.phone }}</td>
+                <td>{{ concession.town.name }}</td>
+
+                <td>
+                    <a href="{{ path('concession_show', {'id': concession.id}) }}">show</a>
+                    <a href="{{ path('concession_edit', {'id': concession.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+

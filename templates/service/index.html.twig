@@ -1,0 +1,32 @@
+
+    <h1 class="center-align">Services</h1>
+
+    <table class="table highlight">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Concession</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for service in services %}
+            <tr>
+                <td>{{ service.id }}</td>
+                <td>{{ service.name }}</td>
+                <td> {{service.concession.name }}</td>
+                <td>
+                    <a href="{{ path('service_show', {'id': service.id}) }}">show</a>
+                    <a href="{{ path('service_edit', {'id': service.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+

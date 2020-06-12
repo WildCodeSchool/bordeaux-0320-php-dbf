@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col input-field s6">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
+
+    </div>
+</div>
+
+    <button class="btn">{{ button_label|default('ajouter') }} <i class="material-icons right">save</i> </button>
+{{ form_end(form) }}
+
