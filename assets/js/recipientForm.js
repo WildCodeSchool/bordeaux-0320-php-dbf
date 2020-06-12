@@ -7,18 +7,25 @@ class recipientsAjaxTool {
     init(data = null) {
         this.citySelectorId       = 'call_city'
         this.concessionSelectorId = 'call_concession'
-        this.serviceSelectorId    = 'call_service'
+        this.serviceSelectorId    = 'call_service_choice'
+        this.recipientSelectorId  = 'call_recipient_choice'
         this.concessionZoneId     = 'recipient-concession'
         this.serviceZoneId        = 'recipient-service'
         this.recipientZoneId      = 'recipient-recipient'
         this.authorizedToPost     = true
+        this.serviceFieldId       = 'call_service'
+        this.recipientFieldId     = 'call_recipient'
 
         this.citySelector         = document.getElementById(this.citySelectorId);
         this.concessionSelector   = document.getElementById(this.concessionSelectorId);
         this.serviceSelector      = document.getElementById(this.serviceSelectorId);
+        this.recipientSelector    = document.getElementById(this.recipientSelectorId);
         this.concessionZone       = document.getElementById(this.concessionZoneId);
         this.serviceZone          = document.getElementById(this.serviceZoneId);
         this.recipientZone        = document.getElementById(this.recipientZoneId);
+
+        this.serviceField         = document.getElementById(this.serviceFieldId);
+        this.recipientField       = document.getElementById(this.recipientFieldId);
 
         if (data) {
             this.values = data
@@ -43,6 +50,7 @@ class recipientsAjaxTool {
         this.initializeSelects()
 
         this.citySelector.addEventListener('change', () => {
+            this.concessionZone.innerHTML = this.addLoader()
             const postdata = {
                 'City' : this.citySelector.value
             }
@@ -59,6 +67,7 @@ class recipientsAjaxTool {
 
         if (this.concessionSelector) {
             this.concessionSelector.addEventListener('change', () => {
+                this.serviceZone.innerHTML = this.addLoader()
                 const postdata = {
                     'City'       : this.citySelector.value,
                     'Concession' : this.concessionSelector.value
@@ -67,7 +76,7 @@ class recipientsAjaxTool {
                     this.authorizedToPost = false;
                     this.sendData(postdata, (data) => {
                         this.serviceZone.innerHTML = data;
-                        this.serviceZone.innerHTML = '<small class="grey-text">Choisir un service</small><br>' + this.getHtmlElement(data, 'call_service');
+                        this.serviceZone.innerHTML = '<small class="grey-text">Choisir un service</small><br>' + this.getHtmlElement(data, 'call_service_choice');
                         this.recipientZone.innerHTML = "";
                         this.init(postdata)
                     })
@@ -78,6 +87,7 @@ class recipientsAjaxTool {
 
         if (this.serviceSelector) {
             this.serviceSelector.addEventListener('change', () => {
+                this.recipientZone.innerHTML = this.addLoader()
                 const postdata = {
                     'City'       : this.citySelector.value,
                     'Concession' : this.concessionSelector.value,
@@ -86,10 +96,17 @@ class recipientsAjaxTool {
                 if (this.authorizedToPost) {
                     this.authorizedToPost = false;
                     this.sendData(postdata, (data) => {
-                        this.recipientZone.innerHTML = '<small class="grey-text">Choisir un destinataire</small><br>' + this.getHtmlElement(data, 'call_recipient');
+                        this.recipientZone.innerHTML = '<small class="grey-text">Choisir un destinataire</small><br>' + this.getHtmlElement(data, 'call_recipient_choice');
                         this.init(postdata)
                     })
                 }
+                this.serviceField.value = this.serviceSelector.value;
+            })
+        }
+
+        if (this.recipientSelector) {
+            this.recipientSelector.addEventListener('change', () => {
+                this.recipientField.value = this.recipientSelector.value;
             })
         }
     }
@@ -99,6 +116,12 @@ class recipientsAjaxTool {
         const result  = parser.parseFromString(html, "text/html");
         const domElem = result.getElementById(elemId);
         return domElem.outerHTML;
+    }
+
+    addLoader() {
+        return '<div class="progress grey lighten-3 mgt30">\n' +
+            '      <div class="indeterminate light-blue"></div>\n' +
+            '  </div>'
     }
 
     sendData(data, action) {
