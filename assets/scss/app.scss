@@ -7,7 +7,12 @@
 @import "animations";
 
 .paddleft {
-    padding-left: 300px;
+    padding-left: 49px;
+  ul {
+    &.left {
+      padding-left:70px;
+    }
+  }
 }
 .paddleft.large {
     padding-left: 10px;
@@ -30,6 +35,10 @@
     font-size:2rem;
 }
 
+#easy-auto-sidenav {
+  width:50px;
+}
+
 .container {
     width:90%;
 }
@@ -46,6 +55,21 @@ h3.treat {
   margin-top:0;
   margin-bottom:0;
   position:relative;
+
+  .label-for-select {
+    background: #fff;
+    margin-top: 14px;
+    z-index: 999;
+    display: inline-block;
+    position: absolute;
+    margin-left: 0;
+    padding: 0 10px;
+  }
+
+}
+
+.sidenav li > a {
+  padding: 0 15px;
 }
 
 .copyer {
@@ -59,9 +83,24 @@ h3.treat {
   }
 }
 
+ul {
+  &.list-calls {
+    li {
+      border-bottom: 1px solid #ccc;
+      padding-top: 15px;
+    }
+  }
+;
+}
+
 .mgt15 {
   margin-top:15px;
 }
+
+.mgt30 {
+  margin-top: 30px;
+}
+
 label:not(.active) {
   font-size:0.9rem;
   margin-left:5px;
@@ -74,7 +113,7 @@ label.active {
   padding:0 5px;
 }
 input:not([type]), input[type="text"]:not(.browser-default), input[type="password"]:not(.browser-default), input[type="email"]:not(.browser-default), input[type="url"]:not(.browser-default), input[type="time"]:not(.browser-default), input[type="date"]:not(.browser-default), input[type="datetime"]:not(.browser-default), input[type="datetime-local"]:not(.browser-default), input[type="tel"]:not(.browser-default), input[type="number"]:not(.browser-default), input[type="search"]:not(.browser-default), textarea.materialize-textarea {
-  height:2.2rem;
+  height:2.5rem;
   padding-left:4px;
   border:1px solid #ccc;
   border-radius:4px;
@@ -105,5 +144,7 @@ h5 {
   padding:5px 10px;
   border-radius:4px;
 }
+
+
 
 @import "admin";
