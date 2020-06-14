@@ -113,17 +113,16 @@ class CallType extends AbstractType
             'data' => new DateTime(),
             ])
         ->add('recallHour', TimeType::class, [
-            'widget'=>'single_text',
+            'widget'=>'choice',
             'label'=>'heure de rappel',
-            'data' => new DateTime(),
-            'attr' => ['min' => "8:00", 'max'=>"20:00"],
+            'hours'=>[8,9,10,11,12,13,14,15,16,17,18,19,20],
+            'minutes'=>[0,15,30,45],
         ])
         ->add('recallPeriod', EntityType::class, [
             'class'=> RecallPeriod::class,
             'choice_label' => 'name',
             'by_reference' => false,
         ])
-        ->add('createdAt', HiddenType::class)
         ;
         /**
         $builder->get('client')->addEventListener(

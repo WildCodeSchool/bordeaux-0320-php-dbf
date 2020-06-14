@@ -17,7 +17,7 @@ class ConcessionType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'Nom de concession'])
             ->add('address', TextType::class, ['label' => 'Adresse'])
-            ->add('postcode', TextType::class, ['label' => 'Code Postale'])
+            ->add('postcode', TextType::class, ['label' => 'Code Postal'])
             ->add('city', TextType::class, ['label' => 'Ville'])
             ->add('brand', TextType::class, ['label' => 'Marque'])
             ->add('phone', TextType::class, ['label' => 'Téléphone'])
