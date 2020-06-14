@@ -117,6 +117,7 @@ class CallType extends AbstractType
             'label'=>'heure de rappel',
             'hours'=>[8,9,10,11,12,13,14,15,16,17,18,19,20],
             'minutes'=>[0,15,30,45],
+            'data'=> new DateTime('Europe/Paris')
         ])
         ->add('recallPeriod', EntityType::class, [
             'class'=> RecallPeriod::class,
