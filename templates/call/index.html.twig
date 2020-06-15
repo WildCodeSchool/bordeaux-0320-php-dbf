@@ -3,8 +3,131 @@
 {% block title %}Call index{% endblock %}
 
 {% block body %}
+    {{ dump(calls) }}
     <h1>Call index</h1>
+<div class="container">
+{% for call in calls %}
+    <div class="row ligneappel message">
+        <a href="" class="btn btn-floating white btn-pin"><i class="material-icons light-blue-text">perm_phone_msg</i></a>
+        <div class="col s4 ">
+            <div class="col s12">
+                <table>
+                    <tr class="bdb0">
+                        <td>
+                            <b>Appel reçu par</b>
+                        </td>
+                        <td>
+                            {{call.author.firstname}}
+                        </td>
+                    </tr>
+                    <tr class="bdb0">
+                        <td>
+                            <b>Appel pour</b>
+                        </td>
+                        <td>
+                            R. Dupont
+                        </td>
+                    </tr>
+                    <tr class="bdb0">
+                        <td>
+                            <b>Concession</b>
+                        </td>
+                        <td>
+                            Artigues
+                        </td>
+                    </tr>
+                    <tr class="bdb0">
+                        <td>
+                            <b>Service</b>
+                        </td>
+                        <td>
+                            Atelier mécanique
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col s4 ">
+            <div class="col s12">
+                <table>
+                    <tr>
+                        <td>
+                            <b>Client</b>
+                        </td>
+                        <td>
+                            Mme Brest
+                        </td>
+                    </tr>
+                    <tr class="bdb0">
+                        <td>
+                            <b>Tel. 1</b>
+                        </td>
+                        <td>
+                            06 56 45 34 23
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Tel. 2</b>
+                        </td>
+                        <td>
+                            07 86 76 54 34
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Etape</b>
+                        </td>
+                        <td class="light-blue-text">
+                            Message 1
+                        </td>
+                    </tr>
 
+                </table>
+            </div>
+        </div>
+        <div class="col s4 ">
+            <div class="col s12">
+                <table>
+                    <tr>
+                        <td>
+                            <b>Rappeler</b>
+                        </td>
+                        <td>
+                            Av. 18 mai 2020 18:00
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Motif</b>
+                        </td>
+                        <td>
+                            Rev 30.000
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Commentaire</b>
+                        </td>
+                        <td>
+                            Bruits freins train AV
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Immat</b>
+                        </td>
+                        <td>
+                            <span class="immat">33-XX-33</span>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
     <table class="table">
         <thead>
             <tr>
@@ -24,6 +147,7 @@
         <tbody>
         {% for call in calls %}
             <tr>
+                <td>{{ call.author.firstname }}</td>
                 <td>{{ call.id }}</td>
                 <td>{{ call.isUrgent ? 'Yes' : 'No' }}</td>
                 <td>{{ call.isProcessEnded ? 'Yes' : 'No' }}</td>

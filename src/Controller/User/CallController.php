@@ -3,6 +3,8 @@
 namespace App\Controller\User;
 
 use App\Entity\Call;
+use DateInterval;
+use DateTime;
 use App\Entity\RecallPeriod;
 use App\Entity\User;
 use App\Form\CallType;
@@ -27,11 +29,13 @@ class CallController extends AbstractController
      * @Route("/", name="call_index", methods={"GET"})
      * @param CallRepository $callRepository
      * @return Response
+     * @throws \Exception
      */
     public function index(CallRepository $callRepository): Response
     {
+
         return $this->render('call/index.html.twig', [
-            'calls' => $callRepository->findAll(),
+            'calls' => $callRepository->findCallsAddedToday(2)
         ]);
     }
 
@@ -57,7 +61,7 @@ class CallController extends AbstractController
             if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
                 $call->setIsUrgent(true);
             }
-            //;
+
             $client = $call->getClient();
             $vehicle = $call->getVehicle();
             $vehicle->setClient($client);
