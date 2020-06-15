@@ -14,10 +14,6 @@
                         {{ form_label(form.client.phone2) }}
                         {{ form_widget(form.client.phone2) }}
                     </div>
-                    <div class=" input-field col s2">
-                        {{ form_label(form.client.postcode) }}
-                        {{ form_widget(form.client.postcode) }}
-                    </div>
                 </div>
                 <div class="row mgt15">
                     <div class=" input-field col s2">
@@ -101,11 +97,13 @@
                 {{form_widget(form.recallDate)}}
             </div>
 
-            <div class="col s6">
+            <div class="col s6 recallPeriod">
                 {{form_widget(form.recallPeriod)}}
             </div>
-            <div class="col s6">
-                {{ form_widget(form.recallHour) }}
+            <div class="col s6 flex ">
+                {{ form_widget(form.recallHour.hour) }}
+                {{ form_widget(form.recallHour.minute) }}
+
             </div>
         </div>
     </div>
