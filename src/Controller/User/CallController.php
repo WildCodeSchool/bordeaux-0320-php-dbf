@@ -43,6 +43,7 @@ class CallController extends AbstractController
     public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
         $call          = new Call();
+        dd($request->request);
         $form          = $this->createForm(CallType::class, $call);
 
         $form->handleRequest($request);

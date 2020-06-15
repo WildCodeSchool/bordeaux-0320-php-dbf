@@ -101,12 +101,14 @@ class recipientsAjaxTool {
                     })
                 }
                 console.log(this.serviceSelector.value)
+                this.selectValueInSelect(this.serviceField, this.serviceSelector.value)
                 this.serviceField.value = this.serviceSelector.value
             })
         }
 
         if (this.recipientSelector) {
             this.recipientSelector.addEventListener('change', () => {
+                this.selectValueInSelect(this.recipientField, this.recipientSelector.value)
                 this.recipientField.value = this.recipientSelector.value;
             })
         }
