@@ -49,6 +49,17 @@ h3.treat {
 
 .row {
   margin-bottom:5px;
+  &.with-hidden-fields {
+    ul {
+      display:none;
+    }
+    svg {
+      display:none;
+    }
+    input {
+      display:none;
+    }
+  }
 }
 
 .input-field {

@@ -107,6 +107,14 @@
             </div>
         </div>
     </div>
+<div class="row with-hidden-fields">
+    <div class="col s6">
+        {{form_widget(form.service)}}
+    </div>
+    <div class="col s6">
+        {{form_widget(form.recipient)}}
+    </div>
+</div>
 <div class="row center-align">
     <button class="btn light-blue">{{ button_label|default('Ajouter') }}</button>
 </div>

@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Call;
 use App\Entity\Comment;
 use App\Entity\RecallPeriod;
+use App\Entity\Service;
 use App\Entity\Subject;
 use App\Repository\CityRepository;
 use App\Repository\ConcessionRepository;
@@ -56,6 +57,12 @@ class CallType extends AbstractType
             ->add('city', ChoiceType::class, [
                 'choices' => $this->getAllCities(),
                 'mapped'  => false
+            ])
+            ->add('service', ChoiceType::class, [
+                'choices' => $this->getServices()
+            ])
+            ->add('recipient', ChoiceType::class, [
+                'choices' => $this->getRecipients()
             ]);
         if (isset($data->City)) {
             $builder->
@@ -66,13 +73,15 @@ class CallType extends AbstractType
         }
         if (isset($data->Concession)) {
             $builder->
-            add('service', ChoiceType::class, [
-                'choices' => $this->getServices()
+            add('service_choice', ChoiceType::class, [
+                'choices' => $this->getServices($data->Concession),
+                'mapped'  => false
             ]);
         }
         if (isset($data->Service)) {
-            $builder->add('recipient', ChoiceType::class, [
-                'choices' => $this->getRecipients()
+            $builder->add('recipient_choice', ChoiceType::class, [
+                'choices' => $this->getRecipients(),
+                'mapped'  => false
             ]);
         }
         $builder->add('subject', EntityType::class, [
@@ -161,7 +170,7 @@ class CallType extends AbstractType
 
     public function getServices($concessionId = null)
     {
-        if (!$concessionId) {
+        if (is_null($concessionId)) {
             $services = $this->serviceRepository->findAll();
         } else {
             $services = $this->serviceRepository->findBy(['concession' => $concessionId]);
@@ -169,14 +178,17 @@ class CallType extends AbstractType
         $choices = [];
         $choices['Choisir un service'] = '';
         foreach ($services as $service) {
-            $choices[$service->getName()] = $service->getId();
+            $choices[$service->getName().$service->getId()] = $service->getId();
         }
+
         return $choices;
     }
 
+
+
     public function getRecipients($serviceId = null)
     {
-        if (!$serviceId) {
+        if (is_null($serviceId)) {
             $recipients = $this->userRepository->findAll();
         } else {
             $recipients = $this->userRepository->findBy(['service' => $serviceId]);
