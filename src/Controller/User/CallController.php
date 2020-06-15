@@ -49,7 +49,6 @@ class CallController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             //Cette ligne sera à remplacer par app->getUser();
             $author = $entityManager->getRepository(User::class)->findOneById(2);
 
@@ -58,7 +57,7 @@ class CallController extends AbstractController
             if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
                 $call->setIsUrgent(true);
             }
-            //dd($call);
+            //;
             $client = $call->getClient();
             $vehicle = $call->getVehicle();
             $vehicle->setClient($client);

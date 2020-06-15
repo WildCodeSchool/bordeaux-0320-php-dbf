@@ -205,12 +205,11 @@ class CallType extends AbstractType
         return $choices;
     }
 
-
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Call::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

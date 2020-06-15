@@ -115,7 +115,7 @@ class Vehicle
      */
     public function setCreatedAt(): self
     {
-        $this->createdAt = new DateTime();
+        $this->createdAt = new DateTime('Europe/Paris');
         return $this;
     }
 
