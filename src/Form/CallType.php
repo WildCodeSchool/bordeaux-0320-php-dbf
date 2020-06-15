@@ -67,6 +67,7 @@ class CallType extends AbstractType
                 'class'   => User::class,
                 'choice_label' => 'lastname'
             ]);
+
         if (isset($data->City)) {
             $builder->
             add('concession', ChoiceType::class, [

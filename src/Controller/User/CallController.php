@@ -4,6 +4,7 @@ namespace App\Controller\User;
 
 use App\Entity\Call;
 use App\Entity\RecallPeriod;
+use App\Entity\User;
 use App\Form\CallType;
 use App\Form\RecipientType;
 use App\Repository\CallRepository;
@@ -48,20 +49,24 @@ class CallController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            //add isUrgent
+
+            //Cette ligne sera à remplacer par app->getUser();
+            $author = $entityManager->getRepository(User::class)->findOneById(2);
+
+            $call->setAuthor($author);
             $call->setIsUrgent(false);
             if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
                 $call->setIsUrgent(true);
             }
+            //dd($call);
             $client = $call->getClient();
             $vehicle = $call->getVehicle();
             $vehicle->setClient($client);
-            dd($call);
 
             $entityManager->persist($call);
             $entityManager->flush();
 
-            return $this->redirectToRoute('call_index');
+            return $this->redirectToRoute('call_add');
         }
         return $this->render('call/add.html.twig', [
             'call'          => $call,
