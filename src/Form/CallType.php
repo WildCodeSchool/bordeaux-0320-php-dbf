@@ -171,7 +171,6 @@ class CallType extends AbstractType
     {
         if (is_null($concessionId)) {
             $services = $this->serviceRepository->findAll();
-
         } else {
             $services = $this->serviceRepository->findBy(['concession' => $concessionId]);
         }

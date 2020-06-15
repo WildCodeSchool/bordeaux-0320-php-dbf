@@ -40,14 +40,13 @@ class CallController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function add(Request $request, EntityManagerInterface $entityManager, ServiceRepository $serviceRepository): Response
+    public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
         $call          = new Call();
         $form          = $this->createForm(CallType::class, $call);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             //add isUrgent
             $call->setIsUrgent(false);
             if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
