@@ -42,11 +42,6 @@ class Client
     private $email;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $postcode;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Civility::class)
      * @ORM\JoinColumn(nullable=false)
      */
@@ -127,18 +122,6 @@ class Client
     public function setEmail(?string $email): self
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function getPostcode(): ?int
-    {
-        return $this->postcode;
-    }
-
-    public function setPostcode(?int $postcode): self
-    {
-        $this->postcode = $postcode;
 
         return $this;
     }

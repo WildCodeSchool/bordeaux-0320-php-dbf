@@ -39,10 +39,6 @@ class ClientType extends AbstractType
                 'label'=>'Email',
                 'required'   => false,
             ])
-            ->add('postcode', IntegerType::class, [
-                'label'=>'Code postal',
-                'required'   => false,
-            ])
         ;
     }
 
