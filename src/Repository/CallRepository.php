@@ -51,6 +51,14 @@ class CallRepository extends ServiceEntityRepository
             ->andWhere('c.createdAt >= :limitDate')
             ->setParameter('limitDate', $dateLimit)
             ->orderBy('c.createdAt', 'DESC')
+            ->join('c.client', 'cl')->addSelect('cl')
+            ->join('cl.civility', 'civ')->addSelect('civ')
+            ->join('c.service', 's')->addSelect('s')
+            ->join('s.concession', 'concession')->addSelect('concession')
+            ->join('c.recallPeriod', 'rp')->addSelect('rp')
+            ->join('c.comment', 'co')->addSelect('co')
+            ->join('c.subject', 'subj')->addSelect('subj')
+            ->join('c.vehicle', 'v')->addSelect('v')
             ->getQuery();
 
         return $qb->execute();

@@ -45,8 +45,9 @@ class CallController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
+    public function add(Request $request, EntityManagerInterface $entityManager, CallRepository $callRepo): Response
     {
+        $calls = $callRepo->findCallsAddedToday(2);
         $call          = new Call();
         //dd($request->request);
         $form          = $this->createForm(CallType::class, $call);
@@ -74,6 +75,7 @@ class CallController extends AbstractController
         return $this->render('call/add.html.twig', [
             'call'          => $call,
             'form'          => $form->createView(),
+            'calls'         => $calls
         ]);
     }
 

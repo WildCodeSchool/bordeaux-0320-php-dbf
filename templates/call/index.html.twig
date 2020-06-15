@@ -1,175 +1,125 @@
-{% extends 'base.html.twig' %}
 
-{% block title %}Call index{% endblock %}
-
-{% block body %}
-    {{ dump(calls) }}
-    <h1>Call index</h1>
-<div class="container">
-{% for call in calls %}
-    <div class="row ligneappel message">
-        <a href="" class="btn btn-floating white btn-pin"><i class="material-icons light-blue-text">perm_phone_msg</i></a>
-        <div class="col s4 ">
-            <div class="col s12">
-                <table>
-                    <tr class="bdb0">
-                        <td>
-                            <b>Appel reçu par</b>
-                        </td>
-                        <td>
-                            {{call.author.firstname}}
-                        </td>
-                    </tr>
-                    <tr class="bdb0">
-                        <td>
-                            <b>Appel pour</b>
-                        </td>
-                        <td>
-                            R. Dupont
-                        </td>
-                    </tr>
-                    <tr class="bdb0">
-                        <td>
-                            <b>Concession</b>
-                        </td>
-                        <td>
-                            Artigues
-                        </td>
-                    </tr>
-                    <tr class="bdb0">
-                        <td>
-                            <b>Service</b>
-                        </td>
-                        <td>
-                            Atelier mécanique
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <div class="col s4 ">
-            <div class="col s12">
-                <table>
-                    <tr>
-                        <td>
-                            <b>Client</b>
-                        </td>
-                        <td>
-                            Mme Brest
-                        </td>
-                    </tr>
-                    <tr class="bdb0">
-                        <td>
-                            <b>Tel. 1</b>
-                        </td>
-                        <td>
-                            06 56 45 34 23
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Tel. 2</b>
-                        </td>
-                        <td>
-                            07 86 76 54 34
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Etape</b>
-                        </td>
-                        <td class="light-blue-text">
-                            Message 1
-                        </td>
-                    </tr>
-
-                </table>
-            </div>
-        </div>
-        <div class="col s4 ">
-            <div class="col s12">
-                <table>
-                    <tr>
-                        <td>
-                            <b>Rappeler</b>
-                        </td>
-                        <td>
-                            Av. 18 mai 2020 18:00
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Motif</b>
-                        </td>
-                        <td>
-                            Rev 30.000
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Commentaire</b>
-                        </td>
-                        <td>
-                            Bruits freins train AV
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>Immat</b>
-                        </td>
-                        <td>
-                            <span class="immat">33-XX-33</span>
-                        </td>
-                    </tr>
-
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-{% endfor %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>IsUrgent</th>
-                <th>IsProcessEnded</th>
-                <th>IsAppointmentTaken</th>
-                <th>CreatedAt</th>
-                <th>RecallDate</th>
-                <th>FreeComment</th>
-                <th>Source</th>
-                <th>Internet</th>
-                <th>IsProcessed</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="container">
         {% for call in calls %}
-            <tr>
-                <td>{{ call.author.firstname }}</td>
-                <td>{{ call.id }}</td>
-                <td>{{ call.isUrgent ? 'Yes' : 'No' }}</td>
-                <td>{{ call.isProcessEnded ? 'Yes' : 'No' }}</td>
-                <td>{{ call.isAppointmentTaken ? 'Yes' : 'No' }}</td>
-                <td>{{ call.createdAt ? call.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ call.recallDate ? call.recallDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ call.freeComment }}</td>
-                <td>{{ call.source }}</td>
-                <td>{{ call.internet }}</td>
-                <td>{{ call.isProcessed ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('call_show', {'id': call.id}) }}">show</a>
-                    <a href="{{ path('call_edit', {'id': call.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <div class="row ligneappel message">
+                <a href="" class="btn btn-floating white btn-pin"><i class="material-icons light-blue-text">perm_phone_msg</i></a>
+                <div class="col s4 ">
+                    <div class="col s12">
+                        <table>
+                            <tr class="bdb0">
+                                <td>
+                                    <b>Appel reçu par</b>
+                                </td>
+                                <td>
+                                    {{call.author.firstname ~ ' ' ~ call.author.lastname }}
+                                </td>
+                            </tr>
+                            <tr class="bdb0">
+                                <td>
+                                    <b>Appel pour</b>
+                                </td>
+                                <td>
+                                    {{call.recipient.firstname ~ ' ' ~ call.recipient.lastname }}
+                                </td>
+                            </tr>
+                            <tr class="bdb0">
+                                <td>
+                                    <b>Concession</b>
+                                </td>
+                                <td>
+                                    {{call.service.concession.name}}
+                                </td>
+                            </tr>
+                            <tr class="bdb0">
+                                <td>
+                                    <b>Service</b>
+                                </td>
+                                <td>
+                                    {{call.service.name}}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col s4 ">
+                    <div class="col s12">
+                        <table>
+                            <tr>
+                                <td>
+                                    <b>Client</b>
+                                </td>
+                                <td>
+                                    {{ call.client.civility.name ~ ' ' ~ call.client.name}}
+                                </td>
+                            </tr>
+                            <tr class="bdb0">
+                                <td>
+                                    <b>Tel. 1</b>
+                                </td>
+                                <td>
+                                    {{call.client.phone}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Tel. 2</b>
+                                </td>
+                                <td>
+                                    {{call.client.phone2}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Etape</b>
+                                </td>
+                                <td class="light-blue-text">
+                                    //TO DO
+                                </td>
+                            </tr>
 
-    <a href="{{ path('call_add') }}">Create new</a>
-{% endblock %}
+                        </table>
+                    </div>
+                </div>
+                <div class="col s4 ">
+                    <div class="col s12">
+                        <table>
+                            <tr>
+                                <td>
+                                    <b>Rappeler</b>
+                                </td>
+                                <td>
+                                    {{ call.recallDate|date('d-m-Y') ~ ' ' ~ call.recallPeriod.name ~ ' ' ~ call.recallHour|date('H:i') }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Motif</b>
+                                </td>
+                                <td>
+                                    {{call.subject.name}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Commentaire</b>
+                                </td>
+                                <td>
+                                    {{call.comment.name}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <b>Immat</b>
+                                </td>
+                                <td>
+                                    <span class="immat">{{ call.vehicle.immatriculation }}</span>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
