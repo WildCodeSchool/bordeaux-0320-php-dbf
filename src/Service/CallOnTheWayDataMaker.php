@@ -24,7 +24,6 @@ class CallOnTheWayDataMaker
                     'client_phone'    => $client->getPhone(),
                     'client_phone2'    => $client->getPhone2(),
                     'client_email'    => $client->getEmail(),
-                    'client_postcode' => $client->getPostcode(),
                     'vehicles'       => [],
                 ],
             ];

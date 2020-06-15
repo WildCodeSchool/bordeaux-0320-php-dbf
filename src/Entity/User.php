@@ -55,11 +55,6 @@ class User
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Call::class, mappedBy="user")
-     */
-    private $calls;
-
-    /**
      * @ORM\OneToMany(targetEntity=CallTransfer::class, mappedBy="byWhom")
      */
     private $callTransfersBy;
@@ -74,15 +69,21 @@ class User
      */
     private $callTransfersTo;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Call::class, mappedBy="recipient")
-     */
-    private $callsToUser;
 
     /**
      * @ORM\OneToMany(targetEntity=RightByLocation::class, mappedBy="user", orphanRemoval=true)
      */
     private $rightByLocations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Call::class, mappedBy="recipient")
+     */
+    private $calls;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Call::class, mappedBy="author")
+     */
+    private $callsUserCreate;
 
     public function __construct()
     {
@@ -92,6 +93,7 @@ class User
         $this->callTransfersFrom = new ArrayCollection();
         $this->callsToUser = new ArrayCollection();
         $this->rightByLocations = new ArrayCollection();
+        $this->callsUserCreate = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -183,36 +185,6 @@ class User
         return $this;
     }
 
-    /**
-     * @return Collection|Call[]
-     */
-    public function getCalls(): Collection
-    {
-        return $this->calls;
-    }
-
-    public function addCall(Call $call): self
-    {
-        if (!$this->calls->contains($call)) {
-            $this->calls[] = $call;
-            $call->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCall(Call $call): self
-    {
-        if ($this->calls->contains($call)) {
-            $this->calls->removeElement($call);
-            // set the owning side to null (unless already changed)
-            if ($call->getUser() === $this) {
-                $call->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|CallTransfer[]
@@ -311,33 +283,6 @@ class User
         return $this;
     }
 
-    /**
-     * @return Collection|Call[]
-     */
-    public function getCallsToUser(): Collection
-    {
-        return $this->callsToUser;
-    }
-
-    public function addCallsToUser(Call $callsToUser): self
-    {
-        if (!$this->callsToUser->contains($callsToUser)) {
-            $this->callsToUser[] = $callsToUser;
-            $callsToUser->addRecipient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCallsToUser(Call $callsToUser): self
-    {
-        if ($this->callsToUser->contains($callsToUser)) {
-            $this->callsToUser->removeElement($callsToUser);
-            $callsToUser->removeRecipient($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|RightByLocation[]
@@ -364,6 +309,68 @@ class User
             // set the owning side to null (unless already changed)
             if ($rightByLocation->getUser() === $this) {
                 $rightByLocation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Call[]
+     */
+    public function getCalls(): Collection
+    {
+        return $this->calls;
+    }
+
+    public function addCall(Call $call): self
+    {
+        if (!$this->calls->contains($call)) {
+            $this->calls[] = $call;
+            $call->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCall(Call $call): self
+    {
+        if ($this->calls->contains($call)) {
+            $this->calls->removeElement($call);
+            // set the owning side to null (unless already changed)
+            if ($call->getRecipient() === $this) {
+                $call->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Call[]
+     */
+    public function getCallsUserCreate(): Collection
+    {
+        return $this->callsUserCreate;
+    }
+
+    public function addCallsUserCreate(Call $callsUserCreate): self
+    {
+        if (!$this->callsUserCreate->contains($callsUserCreate)) {
+            $this->callsUserCreate[] = $callsUserCreate;
+            $callsUserCreate->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCallsUserCreate(Call $callsUserCreate): self
+    {
+        if ($this->callsUserCreate->contains($callsUserCreate)) {
+            $this->callsUserCreate->removeElement($callsUserCreate);
+            // set the owning side to null (unless already changed)
+            if ($callsUserCreate->getAuthor() === $this) {
+                $callsUserCreate->setAuthor(null);
             }
         }
 

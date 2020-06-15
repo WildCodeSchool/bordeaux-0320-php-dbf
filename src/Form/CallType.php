@@ -7,6 +7,7 @@ use App\Entity\Comment;
 use App\Entity\RecallPeriod;
 use App\Entity\Service;
 use App\Entity\Subject;
+use App\Entity\User;
 use App\Repository\CityRepository;
 use App\Repository\ConcessionRepository;
 use App\Repository\ServiceRepository;
@@ -58,12 +59,15 @@ class CallType extends AbstractType
                 'choices' => $this->getAllCities(),
                 'mapped'  => false
             ])
-            ->add('service', ChoiceType::class, [
-                'choices' => $this->getServices()
+            ->add('service', EntityType::class, [
+                'class'         => Service::class,
+                'choice_label' => 'name'
             ])
-            ->add('recipient', ChoiceType::class, [
-                'choices' => $this->getRecipients()
+            ->add('recipient', EntityType::class, [
+                'class'   => User::class,
+                'choice_label' => 'lastname'
             ]);
+
         if (isset($data->City)) {
             $builder->
             add('concession', ChoiceType::class, [

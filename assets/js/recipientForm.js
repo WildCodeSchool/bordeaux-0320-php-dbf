@@ -100,7 +100,6 @@ class recipientsAjaxTool {
                         this.init(postdata)
                     })
                 }
-                console.log(this.serviceSelector.value)
                 this.selectValueInSelect(this.serviceField, this.serviceSelector.value)
                 this.serviceField.value = this.serviceSelector.value
             })
@@ -108,6 +107,7 @@ class recipientsAjaxTool {
 
         if (this.recipientSelector) {
             this.recipientSelector.addEventListener('change', () => {
+                console.log(this.recipientSelector.value)
                 this.selectValueInSelect(this.recipientField, this.recipientSelector.value)
                 this.recipientField.value = this.recipientSelector.value;
             })
