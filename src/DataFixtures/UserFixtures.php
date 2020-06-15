@@ -35,7 +35,7 @@ class UserFixtures extends Fixture
 
         $manager->persist($collaborator);
 
-        // Création d’un utilisateur de type “administrateur”
+        // Création d’un utilisateur de type “admin”
         $admin = new User();
         $admin->setEmail('admin@dbf.com');
         $admin->setFirstname('Admin');
@@ -49,7 +49,20 @@ class UserFixtures extends Fixture
 
         $manager->persist($admin);
 
-        // Sauvegarde des 2 nouveaux utilisateurs :
-        $manager->flush();
+        $faker = Faker\Factory::create('fr_FR');
+        for ($i = 0; $i < 10; $i++) {
+            $user = new User();
+            $user->setLastname($faker->lastName);
+            $user->setFirstname($faker->firstName);
+            $user->setEmail($faker->email);
+            $user->setPhone($faker->phoneNumber);
+            $user->setPassword('12345');
+            $user->setCreatedAt($faker->dateTime);
+            $manager->persist($user);
+            $this->addReference('user_' . $i, $user);
+
+            // Sauvegarde des  utilisateurs :
+            $manager->flush();
+        }
     }
 }
