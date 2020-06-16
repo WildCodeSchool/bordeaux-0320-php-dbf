@@ -38,17 +38,17 @@
                     {{ form_widget(form.vehicle.immatriculation) }}
                     <a class="copyer" href="#" data-copy="call_vehicle_immatriculation"><i class="material-icons">content_copy</i></a>
                 </div>
-                <div class="input-field col s6 ">
+                <div class="input-field col s6 call-switcher">
+                    {{ form_widget(form.vehicle.hasCome) }}
+                    <small class="grey-text text-lighten_2 mgt-30">Déja passé en atelier ?</small><br>
+                    <div class="col s6">
+                        <div id="switcher_add_call"></div>
+                    </div>
+                </div>
+                <div class="input-field col s12 ">
                     {{ form_label(form.vehicle.chassis) }}
                     {{ form_widget(form.vehicle.chassis) }}
                     <a class="copyer" href="#" data-copy="call_vehicle_chassis"><i class="material-icons">content_copy</i></a>
-                </div>
-                <div class="input-field col s12 ">
-                    {{ form_widget(form.vehicle.hasCome) }}
-                    <small class="grey-text text-lighten_2">Déja passé en atelier ?</small><br>
-                    <div class="col s4">
-                        <div id="switcher_add_call"></div>
-                    </div>
                 </div>
 
             </div>
