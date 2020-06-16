@@ -105,9 +105,15 @@ class CallType extends AbstractType
             'choice_label' => 'name',
             'by_reference' => false,
         ])
-
+        ->add('client_id', hiddenType::class, [
+            'mapped'  => false
+        ])
         ->add('client', ClientType::class)
         ->add('vehicle', VehicleTypeForCallType::class)
+        ->add('vehicle_id', hiddenType::class, [
+            'mapped'  => false
+        ])
+
         ->add('subject', EntityType::class, [
             'class' => Subject::class,
             'choice_label' => 'name',

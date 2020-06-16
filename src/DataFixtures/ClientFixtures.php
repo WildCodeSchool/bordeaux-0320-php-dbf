@@ -26,7 +26,6 @@ class ClientFixtures extends Fixture implements DependentFixtureInterface
             $client->setPhone($faker->phoneNumber);
             $client->setPhone2($faker->phoneNumber);
             $client->setEmail($faker->email);
-            $client->setPostcode(intval($faker->postcode));
             $client->setCivility($this->getReference('civility_' . rand(0, 2)));
             $client->setCreatedAt($faker->dateTime);
             $manager->persist($client);

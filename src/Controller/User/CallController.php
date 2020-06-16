@@ -13,8 +13,10 @@ use App\Form\RecipientType;
 use App\Repository\CallRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ServiceRepository;
+use App\Repository\VehicleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\CallOnTheWayDataMaker;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/call")
+ * @IsGranted("ROLE_COLLABORATOR")
  */
 class CallController extends AbstractController
 {
@@ -51,6 +54,8 @@ class CallController extends AbstractController
     public function add(
         Request $request,
         EntityManagerInterface $entityManager,
+        VehicleRepository $vehicleRepository,
+        ClientRepository $clientRepository,      
         CallRepository $callRepository,
         CallTreatmentDataMaker $callTreatmentDataMaker
     ): Response {
@@ -63,23 +68,37 @@ class CallController extends AbstractController
             $steps[ $addedCall->getId()]['lastStepName'] = $callTreatmentDataMaker->getLastTreatment($addedCall);
         }
 
-
         $call          = new Call();
         $form          = $this->createForm(CallType::class, $call);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             //Cette ligne sera à remplacer par app->getUser();
-            $author = $entityManager->getRepository(User::class)->findOneById(2);
 
+            $author = $entityManager->getRepository(User::class)->findOneById(2);
             $call->setAuthor($author);
+
             $call->setIsUrgent(false);
             if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
                 $call->setIsUrgent(true);
             }
 
             $client = $call->getClient();
+            if ($request->request->get('call')['client_id'] != '') {
+                $client = $clientRepository->findOneById($request->request->get('call')['client_id']);
+                $call->setClient($client);
+                $entityManager->persist($client);
+                $entityManager->flush();
+            }
+
             $vehicle = $call->getVehicle();
+            if ($request->request->get('call')['vehicle_id'] != '') {
+                $vehicle = $vehicleRepository->findOneById($request->request->get('call')['vehicle_id']);
+                $call->setVehicle($vehicle);
+                $entityManager->persist($vehicle);
+                $entityManager->flush();
+            }
+
             $vehicle->setClient($client);
 
             $entityManager->persist($call);
