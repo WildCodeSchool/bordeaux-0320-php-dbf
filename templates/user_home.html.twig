@@ -6,13 +6,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col s3 mgt30">
-                <div class="col s12">
-                    <h5><b>Bonjour {{ user.firstname }} {{ user.lastname }}</b></h5>
-                </div>
-
-            </div>
-            <div class="col s8 offset-s1 mgt30">
+            <div class="col s6 mgt30">
                 <div class="col s12">
                     <h5><b>Vos appels à traiter</b></h5>
                 </div>
@@ -20,18 +14,100 @@
                     <ul class="list-calls">
                         {% for call in calls %}
                         <li class="collection-item ">
-                            <span class="title"><b>{{call.client.name}}</b></span>
-                            <a href="#!" class="secondary-content"><span class="chip light-blue white-text">{{call.recallPeriod.name}} {{call.recallHour|date('H:i')}}</span></a>
+                            <div class="row">
 
-                            <p>{{call.client.phone}}<br>
-                                <small>{{call.subject.name}} - {{call.comment.name}}</small>
-                            </p>
+                                <div class="col s8">
+                                    <span class="title"><b>{{call.client.name}}</b></span>
+                                    <p>{{call.client.phone}}<br>
+                                        <small>{{call.subject.name}} - {{call.comment.name}}</small>
+                                    </p>
+                                </div>
+
+                                <div class="col s4 right-align">
+                                    <span class="recall-date">
+                                        {% if call.recallDate|date('Y-m-d') == date()|date('Y-m-d') %}
+                                            Aujourd'hui
+                                        {% elseif call.recallDate|date('Y-m-d') == date('+1days')|date('Y-m-d') %}
+                                            Demain
+                                        {% elseif call.recallDate|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
+                                            Hier
+                                        {% else %}
+                                            {{ call.recallDate|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
+                                        {% endif %}
+                                    </span>
+                                    <a href="#!" class="secondary-content"><span class="chip light-blue white-text">{{call.recallPeriod.name}} {{call.recallHour|date('H:i')}}</span></a>
+                                </div>
+
+                            </div>
                         </li>
                         {% endfor %}
                     </ul>
                 </div>
             </div>
 
+            <div class="col s6 mgt30">
+                <div class="col s12">
+                    <h5><b>Appels en cours de traitement</b></h5>
+                </div>
+                <div class="col s12">
+                    <ul class="list-calls">
+
+                        {% for call in calls %}
+                            <li class="collection-item ">
+                                <div class="row">
+                                    <div class="col s8">
+                                        <span class="title"><b>{{call.client.name}}</b></span>
+                                        <p>{{call.client.phone}}<br>
+                                            <small>{{call.subject.name}} - {{call.comment.name}}</small>
+                                        </p>
+                                    </div>
+
+                                    <div class="col s4 right-align">
+                                    <span class="recall-date">
+                                        {% if call.recallDate|date('Y-m-d') == date()|date('Y-m-d') %}
+                                            Aujourd'hui
+                                        {% elseif call.recallDate|date('Y-m-d') == date('+1days')|date('Y-m-d') %}
+                                            Demain
+                                        {% elseif call.recallDate|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
+                                            Hier
+                                        {% else %}
+                                            {{ call.recallDate|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
+                                        {% endif %}
+                                    </span>
+                                        <a href="#!" class="secondary-content"><span class="chip light-blue white-text">{{call.recallPeriod.name}} {{call.recallHour|date('H:i')}}</span></a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    {% if call.callProcessings %}
+                                        {% for process in call.callProcessings %}
+                                            <div class="col s12">
+                                                <table class="call-stepper">
+                                                    <tr class="call-step">
+                                                        <td>
+                                                            <b>
+                                                            {% if process.createdAt|date('Y-m-d') == date()|date('Y-m-d') %}
+                                                                Aujourd'hui
+                                                            {% elseif process.createdAt|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
+                                                                Hier
+                                                            {% else %}
+                                                                le {{ process.createdAt|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
+                                                            {% endif %}
+                                                            </b>
+                                                        </td>
+                                                        <td> à {{ process.createdAt|date('H:i') }}</td>
+                                                        <td>{{ process.contactType.name }}</td>
+                                                        <td>{{ process.comment }}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 

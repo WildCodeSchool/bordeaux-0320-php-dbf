@@ -3,7 +3,10 @@
     <div class="row">
         <!-- CLIENT ----->
         <div class="col s8">
-                <h5 class="light-blue-text"><i class="material-icons left">person</i> Client</h5>
+                <h5 class="light-blue-text"><i class="material-icons left">person</i> Client
+                    <a href="#" class="btn grey darken-3 white-text btn-small editor" data-client="">ce numéro a été réattribué</a>
+                    <img src="{{ asset('build/loader.gif') }}" width="20px" class="hide">
+                </h5>
                 <div class="row mgt15">
                     <div class="input-field col s5">
                         {{ form_label(form.client.phone) }}
