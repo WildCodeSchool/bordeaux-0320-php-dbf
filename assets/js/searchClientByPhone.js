@@ -18,7 +18,18 @@ const hydrateForm = (data) => {
     for (var [key, value] of Object.entries(data)){
         if (document.getElementById('call_' + key)) {
             document.getElementById('call_' + key).value = value
+            if (key === 'client_civility') {
+                selectValueInSelect(document.getElementById('call_' + key), value)
+                M.FormSelect.init(document.getElementById('call_' + key), {})
+            }
         }
+    }
+}
+
+const selectValueInSelect = (selector, selectorValue) => {
+    if (selector.querySelector('option[value="' + selectorValue + '"]')) {
+        selector.querySelector('option[value="' + selectorValue + '"]')
+            .setAttribute('selected', 'selected');
     }
 }
 
@@ -41,6 +52,7 @@ const initVehicleAdders = (dataTotal) => {
     for (let i = 0; i<buttons.length; i++) {
         buttons[i].addEventListener('click', (e) => {
             const data = {
+                'vehicle_id'              : e.target.dataset.id,
                 'vehicle_immatriculation' : e.target.dataset.immatriculation,
                 'vehicle_chassis'         : e.target.dataset.chassis,
                 'vehicle_hasCome'         : e.target.dataset.hascome,
@@ -95,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
             data = JSON.parse(data);
             data = data[0];
             if (data.client) {
+                console.log(data.client);
                 hydrateForm(data.client)
                 if (data.client.vehicles.length <= 1) {
                     hydrateForm(data.client.vehicles[0])
@@ -106,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             '<td>' + vehicle.vehicle_immatriculation + '</td>' +
                             '<td>' + vehicle.vehicle_chassis + '</td>' +
                             '<td><a class="btn light-blue valid-vehicle modal-close" data-immatriculation="' + vehicle.vehicle_immatriculation + '"' +
-                            ' data-chassis="' + vehicle.vehicle_chassis + '" data-hascome="'+ vehicle.vehicle_hasCome +'">valider</a></td>' +
+                            ' data-chassis="' + vehicle.vehicle_chassis + '" data-id="'+ vehicle.vehicle_id +'" data-hascome="'+ vehicle.vehicle_hasCome +'">valider</a></td>' +
                             '<td><a class="#"><i class="material-icons red-text">delete</i></a></td>' +
                             '</tr>'
                         tableForVehicles.innerHTML = tableForVehicles.innerHTML + html

@@ -23,7 +23,6 @@ class recipientsAjaxTool {
         this.concessionZone       = document.getElementById(this.concessionZoneId);
         this.serviceZone          = document.getElementById(this.serviceZoneId);
         this.recipientZone        = document.getElementById(this.recipientZoneId);
-
         this.serviceField         = document.getElementById(this.serviceFieldId);
         this.recipientField       = document.getElementById(this.recipientFieldId);
 
