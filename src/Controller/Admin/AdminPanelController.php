@@ -12,6 +12,7 @@ use App\Form\ConcessionType;
 use App\Form\ServiceType;
 use App\Repository\CivilityRepository;
 use App\Repository\VehicleRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Variable;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,7 @@ use \DateTime;
 
 /**
  * @Route("/admin", name="admin")
+ *
  */
 class AdminPanelController extends AbstractController
 {
@@ -29,6 +31,7 @@ class AdminPanelController extends AbstractController
      * @Route("/", name="_dashboard")
      * @param Request $request
      * @param VehicleRepository $vehicleRepository
+     * @IsGranted("ROLE_ADMIN")
      * @return Response
      */
     public function index(Request $request, VehicleRepository $vehicleRepository): Response

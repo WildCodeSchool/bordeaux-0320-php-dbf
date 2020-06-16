@@ -6,6 +6,7 @@ use App\Entity\Service;
 use App\Form\ServiceType;
 use App\Repository\ConcessionRepository;
 use App\Repository\ServiceRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/service")
+ * @IsGranted("ROLE_ADMIN")
  */
 class ServiceController extends AbstractController
 {
