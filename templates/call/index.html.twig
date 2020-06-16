@@ -1,8 +1,11 @@
 
     <div class="container">
         {% for call in calls %}
-            <div class="row ligneappel message">
-                <a href="" class="btn btn-floating white btn-pin"><i class="material-icons light-blue-text">perm_phone_msg</i></a>
+            <div class="row ligneappel {{ steps[call.id] is empty ? '' : steps[call.id].class }}">
+                <a href="" class="btn btn-floating white btn-pin {{ steps[call.id].pulse is defined ? steps[call.id].pulse : '' }}">
+                    <i class="material-icons {{ steps[call.id] is empty ? '' : steps[call.id].color }}">
+                        {{ steps[call.id] is empty ? '' : steps[call.id].icon }}</i>
+                </a>
                 <div class="col s4 ">
                     <div class="col s12">
                         <table>

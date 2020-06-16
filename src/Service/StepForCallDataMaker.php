@@ -9,33 +9,43 @@ use App\Entity\RecallPeriod;
 
 class StepForCallDataMaker
 {
+    /**
+     * @param Call $call
+     * @return array
+     */
     public function stepMaker(Call $call)
     {
-        $data = [];
-        $treatments = $call->getCallProcessings();
-        $callSteps = [];
+        $data           = [];
+        $treatments     = $call->getCallProcessings();
+        $callSteps      = [];
         $iconsAndColors = [
             ContactType::ABANDON => [
-                'icon'=> 'close',
-                'color'=>'text-darken-3 grey-text'
+                'class' => 'abandon',
+                'icon'  => 'close',
+                'color' =>'text-darken-3 grey-text'
             ],
             ContactType::CONTACT => [
-                'icon'=> 'phone_in_talk',
-                'color'=>'light-green-text'
+                'class' => 'contact',
+                'icon'  => 'phone_in_talk',
+                'color' =>'light-green-text'
             ],
             ContactType::NOT_ELIGIBLE =>[
-                'icon'=> 'call_end',
-                'color'=>'grey-text'
+                'class' => '',
+                'icon'  => 'call_end',
+                'color'  =>'grey-text'
             ],
             ContactType::MSG1 => [
-                'icon'=> 'perm_phone_msg',
+                'class'=> 'message',
+                'icon' => 'perm_phone_msg',
                 'color'=>'text-lighten-3 light-blue-text'
             ],
             ContactType::MSG2 => [
+                'class'=> 'message',
                 'icon'=> 'perm_phone_msg',
                 'color'=>'light-blue-text'
             ],
             ContactType::MSG3 => [
+                'class'=> 'message',
                 'icon'=> 'perm_phone_msg',
                 'color'=>'text-darken-4 light-blue-text'
             ],
@@ -47,16 +57,17 @@ class StepForCallDataMaker
 
         if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
             $data = [
-                'call_id' => $call->getId(),
-                'icon'=> 'notifications_active',
-                'color'=>'red-text',
+                'class' => 'emergency',
+                'icon'  => 'notifications_active',
+                'color' =>'red-text',
+                'pulse' => 'pulse',
             ];
         } else {
             foreach ($iconsAndColors as $iconAndColor => $values) {
                 if ($callStepIdentifier === $iconAndColor) {
                     $data = [
-                        'call_id' => $call->getId(),
-                        'icon' => $values['icon'],
+                        'class' => $values['class'],
+                        'icon'  => $values['icon'],
                         'color' => $values['color']
                     ];
                 }

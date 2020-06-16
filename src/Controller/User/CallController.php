@@ -54,13 +54,14 @@ class CallController extends AbstractController
         CallRepository $callRepository,
         StepForCallDataMaker $stepForCallDataMaker
     ): Response {
-        //cette ligne sera aussi à remplacer par app->getUser();
+        //cette ligne sera à remplacer par app->getUser();
         $addedCalls = $callRepository->findCallsAddedToday(2);
+        dump($addedCalls);
         $steps = [];
         foreach ($addedCalls as $addedCall) {
-            $steps[] = $stepForCallDataMaker->stepMaker($addedCall);
+            $steps[ $addedCall->getId()] = $stepForCallDataMaker->stepMaker($addedCall);
         }
-        dd($steps);
+
         $call          = new Call();
         $form          = $this->createForm(CallType::class, $call);
 
@@ -87,7 +88,8 @@ class CallController extends AbstractController
         return $this->render('call/add.html.twig', [
             'call'          => $call,
             'form'          => $form->createView(),
-            'calls'         => $addedCalls
+            'calls'         => $addedCalls,
+            'steps'         => $steps
         ]);
     }
 
