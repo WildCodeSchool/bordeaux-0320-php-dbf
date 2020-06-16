@@ -55,6 +55,7 @@ class CallRepository extends ServiceEntityRepository
             ->join('c.comment', 'co')->addSelect('co')
             ->join('c.subject', 'subj')->addSelect('subj')
             ->join('c.vehicle', 'v')->addSelect('v')
+            ->setMaxResults(50)
             ->getQuery();
 
         return $qb->execute();

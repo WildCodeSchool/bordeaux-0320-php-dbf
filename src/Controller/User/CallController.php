@@ -43,13 +43,16 @@ class CallController extends AbstractController
      * @Route("/add", name="call_add", methods={"GET","POST"})
      * @param Request $request
      * @param EntityManagerInterface $entityManager
-     * @param CallRepository $callRepo
+     * @param CallRepository $callRepository
      * @return Response
      */
-    public function add(Request $request, EntityManagerInterface $entityManager, CallRepository $callRepo): Response
-    {
+    public function add(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        CallRepository $callRepository
+    ): Response {
         //cette ligne sera aussi à remplacer par app->getUser();
-        $calls = $callRepo->findCallsAddedToday(2);
+        $calls = $callRepository->findCallsAddedToday(2);
         $call          = new Call();
         //dd($request->request);
         $form          = $this->createForm(CallType::class, $call);
