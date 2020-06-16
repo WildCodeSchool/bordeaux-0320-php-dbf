@@ -42,14 +42,10 @@ class CallRepository extends ServiceEntityRepository
     }
     public function findCallsAddedToday($author)
     {
-        $date = new DateTime('now');
-        $dateLimit = $date->sub(new DateInterval('P1D'));
-
         $qb = $this->createQueryBuilder('c')
             ->Where('c.author = :author')
             ->setParameter('author', $author)
-            ->andWhere('c.createdAt >= :limitDate')
-            ->setParameter('limitDate', $dateLimit)
+            ->andWhere('c.createdAt >= CURRENT_DATE()')
             ->orderBy('c.createdAt', 'DESC')
             ->join('c.client', 'cl')->addSelect('cl')
             ->join('cl.civility', 'civ')->addSelect('civ')
