@@ -16,16 +16,25 @@ const sendData = (phone, action) => {
 
 const hydrateForm = (data) => {
     for (var [key, value] of Object.entries(data)){
-        console.log(key, value)
         if (document.getElementById('call_' + key)) {
             document.getElementById('call_' + key).value = value
+            if (key === 'client_civility') {
+                selectValueInSelect(document.getElementById('call_' + key), value)
+                M.FormSelect.init(document.getElementById('call_' + key), {})
+            }
         }
+    }
+}
+
+const selectValueInSelect = (selector, selectorValue) => {
+    if (selector.querySelector('option[value="' + selectorValue + '"]')) {
+        selector.querySelector('option[value="' + selectorValue + '"]')
+            .setAttribute('selected', 'selected');
     }
 }
 
 const hydrateVehicle = (data) => {
     for (var [key, value] of Object.entries(data)){
-        console.log(key, value);
         if (document.getElementById('call_' + key)) {
             document.getElementById('call_' + key).value = value
         }
