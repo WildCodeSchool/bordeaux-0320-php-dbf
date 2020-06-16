@@ -1,0 +1,19 @@
+.flashes {
+  margin-top:15px;
+  padding: 10px 10px;
+  color:#fff;
+  font-weight: bold;
+  border-radius:5px;
+  .flash-success {
+    color:#039be5;
+  }
+  .flash-error {
+    color:#bf360c;
+  }
+  &.success {
+    background:#b3e5fc;
+  }
+  &.error {
+    background:#ef9a9a;
+  }
+}
