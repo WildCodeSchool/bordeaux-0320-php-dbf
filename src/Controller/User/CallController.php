@@ -3,6 +3,7 @@
 namespace App\Controller\User;
 
 use App\Entity\Call;
+use App\Service\StepForCallDataMaker;
 use DateInterval;
 use DateTime;
 use App\Entity\RecallPeriod;
@@ -44,17 +45,23 @@ class CallController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param CallRepository $callRepository
+     * @param StepForCallDataMaker $stepForCallDataMaker
      * @return Response
      */
     public function add(
         Request $request,
         EntityManagerInterface $entityManager,
-        CallRepository $callRepository
+        CallRepository $callRepository,
+        StepForCallDataMaker $stepForCallDataMaker
     ): Response {
         //cette ligne sera aussi à remplacer par app->getUser();
-        $calls = $callRepository->findCallsAddedToday(2);
+        $addedCalls = $callRepository->findCallsAddedToday(2);
+        $steps = [];
+        foreach ($addedCalls as $addedCall) {
+            $steps[] = $stepForCallDataMaker->stepMaker($addedCall);
+        }
+        dd($steps);
         $call          = new Call();
-        //dd($request->request);
         $form          = $this->createForm(CallType::class, $call);
 
         $form->handleRequest($request);
@@ -80,7 +87,7 @@ class CallController extends AbstractController
         return $this->render('call/add.html.twig', [
             'call'          => $call,
             'form'          => $form->createView(),
-            'calls'         => $calls
+            'calls'         => $addedCalls
         ]);
     }
 
