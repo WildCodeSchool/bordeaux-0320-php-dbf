@@ -13,6 +13,7 @@ use App\Repository\ServiceRepository;
 use App\Repository\VehicleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\CallOnTheWayDataMaker;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/call")
+ * @IsGranted("ROLE_COLLABORATOR")
  */
 class CallController extends AbstractController
 {
@@ -54,6 +56,7 @@ class CallController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             //Cette ligne sera à remplacer par app->getUser();
+
             $author = $entityManager->getRepository(User::class)->findOneById(2);
             $call->setAuthor($author);
 
