@@ -21,9 +21,13 @@
                     </li>
                 </ul>
                 <ul id="nav-mobile" class="right hide-on-med-and-down noshadow">
-                    <li><a href="#" class="black-text"><i class="material-icons left">edit</i>John Doe</a></li>
+                    {% if app.user %}
+                    <li><a href="#" class="black-text"><i class="material-icons left">edit</i>{{ app.user.firstname }} {{ app.user.lastname }}</a></li>
 
-                    <li><a href="#" class="black-text"><i class="material-icons left">logout</i>déconnexion</a></li>
+                    <li><a href="{{ path('app_logout') }}" class="black-text"><i class="material-icons left">logout</i>Déconnexion</a></li>
+                    {% else %}
+                        <a class="black-text" href="{{ path('app_login') }}"> Se Connecter</a>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
