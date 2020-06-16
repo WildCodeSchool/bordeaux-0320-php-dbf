@@ -91,7 +91,6 @@ class User
         $this->callTransfersBy = new ArrayCollection();
         $this->callTransfersTo = new ArrayCollection();
         $this->callTransfersFrom = new ArrayCollection();
-        $this->callsToUser = new ArrayCollection();
         $this->rightByLocations = new ArrayCollection();
         $this->callsUserCreate = new ArrayCollection();
     }

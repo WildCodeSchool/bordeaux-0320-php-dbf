@@ -6,88 +6,28 @@
 
     <div class="container">
         <div class="row">
-            <div class="col s5 mgt30">
+            <div class="col s3 mgt30">
                 <div class="col s12">
-                    <h5><b>A traiter aujourd'hui</b></h5>
+                    <h5><b>Bonjour {{ user.firstname }} {{ user.lastname }}</b></h5>
                 </div>
-                <div class="col s12">
-                <ul class="list-calls">
-                    <li class="collection-item">
-                        <span class="title"><b>Mr Devaux</b></span>
-                        <a href="#!" class="secondary-content"><i class="material-icons red-text">notifications</i></a>
 
-                        <p>0876786756<br>
-                            <small>Rev 30000 - RDV Lateste</small>
-                        </p>
-                    </li>
-                    <li class="collection-item ">
-                        <span class="title"><b>Mr Henri</b></span>
-                        <a href="#!" class="secondary-content"><i class="material-icons red-text">notifications</i></a>
-                        <p>0876899056<br>
-                            <small>Rev 60000 - RDV Lateste</small>
-                        </p>
-                    </li>
-                    <li class="collection-item ">
-                        <a href="#!" class="secondary-content"><span class="chip light-blue white-text">Avant 18h30</span></a>
-                        <span class="title"><b>Mr Daniel</b></span>
-                        <a href="#!" class="secondary-content"><span class="chip light-blue white-text">Avant 18h30</span></a>
-
-                        <p>0877890056<br>
-                            <small>Freins - RDV Mérignac</small>
-                        </p>
-                    </li>
-                    <li class="collection-item ">
-                        <a href="#!" class="secondary-content"><span class="chip light-blue white-text">Avant 19h00</span></a>
-                        <span class="title"><b>Mme Michel</b></span>
-                        <p>0767865434<br>
-                            <small>Embrayage - RDV Lateste</small>
-                        </p>
-                    </li>
-                </ul>
-                </div>
             </div>
-            <div class="col s5 offset-s2 mgt30">
+            <div class="col s8 offset-s1 mgt30">
                 <div class="col s12">
-                    <h5><b>A traiter demain</b></h5>
+                    <h5><b>Vos appels à traiter</b></h5>
                 </div>
                 <div class="col s12">
                     <ul class="list-calls">
+                        {% for call in calls %}
                         <li class="collection-item ">
-                            <span class="title"><b>Mr Devaux</b></span>
-                            <a href="#!" class="secondary-content"><span class="chip light-blue white-text">Avant 19h00</span></a>
+                            <span class="title"><b>{{call.client.name}}</b></span>
+                            <a href="#!" class="secondary-content"><span class="chip light-blue white-text">{{call.recallPeriod.name}} {{call.recallHour|date('H:i')}}</span></a>
 
-                            <p>0876786756<br>
-                                <small>Rev 30000 - RDV Lateste</small>
+                            <p>{{call.client.phone}}<br>
+                                <small>{{call.subject.name}} - {{call.comment.name}}</small>
                             </p>
                         </li>
-                        <li class="collection-item ">
-                            <span class="title"><b>Mr Henri</b></span>
-                            <a href="#!" class="secondary-content"><span class="chip light-blue white-text">Avant 19h00</span></a>
-                            <p>0876899056<br>
-                                <small>Rev 60000 - RDV Lateste</small>
-                            </p>
-                        </li>
-                        <li class="collection-item ">
-                            <a href="#!" class="secondary-content"><span class="chip light-blue white-text">Avant 19h30</span></a>
-                            <span class="title"><b>Mr Daniel</b></span>
-                            <p>0877890056<br>
-                                <small>Freins - RDV Mérignac</small>
-                            </p>
-                        </li>
-                        <li class="collection-item ">
-                            <a href="#!" class="secondary-content"><span class="chip light-blue white-text">Avant 19h30</span></a>
-                            <span class="title"><b>Mr Daniel</b></span>
-                            <p>0877890056<br>
-                                <small>Freins - RDV Mérignac</small>
-                            </p>
-                        </li>
-                        <li class="collection-item ">
-                            <a href="#!" class="secondary-content"><span class="chip light-blue white-text">après 19h00</span></a>
-                            <span class="title"><b>Mme Michel</b></span>
-                            <p>0767865434<br>
-                                <small>Embrayage - RDV Lateste</small>
-                            </p>
-                        </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>
