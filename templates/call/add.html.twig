@@ -10,7 +10,11 @@
                 <h3>Ajout d'un appel</h3>
             </div>
             <div class="col s4">
-                flashes
+                {% for type, messages in app.session.flashbag.all() %}
+                    {% for message in messages %}
+                           <span class="flash-{{ type }}">{{ message }}</span>
+                    {% endfor %}
+                {% endfor %}
             </div>
 
         </div>
