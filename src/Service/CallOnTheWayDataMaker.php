@@ -22,17 +22,18 @@ class CallOnTheWayDataMaker
                     'client_name'     => $client->getName(),
                     'client_civility' => $client->getCivility()->getName(),
                     'client_phone'    => $client->getPhone(),
-                    'client_phone2'    => $client->getPhone2(),
+                    'client_phone2'   => $client->getPhone2(),
                     'client_email'    => $client->getEmail(),
-                    'vehicles'       => [],
+                    'vehicles'        => [],
                 ],
             ];
             if (!empty($vehicles)) {
                 foreach ($vehicles as $vehicle) {
                     $data['client']['vehicles'][] = [
-                        'vehicle_immatriculation'   => $vehicle->getImmatriculation(),
-                        'vehicle_chassis' => $vehicle->getChassis(),
-                        'vehicle_hasCome' => $vehicle->getHasCome(),
+                        'vehicle_id'              => $vehicle->getId(),
+                        'vehicle_immatriculation' => $vehicle->getImmatriculation(),
+                        'vehicle_chassis'         => $vehicle->getChassis(),
+                        'vehicle_hasCome'         => $vehicle->getHasCome(),
                     ];
                 }
             }
