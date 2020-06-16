@@ -7,7 +7,7 @@ use App\Entity\Call;
 use App\Entity\ContactType;
 use App\Entity\RecallPeriod;
 
-class StepForCallDataMaker
+class CallTreatmentDataMaker
 {
     /**
      * @param Call $call
@@ -15,9 +15,6 @@ class StepForCallDataMaker
      */
     public function stepMaker(Call $call)
     {
-        $data           = [];
-        $treatments     = $call->getCallProcessings();
-        $callSteps      = [];
         $iconsAndColors = [
             ContactType::ABANDON => [
                 'class' => 'abandon',
@@ -50,6 +47,10 @@ class StepForCallDataMaker
                 'color'=>'text-darken-4 light-blue-text'
             ],
         ];
+        $data           = [];
+        $treatments     = $call->getCallProcessings();
+        $callSteps      = [];
+
         foreach ($treatments as $step) {
             $callSteps[] = $step->getContactType()->getIdentifier();
         }
@@ -74,5 +75,23 @@ class StepForCallDataMaker
             }
         }
         return $data;
+    }
+
+    /**
+     * @param Call $call
+     * @return mixed
+     */
+    public function getLastTreatment(Call $call)
+    {
+        $treatments     = $call->getCallProcessings();
+        $callSteps      = [];
+        foreach ($treatments as $step) {
+            $callSteps[] = $step->getContactType()->getName();
+        }
+        $lastStepName = end($callSteps);
+        if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
+            $lastStepName = RecallPeriod::URGENT;
+        }
+        return $lastStepName;
     }
 }

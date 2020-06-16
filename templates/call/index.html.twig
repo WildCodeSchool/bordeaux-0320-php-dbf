@@ -1,10 +1,13 @@
 
     <div class="container">
-        {% for call in calls %}
-            <div class="row ligneappel {{ steps[call.id] is empty ? '' : steps[call.id].class }}">
-                <a href="" class="btn btn-floating white btn-pin {{ steps[call.id].pulse is defined ? steps[call.id].pulse : '' }}">
-                    <i class="material-icons {{ steps[call.id] is empty ? '' : steps[call.id].color }}">
-                        {{ steps[call.id] is empty ? '' : steps[call.id].icon }}</i>
+        {% for addedCall in addedCalls %}
+                <div class="row ligneappel {{ steps[addedCall.id].class is defined ? steps[addedCall.id].class : '' }}">
+                <a href="" class="btn btn-floating white btn-pin
+                                {{ steps[addedCall.id].pulse is defined ? steps[addedCall.id].pulse : '' }}">
+                    <i class="material-icons
+                            {{ steps[addedCall.id].color is defined ? steps[addedCall.id].color : '' }}">
+                        {{ steps[addedCall.id].icon is defined ? steps[addedCall.id].icon : '' }}
+                    </i>
                 </a>
                 <div class="col s4 ">
                     <div class="col s12">
@@ -14,7 +17,7 @@
                                     <b>Appel reçu par</b>
                                 </td>
                                 <td>
-                                    {{call.author.firstname ~ ' ' ~ call.author.lastname }}
+                                    {{addedCall.author.firstname ~ ' ' ~ addedCall.author.lastname }}
                                 </td>
                             </tr>
                             <tr class="bdb0">
@@ -22,7 +25,7 @@
                                     <b>Appel pour</b>
                                 </td>
                                 <td>
-                                    {{call.recipient.firstname ~ ' ' ~ call.recipient.lastname }}
+                                    {{addedCall.recipient.firstname ~ ' ' ~ addedCall.recipient.lastname }}
                                 </td>
                             </tr>
                             <tr class="bdb0">
@@ -30,7 +33,7 @@
                                     <b>Concession</b>
                                 </td>
                                 <td>
-                                    {{call.service.concession.name}}
+                                    {{addedCall.service.concession.name}}
                                 </td>
                             </tr>
                             <tr class="bdb0">
@@ -38,7 +41,7 @@
                                     <b>Service</b>
                                 </td>
                                 <td>
-                                    {{call.service.name}}
+                                    {{addedCall.service.name}}
                                 </td>
                             </tr>
                         </table>
@@ -52,7 +55,7 @@
                                     <b>Client</b>
                                 </td>
                                 <td>
-                                    {{ call.client.civility.name ~ ' ' ~ call.client.name}}
+                                    {{ addedCall.client.civility.name ~ ' ' ~ addedCall.client.name}}
                                 </td>
                             </tr>
                             <tr class="bdb0">
@@ -60,7 +63,7 @@
                                     <b>Tel. 1</b>
                                 </td>
                                 <td>
-                                    {{call.client.phone}}
+                                    {{addedCall.client.phone}}
                                 </td>
                             </tr>
                             <tr>
@@ -68,15 +71,15 @@
                                     <b>Tel. 2</b>
                                 </td>
                                 <td>
-                                    {{call.client.phone2}}
+                                    {{addedCall.client.phone2}}
                                 </td>
                             </tr>
                             <tr>
                                 <td>
                                     <b>Traitement</b>
                                 </td>
-                                <td class="light-blue-text">
-                                    //TO DO
+                                <td class="{{ steps[addedCall.id].lastStepName == 'urgent' ? "red-text" : 'light-blue-text' }}">
+                                    {{ steps[addedCall.id].lastStepName is defined ? steps[addedCall.id].lastStepName : '' }}
                                 </td>
                             </tr>
 
@@ -91,7 +94,7 @@
                                     <b>Rappeler</b>
                                 </td>
                                 <td>
-                                    {{ call.recallDate|date('d-m-Y') ~ ' ' ~ call.recallPeriod.name ~ ' ' ~ call.recallHour|date('H:i') }}
+                                    {{ addedCall.recallDate|date('d-m-Y') ~ ' ' ~ addedCall.recallPeriod.name ~ ' ' ~ addedCall.recallHour|date('H:i') }}
                                 </td>
                             </tr>
                             <tr>
@@ -99,7 +102,7 @@
                                     <b>Motif</b>
                                 </td>
                                 <td>
-                                    {{call.subject.name}}
+                                    {{addedCall.subject.name}}
                                 </td>
                             </tr>
                             <tr>
@@ -107,7 +110,7 @@
                                     <b>Commentaire</b>
                                 </td>
                                 <td>
-                                    {{call.comment.name}}
+                                    {{addedCall.comment.name}}
                                 </td>
                             </tr>
                             <tr>
@@ -115,7 +118,7 @@
                                     <b>Immat</b>
                                 </td>
                                 <td>
-                                    <span class="immat">{{ call.vehicle.immatriculation }}</span>
+                                    <span class="immat">{{ addedCall.vehicle.immatriculation }}</span>
                                 </td>
                             </tr>
 
