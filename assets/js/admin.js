@@ -60,25 +60,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
-
-
-
-
-
-
-
-/*
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById("service-button").addEventListener("click", function (e) {
-        e.preventDefault();
-        const name = document.getElementById('service_name').value;
-        const concession = document.getElementById('service_concession').value;
-        if (name && concession) {
-            M.toast({html: 'I am a toast!', classes: 'rounded'});
-        }
-    })
-});
-*/
-
