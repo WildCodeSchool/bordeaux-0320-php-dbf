@@ -4,9 +4,13 @@ namespace App\Entity;
 
 use App\Repository\CallProcessingRepository;
 use Doctrine\ORM\Mapping as ORM;
+use \DateTime;
+use App\Service\CallTreatmentDataMaker;
 
 /**
  * @ORM\Entity(repositoryClass=CallProcessingRepository::class)
+ * @ORM\HasLifecycleCallbacks()
+ * @ORM\Table(name="`call_processing`")
  */
 class CallProcessing
 {
@@ -39,6 +43,8 @@ class CallProcessing
      */
     private $referedCall;
 
+    private $stepColors;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -49,10 +55,13 @@ class CallProcessing
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @ORM\PrePersist
+     * @return $this
+     */
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new DateTime('Europe/Paris');
         return $this;
     }
 
@@ -90,5 +99,10 @@ class CallProcessing
         $this->referedCall = $referedCall;
 
         return $this;
+    }
+
+    public function getStepColors()
+    {
+        return CallTreatmentDataMaker::stepMakerForProcess($this);
     }
 }

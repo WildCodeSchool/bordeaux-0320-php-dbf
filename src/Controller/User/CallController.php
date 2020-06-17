@@ -55,7 +55,7 @@ class CallController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         VehicleRepository $vehicleRepository,
-        ClientRepository $clientRepository,      
+        ClientRepository $clientRepository,
         CallRepository $callRepository,
         CallTreatmentDataMaker $callTreatmentDataMaker
     ): Response {
@@ -73,9 +73,7 @@ class CallController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            //Cette ligne sera à remplacer par app->getUser();
-
-            $author = $entityManager->getRepository(User::class)->findOneById(2);
+            $author = $this->getUser();
             $call->setAuthor($author);
 
             $call->setIsUrgent(false);
