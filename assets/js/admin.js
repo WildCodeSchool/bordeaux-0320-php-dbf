@@ -50,6 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalAddConcession = document.getElementById('modal-add-concession');
     const instanceModalAddConcession = M.Modal.init(modalAddConcession, {});
 
+    const modalAddSubject = document.getElementById('modal-add-subject');
+    const instanceModalAddSubject = M.Modal.init(modalAddSubject, {});
+
     var tooltips = document.querySelectorAll('.tooltipped');
     var instancesOfTooltips = M.Tooltip.init(tooltips);
 
