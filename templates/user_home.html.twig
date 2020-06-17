@@ -85,13 +85,13 @@
                                                     <tr class="call-step">
                                                         <td>
                                                             <b>
-                                                            {% if process.createdAt|date('Y-m-d') == date()|date('Y-m-d') %}
-                                                                Aujourd'hui
-                                                            {% elseif process.createdAt|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
-                                                                Hier
-                                                            {% else %}
-                                                                le {{ process.createdAt|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
-                                                            {% endif %}
+                                                                {% if process.createdAt|date('Y-m-d') == date()|date('Y-m-d') %}
+                                                                    Aujourd'hui
+                                                                {% elseif process.createdAt|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
+                                                                    Hier
+                                                                {% else %}
+                                                                    le {{ process.createdAt|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
+                                                                {% endif %}
                                                             </b>
                                                         </td>
                                                         <td> à {{ process.createdAt|date('H:i') }}</td>
