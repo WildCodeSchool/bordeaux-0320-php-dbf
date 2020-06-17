@@ -1,0 +1,54 @@
+.row {
+  .input-field {
+    input[type="text"] {
+      &:focus {
+        box-shadow : 0 1px 0 0 $blue-dbf;
+        border-bottom: 1px solid $blue-dbf;
+      }
+    }
+    input[type="email"] {
+      &:focus {
+        box-shadow : 0 1px 0 0 $blue-dbf;
+        border-bottom: 1px solid $blue-dbf;
+      }
+    }
+    input[type="url"] {
+      &:focus {
+        box-shadow : 0 1px 0 0 $blue-dbf;
+        border-bottom: 1px solid $blue-dbf;
+      }
+    }
+    input[type="date"] {
+      &:focus {
+        box-shadow : 0 1px 0 0 $blue-dbf;
+        border-bottom: 1px solid $blue-dbf;
+      }
+    }
+    input[type="password"] {
+      &:focus {
+        box-shadow : 0 1px 0 0 $blue-dbf;
+        border-bottom: 1px solid $blue-dbf;
+      }
+    }
+  }
+}
+
+.select-wrapper {
+  ul {
+    &.dropdown-content {
+      li {
+        min-height:30px;
+        &.selected {
+          span {
+            background:$blue-dbf;
+            color:#fff;
+          }
+        }
+        span {
+          color: #424242;
+          padding:7px 16px;
+        }
+      }
+    }
+  }
+}
