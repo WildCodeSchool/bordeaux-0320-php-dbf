@@ -31,21 +31,21 @@ class SubjectController extends AbstractController
     public function new(Request $request): Response
     {
         $subject = new Subject();
-        $form = $this->createForm(SubjectType::class, $subject);
-        $form->handleRequest($request);
+        $formSubject = $this->createForm(SubjectType::class, $subject);
+        $formSubject->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formSubject->isSubmitted() && $formSubject->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($subject);
             $entityManager->flush();
 
 
-            return $this->redirectToRoute('subject_index');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('subject/new.html.twig', [
             'subject' => $subject,
-            'form' => $form->createView(),
+            'form_subject' => $formSubject->createView(),
         ]);
     }
 

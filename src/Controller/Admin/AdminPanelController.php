@@ -4,13 +4,21 @@ namespace App\Controller\Admin;
 
 use App\Entity\Civility;
 use App\Entity\Client;
+use App\Entity\Comment;
 use App\Entity\Concession;
 use App\Entity\Service;
+use App\Entity\Subject;
+use App\Form\CityType;
 use App\Form\CivilityType;
 use App\Form\ClientType;
+use App\Form\CommentType;
 use App\Form\ConcessionType;
 use App\Form\ServiceType;
+use App\Form\SubjectType;
+use App\Repository\CityRepository;
 use App\Repository\CivilityRepository;
+use App\Repository\CommentRepository;
+use App\Repository\SubjectRepository;
 use App\Repository\VehicleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,11 +39,20 @@ class AdminPanelController extends AbstractController
      * @Route("/", name="_dashboard")
      * @param Request $request
      * @param VehicleRepository $vehicleRepository
+     * @param SubjectRepository $subjectRepository
+     * @param CommentRepository $commentRepository
+     * @param CityRepository $cityRepository
      * @IsGranted("ROLE_ADMIN")
      * @return Response
      */
-    public function index(Request $request, VehicleRepository $vehicleRepository): Response
-    {
+    public function index(
+        Request $request,
+        VehicleRepository $vehicleRepository,
+        SubjectRepository $subjectRepository,
+        CommentRepository $commentRepository,
+        CityRepository $cityRepository
+    ): Response {
+
         $client = new Client();
         $civilities = $this->getDoctrine()->getRepository(Civility::class);
         $services = $this->getDoctrine()->getRepository(Service::class);
@@ -45,17 +62,27 @@ class AdminPanelController extends AbstractController
         $formCivility = $this->createForm(CivilityType::class);
         $formService = $this->createForm(ServiceType::class);
         $formConcession = $this->createForm(ConcessionType::class);
+        $formSubject = $this->createForm(SubjectType::class);
+        $formComment = $this->createForm(CommentType::class);
+        $formCity   = $this->createForm((CityType::class));
 
         return $this->render('admin/index.html.twig', [
-            'client' => $client,
-            'form' => $formClient->createView(),
-            'services'=> $services->findAll(),
-            'form_civility' => $formCivility->createView(),
-            'form_service' => $formService->createView(),
-            'form_concession'=> $formConcession->createView(),
-            'civilities' => $civilities->findAll(),
-            'concessions'=> $concessions->findAll(),
-            'vehicles' => $vehicleRepository->findAll(),
+            'client'            => $client,
+            'form'              => $formClient->createView(),
+            'services'          => $services->findAll(),
+            'form_civility'     => $formCivility->createView(),
+            'form_service'      => $formService->createView(),
+            'form_concession'   => $formConcession->createView(),
+            'form_subject'      => $formSubject->createView(),
+            'form_comment'      => $formComment->createView(),
+            'form_city'         => $formCity->createView(),
+            'civilities'        => $civilities->findAll(),
+            'concessions'       => $concessions->findAll(),
+            'vehicles'          => $vehicleRepository->findAll(),
+            'subjects'          => $subjectRepository->findAll(),
+            'comments'          => $commentRepository->findAll(),
+            'cities'            => $cityRepository->findAll(),
+
         ]);
     }
 
@@ -76,7 +103,6 @@ class AdminPanelController extends AbstractController
         $client->setName($post['name']);
         $client->setPhone($post['phone']);
         $client->setPhone2($post['phone2']);
-        $client->setPostcode($post['postcode']);
         $client->setEmail($post['email']);
         $client->setCreatedAt();
         $entityManager = $this->getDoctrine()->getManager();

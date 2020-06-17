@@ -50,6 +50,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalAddConcession = document.getElementById('modal-add-concession');
     const instanceModalAddConcession = M.Modal.init(modalAddConcession, {});
 
+    const modalAddSubject = document.getElementById('modal-add-subject');
+    const instanceModalAddSubject = M.Modal.init(modalAddSubject, {});
+
+    const modalAddComment = document.getElementById('modal-add-comment');
+    const instanceModalAddComment = M.Modal.init(modalAddComment, {});
+
+    const modalListCity = document.getElementById('modal-list-city');
+    const instanceModalListCity = M.Modal.init(modalListCity, {});
+
+    const modalAddCity = document.getElementById('modal-add-city');
+    const instanceModalAddCity = M.Modal.init(modalAddCity, {});
+
     var tooltips = document.querySelectorAll('.tooltipped');
     var instancesOfTooltips = M.Tooltip.init(tooltips);
 
