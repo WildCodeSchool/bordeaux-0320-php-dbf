@@ -49,6 +49,20 @@ class UserFixtures extends Fixture
 
         $manager->persist($admin);
 
+        // Création d’un utilisateur de test
+        $test = new User();
+        $test->setEmail('test@dbf.com');
+        $test->setFirstname('test');
+        $test->setLastname('');
+        $test->setCreatedAt(new DateTime());
+        $test->setRoles(['ROLE_COLLABORATOR']);
+        $test->setPassword($this->passwordEncoder->encodePassword(
+            $test,
+            'test'
+        ));
+
+        $manager->persist($test);
+
         $faker = Faker\Factory::create('fr_FR');
         for ($i = 0; $i < 10; $i++) {
             $user = new User();

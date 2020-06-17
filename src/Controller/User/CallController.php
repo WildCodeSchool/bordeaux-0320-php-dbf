@@ -106,7 +106,7 @@ class CallController extends AbstractController
         return $this->render('call/add.html.twig', [
             'call'          => $call,
             'form'          => $form->createView(),
-            'addedCalls'         => $addedCalls,
+            'addedCalls'    => $addedCalls,
             'steps'         => $steps
         ]);
     }
@@ -116,7 +116,7 @@ class CallController extends AbstractController
      * @param Call $call
      * @return Response
      */
-    public function show(Call $call): Response
+    public function show(Call $call, ClientRepository $clientRepository): Response
     {
         return $this->render('call/show.html.twig', [
             'call' => $call,
@@ -180,6 +180,7 @@ class CallController extends AbstractController
      * @param ClientRepository $clientRepository
      * @param CallRepository $callRepository
      * @param CallOnTheWayDataMaker $callOnTheWayDataMaker
+     * @param int $phoneNumber
      * @return JsonResponse
      */
     public function listAllCallsOnTheWayByPhoneNumber(
@@ -203,5 +204,17 @@ class CallController extends AbstractController
         return new JsonResponse([
             $data
         ]);
+    }
+
+    /**
+     * @Route("/reattribute/{id}", name="reattribute_phone_number",  methods={"GET"})
+     * @param ClientRepository $clientRepository
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function reattributePhoneNumber(ClientRepository $clientRepository, $id): JsonResponse
+    {
+         $clientRepository->setPhoneToNull($id);
+         return new JsonResponse();
     }
 }

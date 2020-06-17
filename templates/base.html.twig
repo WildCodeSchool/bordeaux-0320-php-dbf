@@ -42,6 +42,7 @@
             <li  class="{% if app.request.get('_route')  == 'stat' %} active {% endif %}"><a href="gestions.html" class="tooltipped" data-position="right" data-tooltip="statistiques"><i class="material-icons">insert_chart</i></a></li>
             <li class="{% if app.request.get('_route')  == 'calls_all' %} active {% endif %}"><a href="{{ path('calls_all') }}" class="tooltipped" data-position="right" data-tooltip="Tous les appels"><i class="material-icons">description</i></a></li>
             <li><a href="{{ path('admin_dashboard') }}" class="tooltipped" data-position="right" data-tooltip="admin dashboard"><i class="material-icons">settings</i></a></li>
+
         </ul>
     </header>
     {% endblock %}
