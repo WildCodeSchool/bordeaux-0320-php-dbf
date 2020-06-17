@@ -10,14 +10,7 @@ use App\Entity\RecallPeriod;
 
 class CallTreatmentDataMaker
 {
-
-    /**
-     * @param CallProcessing $process
-     * @return array
-     */
-    public static function stepMakerForProcess(CallProcessing $process)
-    {
-        $iconsAndColors = [
+    const ICONS_AND_COLORS = [
             ContactType::ABANDON => [
                 'class' => 'abandon',
                 'icon'  => 'close',
@@ -49,9 +42,16 @@ class CallTreatmentDataMaker
                 'color'=>'text-darken-4 light-blue-text'
             ],
         ];
+
+    /**
+     * @param CallProcessing $process
+     * @return array
+     */
+    public static function stepMakerForProcess(CallProcessing $process)
+    {
         $step = $process->getContactType()->getIdentifier();
         if ($step)
-        return json_decode(json_encode($iconsAndColors[$step]));
+        return json_decode(json_encode(self::ICONS_AND_COLORS[$step]));
     }
 
 
@@ -61,38 +61,6 @@ class CallTreatmentDataMaker
      */
     public function stepMaker(Call $call)
     {
-        $iconsAndColors = [
-            ContactType::ABANDON => [
-                'class' => 'abandon',
-                'icon'  => 'close',
-                'color' =>'text-darken-3 grey-text'
-            ],
-            ContactType::CONTACT => [
-                'class' => 'contact',
-                'icon'  => 'phone_in_talk',
-                'color' =>'light-green-text'
-            ],
-            ContactType::NOT_ELIGIBLE =>[
-                'class' => '',
-                'icon'  => 'call_end',
-                'color'  =>'grey-text'
-            ],
-            ContactType::MSG1 => [
-                'class'=> 'message',
-                'icon' => 'perm_phone_msg',
-                'color'=>'text-lighten-3 light-blue-text'
-            ],
-            ContactType::MSG2 => [
-                'class'=> 'message',
-                'icon'=> 'perm_phone_msg',
-                'color'=>'light-blue-text'
-            ],
-            ContactType::MSG3 => [
-                'class'=> 'message',
-                'icon'=> 'perm_phone_msg',
-                'color'=>'text-darken-4 light-blue-text'
-            ],
-        ];
         $data           = [];
         $treatments     = $call->getCallProcessings();
         $callSteps      = [];
@@ -102,6 +70,15 @@ class CallTreatmentDataMaker
         }
         $callStepIdentifier = end($callSteps);
 
+        foreach (self::ICONS_AND_COLORS as $iconAndColor => $values) {
+            if ($callStepIdentifier === $iconAndColor) {
+                $data = [
+                    'class' => $values['class'],
+                    'icon'  => $values['icon'],
+                    'color' => $values['color']
+                ];
+            }
+        }
         if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
             $data = [
                 'class' => 'emergency',
@@ -109,17 +86,8 @@ class CallTreatmentDataMaker
                 'color' =>'red-text',
                 'pulse' => 'pulse',
             ];
-        } else {
-            foreach ($iconsAndColors as $iconAndColor => $values) {
-                if ($callStepIdentifier === $iconAndColor) {
-                    $data = [
-                        'class' => $values['class'],
-                        'icon'  => $values['icon'],
-                        'color' => $values['color']
-                    ];
-                }
-            }
         }
+
         return $data;
     }
 
