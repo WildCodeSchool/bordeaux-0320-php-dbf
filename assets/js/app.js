@@ -21,6 +21,8 @@ require('./admin.js');
 require('./clientFormAdmin');
 require('./recipientForm');
 require('./searchClientByPhone');
+require('./callProcess');
 require('./reattributePhone');
+
 
 

@@ -16,10 +16,7 @@ class UserHomeController extends AbstractController
      */
     public function homeUser(CallRepository $callRepository, UserRepository $userRepository): Response
     {
-        /*
-         * $appUser sera l'utilisateur connecté
-         */
-        $appUser = $userRepository->findOneById(6);
+        $appUser = $this->getUser();
 
         $callsToProcess = $callRepository->callsToProcessByUser($appUser);
         $callsInProcess  = $callRepository->callsInProcessByUser($appUser);

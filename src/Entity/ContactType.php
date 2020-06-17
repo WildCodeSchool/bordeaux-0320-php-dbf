@@ -14,7 +14,7 @@ class ContactType
 {
     const CONTACT      = 'contact';
     const ABANDON      = 'abandon';
-    const NOT_ELIGIBLE =  'nl';
+    const NOT_ELIGIBLE = 'nl';
     const MSG1         = 'msg1';
     const MSG2         = 'msg2';
     const MSG3         = 'msg3';

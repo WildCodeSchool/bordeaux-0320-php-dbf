@@ -1,0 +1,49 @@
+<div class="row">
+    <h4>Traiter un appel</h4>
+</div>
+<div class="row">
+    <div class="col s6">
+        <div class="col s12">
+            <span class="title"><h5>{{call.client.name}}</h5></span>
+            <p>
+                {{call.client.phone}}<br>
+                {{ call.client.phone2 }}
+            </p>
+            <p>
+                <b>{{ call.service.concession.town.name }} > {{ call.service.concession.name }} > {{ call.service.name }}</b><br>
+                <small>{{call.subject.name}} - {{call.comment.name}}</small><br>
+            </p>
+        </div>
+    </div>
+    <div class="col s6">
+        <div class="row">
+            {% include 'call_process/_form.html.twig' %}
+        </div>
+        <div class="row">
+            {% if call.callProcessings %}
+                {% for process in call.callProcessings|reverse %}
+                    <div class="col s12">
+                        <table class="call-stepper">
+                            <tr class="call-step">
+                                <td>
+                                    <b>
+                                        {% if process.createdAt|date('Y-m-d') == date()|date('Y-m-d') %}
+                                            Aujourd'hui
+                                        {% elseif process.createdAt|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
+                                            Hier
+                                        {% else %}
+                                            le {{ process.createdAt|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
+                                        {% endif %}
+                                    </b>
+                                </td>
+                                <td> à {{ process.createdAt|date('H:i') }}</td>
+                                <td class="{{ process.stepColors.color }}">{{ process.contactType.name }}</td>
+                                <td>{{ process.comment }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>

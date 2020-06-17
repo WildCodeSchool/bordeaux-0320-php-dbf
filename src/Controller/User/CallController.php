@@ -73,9 +73,7 @@ class CallController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            //Cette ligne sera à remplacer par app->getUser();
-
-            $author = $entityManager->getRepository(User::class)->findOneById(2);
+            $author = $this->getUser();
             $call->setAuthor($author);
 
             $call->setIsUrgent(false);
