@@ -70,7 +70,6 @@ class CallController extends AbstractController
                 $client = $clientRepository->findOneById($request->request->get('call')['client_id']);
                 $call->setClient($client);
                 $entityManager->persist($client);
-                $entityManager->flush();
             }
 
             $vehicle = $call->getVehicle();
@@ -78,13 +77,13 @@ class CallController extends AbstractController
                 $vehicle = $vehicleRepository->findOneById($request->request->get('call')['vehicle_id']);
                 $call->setVehicle($vehicle);
                 $entityManager->persist($vehicle);
-                $entityManager->flush();
             }
 
             $vehicle->setClient($client);
 
             $entityManager->persist($call);
             $entityManager->flush();
+            $this->addFlash('success', 'Appel ajouté ');
 
             return $this->redirectToRoute('call_add');
         }

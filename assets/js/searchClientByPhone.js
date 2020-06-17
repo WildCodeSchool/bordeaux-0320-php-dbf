@@ -107,8 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
             data = JSON.parse(data);
             data = data[0];
             if (data.client) {
-                console.log(data.client);
+                console.log(data.client.client_id);
                 hydrateForm(data.client)
+
+                const reattribute = document.getElementById('reattribute');
+                reattribute.dataset.client = data.client.client_id
+                reattribute.classList.remove('hide');
+
                 if (data.client.vehicles.length <= 1) {
                     hydrateForm(data.client.vehicles[0])
                     alertForCalls(data.calls)

@@ -3,7 +3,10 @@
     <div class="row">
         <!-- CLIENT ----->
         <div class="col s8">
-                <h5 class="light-blue-text"><i class="material-icons left">person</i> Client</h5>
+                <h5 class="light-blue-text"><i class="material-icons left">person</i> Client
+                    <a href="#" class="btn grey darken-3 white-text btn-small editor hide" id="reattribute" data-client="">ce numéro a été réattribué</a>
+                    <img src="{{ asset('build/loader.gif') }}" width="20px" class="hide">
+                </h5>
                 <div class="row mgt15">
                     <div class="input-field col s5">
                         {{ form_label(form.client.phone) }}
@@ -38,17 +41,17 @@
                     {{ form_widget(form.vehicle.immatriculation) }}
                     <a class="copyer" href="#" data-copy="call_vehicle_immatriculation"><i class="material-icons">content_copy</i></a>
                 </div>
-                <div class="input-field col s6 ">
+                <div class="input-field col s6 call-switcher">
+                    {{ form_widget(form.vehicle.hasCome) }}
+                    <small class="grey-text text-lighten_2 mgt-30">Déja passé en atelier ?</small><br>
+                    <div class="col s6">
+                        <div id="switcher_add_call"></div>
+                    </div>
+                </div>
+                <div class="input-field col s12 ">
                     {{ form_label(form.vehicle.chassis) }}
                     {{ form_widget(form.vehicle.chassis) }}
                     <a class="copyer" href="#" data-copy="call_vehicle_chassis"><i class="material-icons">content_copy</i></a>
-                </div>
-                <div class="input-field col s12 ">
-                    {{ form_widget(form.vehicle.hasCome) }}
-                    <small class="grey-text text-lighten_2">Déja passé en atelier ?</small><br>
-                    <div class="col s4">
-                        <div id="switcher_add_call"></div>
-                    </div>
                 </div>
 
             </div>
