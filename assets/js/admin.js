@@ -53,6 +53,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalAddSubject = document.getElementById('modal-add-subject');
     const instanceModalAddSubject = M.Modal.init(modalAddSubject, {});
 
+    const modalAddComment = document.getElementById('modal-add-comment');
+    const instanceModalAddComment = M.Modal.init(modalAddComment, {});
+
     var tooltips = document.querySelectorAll('.tooltipped');
     var instancesOfTooltips = M.Tooltip.init(tooltips);
 

@@ -31,20 +31,20 @@ class CommentController extends AbstractController
     public function new(Request $request): Response
     {
         $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
+        $formComment = $this->createForm(CommentType::class, $comment);
+        $formComment->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formComment->isSubmitted() && $formComment->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
             $entityManager->flush();
 
-            return $this->redirectToRoute('comment_index');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('comment/new.html.twig', [
             'comment' => $comment,
-            'form' => $form->createView(),
+            'form_comment' => $formComment->createView(),
         ]);
     }
 
