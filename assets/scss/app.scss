@@ -1,11 +1,12 @@
 /* Materialize import CSS */
 @import "~materialize-css/sass/materialize.scss";
-
 @import "vars";
 @import "~triswitch";
 @import "switch3";
 @import "animations";
 @import "callList";
+@import "userHome";
+@import "flashes";
 
 
 .paddleft {

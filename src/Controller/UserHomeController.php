@@ -16,12 +16,17 @@ class UserHomeController extends AbstractController
      */
     public function homeUser(CallRepository $callRepository, UserRepository $userRepository): Response
     {
-        // $appUser sera l'utilisateur connecté
+        /*
+         * $appUser sera l'utilisateur connecté
+         */
         $appUser = $userRepository->findOneById(6);
-        $callsForUser = $callRepository->callsToProcessByUser($appUser);
+
+        $callsToProcess = $callRepository->callsToProcessByUser($appUser);
+        $callsInProcess  = $callRepository->callsInProcessByUser($appUser);
         return $this->render('user_home.html.twig', [
-            'user' => $appUser,
-            'calls' => $callsForUser
+            'user'             => $appUser,
+            'calls'            => $callsToProcess,
+            'calls_in_process' => $callsInProcess,
         ]);
     }
 }

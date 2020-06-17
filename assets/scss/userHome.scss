@@ -1,0 +1,18 @@
+.recall-date {
+  display:block;
+  font-weight:bold;
+  margin-right:15px;
+}
+
+.call-stepper {
+  border:none;
+  font-size:0.9rem;
+  border:1px solid #ccc;
+  border-radius:5px !important;
+  .call-step {
+    border:none;
+    td {
+      padding:6px 4px;
+    }
+  }
+}
