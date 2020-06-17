@@ -50,18 +50,18 @@ class UserFixtures extends Fixture
         $manager->persist($admin);
 
         // Création d’un utilisateur de test
-        $admin = new User();
-        $admin->setEmail('test@dbf.com');
-        $admin->setFirstname('test');
-        $admin->setLastname('');
-        $admin->setCreatedAt(new DateTime());
-        $admin->setRoles(['ROLE_COLLABORATIOR']);
-        $admin->setPassword($this->passwordEncoder->encodePassword(
-            $admin,
+        $test = new User();
+        $test->setEmail('test@dbf.com');
+        $test->setFirstname('test');
+        $test->setLastname('');
+        $test->setCreatedAt(new DateTime());
+        $test->setRoles(['ROLE_COLLABORATOR']);
+        $test->setPassword($this->passwordEncoder->encodePassword(
+            $test,
             'test'
         ));
 
-        $manager->persist($admin);
+        $manager->persist($test);
 
         $faker = Faker\Factory::create('fr_FR');
         for ($i = 0; $i < 10; $i++) {
