@@ -1,0 +1,107 @@
+.call-calendar {
+  position:relative;
+  padding:6px;
+  border-radius:7px;
+  transform:scale(0.9);
+  .call-cal-header {
+    background:#414141;
+    color:#fff;
+    width:calc(100% + 12px);
+    margin-top:-6px;
+    margin-left:-6px;
+    display:flex;
+    flex-direction: row;
+    border-radius:7px 7px 0 0;
+    font-size:1rem;
+    font-weight: bold;
+    padding:7px 4px;
+
+    &::before {
+      position:absolute;
+      content:' ';
+      display:block;
+      width:12px;
+      height:12px;
+      border-radius:50px 50px 0 0;
+      background: #414141;
+      top:0px;
+      margin-top:-12px;
+      left:26px;
+    }
+    &::after {
+      position:absolute;
+      content:' ';
+      display:block;
+      width:12px;
+      height:12px;
+      border-radius:50px 50px 0 0;
+      background: #414141;
+      top:0px;
+      margin-top:-12px;
+      right:26px;
+    }
+    &.urgent {
+      background: #f44336;
+      &::before {
+        background: #f44336;
+      }
+      &::after {
+        background: #f44336;
+      }
+    }
+    .call-cal-date {
+      width:calc(100% - 60px);
+      text-align:center;
+    }
+    i {
+      margin:0;
+      width:30px;
+    }
+  }
+  .call-cal-body {
+    padding:10px 5px;
+    span {
+      display:block;
+      margin:0;
+      font-size:1rem;
+      text-align : center;
+    }
+  }
+  .call-cal-action {
+    padding:5px 5px 15px 5px;
+    text-align:center;
+    a {
+      padding:5px 10px;
+      font-size:1.2rem;
+      background:$blue-dbf;
+      color:#fff;
+      border-radius:100px;
+      text-decoration:none;
+      transition:all 0.2s ease-in-out;
+      &:hover {
+        box-shadow : 0px 0px 8px rgba(0,0,0,0.7);
+      }
+    }
+
+  }
+}
+
+.call-list-row {
+  .title {
+    font-size:1.2rem;
+    font-weight: bold;
+    position:relative;
+    &::before {
+      position:absolute;
+      content:' ';
+      display:block;
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background: #424242;
+      left:0;
+      top:8px;
+      margin-left:-15px;
+    }
+  }
+}

@@ -6,88 +6,35 @@
 
     <div class="container">
         <div class="row">
-            <div class="col s6 mgt30">
+            <div class="col s5 mgt30">
                 <div class="col s12">
-                    <h5><b>Vos appels à traiter</b></h5>
+                    <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos appels à traiter</h5>
                 </div>
                 <div class="col s12">
                     <ul class="list-calls">
                         {% for call in calls %}
-                        <li class="collection-item" id="call-{{ call.id }}">
-                            <div class="row">
-
-                                <div class="col s8">
-                                    <span class="title"><b>{{call.client.name}}</b></span>
-                                    <p>{{call.client.phone}}<br>
-                                        <small>{{call.subject.name}} - {{call.comment.name}}</small>
-                                    </p>
-                                </div>
-
-                                <div class="col s4 right-align">
-                                    <span class="recall-date">
-                                        {% if call.recallDate|date('Y-m-d') == date()|date('Y-m-d') %}
-                                            Aujourd'hui
-                                        {% elseif call.recallDate|date('Y-m-d') == date('+1days')|date('Y-m-d') %}
-                                            Demain
-                                        {% elseif call.recallDate|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
-                                            Hier
-                                        {% else %}
-                                            {{ call.recallDate|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
-                                        {% endif %}
-                                    </span>
-                                    <a href="#!" class="secondary-content"><span class="chip light-blue white-text">{{call.recallPeriod.name}} {{call.recallHour|date('H:i')}}</span></a>
-                                    <p>
-                                        <a class="btn light-blue darken-3 call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}"><i class="left material-icons">local_phone</i>Traiter</a>
-                                    </p>
-                                </div>
-
-                            </div>
-                        </li>
+                            {% include 'call_process/_call_row.html.twig' %}
                         {% endfor %}
                     </ul>
                 </div>
             </div>
 
-            <div class="col s6 mgt30">
+            <div class="col s5 offset-s1 mgt30">
                 <div class="col s12">
-                    <h5><b>Appels en cours de traitement</b></h5>
+                    <h5 class="light-blue-text"><i class="material-icons left">person</i> Appels en cours de traitement</h5>
                 </div>
                 <div class="col s12">
                     <ul class="list-calls">
 
                         {% for call in calls_in_process %}
                             <li class="collection-item ">
-                                <div class="row">
-                                    <div class="col s8">
-                                        <span class="title"><b>{{call.client.name}}</b></span>
-                                        <p>{{call.client.phone}}<br>
-                                            <small>{{call.subject.name}} - {{call.comment.name}}</small>
-                                        </p>
-                                    </div>
+                                {% include 'call_process/_call_row_inside.html.twig' %}
 
-                                    <div class="col s4 right-align">
-                                    <span class="recall-date">
-                                        {% if call.recallDate|date('Y-m-d') == date()|date('Y-m-d') %}
-                                            Aujourd'hui
-                                        {% elseif call.recallDate|date('Y-m-d') == date('+1days')|date('Y-m-d') %}
-                                            Demain
-                                        {% elseif call.recallDate|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
-                                            Hier
-                                        {% else %}
-                                            {{ call.recallDate|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
-                                        {% endif %}
-                                    </span>
-                                        <a href="#!" class="secondary-content"><span class="chip light-blue white-text">{{call.recallPeriod.name}} {{call.recallHour|date('H:i')}}</span></a>
-                                        <p>
-                                            <a class="btn light-blue darken-3 call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}"><i class="left material-icons">local_phone</i>Traiter</a>
-                                        </p>
-                                    </div>
-                                </div>
                                 <div class="row">
                                     {% if call.callProcessings %}
-                                        {% for process in call.callProcessings|reverse %}
                                             <div class="col s12">
                                                 <table class="call-stepper">
+                                                    {% for process in call.callProcessings|reverse %}
                                                     <tr class="call-step">
                                                         <td>
                                                             <b>
@@ -104,9 +51,9 @@
                                                         <td class="{{ process.stepColors.color }}">{{ process.contactType.name }}</td>
                                                         <td>{{ process.comment }}</td>
                                                     </tr>
+                                                    {% endfor %}
                                                 </table>
                                             </div>
-                                        {% endfor %}
                                     {% endif %}
                                 </div>
                             </li>

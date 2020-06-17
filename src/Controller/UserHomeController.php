@@ -26,4 +26,18 @@ class UserHomeController extends AbstractController
             'calls_in_process' => $callsInProcess,
         ]);
     }
+
+    /**
+     * @Route("/newcall", name="user_new_call")
+     */
+    public function newCall(CallRepository $callRepository, UserRepository $userRepository): Response
+    {
+        $appUser = $this->getUser();
+        $newCall = $callRepository->getNewCallsForUser();
+        return $this->render('user_home.html.twig', [
+            'user'             => $appUser,
+            'calls'            => $callsToProcess,
+            'calls_in_process' => $callsInProcess,
+        ]);
+    }
 }

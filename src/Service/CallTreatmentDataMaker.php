@@ -36,22 +36,23 @@ class CallTreatmentDataMaker
             ContactType::MSG1 => [
                 'class'=> 'message',
                 'icon' => 'perm_phone_msg',
-                'color'=>'text-lighten-3 light-blue-text'
+                'color'=>'amber-text'
             ],
             ContactType::MSG2 => [
                 'class'=> 'message',
                 'icon'=> 'perm_phone_msg',
-                'color'=>'light-blue-text'
+                'color'=>'orange-text'
             ],
             ContactType::MSG3 => [
                 'class'=> 'message',
                 'icon'=> 'perm_phone_msg',
-                'color'=>'text-darken-4 light-blue-text'
+                'color'=>'red-text'
             ],
         ];
         $step = $process->getContactType()->getIdentifier();
-        if ($step)
-        return json_decode(json_encode($iconsAndColors[$step]));
+        if ($step) {
+            return json_decode(json_encode($iconsAndColors[$step]));
+        }
     }
 
 
