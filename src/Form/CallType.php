@@ -211,8 +211,6 @@ class CallType extends AbstractType
         return $choices;
     }
 
-
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

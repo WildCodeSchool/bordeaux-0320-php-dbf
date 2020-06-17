@@ -3,6 +3,9 @@
 namespace App\Controller\User;
 
 use App\Entity\Call;
+use App\Service\CallTreatmentDataMaker;
+use DateInterval;
+use DateTime;
 use App\Entity\RecallPeriod;
 use App\Entity\User;
 use App\Form\CallType;
@@ -30,11 +33,13 @@ class CallController extends AbstractController
      * @Route("/", name="call_index", methods={"GET"})
      * @param CallRepository $callRepository
      * @return Response
+     * @throws \Exception
      */
     public function index(CallRepository $callRepository): Response
     {
+
         return $this->render('call/index.html.twig', [
-            'calls' => $callRepository->findAll(),
+            'calls' => $callRepository->findCallsAddedToday(2)
         ]);
     }
 
@@ -42,14 +47,27 @@ class CallController extends AbstractController
      * @Route("/add", name="call_add", methods={"GET","POST"})
      * @param Request $request
      * @param EntityManagerInterface $entityManager
+     * @param CallRepository $callRepository
+     * @param CallTreatmentDataMaker $callTreatmentDataMaker
      * @return Response
      */
     public function add(
         Request $request,
         EntityManagerInterface $entityManager,
         VehicleRepository $vehicleRepository,
-        ClientRepository $clientRepository
+        ClientRepository $clientRepository,      
+        CallRepository $callRepository,
+        CallTreatmentDataMaker $callTreatmentDataMaker
     ): Response {
+        //cette ligne sera à remplacer par app->getUser();
+        $addedCalls = $callRepository->findCallsAddedToday(2);
+
+        $steps = [];
+        foreach ($addedCalls as $addedCall) {
+            $steps[ $addedCall->getId()] = $callTreatmentDataMaker->stepMaker($addedCall);
+            $steps[ $addedCall->getId()]['lastStepName'] = $callTreatmentDataMaker->getLastTreatment($addedCall);
+        }
+
         $call          = new Call();
         $form          = $this->createForm(CallType::class, $call);
 
@@ -90,6 +108,8 @@ class CallController extends AbstractController
         return $this->render('call/add.html.twig', [
             'call'          => $call,
             'form'          => $form->createView(),
+            'addedCalls'         => $addedCalls,
+            'steps'         => $steps
         ]);
     }
 

@@ -40,6 +40,27 @@ class CallRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+    public function findCallsAddedToday($author)
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->Where('c.author = :author')
+            ->setParameter('author', $author)
+            ->andWhere('c.createdAt >= CURRENT_DATE()')
+            ->orderBy('c.createdAt', 'DESC')
+            ->join('c.client', 'cl')->addSelect('cl')
+            ->join('cl.civility', 'civ')->addSelect('civ')
+            ->join('c.service', 's')->addSelect('s')
+            ->join('s.concession', 'concession')->addSelect('concession')
+            ->join('c.recallPeriod', 'rp')->addSelect('rp')
+            ->join('c.comment', 'co')->addSelect('co')
+            ->join('c.subject', 'subj')->addSelect('subj')
+            ->join('c.vehicle', 'v')->addSelect('v')
+            ->setMaxResults(50)
+            ->getQuery();
+
+        return $qb->execute();
+    }
+
 
     public function callsToProcessByUser($recipient)
     {
