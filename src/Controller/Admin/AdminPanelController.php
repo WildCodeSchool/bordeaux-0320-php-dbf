@@ -8,12 +8,14 @@ use App\Entity\Comment;
 use App\Entity\Concession;
 use App\Entity\Service;
 use App\Entity\Subject;
+use App\Form\CityType;
 use App\Form\CivilityType;
 use App\Form\ClientType;
 use App\Form\CommentType;
 use App\Form\ConcessionType;
 use App\Form\ServiceType;
 use App\Form\SubjectType;
+use App\Repository\CityRepository;
 use App\Repository\CivilityRepository;
 use App\Repository\CommentRepository;
 use App\Repository\SubjectRepository;
@@ -39,6 +41,7 @@ class AdminPanelController extends AbstractController
      * @param VehicleRepository $vehicleRepository
      * @param SubjectRepository $subjectRepository
      * @param CommentRepository $commentRepository
+     * @param CityRepository $cityRepository
      * @IsGranted("ROLE_ADMIN")
      * @return Response
      */
@@ -46,7 +49,8 @@ class AdminPanelController extends AbstractController
         Request $request,
         VehicleRepository $vehicleRepository,
         SubjectRepository $subjectRepository,
-        CommentRepository $commentRepository
+        CommentRepository $commentRepository,
+        CityRepository $cityRepository
     ): Response {
 
         $client = new Client();
@@ -60,6 +64,7 @@ class AdminPanelController extends AbstractController
         $formConcession = $this->createForm(ConcessionType::class);
         $formSubject = $this->createForm(SubjectType::class);
         $formComment = $this->createForm(CommentType::class);
+        $formCity   = $this->createForm((CityType::class));
 
         return $this->render('admin/index.html.twig', [
             'client'            => $client,
@@ -70,11 +75,13 @@ class AdminPanelController extends AbstractController
             'form_concession'   => $formConcession->createView(),
             'form_subject'      => $formSubject->createView(),
             'form_comment'      => $formComment->createView(),
+            'form_city'         => $formCity->createView(),
             'civilities'        => $civilities->findAll(),
             'concessions'       => $concessions->findAll(),
             'vehicles'          => $vehicleRepository->findAll(),
             'subjects'          => $subjectRepository->findAll(),
             'comments'          => $commentRepository->findAll(),
+            'cities'            => $cityRepository->findAll(),
 
         ]);
     }

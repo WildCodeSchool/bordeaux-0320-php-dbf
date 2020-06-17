@@ -1,11 +1,1 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}New City{% endblock %}
-
-{% block body %}
-    <h1>Création de Plaque</h1>
-
-    {{ include('city/_form.html.twig') }}
-<p></p>
-    <a href="{{ path('city_index') }}">Liste des plaques</a>
-{% endblock %}
+{{ include ('city/_form_add.html.twig') }}

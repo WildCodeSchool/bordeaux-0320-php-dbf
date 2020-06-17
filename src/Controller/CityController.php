@@ -31,20 +31,20 @@ class CityController extends AbstractController
     public function new(Request $request): Response
     {
         $city = new City();
-        $form = $this->createForm(CityType::class, $city);
-        $form->handleRequest($request);
+        $formCity = $this->createForm(CityType::class, $city);
+        $formCity->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formCity->isSubmitted() && $formCity->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($city);
             $entityManager->flush();
 
-            return $this->redirectToRoute('city_index');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('city/new.html.twig', [
             'city' => $city,
-            'form' => $form->createView(),
+            'form-city' => $formCity->createView(),
         ]);
     }
 
