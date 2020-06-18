@@ -26,7 +26,7 @@ class CallProcessController extends AbstractController
     {
         $call = $callRepository->findOneById($callId);
         $callProcess          = new CallProcessing();
-        $form          = $this->createForm(CallProcessingType::class, $callProcess);
+        $form                 = $this->createForm(CallProcessingType::class, $callProcess);
 
         return $this->render('call_process/call_process.html.twig', [
             'call'          => $call,
@@ -50,8 +50,8 @@ class CallProcessController extends AbstractController
             $entityManager->persist($call);
         }
 
-        $callProcess          = new CallProcessing();
-        $form          = $this->createForm(CallProcessingType::class, $callProcess);
+        $callProcess = new CallProcessing();
+        $form        = $this->createForm(CallProcessingType::class, $callProcess);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $callProcess->setReferedCall($call);

@@ -78,7 +78,31 @@ class CallRepository extends ServiceEntityRepository
             ->addSelect('co')
             ->andWhere('c.isProcessEnded IS NULL')
             ->andWhere('c.isProcessed IS NULL')
-            ->orderBy('c.recallDate, c.recallHour', 'ASC')
+            ->orderBy('c.isUrgent', 'DESC')
+            ->addOrderBy('c.recallDate, c.recallHour', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function lastCallToProcessByUser($recipient)
+    {
+
+        return $this->createQueryBuilder('c')
+            ->Where('c.recipient = :recipient')
+            ->setParameter('recipient', $recipient)
+            ->innerJoin('c.recipient', 'r')
+            ->addSelect('r')
+            ->innerJoin('c.recallPeriod', 'rp')
+            ->addSelect('rp')
+            ->innerJoin('c.subject', 's')
+            ->addSelect('s')
+            ->innerJoin('c.comment', 'co')
+            ->addSelect('co')
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed IS NULL')
+            ->orderBy('c.id', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
             ->getResult()
             ;
@@ -100,6 +124,32 @@ class CallRepository extends ServiceEntityRepository
             ->andWhere('c.isProcessEnded IS NULL')
             ->andWhere('c.isProcessed IS NOT NULL')
             ->orderBy('c.recallDate, c.recallHour', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+
+    public function getNewCallsForUser($recipient, $lastId)
+    {
+        return $this->createQueryBuilder('c')
+            ->Where('c.recipient = :recipient')
+            ->setParameter('recipient', $recipient)
+            ->innerJoin('c.recipient', 'r')
+            ->addSelect('r')
+            ->innerJoin('c.recallPeriod', 'rp')
+            ->addSelect('rp')
+            ->innerJoin('c.subject', 's')
+            ->addSelect('s')
+            ->innerJoin('c.comment', 'co')
+            ->addSelect('co')
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed IS NULL')
+            ->andWhere('c.id > :sessionCall')
+            ->setParameter('sessionCall', $lastId)
+            ->orderBy('c.recallDate', 'DESC')
+            ->addOrderBy('c.recallHour', 'DESC')
+            ->addOrderBy('c.id', 'ASC')
             ->getQuery()
             ->getResult()
             ;
