@@ -30,6 +30,7 @@ class CallTreatmentDataMaker
                 'class'=> 'message',
                 'icon' => 'perm_phone_msg',
                 'color'=>'text-darken-2 yellow-text'
+
             ],
             ContactType::MSG2 => [
                 'class'=> 'message',
