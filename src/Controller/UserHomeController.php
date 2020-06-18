@@ -11,14 +11,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserHomeController extends AbstractController
 {
+
     /**
      * @Route("/welcome", name="user_home")
      */
     public function homeUser(CallRepository $callRepository, UserRepository $userRepository): Response
     {
         $appUser = $this->getUser();
-
         $callsToProcess = $callRepository->callsToProcessByUser($appUser);
+        $lastCall = $callRepository->lastCallToProcessByUser($appUser);
+        $this->get('session')->set('lastCallId', $lastCall[0]->getId());
+
         $callsInProcess  = $callRepository->callsInProcessByUser($appUser);
         return $this->render('user_home.html.twig', [
             'user'             => $appUser,
@@ -28,16 +31,18 @@ class UserHomeController extends AbstractController
     }
 
     /**
-     * @Route("/newcall", name="user_new_call")
+     * @Route("/newcallsforuser", name="user_new_call")
      */
     public function newCall(CallRepository $callRepository, UserRepository $userRepository): Response
     {
         $appUser = $this->getUser();
-        $newCall = $callRepository->getNewCallsForUser();
-        return $this->render('user_home.html.twig', [
-            'user'             => $appUser,
-            'calls'            => $callsToProcess,
-            'calls_in_process' => $callsInProcess,
+        $lastId  = $this->get('session')->get('lastCallId');
+        $newCalls = $callRepository->getNewCallsForUser($appUser, $lastId);
+        if (!empty($newCalls)) {
+            $this->get('session')->set('lastCallId', $newCalls[array_key_last($newCalls)]->getId());
+        }
+        return $this->render('call_process/_new_calls.html.twig', [
+            'calls'            => $newCalls,
         ]);
     }
 }

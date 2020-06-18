@@ -11,7 +11,7 @@
                     <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos appels à traiter</h5>
                 </div>
                 <div class="col s12">
-                    <ul class="list-calls">
+                    <ul class="list-calls" id="list-calls-to-process">
                         {% for call in calls %}
                             {% include 'call_process/_call_row.html.twig' %}
                         {% endfor %}
@@ -75,4 +75,9 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('newcalls') }}
 {% endblock %}

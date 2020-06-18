@@ -1,3 +1,13 @@
+const getNewCalls = (action) => {
+        fetch('/newcallsforuser', {
+        })
+        .then(function (response) {
+            return response.text()
+        }).then(function (html) {
+            action(html);
+        });
+}
+
 const initButtons = (modal) => {
     const buttons = document.getElementsByClassName('call-treatment-btn');
     const modalHtmlZone = document.getElementById('modal-content-call-treatment');
@@ -25,7 +35,7 @@ const getProcessForm = (callId, action) => {
         .then(function (response) {
             return response.text()
         }).then(function (html) {
-            action(html);
+        action(html);
     });
 }
 
@@ -33,3 +43,20 @@ const initializeSelects = () => {
     const selects = document.querySelectorAll('select');
     const instancesOfSelects = M.FormSelect.init(selects, {});
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const modalCallTreatment         = document.getElementById('modal-call-treatment');
+    const modalCallTreatmentInstance = M.Modal.init(modalCallTreatment, {});
+    initButtons(modalCallTreatmentInstance);
+
+    const checker = setInterval(()=> {
+        getNewCalls(html => {
+            if (html != ' ') {
+                const listOfCallsZone = document.getElementById('list-calls-to-process')
+                listOfCallsZone.innerHTML += html
+                initButtons(modalCallTreatmentInstance);
+            }
+        })
+    }, 15000);
+})

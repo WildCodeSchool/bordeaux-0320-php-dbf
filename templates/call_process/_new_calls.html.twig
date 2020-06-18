@@ -1,3 +1,4 @@
+{% for call in calls %}
 <li class="collection-item" data-date="{{ call.recallDate|date('Ymd') }}{{ call.recallDate|date('Hi') }}" id="call-{{ call.id }}">
     <div class="row call-list-row">
         <div class="col s8">
@@ -45,3 +46,4 @@
         </div>
     </div>
 </li>
+{% endfor %}
