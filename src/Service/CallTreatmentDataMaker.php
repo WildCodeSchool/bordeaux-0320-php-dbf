@@ -50,8 +50,9 @@ class CallTreatmentDataMaker
     public static function stepMakerForProcess(CallProcessing $process)
     {
         $step = $process->getContactType()->getIdentifier();
-        if ($step)
-        return json_decode(json_encode(self::ICONS_AND_COLORS[$step]));
+        if ($step) {
+            return json_decode(json_encode(self::ICONS_AND_COLORS[$step]));
+        }
     }
 
 
