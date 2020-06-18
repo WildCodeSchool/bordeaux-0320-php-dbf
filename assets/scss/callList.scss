@@ -111,18 +111,24 @@ table tr:last-child {
   margin-left:-25px;
 }
 
-
 .row.message {
-  border-left:10px solid #1976d2;
+  border-left:10px solid $yellow;
+}
+.row.message3 {
+  border-left:10px solid $orange;
 }
 .row.abandon {
-  border-left:10px solid #414141;
+  border-left:10px solid $grey
 }
 .row.contact {
-  border-left:10px solid #8bc34a;
+  border-left:10px solid $green;
 }
 .row.emergency {
-  border-left:10px solid #f44336;
+  border-left:10px solid $red;
+  .upperCase{
+    text-transform: uppercase;
+    font-weight: bold;
+  }
 }
 
 .card.sticky-action {
@@ -201,6 +207,5 @@ table tr:last-child {
   display:inline-block;
   font-size:1.2rem;
   line-height: 100%;
-  vertical-aligcaln: middle;
-
+  vertical-align: middle;
 }
