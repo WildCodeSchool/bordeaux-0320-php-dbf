@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const reattribute = document.getElementById('reattribute');
                 reattribute.dataset.client = data.client.client_id
 
-                if(data.client.client_id) {
+                if (data.client.client_id) {
                     reattribute.classList.remove('hide');
                 }
 

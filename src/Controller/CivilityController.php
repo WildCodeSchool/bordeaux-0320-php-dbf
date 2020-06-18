@@ -20,6 +20,8 @@ class CivilityController extends AbstractController
 {
     /**
      * @Route("/", name="civility_index", methods={"GET"})
+     * @param CivilityRepository $civilityRepository
+     * @return Response
      */
     public function index(CivilityRepository $civilityRepository): Response
     {
@@ -30,6 +32,8 @@ class CivilityController extends AbstractController
 
     /**
      * @Route("/new", name="civility_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -52,6 +56,8 @@ class CivilityController extends AbstractController
 
     /**
      * @Route("/{id}", name="civility_show", methods={"GET"})
+     * @param Civility $civility
+     * @return Response
      */
     public function show(Civility $civility): Response
     {
@@ -62,6 +68,9 @@ class CivilityController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="civility_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Civility $civility
+     * @return Response
      */
     public function edit(Request $request, Civility $civility): Response
     {
@@ -81,6 +90,9 @@ class CivilityController extends AbstractController
 
     /**
      * @Route("/{id}", name="civility_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Civility $civility
+     * @return Response
      */
     public function delete(Request $request, Civility $civility): Response
     {
