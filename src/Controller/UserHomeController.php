@@ -20,7 +20,7 @@ class UserHomeController extends AbstractController
         $appUser = $this->getUser();
         $callsToProcess = $callRepository->callsToProcessByUser($appUser);
         $lastCall = $callRepository->lastCallToProcessByUser($appUser);
-        $this->get('session')->set('lastCallId', $lastCall[0]->getId());
+        $this->get('session')->set('lastCallId', $lastCall->getId());
 
         $callsInProcess  = $callRepository->callsInProcessByUser($appUser);
         return $this->render('user_home.html.twig', [
