@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).then(((response) => {
             loaderChangeNumber.classList.add('hide');
             emptyClientForm();
+            loaderChangeNumber.classList.add('hide');
             return response.text();
         }));
     });
