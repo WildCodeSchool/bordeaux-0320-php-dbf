@@ -29,17 +29,17 @@ class CallTreatmentDataMaker
             ContactType::MSG1 => [
                 'class'=> 'message',
                 'icon' => 'perm_phone_msg',
-                'color'=>'text-lighten-3 light-blue-text'
+                'color'=>'text-darken-2 yellow-text'
             ],
             ContactType::MSG2 => [
                 'class'=> 'message',
                 'icon'=> 'perm_phone_msg',
-                'color'=>'light-blue-text'
+                'color'=>'text-darken-3 yellow-text'
             ],
             ContactType::MSG3 => [
-                'class'=> 'message',
+                'class'=> 'message3',
                 'icon'=> 'perm_phone_msg',
-                'color'=>'text-darken-4 light-blue-text'
+                'color'=>'text-darken-2 orange-text'
             ],
         ];
 
