@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Content-Type': 'application/json',
             },
         }).then(((response) => {
-            loaderChangeNumber.classList.add('hide');
             emptyClientForm();
             loaderChangeNumber.classList.add('hide');
+            event.target.classList.add('hide');
             return response.text();
         }));
     });
