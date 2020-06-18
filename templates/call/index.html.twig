@@ -78,7 +78,7 @@
                                 <td>
                                     <b>Traitement</b>
                                 </td>
-                                <td class="{{ steps[addedCall.id].lastStepName == 'urgent' ? "red-text" : 'light-blue-text' }}">
+                                <td class="upperCase {{ steps[addedCall.id].color is defined ? steps[addedCall.id].color : '' }}">
                                     {{ steps[addedCall.id].lastStepName is defined ? steps[addedCall.id].lastStepName : '' }}
                                 </td>
                             </tr>

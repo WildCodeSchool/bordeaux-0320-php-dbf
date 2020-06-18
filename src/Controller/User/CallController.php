@@ -49,6 +49,8 @@ class CallController extends AbstractController
      * @Route("/add", name="call_add", methods={"GET","POST"})
      * @param Request $request
      * @param EntityManagerInterface $entityManager
+     * @param VehicleRepository $vehicleRepository
+     * @param ClientRepository $clientRepository
      * @param CallRepository $callRepository
      * @param CallTreatmentDataMaker $callTreatmentDataMaker
      * @return Response
@@ -61,8 +63,8 @@ class CallController extends AbstractController
         CallRepository $callRepository,
         CallTreatmentDataMaker $callTreatmentDataMaker
     ): Response {
-        //cette ligne sera à remplacer par app->getUser();
-        $addedCalls = $callRepository->findCallsAddedToday(2);
+        $author = $this->getUser();
+        $addedCalls = $callRepository->findCallsAddedToday($author);
 
         $steps = [];
         foreach ($addedCalls as $addedCall) {
@@ -75,7 +77,6 @@ class CallController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $author = $this->getUser();
             $call->setAuthor($author);
 
             $call->setIsUrgent(false);
@@ -121,7 +122,7 @@ class CallController extends AbstractController
      * @param Call $call
      * @return Response
      */
-    public function show(Call $call, ClientRepository $clientRepository): Response
+    public function show(Call $call): Response
     {
         return $this->render('call/show.html.twig', [
             'call' => $call,

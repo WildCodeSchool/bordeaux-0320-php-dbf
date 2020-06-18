@@ -11,10 +11,30 @@
     </div>
     <div class="card-content grey lighten-4">
         <div id="comments-list">
-            liste des commentaires existants (select)
+            <div class="input-field ">
+                <label for="comments"></label>
+                <select>
+                    {% for comment in comments %}
+                        <option value="{{ loop.index }}">{{ comment.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
         </div>
         <div id="comments-add">
-            formulaire ajout
+            <a href="#modal-add-comment" class="btn modal-trigger red"><i class="material-icons">add</i></a>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE AJOUT commentaires -->
+
+<div id="modal-add-comment" class="modal">
+    <div class="modal-content">
+        <h4 class="center-align">Ajouter un commentaire</h4>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'comment/new.html.twig' %}
+            </div>
         </div>
     </div>
 </div>
