@@ -106,7 +106,6 @@ class recipientsAjaxTool {
 
         if (this.recipientSelector) {
             this.recipientSelector.addEventListener('change', () => {
-                console.log(this.recipientSelector.value)
                 this.selectValueInSelect(this.recipientField, this.recipientSelector.value)
                 this.recipientField.value = this.recipientSelector.value;
             })

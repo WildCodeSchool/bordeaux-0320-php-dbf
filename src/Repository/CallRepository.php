@@ -61,6 +61,36 @@ class CallRepository extends ServiceEntityRepository
         return $qb->execute();
     }
 
+    public function allCallsByUser($recipient)
+    {
+
+        return $this->createQueryBuilder('c')
+            ->Where('c.recipient = :recipient')
+            ->setParameter('recipient', $recipient)
+            ->innerJoin('c.recipient', 'r')
+            ->addSelect('r')
+            ->innerJoin('c.recallPeriod', 'rp')
+            ->addSelect('rp')
+            ->innerJoin('c.subject', 's')
+            ->addSelect('s')
+            ->innerJoin('c.comment', 'co')
+            ->addSelect('co')
+            ->innerJoin('c.vehicle', 've')
+            ->addSelect('ve')
+            ->innerJoin('c.service', 'se')
+            ->addSelect('se')
+            ->innerJoin('c.client', 'cl')
+            ->addSelect('cl')
+            ->innerJoin('c.author', 'au')
+            ->addSelect('au')
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->orderBy('c.isUrgent', 'DESC')
+            ->addOrderBy('c.recallDate, c.recallHour', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     public function callsToProcessByUser($recipient)
     {

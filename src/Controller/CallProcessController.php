@@ -46,7 +46,7 @@ class CallProcessController extends AbstractController
         $call = $callRepository->findOneById($callId);
 
         if (is_null($call->getIsProcessed())) {
-            $call->setIsProcessed(1);
+            $call->setIsProcessed(true);
             $entityManager->persist($call);
         }
 

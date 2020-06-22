@@ -3,42 +3,52 @@
         <div class="col s10">
             <div class="row">
                 <div class="col s4">
+                    <small>
                     Reçu
                     <b>
-                        {% if call.createdAt|date('Y-m-d') == date()|date('Y-m-d') %}
-                            Aujourd'hui
-                        {% elseif call.createdAt|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
-                            Hier
-                        {% else %}
-                            le {{ call.createdAt|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
-                        {% endif %}
+                            {{call.createdAt|dateName}}
+                            à {{ call.createdAt|date('H:i')}}
                     </b>
                     par  <b>{{ call.author.firstname }} {{ call.author.lastname }}</b>
+                    </small>
                 </div>
-                <div class="col s6">
-                    <span class="recipient-chip "> {{ call.recipient.firstname }} {{ call.recipient.lastname }}</span> < {{ call.service.name }} < {{call.service.concession.name}}
-                    <b></b>
+                <div class="col s8">
+                    <span class="recipient-chip">
+                        <i class="material-icons left">person</i>
+                        {{ call.recipient.firstname }} {{ call.recipient.lastname }}
+                    </span>
+                    <span class="place-name">
+                        <i class="material-icons tiny">home</i>
+                        {{call.service.concession.name}}
+                    </span>
+                    <span class="place-name service-name">
+                        <i class="material-icons tiny">build</i>
+                        {{ call.service.name }}
+                    <a class="grey darken-3 call-transfer-btn btn-rounded tooltipped mgl30" data-tooltip="transférer" data-position="top" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
+                    </span>
                 </div>
+
             </div>
            <div class="row">
                <div class="col s4">
-                   {{ call.subject.name }}
+                    <span class="title">
+                        {{call.client.civility.name}} {{call.client.name}}
+                        {% if call.client.email != '' %}
+                            <span class="mgl30"><i class="material-icons tooltipped grey-text text-darken-3 tiny" data-position="top" data-tooltip="{{call.client.email}}">mail</i></span>
+                        {% endif %}
+                    </span>
                </div>
                <div class="col s4">
-                   {{ call.comment.name }}
+                   <i class="material-icons left grey-text">label</i> {{ call.subject.name }}
                </div>
                <div class="col s4">
-                   <b>véhicule : </b>{{ call.vehicle.immatriculation }}
+                   <i class="material-icons left grey-text">label</i>{{ call.comment.name }}
                </div>
+
            </div>
             <div class="row">
                 <div class="col s4">
-                    <span class="title">
-                         {% if call.client.email != '' %}
-                             <span class="secondary-content"><i class="material-icons tooltipped grey-text text-darken-3" data-position="top" data-tooltip="{{call.client.email}}">mail</i></span>
-                         {% endif %}
-                        {{call.client.civility.name}} {{call.client.name}}
-                    </span>
+                    <span class="chip ">{{call.client.phone|phoneNumber}}</span>
                 </div>
 
                 <div class="col s8">
@@ -48,22 +58,33 @@
             </div>
             <div class="row">
                 <div class="col s2">
-                    <span class="recipient-chip ">{{call.client.phone}}</span>
-                </div>
-                <div class="col s2">
                     {% if call.client.phone2 != '' %}
-                        <span class="recipient-chip">{{ call.client.phone2 }}</span>
+                        <span class="chip">{{ call.client.phone2|phoneNumber }}</span>
                     {% endif %}
                 </div>
-                <div class="col s4">
-                    <span class="chip amber darken-1 white-text">M1</span> aujourd'hui à 16h
-                </div>
                 <div class="col s2">
-                    <a class="{% if call.isUrgent %}red{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
+
                 </div>
-                <div class="col s2">
-                    <a class="{% if call.isUrgent %}red{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Transférer</a>
+                <div class="col s5">
+                    {% for process in call.callProcessings|reverse %}
+                        {% if loop.index == 1 %}
+                            <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName}}</span>
+                            <b>
+                                {{ process.createdAt|dateName }}
+                                à {{ process.createdAt|date('H:i') }}
+                            </b>
+                        {% endif %}
+                    {% endfor %}
                 </div>
+                <div class="col s3 right-align">
+                    {% if call.vehicle.hasCome == 1 %}
+                    <i class="material-icons right light-green-text tooltipped" data-tooltip="Déja venu à l'atelier" data-position="top">settings_applications</i>
+                    {% elseif call.vehicle.hasCome == 2 %}
+                        <i class="material-icons right red-text tooltipped" data-tooltip="Jamais venu à l'atelier" data-position="top">settings_applications</i>
+                    {% endif %}
+                    <b>véhicule : </b>{{ call.vehicle.immatriculation }}
+                </div>
+
             </div>
         </div>
 
@@ -72,15 +93,7 @@
                 <div class="call-cal-header {% if call.isUrgent %}urgent{% endif %}">
                     <i class="material-icons ">event_date </i>
                     <span class="call-cal-date">
-                        {% if call.recallDate|date('Y-m-d') == date()|date('Y-m-d') %}
-                            Aujourd'hui
-                        {% elseif call.recallDate|date('Y-m-d') == date('+1days')|date('Y-m-d') %}
-                            Demain
-                        {% elseif call.recallDate|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
-                            Hier
-                        {% else %}
-                            {{ call.recallDate|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
-                        {% endif %}
+                        {{ call.recallDate|dateName }}
                     </span>
                 </div>
                 <div class="call-cal-body">
@@ -93,6 +106,7 @@
                     </b>
                 </div>
                 <div class="call-cal-action">
+                    <a class="{% if call.isUrgent %}red{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
                 </div>
             </div>
         </div>

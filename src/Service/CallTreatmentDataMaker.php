@@ -14,33 +14,45 @@ class CallTreatmentDataMaker
             ContactType::ABANDON => [
                 'class' => 'abandon',
                 'icon'  => 'close',
-                'color' =>'text-darken-3 grey-text'
+                'color' =>'text-darken-3 grey-text',
+                'bgColor' =>'grey darken-3',
+                'stepName' => '<i class="material-icons">close</i>'
             ],
             ContactType::CONTACT => [
                 'class' => 'contact',
                 'icon'  => 'phone_in_talk',
-                'color' =>'light-green-text'
+                'color' =>'light-green-text',
+                'bgColor' =>'light-green',
+                'stepName' => '<i class="material-icons">check</i>'
             ],
             ContactType::NOT_ELIGIBLE =>[
                 'class' => '',
                 'icon'  => 'call_end',
-                'color'  =>'grey-text'
+                'color'  =>'grey-text',
+                'bgColor' =>'grey',
+                'stepName' => 'NE'
             ],
             ContactType::MSG1 => [
                 'class'=> 'message',
                 'icon' => 'perm_phone_msg',
-                'color'=>'text-darken-2 yellow-text'
+                'color'=>'text-darken-1 yellow-text',
+                'bgColor' =>'yellow darken-1',
+                'stepName' => 'M1'
 
             ],
             ContactType::MSG2 => [
                 'class'=> 'message',
                 'icon'=> 'perm_phone_msg',
-                'color'=>'text-darken-3 yellow-text'
+                'color'=>'text-darken-3 yellow-text',
+                'bgColor' =>'yellow darken-3',
+                'stepName' => 'M2'
             ],
             ContactType::MSG3 => [
                 'class'=> 'message3',
                 'icon'=> 'perm_phone_msg',
-                'color'=>'text-darken-2 orange-text'
+                'color'=>'text-darken-2 orange-text',
+                'bgColor' =>'orange darken-2',
+                'stepName' => 'M3'
             ],
         ];
 

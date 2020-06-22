@@ -7,6 +7,7 @@ use App\Entity\Client;
 
 class CallOnTheWayDataMaker
 {
+
     public function arrayMaker(?Client $client, ?Array $calls)
     {
         $data = [

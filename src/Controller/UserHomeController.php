@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use App\Repository\CallRepository;
 use App\Repository\UserRepository;
+use App\Service\CallOnTheWayDataMaker;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,15 +37,17 @@ class UserHomeController extends AbstractController
     public function homeCell(CallRepository $callRepository, UserRepository $userRepository): Response
     {
         $appUser = $this->getUser();
-        $callsToProcess = $callRepository->callsToProcessByUser($appUser);
-        $lastCall = $callRepository->lastCallToProcessByUser($appUser);
-        $this->get('session')->set('lastCallId', $lastCall->getId());
+        $callsToProcess = $callRepository->allCallsByUser($appUser);
 
-        $callsInProcess  = $callRepository->callsInProcessByUser($appUser);
+        $lastCall = $callRepository->lastCallToProcessByUser($appUser);
+        $this->get('session')->set('lastCallId', 0);
+        if ($lastCall) {
+            $this->get('session')->set('lastCallId', $lastCall->getId());
+        }
+
         return $this->render('cell_home.html.twig', [
             'user'             => $appUser,
             'calls'            => $callsToProcess,
-            'calls_in_process' => $callsInProcess,
         ]);
     }
 
