@@ -42,11 +42,6 @@ class Client
     private $email;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $postcode;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Civility::class)
      * @ORM\JoinColumn(nullable=false)
      */
@@ -131,18 +126,6 @@ class Client
         return $this;
     }
 
-    public function getPostcode(): ?int
-    {
-        return $this->postcode;
-    }
-
-    public function setPostcode(?int $postcode): self
-    {
-        $this->postcode = $postcode;
-
-        return $this;
-    }
-
     public function getCivility(): ?Civility
     {
         return $this->civility;
@@ -167,7 +150,7 @@ class Client
      */
     public function setCreatedAt(): self
     {
-        $this->createdAt = new DateTime();
+        $this->createdAt = new DateTime('Europe/Paris');
         return $this;
     }
 

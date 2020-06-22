@@ -17,6 +17,8 @@ class CityController extends AbstractController
 {
     /**
      * @Route("/", name="city_index", methods={"GET"})
+     * @param CityRepository $cityRepository
+     * @return Response
      */
     public function index(CityRepository $cityRepository): Response
     {
@@ -27,29 +29,33 @@ class CityController extends AbstractController
 
     /**
      * @Route("/new", name="city_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
         $city = new City();
-        $form = $this->createForm(CityType::class, $city);
-        $form->handleRequest($request);
+        $formCity = $this->createForm(CityType::class, $city);
+        $formCity->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formCity->isSubmitted() && $formCity->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($city);
             $entityManager->flush();
 
-            return $this->redirectToRoute('city_index');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('city/new.html.twig', [
             'city' => $city,
-            'form' => $form->createView(),
+            'form-city' => $formCity->createView(),
         ]);
     }
 
     /**
      * @Route("/{id}", name="city_show", methods={"GET"})
+     * @param City $city
+     * @return Response
      */
     public function show(City $city): Response
     {
@@ -60,6 +66,9 @@ class CityController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="city_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param City $city
+     * @return Response
      */
     public function edit(Request $request, City $city): Response
     {
@@ -80,6 +89,9 @@ class CityController extends AbstractController
 
     /**
      * @Route("/{id}", name="city_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param City $city
+     * @return Response
      */
     public function delete(Request $request, City $city): Response
     {

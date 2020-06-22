@@ -6,11 +6,12 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -18,6 +19,22 @@ class User
      * @ORM\Column(type="integer")
      */
     private $id;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $email;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -30,19 +47,9 @@ class User
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $email;
-
-    /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $phone;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $password;
 
     /**
      * @ORM\Column(type="datetime")
@@ -53,12 +60,6 @@ class User
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedAt;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Call::class, mappedBy="user")
-     */
-    private $calls;
-
     /**
      * @ORM\OneToMany(targetEntity=CallTransfer::class, mappedBy="byWhom")
      */
@@ -74,15 +75,21 @@ class User
      */
     private $callTransfersTo;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Call::class, mappedBy="recipient")
-     */
-    private $callsToUser;
 
     /**
      * @ORM\OneToMany(targetEntity=RightByLocation::class, mappedBy="user", orphanRemoval=true)
      */
     private $rightByLocations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Call::class, mappedBy="recipient")
+     */
+    private $calls;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Call::class, mappedBy="author")
+     */
+    private $callsUserCreate;
 
     public function __construct()
     {
@@ -90,13 +97,86 @@ class User
         $this->callTransfersBy = new ArrayCollection();
         $this->callTransfersTo = new ArrayCollection();
         $this->callTransfersFrom = new ArrayCollection();
-        $this->callsToUser = new ArrayCollection();
         $this->rightByLocations = new ArrayCollection();
+        $this->callsUserCreate = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getFirstname(): ?string
@@ -123,18 +203,6 @@ class User
         return $this;
     }
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
     public function getPhone(): ?string
     {
         return $this->phone;
@@ -143,18 +211,6 @@ class User
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
 
         return $this;
     }
@@ -184,37 +240,6 @@ class User
     }
 
     /**
-     * @return Collection|Call[]
-     */
-    public function getCalls(): Collection
-    {
-        return $this->calls;
-    }
-
-    public function addCall(Call $call): self
-    {
-        if (!$this->calls->contains($call)) {
-            $this->calls[] = $call;
-            $call->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCall(Call $call): self
-    {
-        if ($this->calls->contains($call)) {
-            $this->calls->removeElement($call);
-            // set the owning side to null (unless already changed)
-            if ($call->getUser() === $this) {
-                $call->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|CallTransfer[]
      */
     public function getCallTransfersBy(): Collection
@@ -238,7 +263,7 @@ class User
         return $this->callTransfersFrom;
     }
 
-    ////////////////////
+
     public function addCallTransferBy(CallTransfer $callTransfer): self
     {
         if (!$this->callTransfersBy->contains($callTransfer)) {
@@ -263,7 +288,6 @@ class User
     }
 
 
-    ////////////////////
     public function addCallTransferTo(CallTransfer $callTransfer): self
     {
         if (!$this->callTransfersTo->contains($callTransfer)) {
@@ -287,7 +311,6 @@ class User
         return $this;
     }
 
-    ////////////////////
     public function addCallTransferFrom(CallTransfer $callTransfer): self
     {
         if (!$this->callTransfersFrom->contains($callTransfer)) {
@@ -311,33 +334,6 @@ class User
         return $this;
     }
 
-    /**
-     * @return Collection|Call[]
-     */
-    public function getCallsToUser(): Collection
-    {
-        return $this->callsToUser;
-    }
-
-    public function addCallsToUser(Call $callsToUser): self
-    {
-        if (!$this->callsToUser->contains($callsToUser)) {
-            $this->callsToUser[] = $callsToUser;
-            $callsToUser->addRecipient($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCallsToUser(Call $callsToUser): self
-    {
-        if ($this->callsToUser->contains($callsToUser)) {
-            $this->callsToUser->removeElement($callsToUser);
-            $callsToUser->removeRecipient($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|RightByLocation[]
@@ -368,5 +364,72 @@ class User
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Call[]
+     */
+    public function getCalls(): Collection
+    {
+        return $this->calls;
+    }
+
+    public function addCall(Call $call): self
+    {
+        if (!$this->calls->contains($call)) {
+            $this->calls[] = $call;
+            $call->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCall(Call $call): self
+    {
+        if ($this->calls->contains($call)) {
+            $this->calls->removeElement($call);
+            // set the owning side to null (unless already changed)
+            if ($call->getRecipient() === $this) {
+                $call->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Call[]
+     */
+    public function getCallsUserCreate(): Collection
+    {
+        return $this->callsUserCreate;
+    }
+
+    public function addCallsUserCreate(Call $callsUserCreate): self
+    {
+        if (!$this->callsUserCreate->contains($callsUserCreate)) {
+            $this->callsUserCreate[] = $callsUserCreate;
+            $callsUserCreate->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCallsUserCreate(Call $callsUserCreate): self
+    {
+        if ($this->callsUserCreate->contains($callsUserCreate)) {
+            $this->callsUserCreate->removeElement($callsUserCreate);
+            // set the owning side to null (unless already changed)
+            if ($callsUserCreate->getAuthor() === $this) {
+                $callsUserCreate->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function isAdmin(): bool
+    {
+        return in_array("ROLE_ADMIN", $this->roles);
     }
 }

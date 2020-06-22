@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Easy Auto{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col s5 mgt30">
+                <div class="col s12">
+                    <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos appels à traiter</h5>
+                </div>
+                <div class="col s12">
+                    <ul class="list-calls" id="list-calls-to-process">
+                        {% for call in calls %}
+                            {% include 'call_process/_call_row.html.twig' %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col s5 offset-s1 mgt30">
+                <div class="col s12">
+                    <h5 class="light-blue-text"><i class="material-icons left">person</i> Appels en cours de traitement</h5>
+                </div>
+                <div class="col s12">
+                    <ul class="list-calls">
+
+                        {% for call in calls_in_process %}
+                            <li class="collection-item ">
+                                {% include 'call_process/_call_row_inside.html.twig' %}
+
+                                <div class="row">
+                                    {% if call.callProcessings %}
+                                            <div class="col s12">
+                                                <table class="call-stepper">
+                                                    {% for process in call.callProcessings|reverse %}
+                                                    <tr class="call-step">
+                                                        <td>
+                                                            <b>
+                                                                {% if process.createdAt|date('Y-m-d') == date()|date('Y-m-d') %}
+                                                                    Aujourd'hui
+                                                                {% elseif process.createdAt|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
+                                                                    Hier
+                                                                {% else %}
+                                                                    le {{ process.createdAt|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
+                                                                {% endif %}
+                                                            </b>
+                                                        </td>
+                                                        <td> à {{ process.createdAt|date('H:i') }}</td>
+                                                        <td class="{{ process.stepColors.color }}">{{ process.contactType.name }}</td>
+                                                        <td>{{ process.comment }}</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </table>
+                                            </div>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="modal-call-treatment" class="modal">
+        <div class="modal-content" id="modal-content-call-treatment">
+
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+    {{ encore_entry_script_tags('newcalls') }}
+{% endblock %}

@@ -6,9 +6,31 @@
 
     <div class="container">
         <div class="row">
-            <h3>Ajout d'un appel</h3>
+            <div class="col s8">
+                <h3>Ajout d'un appel</h3>
+            </div>
+            <div class="col s4">
+                {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                <div class="flashes {{ type }}">
+                            <span class="flash-{{ type }}">{{ message }}</span>
+                            {% if type == 'success' %}
+                            <i class="material-icons light-blue-text right">check</i>
+                            {% else %}
+                            <i class="material-icons red-text right">error</i>
+                            {% endif %}
+                </div>
+                {% endfor %}
+                {% endfor %}
+            </div>
+
         </div>
         {{ include('call/_form.html.twig') }}
     </div>
-
+<div class="container">
+    <h3>Vos appels ajoutés</h3>
+{% include 'call/index.html.twig' %}
+</div>
 {% endblock %}
+
+

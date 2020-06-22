@@ -1,0 +1,25 @@
+.call-stepper {
+  border:none;
+  font-size:0.9rem;
+  .call-step {
+    border-bottom:1px solid #ccc;
+    &:last-of-type {
+      border-bottom:none;
+    }
+    td {
+      padding:6px 4px;
+      border:none;
+    }
+  }
+}
+
+ul {
+  &.list-calls {
+    li {
+      &.collection-item {
+        padding-bottom:30px;
+        border-bottom: none;
+      }
+    }
+  }
+}

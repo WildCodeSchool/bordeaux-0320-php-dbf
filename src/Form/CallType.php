@@ -5,7 +5,9 @@ namespace App\Form;
 use App\Entity\Call;
 use App\Entity\Comment;
 use App\Entity\RecallPeriod;
+use App\Entity\Service;
 use App\Entity\Subject;
+use App\Entity\User;
 use App\Repository\CityRepository;
 use App\Repository\ConcessionRepository;
 use App\Repository\ServiceRepository;
@@ -56,7 +58,16 @@ class CallType extends AbstractType
             ->add('city', ChoiceType::class, [
                 'choices' => $this->getAllCities(),
                 'mapped'  => false
+            ])
+            ->add('service', EntityType::class, [
+                'class'         => Service::class,
+                'choice_label' => 'name'
+            ])
+            ->add('recipient', EntityType::class, [
+                'class'   => User::class,
+                'choice_label' => 'lastname'
             ]);
+
         if (isset($data->City)) {
             $builder->
             add('concession', ChoiceType::class, [
@@ -66,13 +77,15 @@ class CallType extends AbstractType
         }
         if (isset($data->Concession)) {
             $builder->
-            add('service', ChoiceType::class, [
-                'choices' => $this->getServices()
+            add('service_choice', ChoiceType::class, [
+                'choices' => $this->getServices($data->Concession),
+                'mapped'  => false
             ]);
         }
         if (isset($data->Service)) {
-            $builder->add('recipient', ChoiceType::class, [
-                'choices' => $this->getRecipients()
+            $builder->add('recipient_choice', ChoiceType::class, [
+                'choices' => $this->getRecipients(),
+                'mapped'  => false
             ]);
         }
         $builder->add('subject', EntityType::class, [
@@ -92,9 +105,15 @@ class CallType extends AbstractType
             'choice_label' => 'name',
             'by_reference' => false,
         ])
-
+        ->add('client_id', hiddenType::class, [
+            'mapped'  => false
+        ])
         ->add('client', ClientType::class)
         ->add('vehicle', VehicleTypeForCallType::class)
+        ->add('vehicle_id', hiddenType::class, [
+            'mapped'  => false
+        ])
+
         ->add('subject', EntityType::class, [
             'class' => Subject::class,
             'choice_label' => 'name',
@@ -113,17 +132,17 @@ class CallType extends AbstractType
             'data' => new DateTime(),
             ])
         ->add('recallHour', TimeType::class, [
-            'widget'=>'single_text',
+            'widget'=>'choice',
             'label'=>'heure de rappel',
-            'data' => new DateTime(),
-            'attr' => ['min' => "8:00", 'max'=>"20:00"],
+            'hours'=>[8,9,10,11,12,13,14,15,16,17,18,19,20],
+            'minutes'=>[0,15,30,45],
+            'data'=> new DateTime('Europe/Paris')
         ])
         ->add('recallPeriod', EntityType::class, [
             'class'=> RecallPeriod::class,
             'choice_label' => 'name',
             'by_reference' => false,
         ])
-        ->add('createdAt', HiddenType::class)
         ;
         /**
         $builder->get('client')->addEventListener(
@@ -161,7 +180,7 @@ class CallType extends AbstractType
 
     public function getServices($concessionId = null)
     {
-        if (!$concessionId) {
+        if (is_null($concessionId)) {
             $services = $this->serviceRepository->findAll();
         } else {
             $services = $this->serviceRepository->findBy(['concession' => $concessionId]);
@@ -169,14 +188,17 @@ class CallType extends AbstractType
         $choices = [];
         $choices['Choisir un service'] = '';
         foreach ($services as $service) {
-            $choices[$service->getName()] = $service->getId();
+            $choices[$service->getName().$service->getId()] = $service->getId();
         }
+
         return $choices;
     }
 
+
+
     public function getRecipients($serviceId = null)
     {
-        if (!$serviceId) {
+        if (is_null($serviceId)) {
             $recipients = $this->userRepository->findAll();
         } else {
             $recipients = $this->userRepository->findBy(['service' => $serviceId]);
@@ -189,12 +211,11 @@ class CallType extends AbstractType
         return $choices;
     }
 
-
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Call::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

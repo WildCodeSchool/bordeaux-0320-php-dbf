@@ -3,13 +3,20 @@
 namespace App\Controller\User;
 
 use App\Entity\Call;
+use App\Service\CallTreatmentDataMaker;
+use DateInterval;
+use DateTime;
 use App\Entity\RecallPeriod;
+use App\Entity\User;
 use App\Form\CallType;
 use App\Form\RecipientType;
 use App\Repository\CallRepository;
 use App\Repository\ClientRepository;
+use App\Repository\ServiceRepository;
+use App\Repository\VehicleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\CallOnTheWayDataMaker;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,18 +25,23 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/call")
+ * @IsGranted("ROLE_COLLABORATOR")
  */
 class CallController extends AbstractController
 {
+
+
     /**
      * @Route("/", name="call_index", methods={"GET"})
      * @param CallRepository $callRepository
      * @return Response
+     * @throws \Exception
      */
     public function index(CallRepository $callRepository): Response
     {
+
         return $this->render('call/index.html.twig', [
-            'calls' => $callRepository->findAll(),
+            'calls' => $callRepository->findCallsAddedToday(2)
         ]);
     }
 
@@ -37,34 +49,71 @@ class CallController extends AbstractController
      * @Route("/add", name="call_add", methods={"GET","POST"})
      * @param Request $request
      * @param EntityManagerInterface $entityManager
+     * @param VehicleRepository $vehicleRepository
+     * @param ClientRepository $clientRepository
+     * @param CallRepository $callRepository
+     * @param CallTreatmentDataMaker $callTreatmentDataMaker
      * @return Response
      */
-    public function add(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    public function add(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        VehicleRepository $vehicleRepository,
+        ClientRepository $clientRepository,
+        CallRepository $callRepository,
+        CallTreatmentDataMaker $callTreatmentDataMaker
+    ): Response {
+        $author = $this->getUser();
+        $addedCalls = $callRepository->findCallsAddedToday($author);
+
+        $steps = [];
+        foreach ($addedCalls as $addedCall) {
+            $steps[ $addedCall->getId()] = $callTreatmentDataMaker->stepMaker($addedCall);
+            $steps[ $addedCall->getId()]['lastStepName'] = $callTreatmentDataMaker->getLastTreatment($addedCall);
+        }
+
         $call          = new Call();
         $form          = $this->createForm(CallType::class, $call);
 
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-            //add isUrgent
+            $call->setAuthor($author);
+
             $call->setIsUrgent(false);
             if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
                 $call->setIsUrgent(true);
             }
-            $client = $call->getClient();
-            $vehicle = $call->getVehicle();
-            $vehicle->setClient($client);
-            dd($call);
 
+            $client = $call->getClient();
+            if ($request->request->get('call')['client_id'] != '') {
+                $client = $clientRepository->findOneById($request->request->get('call')['client_id']);
+                $call->setClient($client);
+                $entityManager->persist($client);
+                $entityManager->flush();
+            }
+
+            $vehicle = $call->getVehicle();
+            if ($request->request->get('call')['vehicle_id'] != '') {
+                $vehicle = $vehicleRepository->findOneById($request->request->get('call')['vehicle_id']);
+                $call->setVehicle($vehicle);
+                $entityManager->persist($vehicle);
+                $entityManager->flush();
+            }
+
+            $vehicle->setClient($client);
             $entityManager->persist($call);
+
             $entityManager->flush();
 
-            return $this->redirectToRoute('call_index');
+            $this->addFlash('success', 'Appel ajouté ');
+
+            return $this->redirectToRoute('call_add');
         }
         return $this->render('call/add.html.twig', [
             'call'          => $call,
             'form'          => $form->createView(),
+            'addedCalls'    => $addedCalls,
+            'steps'         => $steps
         ]);
     }
 
@@ -137,6 +186,7 @@ class CallController extends AbstractController
      * @param ClientRepository $clientRepository
      * @param CallRepository $callRepository
      * @param CallOnTheWayDataMaker $callOnTheWayDataMaker
+     * @param int $phoneNumber
      * @return JsonResponse
      */
     public function listAllCallsOnTheWayByPhoneNumber(
@@ -160,5 +210,17 @@ class CallController extends AbstractController
         return new JsonResponse([
             $data
         ]);
+    }
+
+    /**
+     * @Route("/reattribute/{id}", name="reattribute_phone_number",  methods={"GET"})
+     * @param ClientRepository $clientRepository
+     * @param int $id
+     * @return JsonResponse
+     */
+    public function reattributePhoneNumber(ClientRepository $clientRepository, $id): JsonResponse
+    {
+         $clientRepository->setPhoneToNull($id);
+         return new JsonResponse();
     }
 }

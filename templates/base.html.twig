@@ -13,52 +13,43 @@
     <body>
     {% block navbar %}
     <header class="paddleft">
-        <nav class="noshadow">
-            <div class="nav-wrapper  white noshadow">
-                <ul id="" class="left  noshadow">
+        <nav class="">
+            <div class="nav-wrapper white ">
+                <ul id="" class="left noshadow">
                     <li>
-                        <a href="#" class="black-text" data-action="hide" id="control-sidebar">
-                            <i class="material-icons">chevron_left</i>
-                        </a>
+                        <h5 class="black-text">Easy Auto</h5>
                     </li>
                 </ul>
                 <ul id="nav-mobile" class="right hide-on-med-and-down noshadow">
-                    <li><a href="#" class="black-text"><i class="material-icons left">logout</i>déconnexion</a></li>
+                    {% if app.user %}
+                    <li><a href="#" class="black-text"><i class="material-icons left">edit</i>{{ app.user.firstname }} {{ app.user.lastname }}</a></li>
+
+                    <li><a href="{{ path('app_logout') }}" class="black-text"><i class="material-icons left">logout</i>Déconnexion</a></li>
+                    {% else %}
+                        <a class="black-text" href="{{ path('app_login') }}"> Se connecter</a>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
 
-        <ul class="sidenav sidenav-fixed" id="sidenav">
+        <ul class="sidenav sidenav-fixed" id="easy-auto-sidenav">
             <li>
-                <div class="user-view">
-                    <div class="background light-blue darken-2">
-                    </div>
-                    <img src="{{ asset('build/logo.jpg') }}" width="50"><br>
-                    <div class="row">
-                        <div class="col s12 white-text">
-                            <span class="nomApp white-text">Easy Auto</span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12 white-text">
-                            John Doe <a class="secondary-content" href="#"><i class="material-icons white-text">edit</i></a>
-                        </div>
-                    </div>
-                </div>
+                <img src="{{ asset('build/logo.jpg') }}" width="50"><br>
             </li>
-            <li><a href="recherche.html"><i class="material-icons black-text">search</i>Rechercher</a></li>
-            <li><a href="{{ path('call_add') }}"><i class="material-icons light-blue-text">perm_phone_msg</i>Ajouter un appel</a></li>
-            <li class="active"><a href="{{ path('calls_to_treat') }}"><i class="material-icons red-text">phone</i>Vos appels à traiter</a></li>
-            <li><a href="{{ path('calls_treated') }}"><i class="material-icons light-green-text">phone_missed</i>Vos appels traités</a></li>
-            <li ><a href="gestions.html"><i class="material-icons orange-text">insert_chart</i>Statistiques</a></li>
-            <li><a href="{{ path('calls_all') }}"><i class="material-icons black-text">description</i>Tous les appels</a></li>
+            {% if app.user %}
+                <li  class="{% if app.request.get('_route') == 'search' %} active {% endif %} hide"><a href="recherche.html" class="tooltipped" data-position="right" data-tooltip="rechercher"><i class="material-icons">search</i></a></li>
+                <li class="{% if app.request.get('_route') == 'call_add' %} active {% endif %}"><a href="{{ path('call_add') }}" class=" tooltipped" data-position="right" data-tooltip="Ajouter un appel"><i class="material-icons">add</i></a></li>
+                <li  class="{% if app.request.get('_route')  == 'user_home' %} active {% endif %}"><a href="{{ path('user_home') }}" class="tooltipped" data-position="right" data-tooltip="Vos appels à traiter"><i class="material-icons">menu</i></a></li>
+                <li  class="{% if app.request.get('_route')  == 'stat' %} active {% endif %} hide"><a href="gestions.html" class="tooltipped" data-position="right" data-tooltip="statistiques"><i class="material-icons">insert_chart</i></a></li>
+            {% if is_granted('ROLE_ADMIN') %}
+                <li><a href="{{ path('admin_dashboard') }}" class="tooltipped" data-position="right" data-tooltip="admin dashboard"><i class="material-icons">settings</i></a></li>
+            {% endif %}
+            {% endif %}
         </ul>
+
     </header>
     {% endblock %}
     <main class="paddleft">
-        {% for message in app.flashes('success') %}
-            {{ message }}
-        {% endfor %}
         {% block body %}{% endblock %}
     </main>
     <footer>

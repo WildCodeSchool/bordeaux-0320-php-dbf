@@ -7,6 +7,7 @@ use App\Entity\Client;
 use App\Form\VehicleType;
 use App\Repository\VehicleRepository;
 use DateTime;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/vehicle")
+ * @IsGranted("ROLE_ADMIN")
  */
 class VehicleController extends AbstractController
 {

@@ -69,12 +69,6 @@ class Call
     private $service;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="calls", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $user;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -128,15 +122,22 @@ class Call
     private $callProcessings;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="callsToUser")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="calls")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $recipient;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="callsUserCreate")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
+
 
     public function __construct()
     {
         $this->callTransfers = new ArrayCollection();
         $this->callProcessings = new ArrayCollection();
-        $this->recipient = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -253,18 +254,6 @@ class Call
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
@@ -277,7 +266,7 @@ class Call
      */
     public function setCreatedAt(): self
     {
-        $this->createdAt = new DateTime();
+        $this->createdAt = new DateTime('Europe/Paris');
         return $this;
     }
 
@@ -430,28 +419,26 @@ class Call
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
-    public function getRecipient(): Collection
+    public function getRecipient(): ?User
     {
         return $this->recipient;
     }
 
-    public function addRecipient(User $recipient): self
+    public function setRecipient(?User $recipient): self
     {
-        if (!$this->recipient->contains($recipient)) {
-            $this->recipient[] = $recipient;
-        }
+        $this->recipient = $recipient;
 
         return $this;
     }
 
-    public function removeRecipient(User $recipient): self
+    public function getAuthor(): ?User
     {
-        if ($this->recipient->contains($recipient)) {
-            $this->recipient->removeElement($recipient);
-        }
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

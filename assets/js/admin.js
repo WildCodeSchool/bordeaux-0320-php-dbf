@@ -50,32 +50,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalAddConcession = document.getElementById('modal-add-concession');
     const instanceModalAddConcession = M.Modal.init(modalAddConcession, {});
 
+    const modalAddSubject = document.getElementById('modal-add-subject');
+    const instanceModalAddSubject = M.Modal.init(modalAddSubject, {});
+
+    const modalAddComment = document.getElementById('modal-add-comment');
+    const instanceModalAddComment = M.Modal.init(modalAddComment, {});
+
+    const modalListCity = document.getElementById('modal-list-city');
+    const instanceModalListCity = M.Modal.init(modalListCity, {});
+
+    const modalAddCity = document.getElementById('modal-add-city');
+    const instanceModalAddCity = M.Modal.init(modalAddCity, {});
+
+    var tooltips = document.querySelectorAll('.tooltipped');
+    var instancesOfTooltips = M.Tooltip.init(tooltips);
+
 })
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-/*
-
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById("service-button").addEventListener("click", function (e) {
-        e.preventDefault();
-        const name = document.getElementById('service_name').value;
-        const concession = document.getElementById('service_concession').value;
-        if (name && concession) {
-            M.toast({html: 'I am a toast!', classes: 'rounded'});
-        }
-    })
-});
-*/
 

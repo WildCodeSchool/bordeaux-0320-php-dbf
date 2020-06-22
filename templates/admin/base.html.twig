@@ -18,13 +18,17 @@
             <div class="nav-wrapper  white noshadow">
                 <ul id="" class="left  noshadow">
                     <li>
-                        <a href="#" class="black-text" data-action="hide" id="control-sidebar">
+                        <a href="{{ path('call_add') }}" class="black-text" data-action="hide" id="control-sidebar">
                            <i class="material-icons left">chevron_left</i> Back to easy-auto
                         </a>
                     </li>
                 </ul>
                 <ul id="nav-mobile" class="right hide-on-med-and-down noshadow">
-                    <li><a href="connect.html" class="black-text"><i class="material-icons left">logout</i>déconnexion</a></li>
+                    {% if app.user %}
+                    <li><a href="#" class="black-text"><i class="material-icons left">edit</i>{{ app.user.firstname }} {{ app.user.lastname }}</a></li>
+
+                    <li><a href="{{ path('app_logout') }}" class="black-text"><i class="material-icons left">logout</i>Déconnexion</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>

@@ -1,109 +1,15 @@
 /* Materialize import CSS */
 @import "~materialize-css/sass/materialize.scss";
-
 @import "vars";
 @import "~triswitch";
 @import "switch3";
 @import "animations";
-
-.paddleft {
-    padding-left: 300px;
-}
-.paddleft.large {
-    padding-left: 10px;
-}
-
-.flex {
-    display: flex;
-    align-items: center;
-}
-
-.flex-hz-center {
-    justify-content: center;
-}
-
-.connectrow {
-    height:80vh;
-}
-
-.nomApp {
-    font-size:2rem;
-}
-
-.container {
-    width:90%;
-}
-
-h3.treat {
-   text-align: center;
- }
-
-.row {
-  margin-bottom:5px;
-}
-
-.input-field {
-  margin-top:0;
-  margin-bottom:0;
-  position:relative;
-}
-
-.copyer {
-  position:absolute;
-  right:20px;
-  top:7px;
-  font-size:1rem;
-
-  i {
-    font-size:1.2rem;
-  }
-}
-
-.mgt15 {
-  margin-top:15px;
-}
-label:not(.active) {
-  font-size:0.9rem;
-  margin-left:5px;
-  transform:translateY(6px);
-}
-
-label.active {
-  margin-top:3px;
-  background:#fff;
-  padding:0 5px;
-}
-input:not([type]), input[type="text"]:not(.browser-default), input[type="password"]:not(.browser-default), input[type="email"]:not(.browser-default), input[type="url"]:not(.browser-default), input[type="time"]:not(.browser-default), input[type="date"]:not(.browser-default), input[type="datetime"]:not(.browser-default), input[type="datetime-local"]:not(.browser-default), input[type="tel"]:not(.browser-default), input[type="number"]:not(.browser-default), input[type="search"]:not(.browser-default), textarea.materialize-textarea {
-  height:2.2rem;
-  padding-left:4px;
-  border:1px solid #ccc;
-  border-radius:4px;
-}
-
-.switch3-bar {
-  border:2px solid #999;
-}
-
-.switch3-label {
-  font-weight: 400;
-  font-size:0.9rem;
-}
-
-h3 {
-  font-size:2rem;
-}
-
-h5 {
-  font-size:1.35rem;
-}
-
-.flow-text {
-  font-size:1.2rem;
-}
-
-.callclient-marked {
-  padding:5px 10px;
-  border-radius:4px;
-}
-
+@import "general";
+@import "navbar";
+@import "forms";
+@import "callList";
+@import "userHome";
+@import "flashes";
 @import "admin";
+@import "addCall";
+@import "call_calendar";

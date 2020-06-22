@@ -1,0 +1,4 @@
+{{ form_start(form_comment, {'action': path('comment_new')})}}
+    {{ form_widget(form_comment) }}
+<button class="btn modal-close" >{{ button_label|default('Sauvegarder') }}</button>
+{{ form_end(form_comment) }}

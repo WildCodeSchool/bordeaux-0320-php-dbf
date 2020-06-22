@@ -33,6 +33,22 @@ class ClientRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
+    /**
+     * @param int $clientId
+     * @return mixed
+     */
+    public function setPhoneToNull($clientId)
+    {
+        return $this->createQueryBuilder('c')
+            ->update('App\Entity\Client', 'c')
+            ->where('c.id = :val')
+            ->setParameter(':val', $clientId)
+            ->set('c.phone', ':emptyPhone')
+            ->setParameter(':emptyPhone', '00000000')
+            ->getQuery()
+            ->execute();
+    }
+
     // /**
     //  * @return Client[] Returns an array of Client objects
     //  */
