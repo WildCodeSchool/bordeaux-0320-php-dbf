@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SearchController!{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col s8">
+            <h3>Recherche</h3>
+        </div>
+        <div>
+        {% include('/search/_form_search.html.twig') %}
+        </div>
+        <div>
+            <h3>résultat</h3>
+            <ul>
+                {% for call in  calls %}
+                    <li>
+                        {{ call.client.name }} {{ call.author.firstname }} {{ call.client.phone }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

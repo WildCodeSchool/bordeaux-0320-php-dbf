@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Data\SearchData;
 use App\Entity\Call;
 use App\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -155,6 +156,16 @@ class CallRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findSearch(SearchData $searchData): array
+    {
+        $query = $this->createQueryBuilder('c')
+            ->join('c.client', 'cl')->addSelect('cl')
+            ->orWhere('cl.phone LIKE :phone')->setParameter('phone', "%{$searchData->phone}%")
+            ->orWhere('c.author IN (:users)')->setParameter('users', $searchData->users);
+
+        return $query->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Call[] Returns an array of Call objects
     //  */
@@ -170,6 +181,14 @@ class CallRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+        $query = $this->createQueryBuilder('c')
+            ->join('c.client', 'cl')->addSelect('cl')
+            ->orWhere('cl.phone LIKE :phone')->setParameter('phone', "%{$searchData->phone}%")
+            ->orWhere('c.author IN (:users)')->setParameter('users', $searchData->users);
+
+
+        return $query->getQuery()->getResult();
     */
 
     /*
