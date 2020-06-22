@@ -159,9 +159,15 @@ class CallRepository extends ServiceEntityRepository
     public function findSearch(SearchData $searchData): array
     {
         $query = $this->createQueryBuilder('c')
-            ->join('c.client', 'cl')->addSelect('cl')
-            ->orWhere('cl.phone LIKE :phone')->setParameter('phone', "%{$searchData->phone}%")
-            ->orWhere('c.author IN (:users)')->setParameter('users', $searchData->users);
+            ->join('c.client', 'cl')->addSelect('cl');
+
+        if (!empty($searchData->phone)) {
+            $query = $query->andWhere('cl.phone LIKE :phone')->setParameter('phone', "%{$searchData->phone}%");
+        }
+        if (!empty($searchData->users)) {
+            $query = $query->andWhere('c.author IN (:users)')->setParameter('users', $searchData->users);
+        }
+
 
         return $query->getQuery()->getResult();
     }
@@ -181,14 +187,6 @@ class CallRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
-        $query = $this->createQueryBuilder('c')
-            ->join('c.client', 'cl')->addSelect('cl')
-            ->orWhere('cl.phone LIKE :phone')->setParameter('phone', "%{$searchData->phone}%")
-            ->orWhere('c.author IN (:users)')->setParameter('users', $searchData->users);
-
-
-        return $query->getQuery()->getResult();
     */
 
     /*
