@@ -10,6 +10,7 @@ use App\Form\CallType;
 use App\Repository\CallRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,6 +22,9 @@ class CallProcessController extends AbstractController
 {
     /**
      * @Route("/{callId}", name="call_process", methods={"GET"})
+     * @param int $callId
+     * @param CallRepository $callRepository
+     * @return Response
      */
     public function callProcessing($callId, CallRepository $callRepository)
     {
@@ -36,6 +40,11 @@ class CallProcessController extends AbstractController
 
     /**
      * @Route("/{callId}/add", name="add_call_process", methods={"POST"})
+     * @param int $callId
+     * @param CallRepository $callRepository
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return RedirectResponse
      */
     public function addCallProcess(
         $callId,

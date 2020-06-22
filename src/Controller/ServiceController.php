@@ -20,6 +20,8 @@ class ServiceController extends AbstractController
 {
     /**
      * @Route("/", name="service_index", methods={"GET"})
+     * @param ServiceRepository $serviceRepository
+     * @return Response
      */
     public function index(ServiceRepository $serviceRepository): Response
     {
@@ -30,6 +32,8 @@ class ServiceController extends AbstractController
 
     /**
      * @Route("/new", name="service_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -53,6 +57,8 @@ class ServiceController extends AbstractController
 
     /**
      * @Route("/{id}", name="service_show", methods={"GET"})
+     * @param Service $service
+     * @return Response
      */
     public function show(Service $service): Response
     {
@@ -63,6 +69,9 @@ class ServiceController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="service_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Service $service
+     * @return Response
      */
     public function edit(Request $request, Service $service): Response
     {
@@ -83,6 +92,9 @@ class ServiceController extends AbstractController
 
     /**
      * @Route("/{id}", name="service_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Service $service
+     * @return Response
      */
     public function delete(Request $request, Service $service): Response
     {
