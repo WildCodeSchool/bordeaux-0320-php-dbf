@@ -8,6 +8,7 @@ use App\Entity\CallTransfer;
 use App\Form\CallProcessingType;
 use App\Repository\CallRepository;
 use App\Repository\UserRepository;
+use App\Service\CallStepChecker;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -51,18 +52,20 @@ class CallProcessController extends AbstractController
         $callId,
         CallRepository $callRepository,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        CallStepChecker $callStepChecker
     ) {
         $call = $callRepository->findOneById($callId);
-
-        if (is_null($call->getIsProcessed())) {
-            $call->setIsProcessed(true);
-            $entityManager->persist($call);
-        }
+        $call
+            ->setIsProcessed(true)
+            ->setIsAppointmentTaken($callStepChecker->checkAppointment($request))
+            ->setIsProcessEnded($callStepChecker->isCallToBeEnded($request));
+        $entityManager->persist($call);
 
         $callProcess = new CallProcessing();
         $form        = $this->createForm(CallProcessingType::class, $callProcess);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $callProcess->setReferedCall($call);
             $entityManager->persist($callProcess);

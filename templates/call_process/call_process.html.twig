@@ -6,11 +6,13 @@
         <div class="col s12">
             <span class="title"><h5>{{call.client.name}}</h5></span>
             <p>
-                {{call.client.phone}}<br>
-                {{ call.client.phone2 }}
+                <span class="chip">{{call.client.phone|phoneNumber}}</span><br>
+                <span class="chip">{{ call.client.phone2|phoneNumber }}</span>
             </p>
             <p>
-                <b>{{ call.service.concession.town.name }} > {{ call.service.concession.name }} > {{ call.service.name }}</b><br>
+                <b> {{ call.service.concession.town.name }}<br>
+                    {{ call.service.concession.name }}<br>
+                    {{ call.service.name }}</b><br>
                 <small>{{call.subject.name}} - {{call.comment.name}}</small><br>
             </p>
         </div>
@@ -30,7 +32,7 @@
                                         {{process.createdAt|dateName}}
                                     </b>
                                 </td>
-                                <td> à {{ process.createdAt|date('H:i') }}</td>
+                                <td> à {{ process.createdAt|timeFormat }}</td>
                                 <td class="{{ process.stepColors.color }}">{{ process.contactType.name }}</td>
                                 <td>{{ process.comment }}</td>
                             </tr>

@@ -14,6 +14,7 @@ class DateFormatter extends AbstractExtension
     {
         return [
             new TwigFilter('dateName', [$this, 'formatDate']),
+            new TwigFilter('timeFormat', [$this, 'formatTime']),
         ];
     }
 
@@ -37,5 +38,10 @@ class DateFormatter extends AbstractExtension
             $dateName = 'demain';
         }
         return $dateName;
+    }
+    public function formatTime($dateTime)
+    {
+        $minutes = ($dateTime->format('i') === '00') ? '' : $dateTime->format('i');
+        return $dateTime->format('H') . 'h'. $minutes;
     }
 }

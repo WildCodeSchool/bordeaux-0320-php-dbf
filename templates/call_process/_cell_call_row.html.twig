@@ -7,10 +7,16 @@
                     Reçu
                     <b>
                             {{call.createdAt|dateName}}
-                            à {{ call.createdAt|date('H:i')}}
+                            à {{ call.createdAt|timeFormat}}
                     </b>
                     par  <b>{{ call.author.firstname }} {{ call.author.lastname }}</b>
                     </small>
+                    <i class="material-icons left tooltipped" data-position="right" data-tooltip="<div class='left-align'>
+                    {% for transfer in call.callTransfers|reverse %}
+                        - Transféré par {{ transfer.byWhom.firstName }} {{ transfer.byWhom.lastName }} {{ transfer.createdAt|dateName }} à {{ transfer.createdAt|timeFormat }}<br>
+                    {% endfor %}
+                    </div>
+                    ">description</i><br>
                 </div>
                 <div class="col s8">
                     <span class="recipient-chip">
@@ -71,7 +77,7 @@
                             <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName}}</span>
                             <b>
                                 {{ process.createdAt|dateName }}
-                                à {{ process.createdAt|date('H:i') }}
+                                à {{ process.createdAt|timeFormat }}
                             </b>
                         {% endif %}
                     {% endfor %}
@@ -101,7 +107,7 @@
                     {% if call.isUrgent %}
                     <span class="red-text">urgent</span>
                     {% else %}
-                    <span class="grey-text text-darken-4">{{call.recallPeriod.name}} {{call.recallHour|date('H:i')}}</span>
+                    <span class="grey-text text-darken-4">{{call.recallPeriod.name}} {{call.recallHour|timeFormat}}</span>
                     {% endif %}
                     </b>
                 </div>

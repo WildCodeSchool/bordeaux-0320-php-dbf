@@ -63,7 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const instanceModalAddCity = M.Modal.init(modalAddCity, {});
 
     const tooltips = document.querySelectorAll('.tooltipped');
-    const instancesOfTooltips = M.Tooltip.init(tooltips);
+    const instancesOfTooltips = M.Tooltip.init(tooltips, {
+        html:true
+    });
 
 })
 

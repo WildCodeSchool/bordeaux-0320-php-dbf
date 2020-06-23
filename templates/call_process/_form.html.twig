@@ -7,8 +7,28 @@
         {{ form_label(form.comment) }}
         {{ form_widget(form.comment) }}
     </div>
+    <div class="row">
+        <div class="col input-field s12">
+            <div class="col s6">
+                <b>Rendez vous pris ? :</b>
+            </div>
+            <div class="col s6">
+                <div class="switch">
+                    <label>
+                        Non
+                        {{ form_widget(form.isAppointmentTaken) }}
+                        <span class="lever"></span>
+                        Oui
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 </div>
-<button class="btn light-blue">{{ button_label|default('Enregistrer') }} <i class="material-icons right">save</i> </button>
+<div class="row">
+    <button class="btn light-blue">{{ button_label|default('Enregistrer') }} <i class="material-icons right">save</i> </button>
+</div>
 {{ form_end(form) }}
+

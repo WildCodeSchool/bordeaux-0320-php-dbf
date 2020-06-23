@@ -16,24 +16,6 @@ class UserHomeController extends AbstractController
     /**
      * @Route("/welcome", name="user_home")
      */
-    public function homeUser(CallRepository $callRepository, UserRepository $userRepository): Response
-    {
-        $appUser = $this->getUser();
-        $callsToProcess = $callRepository->callsToProcessByUser($appUser);
-        $lastCall = $callRepository->lastCallToProcessByUser($appUser);
-        $this->get('session')->set('lastCallId', $lastCall->getId());
-
-        $callsInProcess  = $callRepository->callsInProcessByUser($appUser);
-        return $this->render('user_home.html.twig', [
-            'user'             => $appUser,
-            'calls'            => $callsToProcess,
-            'calls_in_process' => $callsInProcess,
-        ]);
-    }
-
-    /**
-     * @Route("/cell", name="cell_home")
-     */
     public function homeCell(CallRepository $callRepository, UserRepository $userRepository): Response
     {
         $appUser = $this->getUser();
