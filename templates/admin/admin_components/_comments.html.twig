@@ -15,7 +15,7 @@
                 <label for="comments"></label>
                 <select>
                     {% for comment in comments %}
-                        <option value="{{ loop.index }}">{{ comment.name }}</option>
+                        <option value="{{ comment.id }}">{{ comment.name }}</option>
                     {% endfor %}
                 </select>
             </div>

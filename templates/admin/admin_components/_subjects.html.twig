@@ -15,7 +15,7 @@
                 <label for="subjects"></label>
                 <select>
                     {% for subject in subjects %}
-                        <option value="{{ loop.index }}">{{ subject.name }}</option>
+                        <option value="{{ subject.id }}">{{ subject.name }}</option>
                     {% endfor %}
                 </select>
             </div>
