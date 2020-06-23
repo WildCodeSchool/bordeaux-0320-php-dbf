@@ -11,7 +11,8 @@
                 <th>Id</th>
                 <th>Commentaires</th>
                 <th>Identifier</th>
-                <th>actions</th>
+                <th>modifier</th>
+                <th>supprimer</th>
             </tr>
         </thead>
         <tbody>
@@ -21,8 +22,11 @@
                 <td>{{ comment.name }}</td>
                 <td>{{ comment.identifier }}</td>
                 <td>
-                    <a href="{{ path('comment_show', {'id': comment.id}) }}"><i class="material-icons">visibility</i></a>
                     <a href="{{ path('comment_edit', {'id': comment.id}) }}"><i class="material-icons">edit</i></a>
+
+                </td>
+                <td>
+                    <a href="{{ path('comment_delete', {'id': comment.id}) }}"><i class="material-icons">delete</i></a>
                 </td>
             </tr>
         {% else %}

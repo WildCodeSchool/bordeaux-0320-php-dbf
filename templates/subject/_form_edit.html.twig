@@ -1,4 +1,4 @@
-{{ form_start(form_subject, {'action': path('subject_new')})}}
+<form method="post" action="{{ path('subject_edit', {'id': subject.id}) }}" onsubmit="return confirm('Etes vous sûr de vouloir modifier ce motif?');">
     {{ form_widget(form_subject) }}
 <button class="btn modal-close" >{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form_subject) }}

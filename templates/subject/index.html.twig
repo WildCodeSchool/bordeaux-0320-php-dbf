@@ -18,10 +18,10 @@
                 <td>{{ subject.name }}</td>
                 <td>{{ subject.isForAppWorkshop ? 'Oui' : 'Non' }}</td>
                 <td>
-                    <a href="{{ path('subject_show', {'id': subject.id}) }}"><i class="material-icons">edit</i></a>
+                    <a href="{{ path('subject_edit', {'id': subject.id}) }}"><i class="material-icons">edit</i></a>
                 </td>
                 <td>
-                    <a href="{{ path('subject_edit', {'id': subject.id}) }}"><i class="material-icons">delete</i></a>
+                    <a href="{{ path('subject_delete', {'id': subject.id}) }}"><i class="material-icons">delete</i></a>
                 </td>
             </tr>
         {% else %}

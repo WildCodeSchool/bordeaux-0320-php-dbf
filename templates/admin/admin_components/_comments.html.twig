@@ -7,6 +7,7 @@
         <ul class="tabs tabs-fixed-width" id="comments-tabs">
             <li class="tab" id="comments-tab-1"><a href="#comments-list" class="active red-text">Liste</a></li>
             <li class="tab" id="comments-tab-2"><a href="#comments-add" class="red-text">Ajouter</a></li>
+            <li class="tab" id="comments-tab-3"><a href="#comments-edit" class="red-text">Modifier</a></li>
         </ul>
     </div>
     <div class="card-content grey lighten-4">
@@ -23,6 +24,9 @@
         <div id="comments-add">
             <a href="#modal-add-comment" class="btn modal-trigger red"><i class="material-icons">add</i></a>
         </div>
+        <div id="comments-edit">
+            <a href="#modal-edit-comment" class="btn modal-trigger red"><i class="material-icons">edit</i></a>
+        </div>
     </div>
 </div>
 
@@ -34,6 +38,19 @@
         <div class="row">
             <div class="col s10 offset-s1">
                 {% include 'comment/new.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE EDITION commentaires -->
+
+<div id="modal-edit-comment" class="modal">
+    <div class="modal-content">
+        <h4 class="center-align">Modifier un commentaire</h4>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'comment/index.html.twig' %}
             </div>
         </div>
     </div>

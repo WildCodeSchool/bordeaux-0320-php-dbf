@@ -78,7 +78,7 @@ class CityController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('city_index');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('city/edit.html.twig', [
@@ -101,6 +101,6 @@ class CityController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('city_index');
+        return $this->redirectToRoute('admin_dashboard');
     }
 }

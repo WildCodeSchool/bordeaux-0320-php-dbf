@@ -78,12 +78,12 @@ class CommentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('comment_index');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('comment/edit.html.twig', [
             'comment' => $comment,
-            'form' => $form->createView(),
+            'form_comment' => $form->createView(),
         ]);
     }
 
@@ -101,6 +101,6 @@ class CommentController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('comment_index');
+        return $this->redirectToRoute('admin_dashboard');
     }
 }

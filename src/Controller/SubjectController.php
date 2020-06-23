@@ -64,11 +64,10 @@ class SubjectController extends AbstractController
      */
     public function edit(Request $request, Subject $subject): Response
     {
-        $form = $this->createForm(SubjectType::class, $subject);
         $formSubject = $this->createForm(SubjectType::class, $subject);
         $formSubject->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formSubject->isSubmitted() && $formSubject->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('admin_dashboard');
@@ -76,7 +75,7 @@ class SubjectController extends AbstractController
 
         return $this->render('subject/edit.html.twig', [
             'subject' => $subject,
-            'form_subject' => $form->createView(),
+            'form_subject' => $formSubject->createView(),
         ]);
     }
 
@@ -91,6 +90,6 @@ class SubjectController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('subject_index');
+        return $this->redirectToRoute('admin_dashboard');
     }
 }
