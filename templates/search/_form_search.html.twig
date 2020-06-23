@@ -1,6 +1,15 @@
 {{ form_start(form) }}
+{{ form_widget(form.phone) }}
+{{ form_widget(form.authors) }}
+{{ form_widget(form.subject) }}
+{{ form_widget(form.comment) }}
 
-
+<p>
+<label>
+    {{form_widget(form.urgent)}}
+    <span>{{form_label(form.urgent)}}</span>
+</label>
+</p>
 <div class="row center-align">
     <button class="btn light-blue">{{ button_label|default('Ajouter') }}</button>
 </div>

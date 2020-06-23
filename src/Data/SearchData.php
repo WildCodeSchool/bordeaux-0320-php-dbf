@@ -22,4 +22,8 @@ class SearchData
      * @var string
      */
     public $comment = '';
+    /**
+     * @var bool
+     */
+    public $urgent = false;
 }

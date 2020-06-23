@@ -173,7 +173,9 @@ class CallRepository extends ServiceEntityRepository
         if (!empty($searchData->subject)) {
             $query = $query->andWhere('c.subject = :subject')->setParameter('subject', $searchData->subject);
         }
-
+        if (!empty($searchData->urgent)) {
+            $query = $query->andWhere('c.isUrgent = :urgent ')->setParameter('urgent', true);
+        }
 
 
         return $query->getQuery()->getResult();
