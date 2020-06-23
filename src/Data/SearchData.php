@@ -13,7 +13,13 @@ class SearchData
     /**
      * @var array
      */
-    public $users = [];
+    public $authors = [];
+    /**
+     * @var string
+     */
     public $subject = '';
+    /**
+     * @var string
+     */
     public $comment = '';
 }

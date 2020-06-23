@@ -22,7 +22,7 @@ class SearchType extends AbstractType
             'required' => false,
              'attr'=> ['placeholder'=>'numero de telephone']
         ])
-        ->add('users', EntityType::class, [
+        ->add('authors', EntityType::class, [
             'class' => User::class,
             'required' => false,
             'choice_label'=>'lastname',
