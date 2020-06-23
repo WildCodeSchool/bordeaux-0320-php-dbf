@@ -23,11 +23,11 @@ class SearchController extends AbstractController
     {
         $form = $this->createForm(SearchType::class, $searchData);
         $form->handleRequest($request);
-        $calls = $callRepository->findSearch($searchData);
+        $searchedCalls = $callRepository->findSearch($searchData);
 
         return $this->render('search/index.html.twig', [
             'form'=> $form->createView(),
-            'calls'=> $calls
+            'calls'=> $searchedCalls
         ]);
     }
 }

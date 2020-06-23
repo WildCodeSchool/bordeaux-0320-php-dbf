@@ -14,4 +14,6 @@ class SearchData
      * @var array
      */
     public $users = [];
+    public $subject = '';
+    public $comment = '';
 }

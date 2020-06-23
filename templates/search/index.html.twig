@@ -16,7 +16,7 @@
             <ul>
                 {% for call in  calls %}
                     <li>
-                        {{ call.client.name }} {{ call.author.firstname }} {{ call.client.phone }}
+                        {{ call.id }}client nom : {{ call.client.name }} Auteur : {{ call.author.firstname }} client phone : {{ call.client.phone }}
                     </li>
                 {% endfor %}
             </ul>

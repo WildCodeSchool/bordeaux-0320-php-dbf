@@ -4,6 +4,8 @@
 namespace App\Form;
 
 use App\Data\SearchData;
+use App\Entity\Comment;
+use App\Entity\Subject;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -26,7 +28,20 @@ class SearchType extends AbstractType
             'choice_label'=>'lastname',
             'by_reference'=>false,
         ])
-
+            ->add('subject', EntityType::class, [
+            'class' => Subject::class,
+            'choice_label' => 'name',
+            'by_reference' => false,
+                'required' => false,
+            'label' => 'Motif',
+        ])
+        ->add('comment', EntityType::class, [
+            'class' => Comment::class,
+            'choice_label' => 'name',
+            'by_reference' => false,
+            'required' => false,
+            'label' => 'Type'
+        ])
         ;
     }
     public function configureOptions(OptionsResolver $resolver)

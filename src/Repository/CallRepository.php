@@ -167,6 +167,13 @@ class CallRepository extends ServiceEntityRepository
         if (!empty($searchData->users)) {
             $query = $query->andWhere('c.author IN (:users)')->setParameter('users', $searchData->users);
         }
+        if (!empty($searchData->comment)) {
+            $query = $query->andWhere('c.comment = :comment')->setParameter('comment', $searchData->comment);
+        }
+        if (!empty($searchData->subject)) {
+            $query = $query->andWhere('c.subject = :subject')->setParameter('subject', $searchData->subject);
+        }
+
 
 
         return $query->getQuery()->getResult();
