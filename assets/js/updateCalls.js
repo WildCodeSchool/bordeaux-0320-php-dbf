@@ -24,9 +24,40 @@ const initButtons = (modal) => {
     }
 }
 
+const initTransferButtons = (modal) => {
+    const transferButtons = document.getElementsByClassName('call-transfer-btn');
+    const transferModalHtmlZone = document.getElementById('modal-content-call-transfer');
+    for (let i=0; i<transferButtons.length; i++) {
+        transferButtons[i].addEventListener('click', (e) => {
+            e.preventDefault();
+            const callId = transferButtons[i].dataset.call;
+            getTransferForm(callId, (html) => {
+                transferModalHtmlZone.innerHTML = html
+                initializeSelects()
+            })
+            modal.open();
+        })
+    }
+}
+
 const getProcessForm = (callId, action) => {
 
     fetch('/call/process/' + callId, {
+        method      : 'GET',
+        headers     : {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(function (response) {
+            return response.text()
+        }).then(function (html) {
+        action(html);
+    });
+}
+
+const getTransferForm = (callId, action) => {
+
+    fetch('/call/process/' + callId + '/transfer', {
         method      : 'GET',
         headers     : {
             'Content-Type': 'application/json'
@@ -49,6 +80,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalCallTreatment         = document.getElementById('modal-call-treatment');
     const modalCallTreatmentInstance = M.Modal.init(modalCallTreatment, {});
     initButtons(modalCallTreatmentInstance);
+
+    const modalCallTransfer         = document.getElementById('modal-call-transfer');
+    const modalCallTransferInstance = M.Modal.init(modalCallTransfer, {});
+    initTransferButtons(modalCallTransferInstance);
 
     const checker = setInterval(()=> {
         getNewCalls(html => {

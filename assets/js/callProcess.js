@@ -1,4 +1,6 @@
 const initButtons = (modal) => {
+
+    // Call process
     const buttons = document.getElementsByClassName('call-treatment-btn');
     const modalHtmlZone = document.getElementById('modal-content-call-treatment');
     for (let i=0; i<buttons.length; i++) {
@@ -28,6 +30,8 @@ const getProcessForm = (callId, action) => {
             action(html);
     });
 }
+
+
 
 const initializeSelects = () => {
     const selects = document.querySelectorAll('select');

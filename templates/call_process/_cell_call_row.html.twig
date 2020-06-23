@@ -24,7 +24,7 @@
                     <span class="place-name service-name">
                         <i class="material-icons tiny">build</i>
                         {{ call.service.name }}
-                    <a class="grey darken-3 call-transfer-btn btn-rounded tooltipped mgl30" data-tooltip="transférer" data-position="top" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
+                    <a class="grey darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
                     </span>
                 </div>
 
@@ -77,12 +77,12 @@
                     {% endfor %}
                 </div>
                 <div class="col s3 right-align">
+                    <i class="material-icons small left">directions_car</i> <span class="immat left">{{ call.vehicle.immatriculation }}</span>
                     {% if call.vehicle.hasCome == 1 %}
-                    <i class="material-icons right light-green-text tooltipped" data-tooltip="Déja venu à l'atelier" data-position="top">settings_applications</i>
+                        <i class="material-icons left light-green-text tooltipped" data-tooltip="Déja venu à l'atelier" data-position="top">settings_applications</i>
                     {% elseif call.vehicle.hasCome == 2 %}
-                        <i class="material-icons right red-text tooltipped" data-tooltip="Jamais venu à l'atelier" data-position="top">settings_applications</i>
+                        <i class="material-icons left red-text tooltipped" data-tooltip="Jamais venu à l'atelier" data-position="top">settings_applications</i>
                     {% endif %}
-                    <b>véhicule : </b>{{ call.vehicle.immatriculation }}
                 </div>
 
             </div>
