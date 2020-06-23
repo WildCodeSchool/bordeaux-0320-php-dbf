@@ -9,8 +9,49 @@
             <h3>Editer mon profil</h3>
         </div>
     </div>
+    <div class="col s4">
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="flashes {{ type }}">
+                    <span class="flash-{{ type }}">{{ message }}</span>
+                    {% if type == 'success' %}
+                        <i class="material-icons light-blue-text right">check</i>
+                    {% else %}
+                        <i class="material-icons red-text right">error</i>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+    <div class="section">
+    <div class="row mgt15">
+        <div class="input-field col s5">
+    {{ form_label(form.email) }}
+    {{ form_widget(form.email) }}
+        </div>
+    </div>
+    </div>
+    <div class="section">
+    <div class="row">
+            <div class="input-field col s2">
+                {{ form_label(form.firstname) }}
+                {{ form_widget(form.firstname) }}
+            </div>
+                <div class="input-field col s3">
+                    {{ form_label(form.lastname) }}
+                    {{ form_widget(form.lastname)  }}
+                    </div>
+    </div>
+        </div>
+        <div class="section">
+            <div class="row">
+                <div class="input-field col s5">
+    {{ form_label(form.phone) }}
+    {{ form_widget(form.phone) }}
+                </div>
+            </div>
+        </div>
     <button class="btn">{{ button_label|default('Sauvegarder') }}</button>
     {{ form_end(form) }}
 </div>

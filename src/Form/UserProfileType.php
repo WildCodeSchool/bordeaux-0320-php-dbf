@@ -4,8 +4,10 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserProfileType extends AbstractType
@@ -13,14 +15,12 @@ class UserProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email')
-            ->add('password', PasswordType::class, array(
-
-                'mapped' => false
-            ))
-            ->add('firstname')
-            ->add('lastname')
-            ->add('phone')
+            ->add('email', TextType::class, ['label' => 'Email'])
+            ->add('firstname', TextType::class, ['label' => 'Prénom'])
+            ->add('lastname', TextType::class, ['label' => 'Nom'])
+            ->add('phone', TextType::class, ['label' => 'Numéro de téléphone',
+                'required'=>false
+            ])
         ;
     }
 
