@@ -13,6 +13,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class CallTransferType extends AbstractType
 {
@@ -58,6 +59,12 @@ class CallTransferType extends AbstractType
             ->add('recipient', ChoiceType::class, [
                 'choices' => $this->getRecipients(),
                 'data'    => $call->getRecipient()->getId(),
+                'mapped'  => false
+            ])
+            ->add('comment', TextType::class, [
+                'label' => 'commentaire',
+                'required'   => false,
+                'mapped'  => false
             ])
         ;
     }
@@ -119,6 +126,7 @@ class CallTransferType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Call::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

@@ -2,11 +2,16 @@
 
 namespace App\Entity;
 
+use \DateTime;
 use App\Repository\CallTransferRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Exception;
 
 /**
  * @ORM\Entity(repositoryClass=CallTransferRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class CallTransfer
 {
@@ -18,6 +23,7 @@ class CallTransfer
     private $id;
 
     /**
+     *
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -61,10 +67,14 @@ class CallTransfer
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @ORM\PrePersist
+     * @return $this
+     * @throws Exception
+     */
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new DateTime('Europe/Paris');
         return $this;
     }
 

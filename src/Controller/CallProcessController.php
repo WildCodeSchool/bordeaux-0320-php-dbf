@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\CallProcessing;
+use App\Entity\CallTransfer;
 use App\Form\CallProcessingType;
 use App\Repository\CallRepository;
 use App\Repository\UserRepository;
@@ -76,8 +77,12 @@ class CallProcessController extends AbstractController
      * @param CallRepository $callRepository
      * @return Response
      */
-    public function callTransfer($callId, CallRepository $callRepository, Request $request, EntityManagerInterface $entityManager)
-    {
+    public function callTransfer(
+        $callId,
+        CallRepository $callRepository,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ) {
         $call = $callRepository->findOneById($callId);
         $form                 = $this->createForm(CallTransferType::class, $call);
         $form->handleRequest($request);
@@ -98,23 +103,31 @@ class CallProcessController extends AbstractController
         CallRepository $callRepository,
         UserRepository $userRepository,
         Request $request,
-        EntityManagerInterface $entityManager)
-    {
+        EntityManagerInterface $entityManager
+    ) {
         $call = $callRepository->findOneById($callId);
+        $fromWhom = $call->getRecipient();
         $call->setRecipient($userRepository->findOneById($request->request->get('call_transfer')['recipient']));
+        $toWhom   = $call->getRecipient();
+        $byWhom   = $this->getUser();
+        $transferComment = $request->request->get('call_transfer')['comment'];
+        $transfer = new CallTransfer();
+
+        $transfer
+            ->setReferedCall($call)
+            ->setFromWhom($fromWhom)
+            ->setByWhom($byWhom)
+            ->setToWhom($toWhom)
+            ->setComment($transferComment);
+
         $form = $this->createForm(CallTransferType::class, $call);
         $form->handleRequest($request);
-        dd($form);
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $entityManager->persist($transfer);
             $entityManager->persist($call);
             $entityManager->flush();
-            return $this->redirectToRoute('cell_home');
         }
 
-        return $this->render('call_process/call_transfer.html.twig', [
-            'call'          => $call,
-            'form'          => $form->createView(),
-        ]);
+        return $this->redirectToRoute('cell_home');
     }
 }
