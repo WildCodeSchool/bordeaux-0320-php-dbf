@@ -65,17 +65,18 @@ class SubjectController extends AbstractController
     public function edit(Request $request, Subject $subject): Response
     {
         $form = $this->createForm(SubjectType::class, $subject);
-        $form->handleRequest($request);
+        $formSubject = $this->createForm(SubjectType::class, $subject);
+        $formSubject->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('subject_index');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('subject/edit.html.twig', [
             'subject' => $subject,
-            'form' => $form->createView(),
+            'form_subject' => $form->createView(),
         ]);
     }
 
