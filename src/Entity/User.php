@@ -91,6 +91,12 @@ class User implements UserInterface
      */
     private $callsUserCreate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $service;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
@@ -431,5 +437,17 @@ class User implements UserInterface
     public function isAdmin(): bool
     {
         return in_array("ROLE_ADMIN", $this->roles);
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): self
+    {
+        $this->service = $service;
+
+        return $this;
     }
 }

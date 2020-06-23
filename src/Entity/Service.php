@@ -40,10 +40,16 @@ class Service
      */
     private $rightByLocations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=User::class, mappedBy="service")
+     */
+    private $users;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
         $this->rightByLocations = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -131,6 +137,37 @@ class Service
             // set the owning side to null (unless already changed)
             if ($rightByLocation->getService() === $this) {
                 $rightByLocation->setService(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->contains($user)) {
+            $this->users->removeElement($user);
+            // set the owning side to null (unless already changed)
+            if ($user->getService() === $this) {
+                $user->setService(null);
             }
         }
 

@@ -8,15 +8,21 @@ use Faker;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserFixtures extends Fixture
+class UserFixtures extends Fixture implements DependentFixtureInterface
 {
     private $passwordEncoder;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
+    }
+
+    public function getDependencies()
+    {
+        return [ServiceFixtures::class];
     }
 
     public function load(ObjectManager $manager)
@@ -28,6 +34,8 @@ class UserFixtures extends Fixture
         $collaborator->setLastname('Doe');
         $collaborator->setCreatedAt(new DateTime());
         $collaborator->setRoles(['ROLE_COLLABORATOR']);
+        $collaborator->setService($this->getReference('services_4'));
+
         $collaborator->setPassword($this->passwordEncoder->encodePassword(
             $collaborator,
             'collabpassword'
