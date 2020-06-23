@@ -106,3 +106,33 @@
     }
   }
 }
+
+.call-list-row-cell {
+  border-bottom:1px solid #ccc;
+  padding-bottom:15px;
+  .row {
+    .col {
+      a {
+        &.call-treatment-btn {
+          padding:5px 10px;
+          color:#fff;
+          border-radius:4px;
+        }
+      }
+    }
+  }
+  .title {
+    font-size:1.1rem;
+    font-weight: bold;
+  }
+  .recipient-chip {
+    font-size:1.1rem;
+    font-weight: bold;
+  }
+}
+
+li.collection-item {
+  &.cell-item {
+    padding-bottom: 0;
+  }
+}

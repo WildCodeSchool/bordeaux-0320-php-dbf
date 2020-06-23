@@ -19,7 +19,11 @@ ul {
       &.collection-item {
         padding-bottom:30px;
         border-bottom: none;
+        &.cell-item {
+          padding-bottom:0px;
+        }
       }
+
     }
   }
 }

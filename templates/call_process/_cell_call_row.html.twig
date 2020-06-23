@@ -1,0 +1,100 @@
+<li class="collection-item cell-item" data-date="{{ call.recallDate|date('Ymd') }}{{ call.recallDate|date('Hi') }}" id="call-{{ call.id }}">
+    <div class="row call-list-row-cell">
+        <div class="col s10">
+            <div class="row">
+                <div class="col s4">
+                    Reçu
+                    <b>
+                        {% if call.createdAt|date('Y-m-d') == date()|date('Y-m-d') %}
+                            Aujourd'hui
+                        {% elseif call.createdAt|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
+                            Hier
+                        {% else %}
+                            le {{ call.createdAt|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
+                        {% endif %}
+                    </b>
+                    par  <b>{{ call.author.firstname }} {{ call.author.lastname }}</b>
+                </div>
+                <div class="col s6">
+                    <span class="recipient-chip "> {{ call.recipient.firstname }} {{ call.recipient.lastname }}</span> < {{ call.service.name }} < {{call.service.concession.name}}
+                    <b></b>
+                </div>
+            </div>
+           <div class="row">
+               <div class="col s4">
+                   {{ call.subject.name }}
+               </div>
+               <div class="col s4">
+                   {{ call.comment.name }}
+               </div>
+               <div class="col s4">
+                   <b>véhicule : </b>{{ call.vehicle.immatriculation }}
+               </div>
+           </div>
+            <div class="row">
+                <div class="col s4">
+                    <span class="title">
+                         {% if call.client.email != '' %}
+                             <span class="secondary-content"><i class="material-icons tooltipped grey-text text-darken-3" data-position="top" data-tooltip="{{call.client.email}}">mail</i></span>
+                         {% endif %}
+                        {{call.client.civility.name}} {{call.client.name}}
+                    </span>
+                </div>
+
+                <div class="col s8">
+                    <em>{{ call.freeComment }}</em>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col s2">
+                    <span class="recipient-chip ">{{call.client.phone}}</span>
+                </div>
+                <div class="col s2">
+                    {% if call.client.phone2 != '' %}
+                        <span class="recipient-chip">{{ call.client.phone2 }}</span>
+                    {% endif %}
+                </div>
+                <div class="col s4">
+                    <span class="chip amber darken-1 white-text">M1</span> aujourd'hui à 16h
+                </div>
+                <div class="col s2">
+                    <a class="{% if call.isUrgent %}red{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
+                </div>
+                <div class="col s2">
+                    <a class="{% if call.isUrgent %}red{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Transférer</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s2 left-align ">
+            <div class="call-calendar small grey lighten-4">
+                <div class="call-cal-header {% if call.isUrgent %}urgent{% endif %}">
+                    <i class="material-icons ">event_date </i>
+                    <span class="call-cal-date">
+                        {% if call.recallDate|date('Y-m-d') == date()|date('Y-m-d') %}
+                            Aujourd'hui
+                        {% elseif call.recallDate|date('Y-m-d') == date('+1days')|date('Y-m-d') %}
+                            Demain
+                        {% elseif call.recallDate|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
+                            Hier
+                        {% else %}
+                            {{ call.recallDate|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="call-cal-body">
+                    <b>
+                    {% if call.isUrgent %}
+                    <span class="red-text">urgent</span>
+                    {% else %}
+                    <span class="grey-text text-darken-4">{{call.recallPeriod.name}} {{call.recallHour|date('H:i')}}</span>
+                    {% endif %}
+                    </b>
+                </div>
+                <div class="call-cal-action">
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
