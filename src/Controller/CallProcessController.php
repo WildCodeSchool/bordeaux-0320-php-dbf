@@ -9,8 +9,12 @@ use App\Form\CallProcessingType;
 use App\Repository\CallRepository;
 use App\Repository\UserRepository;
 use App\Service\CallStepChecker;
+use App\Service\CallTreatmentDataMaker;
+use App\Twig\DateFormatter;
 use Doctrine\ORM\EntityManagerInterface;
+use Nette\Utils\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,7 +50,7 @@ class CallProcessController extends AbstractController
      * @param CallRepository $callRepository
      * @param Request $request
      * @param EntityManagerInterface $entityManager
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function addCallProcess(
         $callId,
@@ -58,8 +62,10 @@ class CallProcessController extends AbstractController
         $call = $callRepository->findOneById($callId);
         $call
             ->setIsProcessed(true)
-            ->setIsAppointmentTaken($callStepChecker->checkAppointment($request))
-            ->setIsProcessEnded($callStepChecker->isCallToBeEnded($request));
+            ->setIsAppointmentTaken($callStepChecker->checkAppointment($request));
+        if ($callStepChecker->isCallToBeEnded($request)) {
+            $call->setIsProcessEnded($callStepChecker->isCallToBeEnded($request));
+        }
         $entityManager->persist($call);
 
         $callProcess = new CallProcessing();
@@ -70,8 +76,13 @@ class CallProcessController extends AbstractController
             $callProcess->setReferedCall($call);
             $entityManager->persist($callProcess);
             $entityManager->flush();
-            return $this->redirectToRoute('user_home');
         }
+        return new JsonResponse([
+            'callId' => $callId,
+            'date'   => DateFormatter::formatDate($callProcess->getCreatedAt()),
+            'time'  => DateFormatter::formatTime($callProcess->getCreatedAt()),
+            'colors' => CallTreatmentDataMaker::stepMakerForProcess($callProcess),
+        ]);
     }
 
     /**
@@ -99,7 +110,7 @@ class CallProcessController extends AbstractController
      * @Route("/{callId}/dotransfer", name="call_transfer_do", methods={"POST"})
      * @param int $callId
      * @param CallRepository $callRepository
-     * @return Response
+     * @return JsonResponse
      */
     public function doCallTransfer(
         $callId,
@@ -131,6 +142,8 @@ class CallProcessController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('cell_home');
+        return new JsonResponse([
+            'callId' => $call->getId(),
+        ]);
     }
 }

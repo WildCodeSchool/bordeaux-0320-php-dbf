@@ -28,7 +28,7 @@ class CallStepChecker
         return false;
     }
 
-    public function isCallToBeEnded(Request $request): bool
+    public function isCallToBeEnded(Request $request): ?bool
     {
         $repo = $this->contactTypeRepository;
         $contactType = $repo->findOneById($request->request->get('call_processing')['contactType']);
@@ -41,6 +41,6 @@ class CallStepChecker
             $contactStep === $this->contactType::CONTACT) {
             return true;
         }
-        return false;
+        return null;
     }
 }
