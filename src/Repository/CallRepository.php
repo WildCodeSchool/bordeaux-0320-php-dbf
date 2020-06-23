@@ -164,7 +164,8 @@ class CallRepository extends ServiceEntityRepository
             ->join('c.service', 'serv')->addSelect('serv')
             ->join('serv.concession', 'concession')->addSelect('concession')
             ->join('concession.town', 'city')->addSelect('city')
-
+            ->leftJoin('c.callProcessings', 'cp')->addSelect('cp')
+            ->leftJoin('c.callTransfers', 'ct')->addSelect('ct')
         ;
 
         if (!empty($searchData->phone)) {
@@ -235,6 +236,18 @@ class CallRepository extends ServiceEntityRepository
             $query = $query->andWhere('c.freeComment LIKE  :freeComment')->setParameter(
                 'freeComment',
                 '%' . $searchData->freeComment .  '%'
+            );
+        }
+        if (!empty($searchData->contactType)) {
+            $query = $query->andWhere('cp.contactType = :contactType')->setParameter(
+                'contactType',
+                $searchData->contactType
+            );
+        }
+        if (!empty($searchData->commentTransfert)) {
+            $query = $query->andWhere('ct.comment LIKE  :commentTransfert')->setParameter(
+                'commentTransfert',
+                '%' . $searchData->commentTransfert .  '%'
             );
         }
 

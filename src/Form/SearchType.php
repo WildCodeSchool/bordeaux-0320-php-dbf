@@ -8,6 +8,7 @@ use App\Entity\City;
 use App\Entity\Client;
 use App\Entity\Comment;
 use App\Entity\Concession;
+use App\Entity\ContactType;
 use App\Entity\Service;
 use App\Entity\Subject;
 use App\Entity\User;
@@ -104,16 +105,27 @@ class SearchType extends AbstractType
                 'label' => 'Service'
             ])
             ->add('isAppointmentTaken', ChoiceType::class, [
+                'required'=>false,
                 'choices'  => [
                     ''=>null,
                     'Oui' => true,
                     'Non' => false,
-                ],
-                'required'=>false
+                ]
             ])
             ->add('freeComment', TextareaType::class, [
                 'label'=> 'commentaire éventuel',
                 'required'=>false
+            ])
+            ->add('contactType', EntityType::class, [
+                'class'=> ContactType::class,
+                'choice_label' => 'name',
+                'by_reference' => false,
+                'label' => 'contact',
+                'required'=> false
+            ])
+            ->add('commentTransfert', TextareaType::class, [
+                'label' => 'Commentaire transfert',
+                'required' => false
             ])
         ;
     }

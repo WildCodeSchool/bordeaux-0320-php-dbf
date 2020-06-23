@@ -53,10 +53,18 @@
     {{ form_label(form.isAppointmentTaken) }}
     {{ form_widget(form.isAppointmentTaken) }}
 </div>
-    <div>
-        {{ form_label(form.freeComment) }}
-        {{ form_widget(form.freeComment) }}
-    </div>
+<div>
+    {{ form_label(form.freeComment) }}
+    {{ form_widget(form.freeComment) }}
+</div>
+<div>
+    {{ form_label(form.contactType) }}
+    {{ form_widget(form.contactType) }}
+</div>
+<div>
+    {{ form_label(form.commentTransfert) }}
+    {{ form_widget(form.commentTransfert) }}
+</div>
 <p>
     <label>
         {{form_widget(form.urgent)}}

@@ -66,4 +66,12 @@ class SearchData
      * @var string
      */
     public $freeComment='';
+    /**
+     * @var string
+     */
+    public $contactType = '';
+    /**
+     * @var string
+     */
+    public $commentTransfert = '';
 }
