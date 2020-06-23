@@ -84,7 +84,7 @@ class CallType extends AbstractType
         }
         if (isset($data->Service)) {
             $builder->add('recipient_choice', ChoiceType::class, [
-                'choices' => $this->getRecipients(),
+                'choices' => $this->getRecipients(/*$data->Service*/),
                 'mapped'  => false
             ]);
         }

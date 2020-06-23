@@ -15,8 +15,11 @@ class PhoneNumberFormatter extends AbstractExtension
         ];
     }
 
-    public function formatPhoneNumber(string $phoneNumber)
+    public function formatPhoneNumber(?string $phoneNumber)
     {
+        if (is_null($phoneNumber)) {
+            return $phoneNumber;
+        }
         $searchStrings = [' ', '+33', '(', ')'];
         $phoneNumber = str_replace($searchStrings, '', $phoneNumber);
         if (!preg_match('/(0[0-9]{9})/', $phoneNumber)) {
