@@ -159,10 +159,19 @@ class CallRepository extends ServiceEntityRepository
     public function findSearch(SearchData $searchData): array
     {
         $query = $this->createQueryBuilder('c')
-            ->join('c.client', 'cl')->addSelect('cl');
+            ->join('c.client', 'cl')->addSelect('cl')
+            ->join('c.vehicle', 'v')->addSelect('v')
+            ->join('c.service', 'serv')->addSelect('serv')
+            ->join('serv.concession', 'concession')->addSelect('concession')
+            ->join('concession.town', 'city')->addSelect('city')
+
+        ;
 
         if (!empty($searchData->phone)) {
-            $query = $query->andWhere('cl.phone LIKE :phone')->setParameter('phone', "%{$searchData->phone}%");
+            $query = $query->andWhere('cl.phone LIKE :phone')->setParameter(
+                'phone',
+                '%' . $searchData->phone . '%'
+            );
         }
         if (!empty($searchData->users)) {
             $query = $query->andWhere('c.author IN (:authors)')->setParameter('users', $searchData->authors);
@@ -174,7 +183,59 @@ class CallRepository extends ServiceEntityRepository
             $query = $query->andWhere('c.subject = :subject')->setParameter('subject', $searchData->subject);
         }
         if (!empty($searchData->urgent)) {
-            $query = $query->andWhere('c.isUrgent = :urgent ')->setParameter('urgent', true);
+            $query = $query->andWhere('c.isUrgent = :urgent ')->setParameter('urgent', $searchData->urgent);
+        }
+        if (!empty($searchData->clientName)) {
+            $query = $query->andWhere('cl.name LIKE :clientName')->setParameter(
+                'clientName',
+                '%' . $searchData->clientName . '%'
+            );
+        }
+        if (!empty($searchData->clientEmail)) {
+            $query = $query->andWhere('cl.email LIKE :clientEmail')->setParameter(
+                'clientEmail',
+                '%' . $searchData->clientEmail .  '%'
+            );
+        }
+        if (!empty($searchData->immatriculation)) {
+            $query = $query->andWhere('v.immatriculation LIKE :immatriculation')->setParameter(
+                'immatriculation',
+                '%' . $searchData->immatriculation .  '%'
+            );
+        }
+        if (!empty($searchData->chassis)) {
+            $query = $query->andWhere('v.chassis LIKE :chassis')->setParameter(
+                'chassis',
+                '%' . $searchData->chassis .  '%'
+            );
+        }
+        if (!empty($searchData->city)) {
+            $query = $query->andWhere('concession.town = :city')->setParameter('city', $searchData->city);
+        }
+        if (!empty($searchData->concession)) {
+            $query = $query->andWhere('serv.concession = :concession')
+                ->setParameter('concession', $searchData->concession);
+        }
+        if (!empty($searchData->service)) {
+            $query = $query->andWhere('c.service = :service')->setParameter('service', $searchData->service);
+        }
+        if (!empty($searchData->hasCome)) {
+            $query = $query->andWhere('v.hasCome = :hasCome')->setParameter(
+                'hasCome',
+                $searchData->hasCome
+            );
+        }
+        if (!empty($searchData->isAppointmentTaken)) {
+            $query = $query->andWhere('c.isAppointmentTaken = :isAppointmentTaken')->setParameter(
+                'isAppointmentTaken',
+                $searchData->isAppointmentTaken
+            );
+        }
+        if (!empty($searchData->freeComment)) {
+            $query = $query->andWhere('c.freeComment LIKE  :freeComment')->setParameter(
+                'freeComment',
+                '%' . $searchData->freeComment .  '%'
+            );
         }
 
 

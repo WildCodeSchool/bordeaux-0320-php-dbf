@@ -1,14 +1,67 @@
 {{ form_start(form) }}
-{{ form_widget(form.phone) }}
-{{ form_widget(form.authors) }}
-{{ form_widget(form.subject) }}
-{{ form_widget(form.comment) }}
 
+
+<div>
+    {{ form_label(form.authors) }}
+    {{ form_widget(form.authors) }}
+</div>
+<div>
+    {{ form_label(form.phone) }}
+    {{ form_widget(form.phone) }}
+</div>
+<div>
+    {{ form_label(form.subject) }}
+    {{ form_widget(form.subject) }}
+</div>
+<div>
+    {{ form_label(form.comment) }}
+    {{ form_widget(form.comment) }}
+</div>
+<div>
+    {{ form_label(form.clientName) }}
+    {{ form_widget(form.clientName) }}
+</div>
+<div>
+    {{ form_label(form.clientEmail) }}
+    {{ form_widget(form.clientEmail) }}
+</div>
+<div>
+    {{ form_label(form.immatriculation) }}
+    {{ form_widget(form.immatriculation) }}
+</div>
+<div>
+    {{ form_label(form.chassis) }}
+    {{ form_widget(form.chassis) }}
+</div>
+<div>
+    {{ form_label(form.city) }}
+    {{ form_widget(form.city) }}
+</div>
+<div>
+    {{ form_label(form.concession) }}
+    {{ form_widget(form.concession) }}
+</div>
+<div>
+    {{ form_label(form.service) }}
+    {{ form_widget(form.service) }}
+</div>
+<div>
+    {{ form_label(form.hasCome) }}
+    {{ form_widget(form.hasCome) }}
+</div>
+<div>
+    {{ form_label(form.isAppointmentTaken) }}
+    {{ form_widget(form.isAppointmentTaken) }}
+</div>
+    <div>
+        {{ form_label(form.freeComment) }}
+        {{ form_widget(form.freeComment) }}
+    </div>
 <p>
-<label>
-    {{form_widget(form.urgent)}}
-    <span>{{form_label(form.urgent)}}</span>
-</label>
+    <label>
+        {{form_widget(form.urgent)}}
+        <span>{{form_label(form.urgent)}}</span>
+    </label>
 </p>
 <div class="row center-align">
     <button class="btn light-blue">{{ button_label|default('Ajouter') }}</button>
