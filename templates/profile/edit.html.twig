@@ -23,10 +23,12 @@
             {% endfor %}
         {% endfor %}
     </div>
+    <a class="btn  blue darken-1 right" href="#"> Changer mon mot de passe</a>
+    <div class="form-profile">
     {{ form_start(form) }}
     <div class="section">
     <div class="row mgt15">
-        <div class="input-field col s5">
+        <div class="input-field col s6 offset-l3 ">
     {{ form_label(form.email) }}
     {{ form_widget(form.email) }}
         </div>
@@ -34,11 +36,11 @@
     </div>
     <div class="section">
     <div class="row">
-            <div class="input-field col s2">
+            <div class="input-field col s3 offset-l3">
                 {{ form_label(form.firstname) }}
                 {{ form_widget(form.firstname) }}
             </div>
-                <div class="input-field col s3">
+                <div class="input-field col s3 ">
                     {{ form_label(form.lastname) }}
                     {{ form_widget(form.lastname)  }}
                     </div>
@@ -46,13 +48,19 @@
         </div>
         <div class="section">
             <div class="row">
-                <div class="input-field col s5">
+                <div class="input-field col s6 offset-l3">
     {{ form_label(form.phone) }}
     {{ form_widget(form.phone) }}
                 </div>
             </div>
         </div>
-    <button class="btn">{{ button_label|default('Sauvegarder') }}</button>
+        <div class="row">
+            <div class="s6 col offset-l7 sauvegarder ">
+                <button class="btn">{{ button_label|default('Sauvegarder') }}</button>
+            </div>
+        </div>
     {{ form_end(form) }}
+
+    </div>
 </div>
 {% endblock %}

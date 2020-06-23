@@ -23,13 +23,14 @@ class ProfileController extends AbstractController
      */
     public function editProfile(Request $request, User $user, UserPasswordEncoderInterface $userPasswordEncoder): Response
     {
-
         $form = $this->createForm(UserProfileType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('success', 'Votre profil est bien édité');
-                return $this->redirectToRoute('profile_edit', ['id'=> $user->getId()]);
+
+                return $this->redirectToRoute('profile_edit', ['id' => $user->getId()]);
+
         }
 
         return $this->render('profile/edit.html.twig', [
