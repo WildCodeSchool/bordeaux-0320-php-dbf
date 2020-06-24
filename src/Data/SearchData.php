@@ -74,4 +74,6 @@ class SearchData
      * @var string
      */
     public $commentTransfert = '';
+    public $dateFrom;
+    public $dateTo;
 }

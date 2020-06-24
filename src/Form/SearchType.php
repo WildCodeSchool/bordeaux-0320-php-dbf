@@ -16,6 +16,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -24,7 +25,6 @@ class SearchType extends AbstractType
 {
     const TRISWITCH_YES_VALUE = 1;
     const TRISWITCH_NO_VALUE = 2;
-
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -126,6 +126,16 @@ class SearchType extends AbstractType
             ->add('commentTransfert', TextareaType::class, [
                 'label' => 'Commentaire transfert',
                 'required' => false
+            ])
+            ->add('dateFrom', DateType::class, [
+                'required'=>false,
+                'label'=>'date du',
+                'widget' => 'single_text',
+            ])
+            ->add('dateTo', DateType::class, [
+                'required'=>false,
+                'label'=>'au',
+                'widget' => 'single_text',
             ])
         ;
     }

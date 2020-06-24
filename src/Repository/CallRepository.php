@@ -250,6 +250,14 @@ class CallRepository extends ServiceEntityRepository
                 '%' . $searchData->commentTransfert .  '%'
             );
         }
+        if (!empty($searchData->dateFrom) && !empty($searchData->dateTo)) {
+            $query = $query
+                ->where('c.createdAt BETWEEN :from AND :to')
+                ->setParameter('from', $searchData->dateFrom->format('Y-m-d') . ' 00:00:00')
+                ->setParameter('to', $searchData->dateTo->format('Y-m-d') . ' 23:59:59')
+            ;
+        }
+
 
 
         return $query->getQuery()->getResult();

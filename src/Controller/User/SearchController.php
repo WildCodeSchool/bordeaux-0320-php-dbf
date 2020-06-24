@@ -21,11 +21,12 @@ class SearchController extends AbstractController
      */
     public function index(SearchData $searchData, Request $request, CallRepository $callRepository)
     {
+        $searchedCalls = [];
         $form = $this->createForm(SearchType::class, $searchData);
         $form->handleRequest($request);
-
-        $searchedCalls = $callRepository->findSearch($searchData);
-
+        if ($form->isSubmitted() && $form->isValid()) {
+            $searchedCalls = $callRepository->findSearch($searchData);
+        }
         return $this->render('search/index.html.twig', [
             'form'=> $form->createView(),
             'calls'=> $searchedCalls
