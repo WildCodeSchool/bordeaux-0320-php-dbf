@@ -94,59 +94,59 @@ class CallType extends AbstractType
             'by_reference' => false,
             'label' => 'Motif',
         ])
-        ->add('comment', EntityType::class, [
-            'class' => Comment::class,
-            'choice_label' => 'name',
-            'by_reference' => false,
-            'label' => 'Type'
-        ])
-        ->add('recallPeriod', EntityType::class, [
-            'class'=> RecallPeriod::class,
-            'choice_label' => 'name',
-            'by_reference' => false,
-        ])
-        ->add('client_id', hiddenType::class, [
-            'mapped'  => false
-        ])
-        ->add('client', ClientType::class)
-        ->add('vehicle', VehicleTypeForCallType::class)
-        ->add('vehicle_id', hiddenType::class, [
-            'mapped'  => false
-        ])
-
-        ->add('subject', EntityType::class, [
-            'class' => Subject::class,
-            'choice_label' => 'name',
-            'by_reference' => false,
-            'label' => 'Motif',
-        ])
-        ->add('comment', EntityType::class, [
-            'class' => Comment::class,
-            'choice_label' => 'name',
-            'by_reference' => false,
-            'label' => 'Type'
-        ])
-        ->add('recallDate', DateType::class, [
-            'label'=>'date de rappel',
-            'widget' => 'single_text',
-            'data' => new DateTime(),
+            ->add('comment', EntityType::class, [
+                'class' => Comment::class,
+                'choice_label' => 'name',
+                'by_reference' => false,
+                'label' => 'Type'
             ])
-        ->add('recallHour', TimeType::class, [
-            'widget'=>'choice',
-            'label'=>'heure de rappel',
-            'hours'=>[8,9,10,11,12,13,14,15,16,17,18,19,20],
-            'minutes'=>[0,15,30,45],
-            'data'=> new DateTime('Europe/Paris')
-        ])
-        ->add('recallPeriod', EntityType::class, [
-            'class'=> RecallPeriod::class,
-            'choice_label' => 'name',
-            'by_reference' => false,
-        ])
+            ->add('recallPeriod', EntityType::class, [
+                'class'=> RecallPeriod::class,
+                'choice_label' => 'name',
+                'by_reference' => false,
+            ])
+            ->add('client_id', hiddenType::class, [
+                'mapped'  => false
+            ])
+            ->add('client', ClientType::class)
+            ->add('vehicle', VehicleTypeForCallType::class)
+            ->add('vehicle_id', hiddenType::class, [
+                'mapped'  => false
+            ])
+
+            ->add('subject', EntityType::class, [
+                'class' => Subject::class,
+                'choice_label' => 'name',
+                'by_reference' => false,
+                'label' => 'Motif',
+            ])
+            ->add('comment', EntityType::class, [
+                'class' => Comment::class,
+                'choice_label' => 'name',
+                'by_reference' => false,
+                'label' => 'Type'
+            ])
+            ->add('recallDate', DateType::class, [
+                'label'=>'date de rappel',
+                'widget' => 'single_text',
+                'data' => new DateTime(),
+            ])
+            ->add('recallHour', TimeType::class, [
+                'widget'=>'choice',
+                'label'=>'heure de rappel',
+                'hours'=>[8,9,10,11,12,13,14,15,16,17,18,19,20],
+                'minutes'=>[0,15,30,45],
+                'data'=> new DateTime('Europe/Paris')
+            ])
+            ->add('recallPeriod', EntityType::class, [
+                'class'=> RecallPeriod::class,
+                'choice_label' => 'name',
+                'by_reference' => false,
+            ])
         ;
         /**
         $builder->get('client')->addEventListener(
-            For
+        For
         )
          * **/
     }
