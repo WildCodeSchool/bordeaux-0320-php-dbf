@@ -220,7 +220,7 @@ class CallController extends AbstractController
      */
     public function reattributePhoneNumber(ClientRepository $clientRepository, $id): JsonResponse
     {
-         $clientRepository->setPhoneToNull($id);
-         return new JsonResponse();
+        $clientRepository->setPhoneToNull($id);
+        return new JsonResponse();
     }
 }
