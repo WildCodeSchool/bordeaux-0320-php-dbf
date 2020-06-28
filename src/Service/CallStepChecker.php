@@ -35,7 +35,7 @@ class CallStepChecker
         $contactStep = $contactType->getIdentifier();
 
         if ((isset($request->request->get('call_processing')['isAppointmentTaken']) &&
-                (int)$request->request->get('call_processing')['isAppointmentTaken'] === 1) ||
+            (int)$request->request->get('call_processing')['isAppointmentTaken'] === 1) ||
             $contactStep === $this->contactType::ABANDON ||
             $contactStep === $this->contactType::NOT_ELIGIBLE ||
             $contactStep === $this->contactType::CONTACT) {

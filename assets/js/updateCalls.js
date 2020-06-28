@@ -23,6 +23,7 @@ const initButtons = (modal) => {
                 const processForm        = document.getElementById('form-process');
                 processForm.onsubmit = (e) => {
                     e.preventDefault();
+                    document.getElementById('process-preloader').classList.remove('hide');
                     const data   = new FormData(e.target);
                     const callId = processBtn.dataset.call;
                     const url    = `/call/process/${callId}/add`;
@@ -35,9 +36,9 @@ const initButtons = (modal) => {
                         .then(response => {
                             return response.json()
                         }).then(data => {
+                        document.getElementById('process-preloader').classList.add('hide');
                         modal.close();
                         M.toast({html: 'Traitement enregistré', classes:'light-blue'})
-                        console.log(data);
                         const target = document.getElementById('call-history-' + data.callId);
                         const targetHtml = '<span class="chip ' + data.colors.bgColor + ' black-text">' + data.colors.stepName + '</span>\n' +
                             '                            <b>\n' +
@@ -63,11 +64,11 @@ const initTransferButtons = (modal) => {
             getTransferForm(callId, (html) => {
                 transferModalHtmlZone.innerHTML = html
                 initializeSelects()
-
                 const transferBtn = document.getElementById('transfer-call-btn');
                 const form        = document.getElementById('form-transfer');
                 form.onsubmit = (e) => {
                     e.preventDefault();
+                    document.getElementById('transfer-preloader').classList.remove('hide');
                     const data   = new FormData(e.target);
                     const callId = transferBtn.dataset.call;
                     const url    = `/call/process/${callId}/dotransfer`;
@@ -80,6 +81,7 @@ const initTransferButtons = (modal) => {
                         .then(response => {
                             return response.json()
                         }).then(data => {
+                        document.getElementById('transfer-preloader').classList.add('hide');
                         modal.close();
                         M.toast({html: 'Appel transféré', classes:'red'})
                         console.log(data.callId)
