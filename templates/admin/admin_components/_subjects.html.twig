@@ -14,7 +14,7 @@
         <div id="subjects-list">
             <div class="input-field ">
                 <label for="subjects"></label>
-                <select>
+                <select id="subject-selector">
                     {% for subject in subjects %}
                         <option value="{{ subject.id }}">{{ subject.name }}</option>
                     {% endfor %}

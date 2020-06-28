@@ -13,7 +13,7 @@
         </thead>
         <tbody>
         {% for subject in subjects %}
-            <tr>
+            <tr id="subject-line-{{ subject.id }}">
                 <td>{{ subject.id }}</td>
                 <td>{{ subject.name }}</td>
                 <td>{{ subject.isForAppWorkshop ? 'Oui' : 'Non' }}</td>
@@ -21,7 +21,7 @@
                     <a href="{{ path('subject_edit', {'id': subject.id}) }}"><i class="material-icons">edit</i></a>
                 </td>
                 <td>
-                    <a href="{{ path('subject_delete', {'id': subject.id}) }}"><i class="material-icons">delete</i></a>
+                    <a href="#" class="delete-subject-button" data-target="{{ subject.id }}"><i class="material-icons">delete</i></a>
                 </td>
             </tr>
         {% else %}
