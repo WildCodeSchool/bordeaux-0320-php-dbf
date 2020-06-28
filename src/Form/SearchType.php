@@ -12,12 +12,14 @@ use App\Entity\ContactType;
 use App\Entity\Service;
 use App\Entity\Subject;
 use App\Entity\User;
+use DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -28,11 +30,9 @@ class SearchType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('phone', TextareaType::class, [
+        $builder->add('phone', TextType::class, [
             'label' => 'Téléphone',
-            'required' => false,
-            'attr'=> ['placeholder'=>'numéro de telephone']
-            ])
+            'required' => false])
             ->add('authors', EntityType::class, [
                 'class' => User::class,
                 'required' => false,
@@ -58,20 +58,19 @@ class SearchType extends AbstractType
                 'required' => false,
                 'label' => 'Type'
             ])
-            ->add('clientName', TextareaType::class, [
+            ->add('clientName', TextType::class, [
                 'label' => 'Client',
                 'required' => false,
-                'attr'=> ['placeholder'=>'Nom ou raison Sociale']
             ])
-            ->add('clientEmail', TextareaType::class, [
+            ->add('clientEmail', TextType::class, [
                 'label'=> 'Email',
                 'required'=> false,
             ])
-            ->add('immatriculation', TextareaType::class, [
+            ->add('immatriculation', TextType::class, [
                 'label'=> 'Immatriculation',
                 'required'=> false
             ])
-            ->add('chassis', TextareaType::class, [
+            ->add('chassis', TextType::class, [
                 'label'=>'Chassis',
                 'required'=> false,
             ])
@@ -81,7 +80,8 @@ class SearchType extends AbstractType
                     'Oui' => self::TRISWITCH_YES_VALUE,
                     'Non' => self::TRISWITCH_NO_VALUE,
                 ],
-                'required' => false
+                'required' => false,
+                'label' => 'Déjà passé en atelier ?'
             ])
             ->add('city', EntityType::class, [
                 'class' => City::class,
@@ -110,10 +110,10 @@ class SearchType extends AbstractType
                     ''=>null,
                     'Oui' => true,
                     'Non' => false,
-                ]
+                ], 'label' => 'RDV'
             ])
-            ->add('freeComment', TextareaType::class, [
-                'label'=> 'commentaire éventuel',
+            ->add('freeComment', TextType::class, [
+                'label'=> 'Commentaire éventuel',
                 'required'=>false
             ])
             ->add('contactType', EntityType::class, [
@@ -123,19 +123,20 @@ class SearchType extends AbstractType
                 'label' => 'contact',
                 'required'=> false
             ])
-            ->add('commentTransfert', TextareaType::class, [
+            ->add('commentTransfert', TextType::class, [
                 'label' => 'Commentaire transfert',
                 'required' => false
             ])
             ->add('dateFrom', DateType::class, [
                 'required'=>false,
-                'label'=>'date du',
+                'label'=>'Date du',
                 'widget' => 'single_text',
             ])
             ->add('dateTo', DateType::class, [
                 'required'=>false,
-                'label'=>'au',
+                'label'=>'Au',
                 'widget' => 'single_text',
+                'data' => new DateTime(),
             ])
         ;
     }

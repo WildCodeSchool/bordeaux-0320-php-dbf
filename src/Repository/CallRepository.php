@@ -258,8 +258,6 @@ class CallRepository extends ServiceEntityRepository
             ;
         }
 
-
-
         return $query->getQuery()->getResult();
     }
 
