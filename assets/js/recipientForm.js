@@ -137,9 +137,9 @@ class recipientsAjaxTool {
                 'Content-Type': 'application/json'
             },
         })
-        .then(function (response) {
-            return response.text();
-        }).then(function (html) {
+            .then(function (response) {
+                return response.text();
+            }).then(function (html) {
 
             action(html);
         });
