@@ -28,7 +28,14 @@
 
 </div>
 <div class="row">
-    <input type="submit" value="Traiter" class="btn light-blue" id="process-call-btn" data-call="{{ call.id }}">
+    <div class="col s6">
+        <input type="submit" value="Traiter" class="btn light-blue" id="process-call-btn" data-call="{{ call.id }}">
+    </div>
+    <div class="col s6">
+        <div class="progress grey lighten-3 hide" id="process-preloader">
+            <div class="indeterminate light-blue"></div>
+        </div>
+    </div>
 </div>
 {{ form_end(form) }}
 

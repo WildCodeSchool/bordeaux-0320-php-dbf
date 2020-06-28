@@ -4,5 +4,14 @@
         {{ form_widget(form) }}
     </div>
 </div>
-<input type="submit" value="transférer" class="btn light-blue" id="transfer-call-btn" data-call="{{ call.id }}">
+<div class="row">
+    <div class="col s6">
+        <input type="submit" value="transférer" class="btn light-blue" id="transfer-call-btn" data-call="{{ call.id }}">
+    </div>
+    <div class="col s6">
+        <div class="progress grey lighten-3 hide" id="transfer-preloader">
+            <div class="indeterminate light-blue"></div>
+        </div>
+    </div>
+</div>
 {{ form_end(form) }}
