@@ -30,8 +30,8 @@ const deletor = (button, urlPrefix, name, nameFr) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     /*
-    Etape 1 mettre une classe "delete-{entité}-button sur les liens de suppression
-    Etape 2 mettre un attributs data-target = '{{entity.id}} sur les liens de suppression
+    Etape 1 mettre une classe "delete-{entité}-button sur les liens de suppression dans l'index dans le href ligne 24
+    Etape 2 mettre un attributs data-target = '{{entity.id}} sur les liens de suppression dans l'index dans le href ligne 24
     Etape 3 mettre un attribut id = 'entity-line-{{entity.id}} sur le tr contenant le lien (ligne 16 subject/index)
     Etape 4 mettre un attribut id = 'entity-selector sur le select (_subjects.html.twig ligne 17)
     Etape 5 copier-coller les lignes ci-dessous en remplaçant le deleteSubjectsButtons
@@ -41,6 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteSubjectsButtons[i].addEventListener('click', (e) => {
             e.preventDefault();
             deletor(deleteSubjectsButtons[i], '/subject/delete/', 'subject', 'motif')
+        });
+    }
+    const deleteCommentButtons = document.getElementsByClassName('delete-comment-button');
+    for (let i = 0; i < deleteCommentButtons.length; i++) {
+        deleteCommentButtons[i].addEventListener('click', (e) => {
+            e.preventDefault();
+            deletor(deleteCommentButtons[i], '/comment/delete/', 'comment', 'commentaire')
         });
     }
 

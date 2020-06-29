@@ -1,9 +1,5 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Comment index{% endblock %}
-
 {% block body %}
-    <h1>Liste des commentaires</h1>
+
 
     <table class="table">
         <thead>
@@ -17,7 +13,7 @@
         </thead>
         <tbody>
         {% for comment in comments %}
-            <tr>
+            <tr id="comment-line-{{ comment.id }}">
                 <td>{{ comment.id }}</td>
                 <td>{{ comment.name }}</td>
                 <td>{{ comment.identifier }}</td>
@@ -26,7 +22,7 @@
 
                 </td>
                 <td>
-                    <a href="#" class="delete-comment-button" data-comment="{{ comment.id }}"><i class="material-icons">delete</i></a>
+                    <a href="#" class="delete-comment-button" data-target="{{ comment.id }}"><i class="material-icons">delete</i></a>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +33,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('comment_new') }}">Nouveau commentaire</a>
 {% endblock %}

@@ -14,7 +14,7 @@
         <div id="comments-list">
             <div class="input-field ">
                 <label for="comments"></label>
-                <select>
+                <select id="comment-selector">
                     {% for comment in comments %}
                         <option value="{{ comment.id }}">{{ comment.name }}</option>
                     {% endfor %}

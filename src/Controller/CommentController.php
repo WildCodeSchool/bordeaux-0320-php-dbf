@@ -88,23 +88,7 @@ class CommentController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="comment_delete", methods={"DELETE"})
-     * @param Request $request
-     * @param Comment $comment
-     * @return Response
-     */
-    /*public function delete(Request $request, Comment $comment): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($comment);
-            $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('admin_dashboard');
-    }
-*/
     /**
      * @return JsonResponse
      * @Route("/delete/{id}", name="delete_comment", methods={"DELETE"})
@@ -115,13 +99,10 @@ class CommentController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($comment);
         $entityManager->flush();
-        $response = new JsonResponse();
-        $data = [
 
-        ];
-        $statusComment = JsonResponse::HTTP_OK;
-        $response->setData($data);
-        $response->setStatusCode($statusComment);
+        $response = new JsonResponse();
+        $status = JsonResponse::HTTP_OK;
+        $response->setStatusCode($status);
 
         return $response;
     }
