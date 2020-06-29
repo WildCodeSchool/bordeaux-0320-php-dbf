@@ -57,5 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
             deletor(deleteCivilityButtons[i], '/civility/delete/', 'civility', 'civilité');
         });
     }
+    const deleteCityButtons = document.getElementsByClassName('delete-city-button');
+    for (let i = 0; i < deleteCityButtons.length; i++) {
+        deleteCityButtons[i].addEventListener('click', (e) => {
+            e.preventDefault();
+            deletor(deleteCityButtons[i], '/city/delete/', 'city', 'plaque');
+        });
+    }
 
 }) //end of document eventListener

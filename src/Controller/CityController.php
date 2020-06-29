@@ -6,6 +6,7 @@ use App\Entity\City;
 use App\Form\CityType;
 use App\Repository\CityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -83,24 +84,26 @@ class CityController extends AbstractController
 
         return $this->render('city/edit.html.twig', [
             'city' => $city,
-            'form' => $form->createView(),
+            'form_city' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="city_delete", methods={"DELETE"})
-     * @param Request $request
-     * @param City $city
-     * @return Response
+     * @Route("/delete/{id}", name="delete_city", methods={"DELETE"})
+     * @return JsonResponse
      */
-    public function delete(Request $request, City $city): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$city->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($city);
-            $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('admin_dashboard');
+    public function delete(Request $request, City $city): JsonResponse
+    {
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($city);
+        $entityManager->flush();
+
+        $response = new JsonResponse();
+        $status = JsonResponse::HTTP_OK;
+        $response->setStatusCode($status);
+
+        return $response;
     }
 }
