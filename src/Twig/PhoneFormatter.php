@@ -6,7 +6,7 @@ namespace App\Twig;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 
-class PhoneNumberFormatter extends AbstractExtension
+class PhoneFormatter extends AbstractExtension
 {
     public function getFilters()
     {
