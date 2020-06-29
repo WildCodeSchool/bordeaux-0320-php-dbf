@@ -197,7 +197,6 @@ class CallRepository extends ServiceEntityRepository
             ->leftJoin('c.callProcessings', 'cp')->addSelect('cp')
             ->leftJoin('c.callTransfers', 'ct')->addSelect('ct')
         ;
-
         if (!empty($searchData->phone)) {
             $query = $query->andWhere('cl.phone LIKE :phone')->setParameter(
                 'phone',
@@ -289,6 +288,19 @@ class CallRepository extends ServiceEntityRepository
         }
 
         return $query->getQuery()->getResult();
+    }
+
+    private function addSearchParametersToQuery(SearchData $datum, &$query)
+    {
+        foreach ($datum as $data->$value) {
+            if (!empty($data->$value)) {
+                $query = $query->andWhere('c.' . $value . ' = :' . $value)->setParameter(
+                    $value,
+                    $data->$value
+                );
+            }
+        }
+        return $query;
     }
 
     // /**
