@@ -5,6 +5,7 @@ namespace App\Controller\User;
 use App\Data\SearchData;
 use App\Form\SearchType;
 use App\Repository\CallRepository;
+use App\Service\ExportToCSV;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

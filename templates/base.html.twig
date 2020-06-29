@@ -39,7 +39,6 @@
             {% if app.user %}
                 <li  class="{% if app.request.get('_route') == 'search' %} active {% endif %}"><a href="{{ path('search') }}" class="tooltipped" data-position="right" data-tooltip="rechercher"><i class="material-icons">search</i></a></li>
                 <li class="{% if app.request.get('_route') == 'call_add' %} active {% endif %}"><a href="{{ path('call_add') }}" class=" tooltipped" data-position="right" data-tooltip="Ajouter un appel"><i class="material-icons">add</i></a></li>
-                <li  class="{% if app.request.get('_route')  == 'user_home' %} active {% endif %}"><a href="{{ path('user_home') }}" class="tooltipped" data-position="right" data-tooltip="Vos appels à traiter"><i class="material-icons">menu</i></a></li>
                 <li  class="{% if app.request.get('_route')  == 'stat' %} active {% endif %} hide"><a href="gestions.html" class="tooltipped" data-position="right" data-tooltip="statistiques"><i class="material-icons">insert_chart</i></a></li>
             {% if is_granted('ROLE_ADMIN') %}
                 <li><a href="{{ path('admin_dashboard') }}" class="tooltipped" data-position="right" data-tooltip="admin dashboard"><i class="material-icons">settings</i></a></li>
