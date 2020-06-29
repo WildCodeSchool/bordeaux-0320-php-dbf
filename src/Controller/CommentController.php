@@ -94,7 +94,7 @@ class CommentController extends AbstractController
      * @Route("/delete/{id}", name="delete_comment", methods={"DELETE"})
      */
 
-    public function deletion(Comment $comment, Request $request): JsonResponse
+    public function delete(Comment $comment, Request $request): JsonResponse
     {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($comment);

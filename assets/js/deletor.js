@@ -40,14 +40,21 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let i = 0; i < deleteSubjectsButtons.length; i++) {
         deleteSubjectsButtons[i].addEventListener('click', (e) => {
             e.preventDefault();
-            deletor(deleteSubjectsButtons[i], '/subject/delete/', 'subject', 'motif')
+            deletor(deleteSubjectsButtons[i], '/subject/delete/', 'subject', 'motif');
         });
     }
     const deleteCommentButtons = document.getElementsByClassName('delete-comment-button');
     for (let i = 0; i < deleteCommentButtons.length; i++) {
         deleteCommentButtons[i].addEventListener('click', (e) => {
             e.preventDefault();
-            deletor(deleteCommentButtons[i], '/comment/delete/', 'comment', 'commentaire')
+            deletor(deleteCommentButtons[i], '/comment/delete/', 'comment', 'commentaire');
+        });
+    }
+    const deleteCivilityButtons = document.getElementsByClassName('delete-civility-button');
+    for (let i = 0; i < deleteCivilityButtons.length; i++) {
+        deleteCivilityButtons[i].addEventListener('click', (e) => {
+            e.preventDefault();
+            deletor(deleteCivilityButtons[i], '/civility/delete/', 'civility', 'civilité');
         });
     }
 

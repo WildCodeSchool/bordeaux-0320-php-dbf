@@ -35,6 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalAddCivility = document.getElementById('modal-add-civility');
     const instanceModalAddCivility = M.Modal.init(modalAddCivility, {});
 
+    const modalEditCivility = document.getElementById('modal-edit-civility');
+    const instanceModalEditCivility = M.Modal.init(modalEditCivility, {});
+
     const modalAddService = document.getElementById('modal-add-service');
     const instanceModalAddService = M.Modal.init(modalAddService, {});
 

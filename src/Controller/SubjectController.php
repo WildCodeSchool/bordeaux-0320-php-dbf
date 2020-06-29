@@ -87,7 +87,7 @@ class SubjectController extends AbstractController
      * @Route("/delete/{id}", name="delete_subject", methods={"DELETE"})
      */
 
-    public function deletion(Subject $subject, Request $request): JsonResponse
+    public function delete(Subject $subject, Request $request): JsonResponse
     {
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($subject);
