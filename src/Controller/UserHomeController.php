@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserHomeController extends AbstractController
 {
-
     /**
      * @Route("/welcome", name="user_home")
      */
