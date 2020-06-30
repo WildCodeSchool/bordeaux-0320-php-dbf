@@ -18,15 +18,14 @@ class ProfileController extends AbstractController
      * @Route("profile/edit/{id}", name="profile_edit", methods={"GET","POST"})
      * @param Request $request
      * @param User $user
-     * @param UserPasswordEncoderInterface $userPasswordEncoder
      * @return Response
      */
-    public function editProfile(Request $request, User $user, UserPasswordEncoderInterface $userPasswordEncoder): Response
+    public function editProfile(Request $request, User $user): Response
     {
         $form = $this->createForm(UserProfileType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('success', 'Votre profil est bien édité');
 
                 return $this->redirectToRoute('profile_edit', ['id' => $user->getId()]);
