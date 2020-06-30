@@ -29,7 +29,6 @@ class ProfileController extends AbstractController
                 $this->addFlash('success', 'Votre profil est bien édité');
 
                 return $this->redirectToRoute('profile_edit', ['id' => $user->getId()]);
-
         }
 
         return $this->render('profile/edit.html.twig', [
