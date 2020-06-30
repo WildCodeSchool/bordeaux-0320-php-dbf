@@ -19,15 +19,7 @@
                 <div class="call-cal-header {% if call.isUrgent %}urgent{% endif %}">
                     <i class="material-icons ">event_date </i>
                     <span class="call-cal-date">
-                        {% if call.recallDate|date('Y-m-d') == date()|date('Y-m-d') %}
-                            Aujourd'hui
-                        {% elseif call.recallDate|date('Y-m-d') == date('+1days')|date('Y-m-d') %}
-                            Demain
-                        {% elseif call.recallDate|date('Y-m-d') == date('-1day')|date('Y-m-d') %}
-                            Hier
-                        {% else %}
-                            {{ call.recallDate|date('Y-m-d') | date('d-m-Y')|date('Y-m-d')}}
-                        {% endif %}
+                       {{call.recallDate|formatDate}}
                     </span>
                 </div>
                 <div class="call-cal-body">

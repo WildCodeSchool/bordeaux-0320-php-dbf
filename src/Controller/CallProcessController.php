@@ -3,17 +3,23 @@
 
 namespace App\Controller;
 
-use App\Entity\Call;
 use App\Entity\CallProcessing;
+use App\Entity\CallTransfer;
 use App\Form\CallProcessingType;
-use App\Form\CallType;
 use App\Repository\CallRepository;
+use App\Repository\UserRepository;
+use App\Service\CallStepChecker;
+use App\Service\CallTreatmentDataMaker;
+use App\Twig\DateFormatter;
 use Doctrine\ORM\EntityManagerInterface;
+use Nette\Utils\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\CallTransferType;
 
 /**
  * @Route("/call/process")
@@ -44,29 +50,100 @@ class CallProcessController extends AbstractController
      * @param CallRepository $callRepository
      * @param Request $request
      * @param EntityManagerInterface $entityManager
-     * @return RedirectResponse
+     * @return JsonResponse
      */
     public function addCallProcess(
+        $callId,
+        CallRepository $callRepository,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        CallStepChecker $callStepChecker
+    ) {
+        $call = $callRepository->findOneById($callId);
+        $call
+            ->setIsProcessed(true)
+            ->setIsAppointmentTaken($callStepChecker->checkAppointment($request));
+        if ($callStepChecker->isCallToBeEnded($request)) {
+            $call->setIsProcessEnded($callStepChecker->isCallToBeEnded($request));
+        }
+        $entityManager->persist($call);
+
+        $callProcess = new CallProcessing();
+        $form        = $this->createForm(CallProcessingType::class, $callProcess);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $callProcess->setReferedCall($call);
+            $entityManager->persist($callProcess);
+            $entityManager->flush();
+        }
+        return new JsonResponse([
+            'callId' => $callId,
+            'date'   => DateFormatter::formatDate($callProcess->getCreatedAt()),
+            'time'  => DateFormatter::formatTime($callProcess->getCreatedAt()),
+            'colors' => CallTreatmentDataMaker::stepMakerForProcess($callProcess),
+        ]);
+    }
+
+    /**
+     * @Route("/{callId}/transfer", name="call_transfer", methods={"GET"})
+     * @param int $callId
+     * @param CallRepository $callRepository
+     * @return Response
+     */
+    public function callTransfer(
         $callId,
         CallRepository $callRepository,
         Request $request,
         EntityManagerInterface $entityManager
     ) {
         $call = $callRepository->findOneById($callId);
+        $form                 = $this->createForm(CallTransferType::class, $call);
+        $form->handleRequest($request);
+        return $this->render('call_process/call_transfer.html.twig', [
+            'call'          => $call,
+            'form'          => $form->createView(),
+        ]);
+    }
 
-        if (is_null($call->getIsProcessed())) {
-            $call->setIsProcessed(1);
-            $entityManager->persist($call);
-        }
+    /**
+     * @Route("/{callId}/dotransfer", name="call_transfer_do", methods={"POST"})
+     * @param int $callId
+     * @param CallRepository $callRepository
+     * @return JsonResponse
+     */
+    public function doCallTransfer(
+        $callId,
+        CallRepository $callRepository,
+        UserRepository $userRepository,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ) {
+        $call = $callRepository->findOneById($callId);
+        $fromWhom = $call->getRecipient();
+        $call->setRecipient($userRepository->findOneById($request->request->get('call_transfer')['recipient']));
+        $toWhom   = $call->getRecipient();
+        $byWhom   = $this->getUser();
+        $transferComment = $request->request->get('call_transfer')['comment'];
+        $transfer = new CallTransfer();
 
-        $callProcess = new CallProcessing();
-        $form        = $this->createForm(CallProcessingType::class, $callProcess);
+        $transfer
+            ->setReferedCall($call)
+            ->setFromWhom($fromWhom)
+            ->setByWhom($byWhom)
+            ->setToWhom($toWhom)
+            ->setComment($transferComment);
+
+        $form = $this->createForm(CallTransferType::class, $call);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $callProcess->setReferedCall($call);
-            $entityManager->persist($callProcess);
+            $entityManager->persist($transfer);
+            $entityManager->persist($call);
             $entityManager->flush();
-            return $this->redirectToRoute('user_home');
         }
+
+        return new JsonResponse([
+            'callId' => $call->getId(),
+        ]);
     }
 }

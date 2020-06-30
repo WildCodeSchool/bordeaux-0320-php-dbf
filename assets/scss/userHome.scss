@@ -21,6 +21,10 @@ ul {
         border-bottom: none;
         &.cell-item {
           padding-bottom:0px;
+
+          .place-name {
+            margin-left:30px;
+          }
         }
       }
 
