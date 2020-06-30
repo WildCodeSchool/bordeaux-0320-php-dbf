@@ -1,3 +1,5 @@
+import { transferTool } from './recipientTransfer';
+
 const getNewCalls = (action) => {
         fetch('/newcallsforuser', {
         })
@@ -19,6 +21,27 @@ const initButtons = (modal) => {
                 modalHtmlZone.innerHTML = html
                 initializeSelects()
 
+                //Show/Hide switch Button
+                const contactTypeSelector = document.getElementById('call_processing_contactType');
+                const switchLine          = document.getElementById('rdv-switch');
+                contactTypeSelector.addEventListener('change', (e) => {
+                    if(contactTypeSelector.querySelector('option[value="' + e.target.value + '"]').innerText === 'Contact établi') {
+                        switchLine.classList.remove('hide')
+                    } else {
+                        switchLine.classList.add('hide')
+                    }
+                })
+
+                //Show/Hide Appointment Date
+                const appointmentSwitch = document.getElementById('call_processing_isAppointmentTaken');
+                appointmentSwitch.addEventListener('change', (e)=>{
+                    if (e.target.checked) {
+                        document.getElementById('appointment_date').classList.remove('hide')
+                    } else {
+                        document.getElementById('appointment_date').classList.add('hide')
+                    }
+                })
+
                 const processBtn = document.getElementById('process-call-btn');
                 const processForm        = document.getElementById('form-process');
                 processForm.onsubmit = (e) => {
@@ -39,13 +62,18 @@ const initButtons = (modal) => {
                         document.getElementById('process-preloader').classList.add('hide');
                         modal.close();
                         M.toast({html: 'Traitement enregistré', classes:'light-blue'})
-                        const target = document.getElementById('call-history-' + data.callId);
-                        const targetHtml = '<span class="chip ' + data.colors.bgColor + ' black-text">' + data.colors.stepName + '</span>\n' +
-                            '                            <b>\n' +
-                            '                                ' + data.date + '\n' +
-                            '                                à ' + data.time + '\n' +
-                            '                            </b>';
-                        target.innerHTML = targetHtml;
+                        console.log(data.is_ended);
+                        if (data.is_ended){
+                            document.getElementById(`call-${data.callId}`).classList.add('hide')
+                        } else {
+                            const target = document.getElementById('call-history-' + data.callId);
+                            const targetHtml = '<span class="chip ' + data.colors.bgColor + ' black-text">' + data.colors.stepName + '</span>\n' +
+                                '                            <b>\n' +
+                                '                                ' + data.date + '\n' +
+                                '                                à ' + data.time + '\n' +
+                                '                            </b>';
+                            target.innerHTML = targetHtml;
+                        }
                     });
                 }
             })
@@ -63,6 +91,7 @@ const initTransferButtons = (modal) => {
             const callId = transferButtons[i].dataset.call;
             getTransferForm(callId, (html) => {
                 transferModalHtmlZone.innerHTML = html
+                const clientAjaxer = new transferTool(`call/process/${callId}/transfer`, '');
                 initializeSelects()
                 const transferBtn = document.getElementById('transfer-call-btn');
                 const form        = document.getElementById('form-transfer');
@@ -89,6 +118,7 @@ const initTransferButtons = (modal) => {
                     });
                 }
             })
+
             modal.open();
         })
     }
@@ -131,6 +161,7 @@ const initializeSelects = () => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+
     const modalCallTreatment         = document.getElementById('modal-call-treatment');
     const modalCallTreatmentInstance = M.Modal.init(modalCallTreatment, {});
     initButtons(modalCallTreatmentInstance);

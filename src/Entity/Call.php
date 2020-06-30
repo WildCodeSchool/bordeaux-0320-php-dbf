@@ -133,6 +133,48 @@ class Call
      */
     private $author;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $appointmentDate;
+
+    private $cityTransfer = 0;
+    private $concessionTransfer = 0;
+
+    /**
+     * @return mixed
+     */
+    public function getCityTransfer()
+    {
+        return $this->cityTransfer;
+    }
+
+    /**
+     * @param mixed $cityTransfer
+     */
+    public function setCityTransfer($cityTransfer): void
+    {
+        $this->cityTransfer = $cityTransfer;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConcessionTransfer()
+    {
+        return $this->concessionTransfer;
+    }
+
+    /**
+     * @param mixed $concessionTransfer
+     */
+    public function setConcessionTransfer($concessionTransfer): void
+    {
+        $this->concessionTransfer = $concessionTransfer;
+    }
+
+
+
 
     public function __construct()
     {
@@ -439,6 +481,18 @@ class Call
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getAppointmentDate(): ?\DateTimeInterface
+    {
+        return $this->appointmentDate;
+    }
+
+    public function setAppointmentDate(?\DateTimeInterface $appointmentDate): self
+    {
+        $this->appointmentDate = $appointmentDate;
 
         return $this;
     }
