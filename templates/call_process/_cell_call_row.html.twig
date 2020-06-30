@@ -4,12 +4,12 @@
             <div class="row">
                 <div class="col s4">
                     <small>
-                    Reçu
+                    crée
                     <b>
                             {{call.createdAt|dateName}}
                             à {{ call.createdAt|timeFormat}}
                     </b>
-                    par  <b>{{ call.author.firstname }} {{ call.author.lastname }}</b>
+                    par  <b>{{call.service.concession.town.name}}</b>
                     </small>
                     {% if call.callTransfers is not empty %}
                         <i class="material-icons left tooltipped" data-position="right" data-tooltip="<div class='left-align'>

@@ -138,6 +138,43 @@ class Call
      */
     private $appointmentDate;
 
+    private $cityTransfer = 0;
+    private $concessionTransfer = 0;
+
+    /**
+     * @return mixed
+     */
+    public function getCityTransfer()
+    {
+        return $this->cityTransfer;
+    }
+
+    /**
+     * @param mixed $cityTransfer
+     */
+    public function setCityTransfer($cityTransfer): void
+    {
+        $this->cityTransfer = $cityTransfer;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConcessionTransfer()
+    {
+        return $this->concessionTransfer;
+    }
+
+    /**
+     * @param mixed $concessionTransfer
+     */
+    public function setConcessionTransfer($concessionTransfer): void
+    {
+        $this->concessionTransfer = $concessionTransfer;
+    }
+
+
+
 
     public function __construct()
     {

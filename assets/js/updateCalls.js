@@ -1,3 +1,5 @@
+import { transferTool } from './recipientTransfer';
+
 const getNewCalls = (action) => {
         fetch('/newcallsforuser', {
         })
@@ -88,6 +90,7 @@ const initTransferButtons = (modal) => {
             const callId = transferButtons[i].dataset.call;
             getTransferForm(callId, (html) => {
                 transferModalHtmlZone.innerHTML = html
+                const clientAjaxer = new transferTool(`call/process/${callId}/transfer`, '');
                 initializeSelects()
                 const transferBtn = document.getElementById('transfer-call-btn');
                 const form        = document.getElementById('form-transfer');
@@ -114,6 +117,7 @@ const initTransferButtons = (modal) => {
                     });
                 }
             })
+
             modal.open();
         })
     }

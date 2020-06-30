@@ -8,6 +8,7 @@ use App\Entity\CallTransfer;
 use App\Form\CallProcessingType;
 use App\Repository\CallProcessingRepository;
 use App\Repository\CallRepository;
+use App\Repository\CityRepository;
 use App\Repository\ContactTypeRepository;
 use App\Repository\UserRepository;
 use App\Service\CallStepChecker;
@@ -97,7 +98,7 @@ class CallProcessController extends AbstractController
     }
 
     /**
-     * @Route("/{callId}/transfer", name="call_transfer", methods={"GET"})
+     * @Route("/{callId}/transfer/{cityId}/{concessionId}/{serviceId}", name="call_transfer", methods={"GET"})
      * @param int $callId
      * @param CallRepository $callRepository
      * @return Response
@@ -105,12 +106,23 @@ class CallProcessController extends AbstractController
     public function callTransfer(
         $callId,
         CallRepository $callRepository,
+        CityRepository $cityRepository,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        $cityId = 0,
+        $concessionId = 0,
+        $serviceId = 0
     ) {
         $call = $callRepository->findOneById($callId);
-        $form                 = $this->createForm(CallTransferType::class, $call);
-        $form->handleRequest($request);
+        if ($cityId != 0) {
+            $call->setCityTransfer($cityId);
+        }
+        if ($concessionId != 0) {
+            $call->setConcessionTransfer($concessionId);
+        }
+
+        $form = $this->createForm(CallTransferType::class, $call);
+
         return $this->render('call_process/call_transfer.html.twig', [
             'call'          => $call,
             'form'          => $form->createView(),
