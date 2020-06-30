@@ -61,7 +61,7 @@ class CallTransferType extends AbstractType
                 'data'    => $call->getRecipient()->getId(),
                 'mapped'  => false
             ])
-            ->add('comment', TextType::class, [
+            ->add('commentTransfer', TextType::class, [
                 'label' => 'commentaire',
                 'required'   => false,
                 'mapped'  => false
