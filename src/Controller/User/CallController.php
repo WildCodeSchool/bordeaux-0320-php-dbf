@@ -112,8 +112,8 @@ class CallController extends AbstractController
         return $this->render('call/add.html.twig', [
             'call'          => $call,
             'form'          => $form->createView(),
-            'addedCalls'    => $addedCalls,
-            'steps'         => $steps
+            'calls'         => $addedCalls,
+            'steps'         => $steps,
         ]);
     }
 
