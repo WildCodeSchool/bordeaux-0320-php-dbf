@@ -11,9 +11,9 @@ class SearchData
     public $phone = '';
 
     /**
-     * @var array
+     * @var string
      */
-    public $authors = [];
+    public $author = '';
     /**
      * @var string
      */
@@ -29,11 +29,11 @@ class SearchData
     /**
      * @var string
      */
-    public $clientName = '';
+    public $name = '';
     /**
      * @var string
      */
-    public $clientEmail = '';
+    public $email = '';
     /**
      * @var string
      */
@@ -73,7 +73,39 @@ class SearchData
     /**
      * @var string
      */
-    public $commentTransfert = '';
-    public $dateFrom;
-    public $dateTo;
+    public $commentTransfer = '';
+    private $dateFrom;
+    private $dateTo;
+
+    /**
+     * @return mixed
+     */
+    public function getDateFrom()
+    {
+        return $this->dateFrom;
+    }
+
+    /**
+     * @param mixed $dateFrom
+     */
+    public function setDateFrom($dateFrom): void
+    {
+        $this->dateFrom = $dateFrom;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateTo()
+    {
+        return $this->dateTo;
+    }
+
+    /**
+     * @param mixed $dateTo
+     */
+    public function setDateTo($dateTo): void
+    {
+        $this->dateTo = $dateTo;
+    }
 }

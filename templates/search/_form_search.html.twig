@@ -8,7 +8,7 @@
         <div class="row mgt15">
             <div class="input-field col s5">
                 <small class="grey-text label-for-select ">Auteur</small><br>
-                {{ form_widget(form.authors) }}
+                {{ form_widget(form.author) }}
             </div>
             <div class="col s2 offset-s2 mgt30">
                 <label>
@@ -37,15 +37,15 @@
             <h5 class="light-blue-text"><i class="material-icons left">person_pin</i> Destinataire</h5>
             <div class="row">
                 <div class="col s4 input-field" >
-                    <small class="grey-text label-for-select ">Choisir une plaque</small><br>
+                    <small class="grey-text label-for-select ">Plaque</small><br>
                     {{ form_widget(form.city) }}
                 </div>
                 <div class="col s4 input-field">
-                    <small class="grey-text label-for-select ">Choisir une concession</small><br>
+                    <small class="grey-text label-for-select ">Concession</small><br>
                     {{ form_widget(form.concession) }}
                 </div>
                 <div class="col s4 input-field" >
-                    <small class="grey-text label-for-select ">Choisir un service</small><br>
+                    <small class="grey-text label-for-select ">Service</small><br>
                     {{ form_widget(form.service) }}
                 </div>
             </div>
@@ -59,7 +59,7 @@
         <div class="row mgt15">
             <div class=" input-field col s5">
                 <small class="grey-text label-for-select ">Nom ou raison sociale</small><br>
-                {{ form_widget(form.clientName) }}
+                {{ form_widget(form.name) }}
             </div>
             <div class="input-field col s5 ">
                 <small class="grey-text label-for-select ">Numéro de téléphone</small><br>
@@ -67,8 +67,8 @@
             </div>
 
             <div class=" input-field col s6">
-                {{ form_label(form.clientEmail) }}
-                {{ form_widget(form.clientEmail) }}
+                {{ form_label(form.email) }}
+                {{ form_widget(form.email) }}
             </div>
         </div>
     </div>
@@ -115,7 +115,7 @@
                 </div>
             </div>
             <div class="col s6">
-                <div class="col s6">
+                <div class="col s6 input-field">
                     <small class="grey-text label-for-select ">Contact</small><br>
                     {{ form_widget(form.contactType) }}
                 </div>
@@ -125,7 +125,7 @@
                 </div>
                 <div class="col s12 input-field">
                     <small class="grey-text label-for-select ">Remarque</small><br>
-                    {{ form_widget(form.commentTransfert) }}
+                    {{ form_widget(form.commentTransfer) }}
                 </div>
             </div>
         </div>

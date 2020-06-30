@@ -33,7 +33,7 @@ class SearchType extends AbstractType
         $builder->add('phone', TextType::class, [
             'label' => 'Téléphone',
             'required' => false])
-            ->add('authors', EntityType::class, [
+            ->add('author', EntityType::class, [
                 'class' => User::class,
                 'required' => false,
                 'choice_label'=>'lastname',
@@ -58,11 +58,11 @@ class SearchType extends AbstractType
                 'required' => false,
                 'label' => 'Type'
             ])
-            ->add('clientName', TextType::class, [
+            ->add('name', TextType::class, [
                 'label' => 'Client',
                 'required' => false,
             ])
-            ->add('clientEmail', TextType::class, [
+            ->add('email', TextType::class, [
                 'label'=> 'Email',
                 'required'=> false,
             ])
@@ -123,7 +123,7 @@ class SearchType extends AbstractType
                 'label' => 'contact',
                 'required'=> false
             ])
-            ->add('commentTransfert', TextType::class, [
+            ->add('commentTransfer', TextType::class, [
                 'label' => 'Commentaire transfert',
                 'required' => false
             ])

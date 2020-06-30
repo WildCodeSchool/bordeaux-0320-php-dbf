@@ -19,6 +19,25 @@ use \DateInterval;
  */
 class CallRepository extends ServiceEntityRepository
 {
+    const TUPLES_FOR_SEARCH_WITH_TEXT = [
+        'email',
+        'phone',
+        'name',
+        'immatriculation',
+        'chassis',
+        'freeComment',
+        'commentTransfer',
+    ];
+    const TUPLES_BELONG_TO_WHICH_TABLE =[
+        'email'=> 'cl',
+        'phone' => 'cl',
+        'name' => 'cl',
+        'immatriculation'=> 'v',
+        'chassis'=> 'v',
+        'freeComment'=> 'c',
+        'commentTransfer'=> 'ct',
+    ];
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Call::class);
@@ -41,6 +60,7 @@ class CallRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
     public function findCallsAddedToday($author)
     {
         $qb = $this->createQueryBuilder('c')
@@ -91,7 +111,6 @@ class CallRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
-
 
     public function callsToProcessByUser($recipient)
     {
@@ -160,7 +179,6 @@ class CallRepository extends ServiceEntityRepository
             ;
     }
 
-
     public function getNewCallsForUser($recipient, $lastId)
     {
         return $this->createQueryBuilder('c')
@@ -186,6 +204,7 @@ class CallRepository extends ServiceEntityRepository
             ;
     }
 
+
     public function findSearch(SearchData $searchData): array
     {
         $query = $this->createQueryBuilder('c')
@@ -197,116 +216,53 @@ class CallRepository extends ServiceEntityRepository
             ->leftJoin('c.callProcessings', 'cp')->addSelect('cp')
             ->leftJoin('c.callTransfers', 'ct')->addSelect('ct')
         ;
-        if (!empty($searchData->phone)) {
-            $query = $query->andWhere('cl.phone LIKE :phone')->setParameter(
-                'phone',
-                '%' . $searchData->phone . '%'
-            );
-        }
-        if (!empty($searchData->users)) {
-            $query = $query->andWhere('c.author IN (:authors)')->setParameter('users', $searchData->authors);
-        }
-        if (!empty($searchData->comment)) {
-            $query = $query->andWhere('c.comment = :comment')->setParameter('comment', $searchData->comment);
-        }
-        if (!empty($searchData->subject)) {
-            $query = $query->andWhere('c.subject = :subject')->setParameter('subject', $searchData->subject);
-        }
-        if (!empty($searchData->urgent)) {
-            $query = $query->andWhere('c.isUrgent = :urgent ')->setParameter('urgent', $searchData->urgent);
-        }
-        if (!empty($searchData->clientName)) {
-            $query = $query->andWhere('cl.name LIKE :clientName')->setParameter(
-                'clientName',
-                '%' . $searchData->clientName . '%'
-            );
-        }
-        if (!empty($searchData->clientEmail)) {
-            $query = $query->andWhere('cl.email LIKE :clientEmail')->setParameter(
-                'clientEmail',
-                '%' . $searchData->clientEmail .  '%'
-            );
-        }
-        if (!empty($searchData->immatriculation)) {
-            $query = $query->andWhere('v.immatriculation LIKE :immatriculation')->setParameter(
-                'immatriculation',
-                '%' . $searchData->immatriculation .  '%'
-            );
-        }
-        if (!empty($searchData->chassis)) {
-            $query = $query->andWhere('v.chassis LIKE :chassis')->setParameter(
-                'chassis',
-                '%' . $searchData->chassis .  '%'
-            );
-        }
-        if (!empty($searchData->city)) {
-            $query = $query->andWhere('concession.town = :city')->setParameter('city', $searchData->city);
-        }
-        if (!empty($searchData->concession)) {
-            $query = $query->andWhere('serv.concession = :concession')
-                ->setParameter('concession', $searchData->concession);
-        }
-        if (!empty($searchData->service)) {
-            $query = $query->andWhere('c.service = :service')->setParameter('service', $searchData->service);
-        }
-        if (!empty($searchData->hasCome)) {
-            $query = $query->andWhere('v.hasCome = :hasCome')->setParameter(
-                'hasCome',
-                $searchData->hasCome
-            );
-        }
-        if (!empty($searchData->isAppointmentTaken)) {
-            $query = $query->andWhere('c.isAppointmentTaken = :isAppointmentTaken')->setParameter(
-                'isAppointmentTaken',
-                $searchData->isAppointmentTaken
-            );
-        }
-        if (!empty($searchData->freeComment)) {
-            $query = $query->andWhere('c.freeComment LIKE  :freeComment')->setParameter(
-                'freeComment',
-                '%' . $searchData->freeComment .  '%'
-            );
-        }
-        if (!empty($searchData->contactType)) {
-            $query = $query->andWhere('cp.contactType = :contactType')->setParameter(
-                'contactType',
-                $searchData->contactType
-            );
-        }
-        if (!empty($searchData->commentTransfert)) {
-            $query = $query->andWhere('ct.comment LIKE  :commentTransfert')->setParameter(
-                'commentTransfert',
-                '%' . $searchData->commentTransfert .  '%'
-            );
-        }
-        if (!empty($searchData->dateFrom) && !empty($searchData->dateTo)) {
+
+        $this->addSearchParametersToQuery($searchData, $query);
+
+        if (!empty($searchData->getDateFrom()) && !empty($searchData->getDateTo())) {
             $query = $query
-                ->where('c.createdAt BETWEEN :from AND :to')
-                ->setParameter('from', $searchData->dateFrom->format('Y-m-d') . ' 00:00:00')
-                ->setParameter('to', $searchData->dateTo->format('Y-m-d') . ' 23:59:59')
+                ->andWhere('c.createdAt BETWEEN :from AND :to')
+                ->setParameter('from', $searchData->getDateFrom()->format('Y-m-d') . ' 00:00:00')
+                ->setParameter('to', $searchData->getDateTo()->format('Y-m-d') . ' 23:59:59')
             ;
         }
 
         return $query->getQuery()->getResult();
     }
 
-    private function addSearchParametersToQuery(SearchData $datum, &$query)
+
+    private function queryWithLikeMaker($property, &$query, $value)
     {
-        foreach ($datum as $data->$value) {
-            if (!empty($data->$value)) {
-                $query = $query->andWhere('c.' . $value . ' = :' . $value)->setParameter(
-                    $value,
-                    $data->$value
-                );
+        return $query
+            ->andWhere(self::TUPLES_BELONG_TO_WHICH_TABLE[$property] . '.' . $property . ' LIKE  :' . $property)
+            ->setParameter(
+                $property,
+                '%' . $value . '%'
+            );
+    }
+
+    private function queryWithEqualMaker($property, &$query, $value)
+    {
+        return $query->andWhere('c.' . $property . ' = :' . $property)
+            ->setParameter($property, $value);
+    }
+
+    private function addSearchParametersToQuery($searchData, &$query)
+    {
+        foreach ($searchData as $property => $value) {
+            if (!empty($searchData->$property)) {
+                if (in_array($property, self::TUPLES_FOR_SEARCH_WITH_TEXT)) {
+                    $query = $this->queryWithLikeMaker($property, $query, $value);
+                } else {
+                    $query = $this->queryWithEqualMaker($property, $query, $value);
+                }
             }
         }
         return $query;
     }
 
-    // /**
-    //  * @return Call[] Returns an array of Call objects
-    //  */
-    /*
+    /**
+
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('c')
@@ -316,9 +272,9 @@ class CallRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Call
