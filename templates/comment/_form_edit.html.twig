@@ -1,4 +1,6 @@
-{{ form_start(form_comment, {'action': path('comment_new')})}}
+<form method="post" action="{{ path('comment_edit', {'id': comment.id}) }}" onsubmit="return confirm('Etes vous sûr de vouloir modifier ce commentaire?');">
+{{ form_start(form_comment)}}
     {{ form_widget(form_comment) }}
-<button class="btn modal-close" >{{ button_label|default('Sauvegarder') }}</button>
+<button class="btn modal-close right" id="comment-button">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form_comment) }}
+

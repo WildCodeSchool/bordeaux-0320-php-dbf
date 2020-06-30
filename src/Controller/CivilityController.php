@@ -84,24 +84,25 @@ class CivilityController extends AbstractController
 
         return $this->render('civility/edit.html.twig', [
             'civility' => $civility,
-            'form' => $form->createView(),
+            'form_civility' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="civility_delete", methods={"DELETE"})
-     * @param Request $request
-     * @param Civility $civility
-     * @return Response
+     * @Route("/delete/{id}", name="delete_civility", methods={"DELETE"})
+     * @return JsonResponse
      */
-    public function delete(Request $request, Civility $civility): Response
+    public function delete(Request $request, Civility $civility): JsonResponse
     {
-        if ($this->isCsrfTokenValid('delete' . $civility->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($civility);
-            $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('civility_index');
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($civility);
+        $entityManager->flush();
+
+        $response = new JsonResponse();
+        $status = JsonResponse::HTTP_OK;
+        $response->setStatusCode($status);
+
+        return $response;
     }
 }

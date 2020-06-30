@@ -22,5 +22,7 @@ require('./clientFormAdmin');
 require('./recipientForm');
 require('./searchClientByPhone');
 require('./reattributePhone');
+require('./deletor');
+
 
 
