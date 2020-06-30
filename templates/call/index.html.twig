@@ -1,17 +1,18 @@
 
-    <div class="container">
-        {% for addedCall in addedCalls %}
-                <div class="row ligneappel {{ steps[addedCall.id].class is defined ? steps[addedCall.id].class : '' }}">
-                <a href="" class="btn btn-floating white btn-pin
+<div class="container">
+    {% for addedCall in addedCalls %}
+        <div class="row ligneappel {{ steps[addedCall.id].class is defined ? steps[addedCall.id].class : '' }}">
+            <a href="" class="btn btn-floating white btn-pin
                                 {{ steps[addedCall.id].pulse is defined ? steps[addedCall.id].pulse : '' }}">
-                    <i class="material-icons
+                <i class="material-icons
                             {{ steps[addedCall.id].color is defined ? steps[addedCall.id].color : '' }}">
-                        {{ steps[addedCall.id].icon is defined ? steps[addedCall.id].icon : '' }}
-                    </i>
-                </a>
-                <div class="col s4 ">
-                    <div class="col s12">
-                        <table>
+                    {{ steps[addedCall.id].icon is defined ? steps[addedCall.id].icon : '' }}
+                </i>
+            </a>
+            <div class="col s4 ">
+                <div class="col s12">
+                    <table>
+                        <tbody>
                             <tr class="bdb0">
                                 <td>
                                     <b>Appel reçu par</b>
@@ -44,88 +45,90 @@
                                     {{addedCall.service.name}}
                                 </td>
                             </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="col s4 ">
-                    <div class="col s12">
-                        <table>
-                            <tr>
-                                <td>
-                                    <b>Client</b>
-                                </td>
-                                <td>
-                                    {{ addedCall.client.civility.name ~ ' ' ~ addedCall.client.name}}
-                                </td>
-                            </tr>
-                            <tr class="bdb0">
-                                <td>
-                                    <b>Tel. 1</b>
-                                </td>
-                                <td>
-                                    {{addedCall.client.phone}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Tel. 2</b>
-                                </td>
-                                <td>
-                                    {{addedCall.client.phone2}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Traitement</b>
-                                </td>
-                                <td class="upperCase {{ steps[addedCall.id].color is defined ? steps[addedCall.id].color : '' }}">
-                                    {{ steps[addedCall.id].lastStepName is defined ? steps[addedCall.id].lastStepName : '' }}
-                                </td>
-                            </tr>
-
-                        </table>
-                    </div>
-                </div>
-                <div class="col s4 ">
-                    <div class="col s12">
-                        <table>
-                            <tr>
-                                <td>
-                                    <b>Rappeler</b>
-                                </td>
-                                <td>
-                                    {{ addedCall.recallDate|date('d-m-Y') ~ ' ' ~ addedCall.recallPeriod.name ~ ' ' ~ addedCall.recallHour|date('H:i') }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Motif</b>
-                                </td>
-                                <td>
-                                    {{addedCall.subject.name}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Commentaire</b>
-                                </td>
-                                <td>
-                                    {{addedCall.comment.name}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <b>Immat</b>
-                                </td>
-                                <td>
-                                    <span class="immat">{{ addedCall.vehicle.immatriculation }}</span>
-                                </td>
-                            </tr>
-
-                        </table>
-                    </div>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        {% endfor %}
-    </div>
+            <div class="col s4 ">
+                <div class="col s12">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <b>Client</b>
+                            </td>
+                            <td>
+                                {{ addedCall.client.civility.name ~ ' ' ~ addedCall.client.name}}
+                            </td>
+                        </tr>
+                        <tr class="bdb0">
+                            <td>
+                                <b>Tel. 1</b>
+                            </td>
+                            <td>
+                                {{addedCall.client.phone}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Tel. 2</b>
+                            </td>
+                            <td>
+                                {{addedCall.client.phone2}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Traitement</b>
+                            </td>
+                            <td class="upperCase {{ steps[addedCall.id].color is defined ? steps[addedCall.id].color : '' }}">
+                                {{ steps[addedCall.id].lastStepName is defined ? steps[addedCall.id].lastStepName : '' }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col s4 ">
+                <div class="col s12">
+                    <table>
+                        <tr>
+                            <td>
+                                <b>Rappeler</b>
+                            </td>
+                            <td>
+                                {{ addedCall.recallDate|date('d-m-Y') ~ ' ' ~ addedCall.recallPeriod.name ~ ' ' ~ addedCall.recallHour|date('H:i') }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Motif</b>
+                            </td>
+                            <td>
+                                {{addedCall.subject.name}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Commentaire</b>
+                            </td>
+                            <td>
+                                {{addedCall.comment.name}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Immat</b>
+                            </td>
+                            <td>
+                                <span class="immat">{{ addedCall.vehicle.immatriculation }}</span>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
 

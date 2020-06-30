@@ -31,7 +31,7 @@ class CallTransfer
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $comment;
+    private $commentTransfer;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="callTransfersBy")
@@ -78,14 +78,14 @@ class CallTransfer
         return $this;
     }
 
-    public function getComment(): ?string
+    public function getCommentTransfer(): ?string
     {
-        return $this->comment;
+        return $this->commentTransfer;
     }
 
-    public function setComment(?string $comment): self
+    public function setCommentTransfer(?string $commentTransfer): self
     {
-        $this->comment = $comment;
+        $this->commentTransfer = $commentTransfer;
 
         return $this;
     }
