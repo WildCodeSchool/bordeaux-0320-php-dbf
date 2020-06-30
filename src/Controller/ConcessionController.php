@@ -83,6 +83,7 @@ class ConcessionController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete_concession", methods={"DELETE"})
+     * @return JsonResponse
      */
     public function delete(Request $request, Concession $concession): JsonResponse
     {

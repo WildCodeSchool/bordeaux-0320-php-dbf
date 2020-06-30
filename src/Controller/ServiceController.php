@@ -8,6 +8,7 @@ use App\Repository\ConcessionRepository;
 use App\Repository\ServiceRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -91,19 +92,19 @@ class ServiceController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="service_delete", methods={"DELETE"})
-     * @param Request $request
-     * @param Service $service
-     * @return Response
+     * @Route("/delete/{id}", name="delete_service", methods={"DELETE"})
+     * @return JsonResponse
      */
-    public function delete(Request $request, Service $service): Response
+    public function delete(Request $request, Service $service): JsonResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$service->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($service);
             $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('service_index');
+            $response = new JsonResponse();
+            $status = JsonResponse::HTTP_OK;
+            $response->setStatusCode($status);
+
+        return $response;
     }
 }

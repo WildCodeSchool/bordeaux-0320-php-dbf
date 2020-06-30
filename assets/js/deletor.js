@@ -71,5 +71,12 @@ document.addEventListener('DOMContentLoaded', () => {
             deletor(deleteConcessionButtons[i], '/concession/delete/', 'concession', 'concession');
         });
     }
+    const deleteServiceButtons = document.getElementsByClassName('delete-service-button');
+    for (let i = 0; i < deleteServiceButtons.length; i++) {
+        deleteServiceButtons[i].addEventListener('click', (e) => {
+            e.preventDefault();
+            deletor(deleteServiceButtons[i], '/service/delete/', 'service', 'service');
+        });
+    }
 
 }) //end of document eventListener
