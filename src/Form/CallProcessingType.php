@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,8 +33,14 @@ class CallProcessingType extends AbstractType
                     'class' => 'active'
                 ]
             ])
+            ->add('appointmentDate', DateType::class, [
+                'mapped'   => false,
+                'widget'   => 'single_text',
+                'required' => false,
+            ])
             ->add('contactType', ChoiceType::class, [
                 'choices' => $this->getContactTypes(),
+                'mapped' => false,
             ])
             ->add('isAppointmentTaken', CheckboxType::class, [
                 'label'    => 'Rendez vous pris ?',
@@ -48,7 +55,7 @@ class CallProcessingType extends AbstractType
     {
         $contactsTypes = $this->contactTypeRepository->findBy([], ['name'=>'ASC']);
         $choices = [];
-        $choices['Type de contact'] = '';
+        $choices['Types de contacts'] = '';
         foreach ($contactsTypes as $contactType) {
             $choices[$contactType->getName()] = $contactType->getId();
         }
@@ -59,6 +66,7 @@ class CallProcessingType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => CallProcessing::class,
+            'allow_extra_fields' => true,
         ]);
     }
 }

@@ -19,6 +19,7 @@ const initButtons = (modal) => {
                 modalHtmlZone.innerHTML = html
                 initializeSelects()
 
+                //Show/Hide switch Button
                 const contactTypeSelector = document.getElementById('call_processing_contactType');
                 const switchLine          = document.getElementById('rdv-switch');
                 contactTypeSelector.addEventListener('change', (e) => {
@@ -26,6 +27,16 @@ const initButtons = (modal) => {
                         switchLine.classList.remove('hide')
                     } else {
                         switchLine.classList.add('hide')
+                    }
+                })
+
+                //Show/Hide Appointment Date
+                const appointmentSwitch = document.getElementById('call_processing_isAppointmentTaken');
+                appointmentSwitch.addEventListener('change', (e)=>{
+                    if (e.target.checked) {
+                        document.getElementById('appointment_date').classList.remove('hide')
+                    } else {
+                        document.getElementById('appointment_date').classList.add('hide')
                     }
                 })
 
@@ -49,13 +60,17 @@ const initButtons = (modal) => {
                         document.getElementById('process-preloader').classList.add('hide');
                         modal.close();
                         M.toast({html: 'Traitement enregistré', classes:'light-blue'})
-                        const target = document.getElementById('call-history-' + data.callId);
-                        const targetHtml = '<span class="chip ' + data.colors.bgColor + ' black-text">' + data.colors.stepName + '</span>\n' +
-                            '                            <b>\n' +
-                            '                                ' + data.date + '\n' +
-                            '                                à ' + data.time + '\n' +
-                            '                            </b>';
-                        target.innerHTML = targetHtml;
+                        if (data.is_ended){
+                            document.getElementById(`call-${data.callId}`).classList.add('hide')
+                        } else {
+                            const target = document.getElementById('call-history-' + data.callId);
+                            const targetHtml = '<span class="chip ' + data.colors.bgColor + ' black-text">' + data.colors.stepName + '</span>\n' +
+                                '                            <b>\n' +
+                                '                                ' + data.date + '\n' +
+                                '                                à ' + data.time + '\n' +
+                                '                            </b>';
+                            target.innerHTML = targetHtml;
+                        }
                     });
                 }
             })

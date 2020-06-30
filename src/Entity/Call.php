@@ -133,6 +133,11 @@ class Call
      */
     private $author;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $appointmentDate;
+
 
     public function __construct()
     {
@@ -439,6 +444,18 @@ class Call
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getAppointmentDate(): ?\DateTimeInterface
+    {
+        return $this->appointmentDate;
+    }
+
+    public function setAppointmentDate(?\DateTimeInterface $appointmentDate): self
+    {
+        $this->appointmentDate = $appointmentDate;
 
         return $this;
     }

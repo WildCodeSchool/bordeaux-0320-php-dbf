@@ -6,7 +6,9 @@ namespace App\Controller;
 use App\Entity\CallProcessing;
 use App\Entity\CallTransfer;
 use App\Form\CallProcessingType;
+use App\Repository\CallProcessingRepository;
 use App\Repository\CallRepository;
+use App\Repository\ContactTypeRepository;
 use App\Repository\UserRepository;
 use App\Service\CallStepChecker;
 use App\Service\CallTreatmentDataMaker;
@@ -55,14 +57,21 @@ class CallProcessController extends AbstractController
     public function addCallProcess(
         $callId,
         CallRepository $callRepository,
+        ContactTypeRepository $contactTypeRepository,
         Request $request,
         EntityManagerInterface $entityManager,
         CallStepChecker $callStepChecker
     ) {
+
+        $contactType = $contactTypeRepository->findOneById(
+            (int)$request->request->get('call_processing')['contactType']
+        );
         $call = $callRepository->findOneById($callId);
         $call
             ->setIsProcessed(true)
+            ->setAppointmentDate($callStepChecker->checkAppointmentDate($request))
             ->setIsAppointmentTaken($callStepChecker->checkAppointment($request));
+
         if ($callStepChecker->isCallToBeEnded($request)) {
             $call->setIsProcessEnded($callStepChecker->isCallToBeEnded($request));
         }
@@ -73,6 +82,7 @@ class CallProcessController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $callProcess->setContactType($contactType);
             $callProcess->setReferedCall($call);
             $entityManager->persist($callProcess);
             $entityManager->flush();
@@ -82,6 +92,7 @@ class CallProcessController extends AbstractController
             'date'   => DateFormatter::formatDate($callProcess->getCreatedAt()),
             'time'  => DateFormatter::formatTime($callProcess->getCreatedAt()),
             'colors' => CallTreatmentDataMaker::stepMakerForProcess($callProcess),
+            'is_ended' => $call->getIsProcessed(),
         ]);
     }
 

@@ -6,6 +6,7 @@ namespace App\Service;
 use App\Entity\ContactType;
 use App\Repository\ContactTypeRepository;
 use Symfony\Component\HttpFoundation\Request;
+use \DateTime;
 
 class CallStepChecker
 {
@@ -21,26 +22,31 @@ class CallStepChecker
 
     public function checkAppointment(Request $request): bool
     {
-        if (isset($request->request->get('call_processing')['isAppointmentTaken']) &&
-            (int)$request->request->get('call_processing')['isAppointmentTaken'] === 1) {
-            return true;
-        }
-        return false;
+        return (
+            isset($request->request->get('call_processing')['isAppointmentTaken']) &&
+            (int)$request->request->get('call_processing')['isAppointmentTaken'] === 1
+        );
+    }
+
+    public function checkAppointmentDate(Request $request): ?DateTime
+    {
+        return (
+            isset($request->request->get('call_processing')['appointmentDate']) &&
+            !empty($request->request->get('call_processing')['appointmentDate'])
+        )? new DateTime($request->request->get('call_processing')['appointmentDate']) : null;
     }
 
     public function isCallToBeEnded(Request $request): ?bool
     {
         $repo = $this->contactTypeRepository;
-        $contactType = $repo->findOneById($request->request->get('call_processing')['contactType']);
+        $contactType = $repo->findOneById((int)$request->request->get('call_processing')['contactType']);
         $contactStep = $contactType->getIdentifier();
-
-        if ((isset($request->request->get('call_processing')['isAppointmentTaken']) &&
+        return (
+            (isset($request->request->get('call_processing')['isAppointmentTaken']) &&
             (int)$request->request->get('call_processing')['isAppointmentTaken'] === 1) ||
             $contactStep === $this->contactType::ABANDON ||
             $contactStep === $this->contactType::NOT_ELIGIBLE ||
-            $contactStep === $this->contactType::CONTACT) {
-            return true;
-        }
-        return null;
+            $contactStep === $this->contactType::CONTACT
+        );
     }
 }
