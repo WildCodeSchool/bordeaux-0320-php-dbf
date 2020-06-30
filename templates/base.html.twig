@@ -22,7 +22,7 @@
                 </ul>
                 <ul id="nav-mobile" class="right hide-on-med-and-down noshadow">
                     {% if app.user %}
-                    <li><a href="#" class="black-text"><i class="material-icons left">edit</i>{{ app.user.firstname }} {{ app.user.lastname }}</a></li>
+                    <li><a href="{{ path('profile_edit', { 'id': app.user.id }) }}" class="black-text"><i class="material-icons left">edit</i>{{ app.user.firstname }} {{ app.user.lastname }}</a></li>
 
                     <li><a href="{{ path('app_logout') }}" class="black-text"><i class="material-icons left">logout</i>Déconnexion</a></li>
                     {% else %}
