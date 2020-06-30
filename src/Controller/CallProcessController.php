@@ -124,7 +124,7 @@ class CallProcessController extends AbstractController
         $call->setRecipient($userRepository->findOneById($request->request->get('call_transfer')['recipient']));
         $toWhom   = $call->getRecipient();
         $byWhom   = $this->getUser();
-        $transferComment = $request->request->get('call_transfer')['comment'];
+        $transferComment = $request->request->get('call_transfer')['commentTransfer'];
         $transfer = new CallTransfer();
 
         $transfer
@@ -132,7 +132,7 @@ class CallProcessController extends AbstractController
             ->setFromWhom($fromWhom)
             ->setByWhom($byWhom)
             ->setToWhom($toWhom)
-            ->setComment($transferComment);
+            ->setCommentTransfer($transferComment);
 
         $form = $this->createForm(CallTransferType::class, $call);
         $form->handleRequest($request);
