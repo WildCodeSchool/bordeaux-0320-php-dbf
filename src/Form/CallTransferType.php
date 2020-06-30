@@ -37,22 +37,21 @@ class CallTransferType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $call = $builder->getData();
 
         $builder
             ->add('city', EntityType::class, [
                 'class'         => City::class,
-                'choice_label' => 'name',
-                'mapped'  => false
+                'choice_label'  => 'name',
+                'mapped'        => false
             ])
             ->add('concession', ChoiceType::class, [
-                'choices' => $this->getConcessions($call->getCity()->getId()),
+                'choices' => $this->getConcessions($call->getCityTransfer()),
                 'data'    => $call->getConcession()->getId(),
                 'mapped'  => false
             ])
             ->add('service', ChoiceType::class, [
-                'choices' => $this->getServices($call->getConcession()->getId()),
+                'choices' => $this->getServices($call->getConcessionTransfer()),
                 'data'    => $call->getService()->getId(),
                 'mapped'  => false
             ])
