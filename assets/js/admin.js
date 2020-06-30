@@ -72,9 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalEditComment = document.getElementById('modal-edit-comment');
     const instanceModalEditComment = M.Modal.init(modalEditComment, {});
 
-    var tooltips = document.querySelectorAll('.tooltipped');
-    var instancesOfTooltips = M.Tooltip.init(tooltips);
-
     const tooltips = document.querySelectorAll('.tooltipped');
     const instancesOfTooltips = M.Tooltip.init(tooltips, {
         html:true
