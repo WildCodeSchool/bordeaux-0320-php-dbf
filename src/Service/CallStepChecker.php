@@ -22,10 +22,12 @@ class CallStepChecker
 
     public function checkAppointment(Request $request): bool
     {
-        return (
-            isset($request->request->get('call_processing')['isAppointmentTaken']) &&
+        if (isset($request->request->get('call_processing')['isAppointmentTaken']) &&
             (int)$request->request->get('call_processing')['isAppointmentTaken'] === 1
-        );
+        ) {
+            return true;
+        }
+        return false;
     }
 
     public function checkAppointmentDate(Request $request): ?DateTime
@@ -33,20 +35,22 @@ class CallStepChecker
         return (
             isset($request->request->get('call_processing')['appointmentDate']) &&
             !empty($request->request->get('call_processing')['appointmentDate'])
-        )? new DateTime($request->request->get('call_processing')['appointmentDate']) : null;
+        ) ? new DateTime($request->request->get('call_processing')['appointmentDate']) : null;
     }
 
     public function isCallToBeEnded(Request $request): ?bool
     {
-        $repo = $this->contactTypeRepository;
+        $repo        = $this->contactTypeRepository;
         $contactType = $repo->findOneById((int)$request->request->get('call_processing')['contactType']);
         $contactStep = $contactType->getIdentifier();
-        return (
-            (isset($request->request->get('call_processing')['isAppointmentTaken']) &&
+        if ((isset($request->request->get('call_processing')['isAppointmentTaken']) &&
             (int)$request->request->get('call_processing')['isAppointmentTaken'] === 1) ||
             $contactStep === $this->contactType::ABANDON ||
             $contactStep === $this->contactType::NOT_ELIGIBLE ||
             $contactStep === $this->contactType::CONTACT
-        );
+        ) {
+            return true;
+        }
+        return false;
     }
 }

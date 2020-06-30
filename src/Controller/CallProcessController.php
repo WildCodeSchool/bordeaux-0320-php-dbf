@@ -74,7 +74,7 @@ class CallProcessController extends AbstractController
             ->setIsAppointmentTaken($callStepChecker->checkAppointment($request));
 
         if ($callStepChecker->isCallToBeEnded($request)) {
-            $call->setIsProcessEnded($callStepChecker->isCallToBeEnded($request));
+            $call->setIsProcessEnded(true);
         }
         $entityManager->persist($call);
 
@@ -93,13 +93,18 @@ class CallProcessController extends AbstractController
             'date'   => DateFormatter::formatDate($callProcess->getCreatedAt()),
             'time'  => DateFormatter::formatTime($callProcess->getCreatedAt()),
             'colors' => CallTreatmentDataMaker::stepMakerForProcess($callProcess),
-            'is_ended' => $call->getIsProcessed(),
+            'is_ended' => $call->getIsProcessEnded(),
         ]);
     }
 
     /**
      * @Route("/{callId}/transfer/{cityId}/{concessionId}/{serviceId}", name="call_transfer", methods={"GET"})
      * @param int $callId
+     * @param int $cityId
+     * @param int $concessionId
+     * @param int $serviceId
+     * @param Request $request
+     * @param CityRepository $cityRepository
      * @param CallRepository $callRepository
      * @return Response
      */
@@ -142,14 +147,13 @@ class CallProcessController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ) {
-        $call = $callRepository->findOneById($callId);
-        $fromWhom = $call->getRecipient();
+        $call            = $callRepository->findOneById($callId);
+        $fromWhom        = $call->getRecipient();
         $call->setRecipient($userRepository->findOneById($request->request->get('call_transfer')['recipient']));
-        $toWhom   = $call->getRecipient();
-        $byWhom   = $this->getUser();
+        $toWhom          = $call->getRecipient();
+        $byWhom          = $this->getUser();
         $transferComment = $request->request->get('call_transfer')['comment'];
-        $transfer = new CallTransfer();
-
+        $transfer        = new CallTransfer();
         $transfer
             ->setReferedCall($call)
             ->setFromWhom($fromWhom)
@@ -157,16 +161,15 @@ class CallProcessController extends AbstractController
             ->setToWhom($toWhom)
             ->setComment($transferComment);
 
-        $form = $this->createForm(CallTransferType::class, $call);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($transfer);
-            $entityManager->persist($call);
-            $entityManager->flush();
-        }
+        $entityManager->persist($transfer);
+        $entityManager->persist($call);
+        $entityManager->flush();
 
-        return new JsonResponse([
+        $response = new JsonResponse();
+        $response->setStatusCode(JsonResponse::HTTP_OK);
+        $response->setData([
             'callId' => $call->getId(),
         ]);
+        return $response;
     }
 }

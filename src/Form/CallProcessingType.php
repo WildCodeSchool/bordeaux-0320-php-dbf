@@ -31,7 +31,8 @@ class CallProcessingType extends AbstractType
             ->add('comment', TextType::class, [
                 'attr' => [
                     'class' => 'active'
-                ]
+                ],
+                'required' => false
             ])
             ->add('appointmentDate', DateType::class, [
                 'mapped'   => false,

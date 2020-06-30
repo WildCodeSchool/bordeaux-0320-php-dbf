@@ -62,6 +62,7 @@ const initButtons = (modal) => {
                         document.getElementById('process-preloader').classList.add('hide');
                         modal.close();
                         M.toast({html: 'Traitement enregistré', classes:'light-blue'})
+                        console.log(data.is_ended);
                         if (data.is_ended){
                             document.getElementById(`call-${data.callId}`).classList.add('hide')
                         } else {
