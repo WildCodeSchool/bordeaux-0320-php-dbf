@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use \DateTime;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +11,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
+
 class User implements UserInterface
 {
     /**
@@ -35,6 +38,7 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -238,9 +242,23 @@ class User implements UserInterface
         return $this->updatedAt;
     }
 
+    /**
+     * @param \DateTimeInterface|null $updatedAt
+     * @return User
+     */
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtPrePersist()
+    {
+        $this->updatedAt = new DateTime('Europe/Paris');
 
         return $this;
     }

@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col s8">
+            <h3>Editer mon profil</h3>
+        </div>
+    </div>
+    <div class="col s4">
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div class="flashes {{ type }}">
+                    <span class="flash-{{ type }}">{{ message }}</span>
+                    {% if type == 'success' %}
+                        <i class="material-icons light-blue-text right">check</i>
+                    {% else %}
+                        <i class="material-icons red-text right">error</i>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+    <a class="btn  blue darken-1 right" href="#"> Changer mon mot de passe</a>
+    <div class="form-profile">
+    {{ form_start(form) }}
+    <div class="section">
+    <div class="row mgt15">
+        <div class="input-field col s6 offset-l3 ">
+    {{ form_label(form.email) }}
+    {{ form_widget(form.email) }}
+        </div>
+    </div>
+    </div>
+    <div class="section">
+    <div class="row">
+            <div class="input-field col s3 offset-l3">
+                {{ form_label(form.firstname) }}
+                {{ form_widget(form.firstname) }}
+            </div>
+                <div class="input-field col s3 ">
+                    {{ form_label(form.lastname) }}
+                    {{ form_widget(form.lastname)  }}
+                    </div>
+    </div>
+        </div>
+        <div class="section">
+            <div class="row">
+                <div class="input-field col s6 offset-l3">
+    {{ form_label(form.phone) }}
+    {{ form_widget(form.phone) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="s6 col offset-l7 sauvegarder ">
+                <button class="btn">{{ button_label|default('Sauvegarder') }}</button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+
+    </div>
+</div>
+{% endblock %}
