@@ -64,5 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
             deletor(deleteCityButtons[i], '/city/delete/', 'city', 'plaque');
         });
     }
+    const deleteConcessionButtons = document.getElementsByClassName('delete-concession-button');
+    for (let i = 0; i < deleteConcessionButtons.length; i++) {
+        deleteConcessionButtons[i].addEventListener('click', (e) => {
+            e.preventDefault();
+            deletor(deleteConcessionButtons[i], '/concession/delete/', 'concession', 'concession');
+        });
+    }
 
 }) //end of document eventListener
