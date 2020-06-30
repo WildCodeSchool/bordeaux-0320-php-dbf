@@ -19,6 +19,17 @@ class CallProcessingRepository extends ServiceEntityRepository
         parent::__construct($registry, CallProcessing::class);
     }
 
+    public function findLastProcessForCall($callId): ?CallProcessing
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.referedCallId = :callId')
+            ->setParameter('callId', $callId)
+            ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
     // /**
     //  * @return CallProcessing[] Returns an array of CallProcessing objects
     //  */
