@@ -6,7 +6,7 @@
             <tr>
                 <th>Id</th>
                 <th>Nom</th>
-                <th>Addresse</th>
+                <th>Address</th>
                 <th>Postcode</th>
                 <th>Ville</th>
                 <th>Marque</th>
@@ -17,7 +17,7 @@
         </thead>
         <tbody>
         {% for concession in concessions %}
-            <tr>
+            <tr id="concession-line-{{ concession.id }}">
                 <td>{{ concession.id }}</td>
                 <td>{{ concession.name }}</td>
                 <td>{{ concession.address }}</td>
@@ -28,8 +28,8 @@
                 <td>{{ concession.town.name }}</td>
 
                 <td>
-                    <a href="{{ path('concession_show', {'id': concession.id}) }}">show</a>
-                    <a href="{{ path('concession_edit', {'id': concession.id}) }}">edit</a>
+                    <a href="{{ path('concession_show', {'id': concession.id}) }}"><i class="material-icons">edit</i></a>
+                    <a href="" class="delete-concession-button" data-target="{{ concession.id }}"><i class="material-icons">delete</i></a>
                 </td>
             </tr>
         {% else %}

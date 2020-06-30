@@ -5,20 +5,20 @@
     <tr>
         <th>Id</th>
         <th>Plaques</th>
-        <th>modifier</th>
-        <th>supprimer</th>
+        <th>Modifier</th>
+        <th>Supprimer</th>
     </tr>
     </thead>
     <tbody>
     {% for city in cities %}
-        <tr>
+        <tr id="city-line-{{ city.id }}">
             <td>{{ city.id }}</td>
             <td>{{ city.name }}</td>
             <td>
                 <a href="{{ path('city_edit', {'id': city.id}) }}"><i class="material-icons">edit</i></a>
             </td>
             <td>
-                <a href="{{ path('city_delete', {'id': city.id}) }}"> <i class="material-icons">delete</i></a>
+                <a href="#" class="delete-city-button" data-target="{{ city.id }}"> <i class="material-icons">delete</i></a>
             </td>
         </tr>
     {% else %}
