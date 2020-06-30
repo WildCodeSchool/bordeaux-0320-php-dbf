@@ -19,6 +19,16 @@ const initButtons = (modal) => {
                 modalHtmlZone.innerHTML = html
                 initializeSelects()
 
+                const contactTypeSelector = document.getElementById('call_processing_contactType');
+                const switchLine          = document.getElementById('rdv-switch');
+                contactTypeSelector.addEventListener('change', (e) => {
+                    if(contactTypeSelector.querySelector('option[value="' + e.target.value + '"]').innerText === 'Contact établi') {
+                        switchLine.classList.remove('hide')
+                    } else {
+                        switchLine.classList.add('hide')
+                    }
+                })
+
                 const processBtn = document.getElementById('process-call-btn');
                 const processForm        = document.getElementById('form-process');
                 processForm.onsubmit = (e) => {
@@ -131,6 +141,7 @@ const initializeSelects = () => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
+
     const modalCallTreatment         = document.getElementById('modal-call-treatment');
     const modalCallTreatmentInstance = M.Modal.init(modalCallTreatment, {});
     initButtons(modalCallTreatmentInstance);
