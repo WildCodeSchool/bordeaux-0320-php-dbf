@@ -4,33 +4,44 @@
 
 {% block body %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col s8">
-                <h3>Ajout d'un appel</h3>
-            </div>
-            <div class="col s4">
-                {% for type, messages in app.session.flashbag.all() %}
-                {% for message in messages %}
-                <div class="flashes {{ type }}">
-                            <span class="flash-{{ type }}">{{ message }}</span>
-                            {% if type == 'success' %}
-                            <i class="material-icons light-blue-text right">check</i>
-                            {% else %}
-                            <i class="material-icons red-text right">error</i>
-                            {% endif %}
-                </div>
-                {% endfor %}
-                {% endfor %}
-            </div>
-
-        </div>
-        {{ include('call/_form.html.twig') }}
-    </div>
 <div class="container">
-    <h3>Vos appels ajoutés</h3>
-    {% include 'call/index.html.twig' %}
+    <div class="row">
+        <div class="col s12">
+            <h3>Ajout d'un appel</h3>
+        </div>
+        <div class="col s4">
+            {% for type, messages in app.session.flashbag.all() %}
+                {% for message in messages %}
+                    <div class="flashes {{ type }}">
+                        <span class="flash-{{ type }}">{{ message }}</span>
+                        {% if type == 'success' %}
+                            <i class="material-icons light-blue-text right">check</i>
+                        {% else %}
+                            <i class="material-icons red-text right">error</i>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+        </div>
+
+    </div>
+    {{ include('call/_form.html.twig') }}
 </div>
-{% endblock %}
+<div class="container">
+    <div class="row">
+        <div class="col s12 mgt30">
+            <div class="col s12">
+                <h4 class="light-blue-text"><i class="material-icons left">add_ic_call</i> Vos appels ajoutés</h4>
+            </div>
+            <div class="col s12">
+                <ul class="list-calls" id="list-calls-to-process">
+                    {% for call in calls %}
+                        {% include 'call/_callsAdded.html.twig' %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
 
 

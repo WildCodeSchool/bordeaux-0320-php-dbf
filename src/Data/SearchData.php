@@ -25,7 +25,7 @@ class SearchData
     /**
      * @var bool
      */
-    public $urgent = false;
+    public $isUrgent = false;
     /**
      * @var string
      */
