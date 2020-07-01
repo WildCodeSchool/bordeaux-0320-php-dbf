@@ -1,24 +1,20 @@
 <?php
 
-
 namespace App\Controller;
 
 use App\Entity\CallProcessing;
 use App\Entity\CallTransfer;
 use App\Form\CallProcessingType;
-use App\Repository\CallProcessingRepository;
 use App\Repository\CallRepository;
-use App\Repository\CityRepository;
 use App\Repository\ContactTypeRepository;
+use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
 use App\Service\CallStepChecker;
 use App\Service\CallTreatmentDataMaker;
 use App\Twig\DateFormatter;
 use Doctrine\ORM\EntityManagerInterface;
-use Nette\Utils\Json;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -53,6 +49,8 @@ class CallProcessController extends AbstractController
      * @param CallRepository $callRepository
      * @param Request $request
      * @param EntityManagerInterface $entityManager
+     * @param ContactTypeRepository $contactTypeRepository
+     * @param CallStepChecker $callStepChecker
      * @return JsonResponse
      */
     public function addCallProcess(
@@ -100,20 +98,15 @@ class CallProcessController extends AbstractController
     /**
      * @Route("/{callId}/transfer/{cityId}/{concessionId}/{serviceId}", name="call_transfer", methods={"GET"})
      * @param int $callId
+     * @param CallRepository $callRepository
      * @param int $cityId
      * @param int $concessionId
      * @param int $serviceId
-     * @param Request $request
-     * @param CityRepository $cityRepository
-     * @param CallRepository $callRepository
      * @return Response
      */
     public function callTransfer(
         $callId,
         CallRepository $callRepository,
-        CityRepository $cityRepository,
-        Request $request,
-        EntityManagerInterface $entityManager,
         $cityId = 0,
         $concessionId = 0,
         $serviceId = 0
@@ -144,13 +137,14 @@ class CallProcessController extends AbstractController
         $callId,
         CallRepository $callRepository,
         UserRepository $userRepository,
+        ServiceRepository $serviceRepository,
         Request $request,
         EntityManagerInterface $entityManager
     ) {
         $call            = $callRepository->findOneById($callId);
         $fromWhom        = $call->getRecipient();
         $call->setRecipient($userRepository->findOneById($request->request->get('call_transfer')['recipient']));
-
+        $call->setService($serviceRepository->findOneById($request->request->get('call_transfer')['service']));
         $toWhom          = $call->getRecipient();
         $byWhom          = $this->getUser();
         $transferComment = $request->request->get('call_transfer')['commentTransfer'];

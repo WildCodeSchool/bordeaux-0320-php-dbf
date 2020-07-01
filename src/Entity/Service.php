@@ -45,11 +45,17 @@ class Service
      */
     private $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ServiceHead::class, mappedBy="service", orphanRemoval=true)
+     */
+    private $serviceHeads;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
         $this->rightByLocations = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->serviceHeads = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -168,6 +174,37 @@ class Service
             // set the owning side to null (unless already changed)
             if ($user->getService() === $this) {
                 $user->setService(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ServiceHead[]
+     */
+    public function getServiceHeads(): Collection
+    {
+        return $this->serviceHeads;
+    }
+
+    public function addServiceHead(ServiceHead $serviceHead): self
+    {
+        if (!$this->serviceHeads->contains($serviceHead)) {
+            $this->serviceHeads[] = $serviceHead;
+            $serviceHead->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeServiceHead(ServiceHead $serviceHead): self
+    {
+        if ($this->serviceHeads->contains($serviceHead)) {
+            $this->serviceHeads->removeElement($serviceHead);
+            // set the owning side to null (unless already changed)
+            if ($serviceHead->getService() === $this) {
+                $serviceHead->setService(null);
             }
         }
 
