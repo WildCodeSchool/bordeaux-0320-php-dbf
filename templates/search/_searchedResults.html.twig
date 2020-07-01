@@ -9,7 +9,7 @@
                             {{call.createdAt|dateName}}
                             à {{ call.createdAt|timeFormat}}
                         </b>
-                        par  <b>{{call.service.concession.town.name}}</b>
+                        par  <b>{{call.author.firstName ~ ' ' ~ call.author.lastName}}</b>
                     </small>
                     {% if call.callTransfers is not empty %}
                         <i class="material-icons left tooltipped" data-position="right" data-tooltip="<div class='left-align'>
