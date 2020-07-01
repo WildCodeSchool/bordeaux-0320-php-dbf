@@ -5,6 +5,23 @@
 {% block body %}
     <div class="container">
         <div class="row">
+            <div class="col s12">
+                <div class="col s12">
+                    <table>
+                        <tr>
+                            <td>
+                                <span class="chip cyan white-text">{{ to_process }}</span> appels à traiter
+                            </td>
+                            <td>
+                                <span class="chip light-green white-text">{{ in_process }}</span> appel en cours de traitement
+                            </td>
+                        </tr>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col s12 mgt30">
                 <div class="col s12">
                     <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos appels à traiter</h5>
