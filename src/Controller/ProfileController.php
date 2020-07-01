@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\ChangePasswordType;
 use App\Form\UserProfileType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,6 +33,44 @@ class ProfileController extends AbstractController
         }
 
         return $this->render('profile/edit.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("pass/edit/{id}", name="pass_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param User $user
+     * @return Response
+     */
+    public function editPassword(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $form = $this->createForm(ChangePasswordType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $oldPassword = $form->get('oldPassword')->getData();
+            $plainPassword = $form->get('plainPassword')->getData();
+
+            // Si l'ancien mot de passe est bon
+//            var_dump($user);
+//            var_dump($oldPassword);
+
+            if ($passwordEncoder->isPasswordValid($user, $oldPassword)) {
+                $newEncodedPassword = $passwordEncoder->encodePassword($user, $plainPassword);
+                $user->setPassword($newEncodedPassword);
+                $em->persist($user);
+                $em->flush();
+                $this->addFlash('success', 'Votre mot de passe à bien été changé !');
+                return $this->redirectToRoute('profile_edit', ['id' => $user->getId()]);
+            } else {
+//                var_dump("Wesh");
+//                die();
+                $this->addFlash('danger', 'Wesh yo!');
+            }
+        }
+        return $this->render('profile/change_password.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
