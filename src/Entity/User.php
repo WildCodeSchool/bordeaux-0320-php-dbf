@@ -101,6 +101,11 @@ class User implements UserInterface
      */
     private $service;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ServiceHead::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $serviceHeads;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
@@ -109,6 +114,7 @@ class User implements UserInterface
         $this->callTransfersFrom = new ArrayCollection();
         $this->rightByLocations = new ArrayCollection();
         $this->callsUserCreate = new ArrayCollection();
+        $this->serviceHeads = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -465,6 +471,37 @@ class User implements UserInterface
     public function setService(?Service $service): self
     {
         $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ServiceHead[]
+     */
+    public function getServiceHeads(): Collection
+    {
+        return $this->serviceHeads;
+    }
+
+    public function addServiceHead(ServiceHead $serviceHead): self
+    {
+        if (!$this->serviceHeads->contains($serviceHead)) {
+            $this->serviceHeads[] = $serviceHead;
+            $serviceHead->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeServiceHead(ServiceHead $serviceHead): self
+    {
+        if ($this->serviceHeads->contains($serviceHead)) {
+            $this->serviceHeads->removeElement($serviceHead);
+            // set the owning side to null (unless already changed)
+            if ($serviceHead->getUser() === $this) {
+                $serviceHead->setUser(null);
+            }
+        }
 
         return $this;
     }
