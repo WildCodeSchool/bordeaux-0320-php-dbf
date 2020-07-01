@@ -12,14 +12,18 @@
         {% include('/search/_form_search.html.twig') %}
         </div>
         <div>
-            <h3>Résultats</h3>
-            <ul>
-                {% for call in  calls %}
-                    <li>
-                        {{ call.id }}client nom : {{ call.client.name }} Auteur : {{ call.author.firstname }} client phone : {{ call.client.phone }}
-                    </li>
-                {% endfor %}
-            </ul>
+            <h4 class="light-blue-text">Résultats</h4>
+            <div class="col s12">
+                {% if calls is empty %}
+                    <p>Pas de résultat à afficher</p>
+                {% else %}
+                    <ul class="list-calls" id="list-calls-to-process">
+                        {% for call in calls %}
+                            {% include 'search/_searchedResults.html.twig' %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

@@ -40,7 +40,7 @@ class SearchType extends AbstractType
                 'by_reference'=>false,
                 'label'=> 'Créateur'
             ])
-            ->add('urgent', CheckboxType::class, [
+            ->add('isUrgent', CheckboxType::class, [
                 'label'=>'Urgent',
                 'required'=> false,
             ])
