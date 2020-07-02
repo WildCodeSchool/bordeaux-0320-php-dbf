@@ -45,7 +45,7 @@ class ProfileController extends AbstractController
      */
     public function editPassword(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        $em = $this->getDoctrine()->getManager();
+        $entityManager = $this->getDoctrine()->getManager();
         $form = $this->createForm(ChangePasswordType::class, $user);
         $form->handleRequest($request);
 
@@ -54,20 +54,17 @@ class ProfileController extends AbstractController
             $plainPassword = $form->get('plainPassword')->getData();
 
             // Si l'ancien mot de passe est bon
-//            var_dump($user);
-//            var_dump($oldPassword);
 
             if ($passwordEncoder->isPasswordValid($user, $oldPassword)) {
                 $newEncodedPassword = $passwordEncoder->encodePassword($user, $plainPassword);
                 $user->setPassword($newEncodedPassword);
-                $em->persist($user);
-                $em->flush();
+                $entityManager->persist($user);
+                $entityManager->flush();
                 $this->addFlash('success', 'Votre mot de passe à bien été changé !');
                 return $this->redirectToRoute('profile_edit', ['id' => $user->getId()]);
             } else {
-//                var_dump("Wesh");
-//                die();
-                $this->addFlash('danger', 'Wesh yo!');
+                $this->addFlash('danger', "Ce n'est pas le bon ancien mot de passe");
+                return $this->redirectToRoute('pass_edit', ['id' => $user->getId()]);
             }
         }
         return $this->render('profile/change_password.html.twig', [
