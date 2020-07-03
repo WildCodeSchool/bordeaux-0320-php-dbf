@@ -238,7 +238,7 @@ class CallRepository extends ServiceEntityRepository
             ->andWhere('c.isProcessEnded IS NULL')
             ->andWhere('c.isProcessed IS NULL')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getSingleScalarResult()
             ;
     }
     public function getInProcessCallsByService($service)
@@ -250,7 +250,7 @@ class CallRepository extends ServiceEntityRepository
             ->andWhere('c.isProcessEnded IS NULL')
             ->andWhere('c.isProcessed IS NOT NULL')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getSingleScalarResult()
             ;
     }
 
