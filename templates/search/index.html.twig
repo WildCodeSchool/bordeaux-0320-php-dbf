@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recherche{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col s8">
+            <h4 class="light-blue-text">Recherche</h4>
+        </div>
+        <div>
+        {% include('/search/_form_search.html.twig') %}
+        </div>
+        <div>
+            <h4 class="light-blue-text">Résultats</h4>
+            <div class="col s12">
+                {% if calls is empty %}
+                    <p>Pas de résultat à afficher</p>
+                {% else %}
+                    <ul class="list-calls" id="list-calls-to-process">
+                        {% for call in calls %}
+                            {% include 'search/_searchedResults.html.twig' %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

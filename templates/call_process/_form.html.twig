@@ -1,4 +1,4 @@
-{{ form_start(form, {'action': path('add_call_process', {callId : call.id})}) }}
+{{ form_start(form,{'attr': {'id': 'form-process' }},  {'action': path('add_call_process', {callId : call.id})}) }}
 <div class="row">
     <div class="col input-field s12">
         {{ form_widget(form.contactType) }}
@@ -7,8 +7,43 @@
         {{ form_label(form.comment) }}
         {{ form_widget(form.comment) }}
     </div>
+    <div class="row">
+        <div class="col input-field s12 hide" id="rdv-switch">
+            <div class="row">
+                <div class="col s6">
+                    <b>Rendez-vous pris ? :</b>
+                </div>
+                <div class="col s6">
+                <div class="switch">
+                    <label>
+                        Non
+                        {{ form_widget(form.isAppointmentTaken) }}
+                        <span class="lever"></span>
+                        Oui
+                    </label>
+                </div>
+            </div>
+            </div>
+            <div class="row hide" id="appointment_date">
+                <div class="col input-field s4">
+                    {{ form_widget(form.appointmentDate) }}
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
 </div>
-<button class="btn light-blue">{{ button_label|default('Enregistrer') }} <i class="material-icons right">save</i> </button>
+<div class="row">
+    <div class="col s6">
+        <input type="submit" value="Traiter" class="btn light-blue" id="process-call-btn" data-call="{{ call.id }}">
+    </div>
+    <div class="col s6">
+        <div class="progress grey lighten-3 hide" id="process-preloader">
+            <div class="indeterminate light-blue"></div>
+        </div>
+    </div>
+</div>
 {{ form_end(form) }}
+

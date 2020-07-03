@@ -1,9 +1,5 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Subject index{% endblock %}
-
 {% block body %}
-    <h1>Récapitulatif Motifs</h1>
+
 
     <table class="table">
         <thead>
@@ -11,18 +7,21 @@
                 <th>Id</th>
                 <th>Motifs</th>
                 <th>Rendez-vous en atelier</th>
-                <th>actions</th>
+                <th>modifier</th>
+                <th>supprimer</th>
             </tr>
         </thead>
         <tbody>
         {% for subject in subjects %}
-            <tr>
+            <tr id="subject-line-{{ subject.id }}">
                 <td>{{ subject.id }}</td>
                 <td>{{ subject.name }}</td>
                 <td>{{ subject.isForAppWorkshop ? 'Oui' : 'Non' }}</td>
                 <td>
-                    <a href="{{ path('subject_show', {'id': subject.id}) }}">affichage</a>
                     <a href="{{ path('subject_edit', {'id': subject.id}) }}"><i class="material-icons">edit</i></a>
+                </td>
+                <td>
+                    <a href="#" class="delete-subject-button" data-target="{{ subject.id }}"><i class="material-icons">delete</i></a>
                 </td>
             </tr>
         {% else %}
@@ -33,5 +32,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('subject_new') }}">Création d'un motif</a>
 {% endblock %}

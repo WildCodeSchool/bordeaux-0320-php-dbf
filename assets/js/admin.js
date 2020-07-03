@@ -35,6 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalAddCivility = document.getElementById('modal-add-civility');
     const instanceModalAddCivility = M.Modal.init(modalAddCivility, {});
 
+    const modalEditCivility = document.getElementById('modal-edit-civility');
+    const instanceModalEditCivility = M.Modal.init(modalEditCivility, {});
+
     const modalAddService = document.getElementById('modal-add-service');
     const instanceModalAddService = M.Modal.init(modalAddService, {});
 
@@ -62,8 +65,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalAddCity = document.getElementById('modal-add-city');
     const instanceModalAddCity = M.Modal.init(modalAddCity, {});
 
-    var tooltips = document.querySelectorAll('.tooltipped');
-    var instancesOfTooltips = M.Tooltip.init(tooltips);
+
+    const modalEditSubject = document.getElementById('modal-edit-subject');
+    const instanceModalEditSubject = M.Modal.init(modalEditSubject, {});
+
+    const modalEditComment = document.getElementById('modal-edit-comment');
+    const instanceModalEditComment = M.Modal.init(modalEditComment, {});
+
+    const tooltips = document.querySelectorAll('.tooltipped');
+    const instancesOfTooltips = M.Tooltip.init(tooltips, {
+        html:true
+    });
+
 
 })
 

@@ -20,8 +20,10 @@ require('./AddCall');
 require('./admin.js');
 require('./clientFormAdmin');
 require('./recipientForm');
+require('./recipientTransfer');
 require('./searchClientByPhone');
-require('./callProcess');
 require('./reattributePhone');
+require('./deletor');
+
 
 

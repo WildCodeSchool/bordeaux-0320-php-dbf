@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Data\SearchData;
 use App\Entity\Call;
 use App\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -18,6 +19,25 @@ use \DateInterval;
  */
 class CallRepository extends ServiceEntityRepository
 {
+    const TUPLES_FOR_SEARCH_WITH_TEXT = [
+        'email',
+        'phone',
+        'name',
+        'immatriculation',
+        'chassis',
+        'freeComment',
+        'commentTransfer',
+    ];
+    const TUPLES_BELONG_TO_WHICH_TABLE =[
+        'email'=> 'cl',
+        'phone' => 'cl',
+        'name' => 'cl',
+        'immatriculation'=> 'v',
+        'chassis'=> 'v',
+        'freeComment'=> 'c',
+        'commentTransfer'=> 'ct',
+    ];
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Call::class);
@@ -40,6 +60,7 @@ class CallRepository extends ServiceEntityRepository
             ->getResult()
             ;
     }
+
     public function findCallsAddedToday($author)
     {
         $qb = $this->createQueryBuilder('c')
@@ -61,6 +82,35 @@ class CallRepository extends ServiceEntityRepository
         return $qb->execute();
     }
 
+    public function allCallsByUser($recipient)
+    {
+
+        return $this->createQueryBuilder('c')
+            ->Where('c.recipient = :recipient')
+            ->setParameter('recipient', $recipient)
+            ->innerJoin('c.recipient', 'r')
+            ->addSelect('r')
+            ->innerJoin('c.recallPeriod', 'rp')
+            ->addSelect('rp')
+            ->innerJoin('c.subject', 's')
+            ->addSelect('s')
+            ->innerJoin('c.comment', 'co')
+            ->addSelect('co')
+            ->innerJoin('c.vehicle', 've')
+            ->addSelect('ve')
+            ->innerJoin('c.service', 'se')
+            ->addSelect('se')
+            ->innerJoin('c.client', 'cl')
+            ->addSelect('cl')
+            ->innerJoin('c.author', 'au')
+            ->addSelect('au')
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->orderBy('c.isUrgent', 'DESC')
+            ->addOrderBy('c.recallDate, c.recallHour', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 
     public function callsToProcessByUser($recipient)
     {
@@ -87,7 +137,6 @@ class CallRepository extends ServiceEntityRepository
 
     public function lastCallToProcessByUser($recipient)
     {
-
         return $this->createQueryBuilder('c')
             ->Where('c.recipient = :recipient')
             ->setParameter('recipient', $recipient)
@@ -129,7 +178,6 @@ class CallRepository extends ServiceEntityRepository
             ;
     }
 
-
     public function getNewCallsForUser($recipient, $lastId)
     {
         return $this->createQueryBuilder('c')
@@ -155,10 +203,90 @@ class CallRepository extends ServiceEntityRepository
             ;
     }
 
-    // /**
-    //  * @return Call[] Returns an array of Call objects
-    //  */
-    /*
+
+    public function findSearch(SearchData $searchData): array
+    {
+        $query = $this->createQueryBuilder('c')
+            ->join('c.client', 'cl')->addSelect('cl')
+            ->join('c.vehicle', 'v')->addSelect('v')
+            ->join('c.service', 'serv')->addSelect('serv')
+            ->join('serv.concession', 'concession')->addSelect('concession')
+            ->join('concession.town', 'city')->addSelect('city')
+            ->leftJoin('c.callProcessings', 'cp')->addSelect('cp')
+            ->leftJoin('c.callTransfers', 'ct')->addSelect('ct')
+        ;
+
+        $this->addSearchParametersToQuery($searchData, $query);
+
+        if (!empty($searchData->getDateFrom()) && !empty($searchData->getDateTo())) {
+            $query = $query
+                ->andWhere('c.createdAt BETWEEN :from AND :to')
+                ->setParameter('from', $searchData->getDateFrom()->format('Y-m-d') . ' 00:00:00')
+                ->setParameter('to', $searchData->getDateTo()->format('Y-m-d') . ' 23:59:59')
+            ;
+        }
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function getNotInProcessCallsByService($service)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->andWhere('c.service = :se')
+            ->setParameter('se', $service)
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed IS NULL')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+    public function getInProcessCallsByService($service)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->andWhere('c.service = :se')
+            ->setParameter('se', $service)
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed IS NOT NULL')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+
+    private function queryWithLikeMaker($property, &$query, $value)
+    {
+        return $query
+            ->andWhere(self::TUPLES_BELONG_TO_WHICH_TABLE[$property] . '.' . $property . ' LIKE  :' . $property)
+            ->setParameter(
+                $property,
+                '%' . $value . '%'
+            );
+    }
+
+    private function queryWithEqualMaker($property, &$query, $value)
+    {
+        return $query->andWhere('c.' . $property . ' = :' . $property)
+            ->setParameter($property, $value);
+    }
+
+    private function addSearchParametersToQuery($searchData, &$query)
+    {
+        foreach ($searchData as $property => $value) {
+            if (!empty($searchData->$property)) {
+                if (in_array($property, self::TUPLES_FOR_SEARCH_WITH_TEXT)) {
+                    $query = $this->queryWithLikeMaker($property, $query, $value);
+                } else {
+                    $query = $this->queryWithEqualMaker($property, $query, $value);
+                }
+            }
+        }
+        return $query;
+    }
+
+    /**
+
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('c')
@@ -168,9 +296,9 @@ class CallRepository extends ServiceEntityRepository
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Call

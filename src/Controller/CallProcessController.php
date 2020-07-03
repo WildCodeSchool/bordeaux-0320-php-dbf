@@ -1,19 +1,24 @@
 <?php
 
-
 namespace App\Controller;
 
-use App\Entity\Call;
 use App\Entity\CallProcessing;
+use App\Entity\CallTransfer;
 use App\Form\CallProcessingType;
-use App\Form\CallType;
 use App\Repository\CallRepository;
+use App\Repository\ContactTypeRepository;
+use App\Repository\ServiceRepository;
+use App\Repository\UserRepository;
+use App\Service\CallStepChecker;
+use App\Service\CallTreatmentDataMaker;
+use App\Twig\DateFormatter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\CallTransferType;
 
 /**
  * @Route("/call/process")
@@ -44,29 +49,122 @@ class CallProcessController extends AbstractController
      * @param CallRepository $callRepository
      * @param Request $request
      * @param EntityManagerInterface $entityManager
-     * @return RedirectResponse
+     * @param ContactTypeRepository $contactTypeRepository
+     * @param CallStepChecker $callStepChecker
+     * @return JsonResponse
      */
     public function addCallProcess(
         $callId,
         CallRepository $callRepository,
+        ContactTypeRepository $contactTypeRepository,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        CallStepChecker $callStepChecker
     ) {
-        $call = $callRepository->findOneById($callId);
 
-        if (is_null($call->getIsProcessed())) {
-            $call->setIsProcessed(1);
-            $entityManager->persist($call);
+        $contactType = $contactTypeRepository->findOneById(
+            (int)$request->request->get('call_processing')['contactType']
+        );
+        $call = $callRepository->findOneById($callId);
+        $call
+            ->setIsProcessed(true)
+            ->setAppointmentDate($callStepChecker->checkAppointmentDate($request))
+            ->setIsAppointmentTaken($callStepChecker->checkAppointment($request));
+
+        if ($callStepChecker->isCallToBeEnded($request)) {
+            $call->setIsProcessEnded(true);
         }
+        $entityManager->persist($call);
 
         $callProcess = new CallProcessing();
         $form        = $this->createForm(CallProcessingType::class, $callProcess);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
+            $callProcess->setContactType($contactType);
             $callProcess->setReferedCall($call);
             $entityManager->persist($callProcess);
             $entityManager->flush();
-            return $this->redirectToRoute('user_home');
         }
+        return new JsonResponse([
+            'callId' => $callId,
+            'date'   => DateFormatter::formatDate($callProcess->getCreatedAt()),
+            'time'  => DateFormatter::formatTime($callProcess->getCreatedAt()),
+            'colors' => CallTreatmentDataMaker::stepMakerForProcess($callProcess),
+            'is_ended' => $call->getIsProcessEnded(),
+        ]);
+    }
+
+    /**
+     * @Route("/{callId}/transfer/{cityId}/{concessionId}/{serviceId}", name="call_transfer", methods={"GET"})
+     * @param int $callId
+     * @param CallRepository $callRepository
+     * @param int $cityId
+     * @param int $concessionId
+     * @param int $serviceId
+     * @return Response
+     */
+    public function callTransfer(
+        $callId,
+        CallRepository $callRepository,
+        $cityId = 0,
+        $concessionId = 0,
+        $serviceId = 0
+    ) {
+        $call = $callRepository->findOneById($callId);
+        if ($cityId != 0) {
+            $call->setCityTransfer($cityId);
+        }
+        if ($concessionId != 0) {
+            $call->setConcessionTransfer($concessionId);
+        }
+
+        $form = $this->createForm(CallTransferType::class, $call);
+
+        return $this->render('call_process/call_transfer.html.twig', [
+            'call'          => $call,
+            'form'          => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{callId}/dotransfer", name="call_transfer_do", methods={"POST"})
+     * @param int $callId
+     * @param CallRepository $callRepository
+     * @return JsonResponse
+     */
+    public function doCallTransfer(
+        $callId,
+        CallRepository $callRepository,
+        UserRepository $userRepository,
+        ServiceRepository $serviceRepository,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ) {
+        $call            = $callRepository->findOneById($callId);
+        $fromWhom        = $call->getRecipient();
+        $call->setRecipient($userRepository->findOneById($request->request->get('call_transfer')['recipient']));
+        $call->setService($serviceRepository->findOneById($request->request->get('call_transfer')['service']));
+        $toWhom          = $call->getRecipient();
+        $byWhom          = $this->getUser();
+        $transferComment = $request->request->get('call_transfer')['commentTransfer'];
+        $transfer        = new CallTransfer();
+        $transfer
+            ->setReferedCall($call)
+            ->setFromWhom($fromWhom)
+            ->setByWhom($byWhom)
+            ->setToWhom($toWhom)
+            ->setCommentTransfer($transferComment);
+
+        $entityManager->persist($transfer);
+        $entityManager->persist($call);
+        $entityManager->flush();
+
+        $response = new JsonResponse();
+        $response->setStatusCode(JsonResponse::HTTP_OK);
+        $response->setData([
+            'callId' => $call->getId(),
+        ]);
+        return $response;
     }
 }

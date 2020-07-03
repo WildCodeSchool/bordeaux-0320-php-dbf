@@ -22,7 +22,7 @@
                 </ul>
                 <ul id="nav-mobile" class="right hide-on-med-and-down noshadow">
                     {% if app.user %}
-                    <li><a href="#" class="black-text"><i class="material-icons left">edit</i>{{ app.user.firstname }} {{ app.user.lastname }}</a></li>
+                    <li><a href="{{ path('profile_edit', { 'id': app.user.id }) }}" class="black-text"><i class="material-icons left">edit</i>{{ app.user.firstname }} {{ app.user.lastname }}</a></li>
 
                     <li><a href="{{ path('app_logout') }}" class="black-text"><i class="material-icons left">logout</i>Déconnexion</a></li>
                     {% else %}
@@ -37,7 +37,7 @@
                 <img src="{{ asset('build/logo.jpg') }}" width="50"><br>
             </li>
             {% if app.user %}
-                <li  class="{% if app.request.get('_route') == 'search' %} active {% endif %} hide"><a href="recherche.html" class="tooltipped" data-position="right" data-tooltip="rechercher"><i class="material-icons">search</i></a></li>
+                <li  class="{% if app.request.get('_route') == 'search' %} active {% endif %}"><a href="{{ path('search') }}" class="tooltipped" data-position="right" data-tooltip="rechercher"><i class="material-icons">search</i></a></li>
                 <li class="{% if app.request.get('_route') == 'call_add' %} active {% endif %}"><a href="{{ path('call_add') }}" class=" tooltipped" data-position="right" data-tooltip="Ajouter un appel"><i class="material-icons">add</i></a></li>
                 <li  class="{% if app.request.get('_route')  == 'user_home' %} active {% endif %}"><a href="{{ path('user_home') }}" class="tooltipped" data-position="right" data-tooltip="Vos appels à traiter"><i class="material-icons">menu</i></a></li>
                 <li  class="{% if app.request.get('_route')  == 'stat' %} active {% endif %} hide"><a href="gestions.html" class="tooltipped" data-position="right" data-tooltip="statistiques"><i class="material-icons">insert_chart</i></a></li>

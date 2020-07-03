@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use \DateTime;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,7 +11,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
+
 class User implements UserInterface
 {
     /**
@@ -35,6 +38,7 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $password;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -91,6 +95,17 @@ class User implements UserInterface
      */
     private $callsUserCreate;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="users")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $service;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ServiceHead::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $serviceHeads;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
@@ -99,6 +114,7 @@ class User implements UserInterface
         $this->callTransfersFrom = new ArrayCollection();
         $this->rightByLocations = new ArrayCollection();
         $this->callsUserCreate = new ArrayCollection();
+        $this->serviceHeads = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -232,9 +248,23 @@ class User implements UserInterface
         return $this->updatedAt;
     }
 
+    /**
+     * @param \DateTimeInterface|null $updatedAt
+     * @return User
+     */
     public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdatedAtPrePersist()
+    {
+        $this->updatedAt = new DateTime('Europe/Paris');
 
         return $this;
     }
@@ -431,5 +461,48 @@ class User implements UserInterface
     public function isAdmin(): bool
     {
         return in_array("ROLE_ADMIN", $this->roles);
+    }
+
+    public function getService(): ?Service
+    {
+        return $this->service;
+    }
+
+    public function setService(?Service $service): self
+    {
+        $this->service = $service;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ServiceHead[]
+     */
+    public function getServiceHeads(): Collection
+    {
+        return $this->serviceHeads;
+    }
+
+    public function addServiceHead(ServiceHead $serviceHead): self
+    {
+        if (!$this->serviceHeads->contains($serviceHead)) {
+            $this->serviceHeads[] = $serviceHead;
+            $serviceHead->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeServiceHead(ServiceHead $serviceHead): self
+    {
+        if ($this->serviceHeads->contains($serviceHead)) {
+            $this->serviceHeads->removeElement($serviceHead);
+            // set the owning side to null (unless already changed)
+            if ($serviceHead->getUser() === $this) {
+                $serviceHead->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }

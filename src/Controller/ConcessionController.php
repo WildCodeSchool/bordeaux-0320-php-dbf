@@ -7,6 +7,7 @@ use App\Form\ConcessionType;
 use App\Repository\ConcessionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -81,16 +82,19 @@ class ConcessionController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="concession_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="delete_concession", methods={"DELETE"})
+     * @return JsonResponse
      */
-    public function delete(Request $request, Concession $concession): Response
+    public function delete(Request $request, Concession $concession): JsonResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$concession->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($concession);
-            $entityManager->flush();
-        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($concession);
+        $entityManager->flush();
 
-        return $this->redirectToRoute('concession_index');
+        $response = new JsonResponse();
+        $status = JsonResponse::HTTP_OK;
+        $response->setStatusCode($status);
+
+        return $response;
     }
 }
