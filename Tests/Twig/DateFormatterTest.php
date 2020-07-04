@@ -19,16 +19,10 @@ class DateFormatterTest extends testCase
 
         $oneDay = new DateTime('2020-05-14T00:00:00');
 
-        $dateFormatter = new DateFormatter();
-        $resToday      = $dateFormatter::formatDate($today);
-        $resTomorrow   = $dateFormatter::formatDate($tomorrow);
-        $resYesterday  = $dateFormatter::formatDate($yesterday);
-        $resOneDay     = $dateFormatter::formatDate($oneDay);
-
-        $this->assertEquals('aujourd\'hui', $resToday);
-        $this->assertEquals('hier', $resYesterday);
-        $this->assertEquals('demain', $resTomorrow);
-        $this->assertEquals('le 14/05/2020', $resOneDay);
+        $this->assertEquals('aujourd\'hui', dateFormatter::formatDate($today));
+        $this->assertEquals('hier', dateFormatter::formatDate($yesterday));
+        $this->assertEquals('demain', dateFormatter::formatDate($tomorrow));
+        $this->assertEquals('le 14/05/2020', dateFormatter::formatDate($oneDay));
     }
 
 
