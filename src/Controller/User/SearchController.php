@@ -28,6 +28,7 @@ class SearchController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $searchedCalls = $callRepository->findSearch($searchData);
         }
+
         return $this->render('search/index.html.twig', [
             'form'=> $form->createView(),
             'calls'=> $searchedCalls
