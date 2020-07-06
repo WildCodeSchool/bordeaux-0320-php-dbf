@@ -24,6 +24,7 @@ require('./recipientTransfer');
 require('./searchClientByPhone');
 require('./reattributePhone');
 require('./deletor');
+require('./searchPage');
 
 
 

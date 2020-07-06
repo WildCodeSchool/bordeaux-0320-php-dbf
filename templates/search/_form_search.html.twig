@@ -140,7 +140,8 @@
 </ul>
 
 <div class="row center-align ">
-    <button class="btn light-blue">{{ button_label|default('Rechercher') }}</button>
+    <button class="btn light-blue" id="searchBtn">{{ button_label|default('Rechercher') }}</button>
+    <img src="{{ asset('build/loader.gif') }}" width="20px" class="hide" alt="loader" id="loaderSearch">
 </div>
 {{ form_end(form) }}
 {% if export is defined %}
