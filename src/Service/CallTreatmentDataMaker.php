@@ -109,7 +109,7 @@ class CallTreatmentDataMaker
      * @param Call $call
      * @return mixed
      */
-    public function getLastTreatment(Call $call)
+    public static function getLastTreatment(Call $call)
     {
         $treatments     = $call->getCallProcessings();
         $callSteps      = [];

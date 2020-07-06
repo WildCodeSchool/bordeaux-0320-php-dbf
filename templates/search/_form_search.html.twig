@@ -139,10 +139,12 @@
     </li>
 </ul>
 
-
 <div class="row center-align ">
     <button class="btn light-blue">{{ button_label|default('Rechercher') }}</button>
-    <a href="#" class="btn light-blue">Exporter en CSV</a>
 </div>
 {{ form_end(form) }}
+{% if export is defined %}
+<a href="{{ path('export_to_csv', {'exportedCalls': export}) }}" class="btn light-blue">Exporter en CSV</a>
+{% endif %}
+
 
