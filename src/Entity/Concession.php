@@ -65,10 +65,16 @@ class Concession
      */
     private $rightByLocations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ConcessionHead::class, mappedBy="concession")
+     */
+    private $concessionHeads;
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
         $this->rightByLocations = new ArrayCollection();
+        $this->concessionHeads = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -216,6 +222,37 @@ class Concession
             // set the owning side to null (unless already changed)
             if ($rightByLocation->getConcession() === $this) {
                 $rightByLocation->setConcession(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ConcessionHead[]
+     */
+    public function getConcessionHeads(): Collection
+    {
+        return $this->concessionHeads;
+    }
+
+    public function addConcessionHead(ConcessionHead $concessionHead): self
+    {
+        if (!$this->concessionHeads->contains($concessionHead)) {
+            $this->concessionHeads[] = $concessionHead;
+            $concessionHead->setConcession($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConcessionHead(ConcessionHead $concessionHead): self
+    {
+        if ($this->concessionHeads->contains($concessionHead)) {
+            $this->concessionHeads->removeElement($concessionHead);
+            // set the owning side to null (unless already changed)
+            if ($concessionHead->getConcession() === $this) {
+                $concessionHead->setConcession(null);
             }
         }
 
