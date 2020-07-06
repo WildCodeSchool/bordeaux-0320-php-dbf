@@ -41,31 +41,31 @@ class ExportDataToCsv
     {
         $dataReadyToExport = [];
         $dataReadyToExport[]=[
-            'Date Appel'            ,
-            'Créateur'               ,
-            'Concession Créateur'   ,
-            'Plaque Destinataire'    ,
+            'Date Appel',
+            'Créateur',
+            'Concession Créateur',
+            'Plaque Destinataire',
             'Concession Destinataire',
-            'Service Destinataire'   ,
-            'Motif'                 ,
-            'Commentaire'            ,
-            'Dernier Destinataire'  ,
-            'Statut'                 ,
-            'RDV'
+            'Service Destinataire',
+            'Motif',
+            'Commentaire',
+            'Dernier Destinataire',
+            'Statut',
+            'RDV',
         ];
         foreach ($data as $field) {
             $dataReadyToExport[] = [
                 $field->getCreatedAt()->format('d-m-Y H:i'),
-               $field->getAuthor()->getFullName(),
+                $field->getAuthor()->getFullName(),
                 $field->getConcession()->getName(),
-               $field->getService()->getConcession()->getTown()->getName(),
-               $field->getService()->getConcession()->getName(),
+                $field->getService()->getConcession()->getTown()->getName(),
+                $field->getService()->getConcession()->getName(),
                 (!is_null($field->getRecipient()->getService())) ? $field->getRecipient()->getService()->getName() : '',
                 $field->getSubject()->getName(),
-              $field->getComment()->getName(),
+                $field->getComment()->getName(),
                 $field->getRecipient()->getFullName(),
                 CallTreatmentDataMaker::getLastTreatment($field),
-                 ($field->getIsAppointmentTaken()) ? 'oui' : 'non',
+                ($field->getIsAppointmentTaken()) ? 'oui' : 'non',
             ];
         }
         return $dataReadyToExport;
