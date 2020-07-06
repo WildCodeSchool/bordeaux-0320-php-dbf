@@ -37,10 +37,12 @@ class ProfileController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
     /**
      * @Route("pass/edit/{id}", name="pass_edit", methods={"GET","POST"})
      * @param Request $request
      * @param User $user
+     * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
      */
     public function editPassword(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
@@ -52,6 +54,7 @@ class ProfileController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $oldPassword = $form->get('oldPassword')->getData();
             $plainPassword = $form->get('plainPassword')->getData();
+
 
             // Si l'ancien mot de passe est bon
 
@@ -67,6 +70,7 @@ class ProfileController extends AbstractController
                 return $this->redirectToRoute('pass_edit', ['id' => $user->getId()]);
             }
         }
+
         return $this->render('profile/change_password.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
