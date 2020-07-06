@@ -79,7 +79,7 @@ class CivilityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('civility_index');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('civility/edit.html.twig', [
