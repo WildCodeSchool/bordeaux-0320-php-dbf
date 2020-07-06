@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\CallProcessing;
 use App\Entity\CallTransfer;
+use App\Entity\RecallPeriod;
 use App\Form\CallProcessingType;
 use App\Repository\CallRepository;
 use App\Repository\ContactTypeRepository;
+use App\Repository\RecallPeriodRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
 use App\Service\CallStepChecker;
@@ -59,7 +61,8 @@ class CallProcessController extends AbstractController
         ContactTypeRepository $contactTypeRepository,
         Request $request,
         EntityManagerInterface $entityManager,
-        CallStepChecker $callStepChecker
+        CallStepChecker $callStepChecker,
+        RecallPeriodRepository $recallPeriodRepository
     ) {
 
         $contactType = $contactTypeRepository->findOneById(
@@ -69,7 +72,9 @@ class CallProcessController extends AbstractController
         $call
             ->setIsProcessed(true)
             ->setAppointmentDate($callStepChecker->checkAppointmentDate($request))
-            ->setIsAppointmentTaken($callStepChecker->checkAppointment($request));
+            ->setIsAppointmentTaken($callStepChecker->checkAppointment($request))
+            ->setIsUrgent(false)
+            ->setRecallPeriod($recallPeriodRepository->findOneBy(['identifier' => RecallPeriod::AUTOUR_DE]));
 
         if ($callStepChecker->isCallToBeEnded($request)) {
             $call->setIsProcessEnded(true);
