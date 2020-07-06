@@ -137,7 +137,6 @@ class CallRepository extends ServiceEntityRepository
 
     public function lastCallToProcessByUser($recipient)
     {
-
         return $this->createQueryBuilder('c')
             ->Where('c.recipient = :recipient')
             ->setParameter('recipient', $recipient)
@@ -228,6 +227,31 @@ class CallRepository extends ServiceEntityRepository
         }
 
         return $query->getQuery()->getResult();
+    }
+
+    public function getNotInProcessCallsByService($service)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->andWhere('c.service = :se')
+            ->setParameter('se', $service)
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed IS NULL')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+    public function getInProcessCallsByService($service)
+    {
+        return $this->createQueryBuilder('c')
+            ->select('count(c.id)')
+            ->andWhere('c.service = :se')
+            ->setParameter('se', $service)
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed IS NOT NULL')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
     }
 
 

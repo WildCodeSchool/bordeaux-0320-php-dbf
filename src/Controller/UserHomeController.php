@@ -20,6 +20,8 @@ class UserHomeController extends AbstractController
     {
         $appUser = $this->getUser();
         $callsToProcess = $callRepository->allCallsByUser($appUser);
+        $totalToProcess = count($callRepository->callsToProcessByUser($appUser));
+        $totalInProcess = count($callRepository->callsInProcessByUser($appUser));
 
         $lastCall = $callRepository->lastCallToProcessByUser($appUser);
         $this->get('session')->set('lastCallId', 0);
@@ -28,8 +30,10 @@ class UserHomeController extends AbstractController
         }
 
         return $this->render('cell_home.html.twig', [
-            'user'             => $appUser,
-            'calls'            => $callsToProcess,
+            'user'       => $appUser,
+            'calls'      => $callsToProcess,
+            'to_process' => $totalToProcess,
+            'in_process' => $totalInProcess,
         ]);
     }
 
