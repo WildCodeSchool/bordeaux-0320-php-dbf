@@ -49,7 +49,7 @@ class ChangePasswordType extends AbstractType
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Veuillez mettre un mot de passe d\'au moins 6 caractrères'
+                        'minMessage' => 'Veuillez mettre un mot de passe d\'au moins 6 caractères'
                     ])
                 ]
 
