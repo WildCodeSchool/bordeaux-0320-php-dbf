@@ -46,8 +46,13 @@ document.addEventListener('DOMContentLoaded',() => {
     const editorCivilityButtons = document.getElementsByClassName('edit-civility-button');
     for (let i = 0; i < editorCivilityButtons.length; i++) {
         editorCivilityButtons[i].addEventListener('click', (event) => {
-            console.log(event);
             editor(editorCivilityButtons[i], `/civility/${editorCivilityButtons[i].dataset.target}/edit`, 'editor-line', 'edit-civility-button', 'civility')
+        });
+    }
+    const editorCommentButtons = document.getElementsByClassName('edit-comment-button');
+    for (let i =0; i < editorCommentButtons.length; i++) {
+        editorCommentButtons[i].addEventListener('click', (event) => {
+            editor(editorCommentButtons[i], `/comment/${editorCommentButtons[i].dataset.target}/edit`, 'editor-line', 'edit-comment-button', 'comment')
         });
     }
 }) //end of document

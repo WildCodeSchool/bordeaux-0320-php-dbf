@@ -18,12 +18,14 @@
                 <td>{{ comment.name }}</td>
                 <td>{{ comment.identifier }}</td>
                 <td>
-                    <a href="{{ path('comment_edit', {'id': comment.id}) }}"><i class="material-icons">edit</i></a>
-
+                    <a href="#" class="edit-comment-button" data-target="{{ comment.id }}" ><i class="material-icons">edit</i></a>
                 </td>
                 <td>
                     <a href="#" class="delete-comment-button" data-target="{{ comment.id }}"><i class="material-icons">delete</i></a>
                 </td>
+            </tr>
+            <tr class="hide editor-line" id="comment-line-edit-{{ comment.id }}">
+                <td id="comment-td-edit-{{ comment.id }}" colspan="5"></td>
             </tr>
         {% else %}
             <tr>
