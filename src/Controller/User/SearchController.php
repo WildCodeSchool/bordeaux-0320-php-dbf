@@ -47,6 +47,7 @@ class SearchController extends AbstractController
     /**
      * @Route("/export/{exportedCalls}", name="export_to_csv")
      * @param ExportDataToCsv $exportDataToCsv
+     * @param null $exportedCalls
      * @return Response
      */
     public function exportToCSV(ExportDataToCsv $exportDataToCsv, $exportedCalls = null)
