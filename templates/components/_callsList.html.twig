@@ -14,10 +14,10 @@
                     {% if call.callTransfers is not empty %}
                         <i class="material-icons left tooltipped" data-position="right" data-tooltip="<div class='left-align'>
                         {% for transfer in call.callTransfers|reverse %}
-                            - Transféré par {{ transfer.byWhom.firstName }} {{ transfer.byWhom.lastName }} {{ transfer.createdAt|dateName }} à {{ transfer.createdAt|timeFormat }}<br>
+                            - Transféré par {{ transfer.byWhom.firstName }} {{ transfer.byWhom.lastName }} {{ transfer.createdAt|dateName }} à {{ transfer.createdAt|timeFormat }}
                         {% endfor %}
                         </div>
-                        ">description</i><br>
+                        ">description</i>
                     {% endif %}
                 </div>
                 <div class="col s8">
@@ -69,8 +69,6 @@
                         <span class="chip">{{ call.client.phone2|phoneNumber }}</span>
                     {% endif %}
                 </div>
-
-
                 <div class="col s5" id="call-history-{{ call.id }}">
                     {% for process in call.callProcessings|reverse[:1] %}
                         <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName|raw}}</span>
@@ -82,13 +80,12 @@
                 </div>
                 <div class="col s3 right-align">
                     <i class="material-icons small left">directions_car</i> <span class="immat left">{{ call.vehicle.immatriculation }}</span>
-                    {% if call.vehicle.hasCome == 1 %}
+                    {% if call.vehicle.hasCome is constant('App\\Entity\\Vehicle::TRISWITCH_YES_VALUE') %}
                         <i class="material-icons left light-green-text tooltipped" data-tooltip="Déja venu à l'atelier" data-position="top">settings_applications</i>
-                    {% elseif call.vehicle.hasCome == 2 %}
+                    {% elseif call.vehicle.hasCome is constant('App\\Entity\\Vehicle::TRISWITCH_NO_VALUE') %}
                         <i class="material-icons left red-text tooltipped" data-tooltip="Jamais venu à l'atelier" data-position="top">settings_applications</i>
                     {% endif %}
                     {% if call.vehicle.chassis %}
-                        <br>
                         <small class="left"><b>Chassis : </b>{{ call.vehicle.chassis }}</small>
                     {% endif %}
                 </div>

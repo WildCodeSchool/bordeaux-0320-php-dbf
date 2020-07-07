@@ -4,6 +4,7 @@
 namespace App\Form;
 
 use App\Data\SearchData;
+use App\Entity\Call;
 use App\Entity\City;
 use App\Entity\Client;
 use App\Entity\Comment;
@@ -12,6 +13,7 @@ use App\Entity\ContactType;
 use App\Entity\Service;
 use App\Entity\Subject;
 use App\Entity\User;
+use App\Entity\Vehicle;
 use DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -25,8 +27,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchType extends AbstractType
 {
-    const TRISWITCH_YES_VALUE = 1;
-    const TRISWITCH_NO_VALUE = 2;
+
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -77,13 +78,13 @@ class SearchType extends AbstractType
             ->add('hasCome', ChoiceType::class, [
                 'choices'  => [
                     '' => null,
-                    'Oui' => self::TRISWITCH_YES_VALUE,
-                    'Non' => self::TRISWITCH_NO_VALUE,
+                    'Oui' => Vehicle::TRISWITCH_YES_VALUE,
+                    'Non' => Vehicle::TRISWITCH_NO_VALUE,
                 ],
                 'required' => false,
                 'label' => 'Déjà passé en atelier ?'
             ])
-            ->add('city', EntityType::class, [
+            ->add('town', EntityType::class, [
                 'class' => City::class,
                 'choice_label' => 'name',
                 'by_reference' => false,
