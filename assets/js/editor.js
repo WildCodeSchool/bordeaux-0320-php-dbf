@@ -71,4 +71,10 @@ document.addEventListener('DOMContentLoaded',() => {
             editor(editorConcessionButtons[i], `/concession/${editorConcessionButtons[i].dataset.target}/edit`, 'editor-line', 'edit-concession-button', 'concession')
         });
     }
+    const editorServiceButtons = document.getElementsByClassName('edit-service-button');
+    for (let i = 0; i < editorServiceButtons.length; i++) {
+        editorServiceButtons[i].addEventListener('click', (event) => {
+            editor(editorServiceButtons[i], `/service/${editorServiceButtons[i].dataset.target}/edit`, 'editor-line', 'edit-service-button', 'service')
+        });
+    }
 }) //end of document

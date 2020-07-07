@@ -92,7 +92,7 @@ class ConcessionController extends AbstractController
         $entityManager->flush();
 
         $response = new JsonResponse();
-        $status = JsonResponse::HTTP_OK;
+        $status = JsonResponse::HTTP_NO_CONTENT;
         $response->setStatusCode($status);
 
         return $response;
