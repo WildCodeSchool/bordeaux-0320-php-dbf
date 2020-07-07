@@ -14,6 +14,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Vehicle
 {
+    const TRISWITCH_YES_VALUE = 1;
+    const TRISWITCH_NO_VALUE = 2;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

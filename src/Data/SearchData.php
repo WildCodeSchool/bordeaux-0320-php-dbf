@@ -45,7 +45,7 @@ class SearchData
     /**
      * @var string
      */
-    public $city= '';
+    public $town= '';
     /**
      * @var string
      */
