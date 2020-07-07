@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+        mailer_from: '%env(resolve:MAILER_FROM_ADDRESS)%'
 
 services:
     # connect configuration for services in *this* file
@@ -23,6 +24,10 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\EventCallIncoming\CallIncominglSendMail:
+        # le nom de la variable que l'on utilisera dans le service
+        sender: '%env(resolve:MAILER_FROM_ADDRESS)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
