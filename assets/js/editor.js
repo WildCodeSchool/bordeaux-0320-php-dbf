@@ -46,13 +46,22 @@ document.addEventListener('DOMContentLoaded',() => {
     const editorCivilityButtons = document.getElementsByClassName('edit-civility-button');
     for (let i = 0; i < editorCivilityButtons.length; i++) {
         editorCivilityButtons[i].addEventListener('click', (event) => {
+            event.preventDefault();
             editor(editorCivilityButtons[i], `/civility/${editorCivilityButtons[i].dataset.target}/edit`, 'editor-line', 'edit-civility-button', 'civility')
         });
     }
     const editorCommentButtons = document.getElementsByClassName('edit-comment-button');
-    for (let i =0; i < editorCommentButtons.length; i++) {
+    for (let i = 0; i < editorCommentButtons.length; i++) {
         editorCommentButtons[i].addEventListener('click', (event) => {
+            event.preventDefault();
             editor(editorCommentButtons[i], `/comment/${editorCommentButtons[i].dataset.target}/edit`, 'editor-line', 'edit-comment-button', 'comment')
+        });
+    }
+    const editorCityButtons = document.getElementsByClassName('edit-city-button');
+    for (let i = 0; i < editorCityButtons.length; i++) {
+        editorCityButtons[i].addEventListener('click', (event) => {
+            event.preventDefault();
+            editor(editorCityButtons[i], `/city/${editorCityButtons[i].dataset.target}/edit`, 'editor-line', 'edit-city-button', 'city')
         });
     }
 }) //end of document
