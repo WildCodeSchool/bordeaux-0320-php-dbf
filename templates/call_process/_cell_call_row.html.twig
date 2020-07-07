@@ -113,7 +113,7 @@
 
         <div class="col s2 left-align ">
             <div class="call-calendar small grey lighten-4">
-                <div class="call-cal-header {{call.lastProcessColor.class}} {% if call.isUrgent %}urgent{% endif %}" id="cal-head-{{ call.id }}">
+                <div class="call-cal-header {% if call.lastProcessColor is not empty %} {{ call.lastProcessColor.class}} {% endif %}{% if call.isUrgent %}urgent{% endif %}" id="cal-head-{{ call.id }}">
                     <i class="material-icons ">event_date </i>
                     <span class="call-cal-date">
                         {{ call.recallDate|dateName }}
