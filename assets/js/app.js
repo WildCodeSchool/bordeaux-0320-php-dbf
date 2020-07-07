@@ -26,6 +26,7 @@ require('./reattributePhone');
 require('./deletor');
 require('./transferCall');
 require('./searchPage');
+require('./editor');
 
 
 
