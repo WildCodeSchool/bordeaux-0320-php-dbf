@@ -33,25 +33,25 @@ class CallTreatmentDataMaker
                 'stepName' => 'NE'
             ],
             ContactType::MSG1 => [
-                'class'=> 'message',
+                'class'=> 'message1',
                 'icon' => 'perm_phone_msg',
-                'color'=>'text-darken-1 yellow-text',
-                'bgColor' =>'yellow darken-1',
+                'color'=>'amber-text',
+                'bgColor' =>'amber lighten-1',
                 'stepName' => 'M1'
 
             ],
             ContactType::MSG2 => [
-                'class'=> 'message',
+                'class'=> 'message2',
                 'icon'=> 'perm_phone_msg',
-                'color'=>'text-darken-3 yellow-text',
-                'bgColor' =>'yellow darken-3',
+                'color'=>'orange-text',
+                'bgColor' =>'orange',
                 'stepName' => 'M2'
             ],
             ContactType::MSG3 => [
                 'class'=> 'message3',
                 'icon'=> 'perm_phone_msg',
-                'color'=>'text-darken-2 orange-text',
-                'bgColor' =>'orange darken-2',
+                'color'=>'amber-text text-darken-4',
+                'bgColor' =>'amber darken-4',
                 'stepName' => 'M3'
             ],
         ];
@@ -89,7 +89,8 @@ class CallTreatmentDataMaker
                 $data = [
                     'class' => $values['class'],
                     'icon'  => $values['icon'],
-                    'color' => $values['color']
+                    'color' => $values['color'],
+                    'bgcolor' => $values['bgColor']
                 ];
             }
         }
@@ -117,6 +118,7 @@ class CallTreatmentDataMaker
             $callSteps[] = $step->getContactType()->getName();
         }
         $lastStepName = end($callSteps);
+
         if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
             $lastStepName = RecallPeriod::URGENT;
         }
