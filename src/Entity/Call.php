@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CallRepository;
+use App\Service\CallTreatmentDataMaker;
 use \DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -495,5 +496,10 @@ class Call
         $this->appointmentDate = $appointmentDate;
 
         return $this;
+    }
+
+    public function getLastProcessColor()
+    {
+        return CallTreatmentDataMaker::stepMaker($this);
     }
 }

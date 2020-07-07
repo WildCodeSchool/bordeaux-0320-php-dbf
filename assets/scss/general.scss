@@ -1,4 +1,12 @@
-
+i {
+  &.small-more {
+    font-size:1.5rem;
+    display:inline-block;
+    margin-left:3px;
+    margin-top:5px;
+    transform:rotate(45deg);
+  }
+}
 .paddleft {
   padding-left: 49px;
   ul {

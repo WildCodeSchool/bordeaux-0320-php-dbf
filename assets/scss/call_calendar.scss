@@ -1,3 +1,4 @@
+
 .call-calendar {
   position:relative;
   padding:6px;
@@ -42,12 +43,39 @@
       right:26px;
     }
     &.urgent {
-      background: #f44336;
+      background: $red;
       &::before {
-        background: #f44336;
+        background: $red;
       }
       &::after {
-        background: #f44336;
+        background: $red;
+      }
+    }
+    &.message1 {
+      background: $yellow;
+      &::before {
+        background: $yellow;
+      }
+      &::after {
+        background: $yellow;
+      }
+    }
+    &.message2 {
+      background: $orange;
+      &::before {
+        background: $orange;
+      }
+      &::after {
+        background: $orange;
+      }
+    }
+    &.message3 {
+      background: $darkOrange;
+      &::before {
+        background: $darkOrange;
+      }
+      &::after {
+        background: $darkOrange;
       }
     }
     .call-cal-date {
@@ -74,13 +102,24 @@
     a {
       padding:5px 10px;
       font-size:1.2rem;
-      background:$blue-dbf;
       color:#fff;
       border-radius:100px;
       text-decoration:none;
       transition:all 0.2s ease-in-out;
       &:hover {
         box-shadow : 0px 0px 8px rgba(0,0,0,0.7);
+      }
+      &.urgent {
+        background:$red;
+      }
+      &.message1 {
+        background:$yellow;
+      }
+      &.message2 {
+        background:$orange;
+      }
+      &.message3 {
+        background:$darkOrange;
       }
     }
 

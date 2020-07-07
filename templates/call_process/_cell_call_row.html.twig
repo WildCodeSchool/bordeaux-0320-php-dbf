@@ -9,7 +9,7 @@
                             {{call.createdAt|dateName}}
                             à {{ call.createdAt|timeFormat}}
                     </b>
-                    par  <b>{{call.service.concession.town.name}}</b>
+                    par <b>{{call.service.concession.town.name}}</b>
                     </small>
                     {% if call.callTransfers is not empty %}
                         <i class="material-icons left tooltipped" data-position="right" data-tooltip="<div class='left-align'>
@@ -30,7 +30,7 @@
                         {{call.service.concession.name}}
                     </span>
                     <span class="place-name service-name">
-                        <i class="material-icons tiny">build</i>
+                        <i class="material-icons tiny">settings</i>
                         {{ call.service.name }}
                     <a class="grey darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
                     </span>
@@ -84,9 +84,9 @@
                 <div class="col s3 right-align">
                     <i class="material-icons small left">directions_car</i> <span class="immat left">{{ call.vehicle.immatriculation }}</span>
                     {% if call.vehicle.hasCome == 1 %}
-                        <i class="material-icons left light-green-text tooltipped" data-tooltip="Déja venu à l'atelier" data-position="top">settings_applications</i>
+                        <i class="material-icons left light-green-text tooltipped small-more" data-tooltip="Déja venu à l'atelier" data-position="top">build</i>
                     {% elseif call.vehicle.hasCome == 2 %}
-                        <i class="material-icons left red-text tooltipped" data-tooltip="Jamais venu à l'atelier" data-position="top">settings_applications</i>
+                        <i class="material-icons left red-text tooltipped small-more" data-tooltip="Jamais venu à l'atelier" data-position="top">build</i>
                     {% endif %}
                     {% if call.vehicle.chassis %}
                     <br>
@@ -99,7 +99,7 @@
 
         <div class="col s2 left-align ">
             <div class="call-calendar small grey lighten-4">
-                <div class="call-cal-header {% if call.isUrgent %}urgent{% endif %}">
+                <div class="call-cal-header {{call.lastProcessColor.class}} {% if call.isUrgent %}urgent{% endif %}" id="cal-head-{{ call.id }}">
                     <i class="material-icons ">event_date </i>
                     <span class="call-cal-date">
                         {{ call.recallDate|dateName }}
@@ -108,14 +108,14 @@
                 <div class="call-cal-body">
                     <b>
                     {% if call.isUrgent %}
-                    <span class="red-text">urgent</span>
+                        <span class="red-text" id="recall-urgent-{{ call.id }}">urgent</span>
                     {% else %}
-                    <span class="grey-text text-darken-4">{{call.recallPeriod.name}} {{call.recallHour|timeFormat}}</span>
+                        <span class="grey-text text-darken-4">{{call.recallPeriod.name}} {{call.recallHour|timeFormat}}</span>
                     {% endif %}
                     </b>
                 </div>
                 <div class="call-cal-action">
-                    <a class="{% if call.isUrgent %}red{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
+                    <a class="{% if call.isUrgent %}urgent{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
                 </div>
             </div>
         </div>
