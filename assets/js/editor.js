@@ -64,4 +64,11 @@ document.addEventListener('DOMContentLoaded',() => {
             editor(editorCityButtons[i], `/city/${editorCityButtons[i].dataset.target}/edit`, 'editor-line', 'edit-city-button', 'city')
         });
     }
+    const editorConcessionButtons = document.getElementsByClassName('edit-concession-button');
+    for (let i = 0; i < editorConcessionButtons.length; i++) {
+        editorConcessionButtons[i].addEventListener('click', (event) => {
+            event.preventDefault();
+            editor(editorConcessionButtons[i], `/concession/${editorConcessionButtons[i].dataset.target}/edit`, 'editor-line', 'edit-concession-button', 'concession')
+        });
+    }
 }) //end of document
