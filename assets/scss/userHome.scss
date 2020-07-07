@@ -50,7 +50,27 @@ ul {
     border:1px solid $greyLight1;
     background:$greyLight2;
     z-index:9999;
+    .before {
+      position:absolute;
+      display:block;
+      left:0;
+      top:0;
+      height:30px;
+      width:100%;
+      color:white;
+      background: black;
+      line-height: 30px;
+      vertical-align: middle;
+      padding-left:7px;
+      font-size:1.3rem;
+      z-index:99999;
+      .close-list {
+        height:30px;
+        margin-right:15px;
+      }
+    }
     ul {
+      margin-top:30px;
       li {
         background: white;
         border:none;

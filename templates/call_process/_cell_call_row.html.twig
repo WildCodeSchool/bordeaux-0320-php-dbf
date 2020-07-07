@@ -22,7 +22,10 @@
                 </div>
                 <div class="col s8 recipient-zone">
                     <div class="list-dest hide" id="users-in-service-{{ call.id }}">
-                        <a href="#" class="close-list right grey darken-3 white-text" data-target="users-in-service-{{ call.id }}"><i class="material-icons">close</i></a>
+                        <span class="before">Transférer à ...
+                            <a href="#" class="close-list secondary-content grey darken-3 white-text" data-target="users-in-service-{{ call.id }}"><i class="material-icons">close</i></a>
+                        </span>
+
                         <ul class="">
                             {%  for user in call.service.users %}
                                 <li class="">
