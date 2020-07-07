@@ -31,3 +31,46 @@ ul {
     }
   }
 }
+
+.recipient-changer {
+  &:hover {
+    cursor:pointer;
+  }
+}
+
+.recipient-zone {
+  position:relative;
+  .list-dest {
+    position:absolute;
+    top:0;
+    left:25%;
+    width:300px;
+    height:150px;
+    overflow-y:scroll;
+    border:1px solid $greyLight1;
+    background:$greyLight2;
+    z-index:9999;
+    ul {
+      li {
+        background: white;
+        border:none;
+        vertical-align: middle;
+        padding:5px 10px 5px 10px;
+        &:hover {
+          background: $grey;
+          a {
+            color:white;
+
+          }
+        }
+        a {
+          margin:0;
+          color:$grey;
+          &:hover {
+            color:white;
+          }
+        }
+      }
+    }
+  }
+}

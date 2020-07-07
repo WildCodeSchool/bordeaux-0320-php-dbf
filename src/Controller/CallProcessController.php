@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\CallTransferType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/call/process")
@@ -170,6 +171,43 @@ class CallProcessController extends AbstractController
         $response->setData([
             'callId' => $call->getId(),
         ]);
+        return $response;
+    }
+
+    /**
+     * @Route("/{callId}/transferto/{userId}", name="call_transfer_to", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     * @param int $callId
+     * @param int $userId
+     * @param CallRepository $callRepository
+     * @return JsonResponse
+     */
+    public function callTransferTo(
+        $callId,
+        $userId,
+        CallRepository $callRepository,
+        UserRepository $userRepository,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ) {
+        $call            = $callRepository->findOneById($callId);
+        $fromWhom        = $call->getRecipient();
+        $call->setRecipient($userRepository->findOneById($userId));
+        $toWhom          = $call->getRecipient();
+        $byWhom          = $this->getUser();
+        $transfer        = new CallTransfer();
+        $transfer
+            ->setReferedCall($call)
+            ->setFromWhom($fromWhom)
+            ->setByWhom($byWhom)
+            ->setToWhom($toWhom);
+
+        $entityManager->persist($transfer);
+        $entityManager->persist($call);
+        $entityManager->flush();
+
+        $response = new JsonResponse();
+        $response->setStatusCode(JsonResponse::HTTP_ACCEPTED);
         return $response;
     }
 }
