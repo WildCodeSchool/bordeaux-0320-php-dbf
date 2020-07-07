@@ -9,7 +9,7 @@
                             {{call.createdAt|dateName}}
                             à {{ call.createdAt|timeFormat}}
                         </b>
-                        par  <b>{{call.service.concession.town.name}}</b>
+                        par <b>{{call.service.concession.town.name}}</b>
                     </small>
                     {% if call.callTransfers is not empty %}
                         <i class="material-icons left tooltipped" data-position="right" data-tooltip="<div class='left-align'>
@@ -20,9 +20,23 @@
                         ">description</i><br>
                     {% endif %}
                 </div>
-                <div class="col s8">
-                    <span class="recipient-chip">
-                        <i class="material-icons left">person</i>
+                <div class="col s8 recipient-zone">
+                    <div class="list-dest hide" id="users-in-service-{{ call.id }}">
+                        <span class="before">Transférer à ...
+                            <a href="#" class="close-list secondary-content grey darken-3 white-text" data-target="users-in-service-{{ call.id }}"><i class="material-icons">close</i></a>
+                        </span>
+
+                        <ul class="">
+                            {%  for user in call.service.users %}
+                                <li class="">
+                                    <a href="#" class="recipients-to-transfer" data-for="{{ user.id }}" data-call="{{ call.id }}">{{user.firstname}} {{user.lastname}} </a>
+                                    <i class="material-icons white-text secondary-content">phone_forwarded</i>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <span class="chip flow-text black-text grey lighten-2 recipient-changer" data-call="{{ call.id }}">
+                        <i class="material-icons left ">person</i>
                         {{ call.recipient.firstname }} {{ call.recipient.lastname }}
                     </span>
                     <span class="place-name">
@@ -30,7 +44,7 @@
                         {{call.service.concession.name}}
                     </span>
                     <span class="place-name service-name">
-                        <i class="material-icons tiny">build</i>
+                        <i class="material-icons tiny">settings</i>
                         {{ call.service.name }}
                     </span>
                 </div>
@@ -73,7 +87,7 @@
 
                 <div class="col s5" id="call-history-{{ call.id }}">
                     {% for process in call.callProcessings|reverse[:1] %}
-                        <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName|raw}}</span>
+                        <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName}}</span>
                         <b>
                             {{ process.createdAt|dateName }}
                             à {{ process.createdAt|timeFormat }}
@@ -82,10 +96,10 @@
                 </div>
                 <div class="col s3 right-align">
                     <i class="material-icons small left">directions_car</i> <span class="immat left">{{ call.vehicle.immatriculation }}</span>
-                    {% if call.vehicle.hasCome == 1 %}
-                        <i class="material-icons left light-green-text tooltipped" data-tooltip="Déja venu à l'atelier" data-position="top">settings_applications</i>
-                    {% elseif call.vehicle.hasCome == 2 %}
-                        <i class="material-icons left red-text tooltipped" data-tooltip="Jamais venu à l'atelier" data-position="top">settings_applications</i>
+                    {% if call.vehicle.hasCome is constant('App\\Entity\\Vehicle::TRISWITCH_YES_VALUE') %}
+                        <i class="material-icons left light-green-text tooltipped small-more" data-tooltip="Déja venu à l'atelier" data-position="top">build</i>
+                    {% elseif call.vehicle.hasCome is constant('App\\Entity\\Vehicle::TRISWITCH_NO_VALUE') %}
+                        <i class="material-icons left red-text tooltipped small-more" data-tooltip="Jamais venu à l'atelier" data-position="top">build</i>
                     {% endif %}
                     {% if call.vehicle.chassis %}
                         <br>
@@ -98,7 +112,7 @@
 
         <div class="col s2 left-align ">
             <div class="call-calendar small grey lighten-4">
-                <div class="call-cal-header {% if call.isUrgent %}urgent{% endif %}">
+                <div class="call-cal-header {% if call.lastProcessColor is not empty %} {{ call.lastProcessColor.class}} {% endif %}{% if call.isUrgent %}urgent{% endif %}" id="cal-head-{{ call.id }}">
                     <i class="material-icons ">event_date </i>
                     <span class="call-cal-date">
                         {{ call.recallDate|dateName }}
@@ -107,7 +121,7 @@
                 <div class="call-cal-body">
                     <b>
                         {% if call.isUrgent %}
-                            <span class="red-text">urgent</span>
+                            <span class="red-text" id="recall-urgent-{{ call.id }}">urgent</span>
                         {% else %}
                             <span class="grey-text text-darken-4">{{call.recallPeriod.name}} {{call.recallHour|timeFormat}}</span>
                         {% endif %}

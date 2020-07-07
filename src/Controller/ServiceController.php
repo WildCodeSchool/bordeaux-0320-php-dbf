@@ -82,12 +82,12 @@ class ServiceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('service_index');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('service/edit.html.twig', [
             'service' => $service,
-            'form' => $form->createView(),
+            'form_service' => $form->createView(),
         ]);
     }
 
@@ -102,7 +102,7 @@ class ServiceController extends AbstractController
             $entityManager->flush();
 
             $response = new JsonResponse();
-            $status = JsonResponse::HTTP_OK;
+            $status = JsonResponse::HTTP_NO_CONTENT;
             $response->setStatusCode($status);
 
         return $response;

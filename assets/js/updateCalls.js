@@ -62,10 +62,11 @@ const initButtons = (modal) => {
                         document.getElementById('process-preloader').classList.add('hide');
                         modal.close();
                         M.toast({html: 'Traitement enregistré', classes:'light-blue'})
-                        console.log(data.is_ended);
+
                         if (data.is_ended){
                             document.getElementById(`call-${data.callId}`).classList.add('hide')
                         } else {
+                            changeCallStatus(data.callId, data.colors.class);
                             const target = document.getElementById('call-history-' + data.callId);
                             const targetHtml = '<span class="chip ' + data.colors.bgColor + ' black-text">' + data.colors.stepName + '</span>\n' +
                                 '                            <b>\n' +
@@ -80,6 +81,24 @@ const initButtons = (modal) => {
             modal.open();
         })
     }
+}
+
+const changeCallStatus = (callId, newClass) => {
+    const calHead = document.getElementById(`cal-head-${callId}`)
+    const calBtn = document.getElementById(`treatment-btn-${callId}`)
+    const urgentText = document.getElementById(`recall-urgent-${callId}`)
+    calBtn.classList.remove('urgent');
+    calBtn.classList.add('grey', 'darken-3');
+
+    if (urgentText) {
+        urgentText.classList.remove('red-text');
+        urgentText.classList.add('grey-text', 'text-darken-4');
+        urgentText.innerHTML = ' X ';
+    }
+
+    calHead.classList.remove('urgent');
+    calHead.classList.add(newClass);
+
 }
 
 const initTransferButtons = (modal) => {

@@ -1,10 +1,15 @@
-<form method="post" action="{{ path('civility_edit', {'id': civility.id}) }}" onsubmit="return confirm('Etes vous sûr de vouloir modifier cette civilité?');">
+<div class="row grey lighten-4">
+<form method="post" action="{{ path('civility_edit', {'id': civility.id}) }}">
     {{ form_start(form_civility) }}
-    {{ form_widget(form_civility) }}
-    <button class="btn modal-close" >{{ button_label|default('Sauvegarder') }}</button>
+    <div class="input-field col s8">
+    {{ form_widget(form_civility.name) }}
+    </div>
+    <div class="col s4">
+    <button class="btn modal-close light-blue btn-small " >{{ button_label|default('Sauvegarder') }}</button>
+    </div>
     {{ form_end(form_civility) }}
 </form>
-
+</div>
 
 
 
