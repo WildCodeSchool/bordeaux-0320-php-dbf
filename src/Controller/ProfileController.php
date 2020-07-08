@@ -63,7 +63,7 @@ class ProfileController extends AbstractController
                 $user->setPassword($newEncodedPassword);
                 $entityManager->persist($user);
                 $entityManager->flush();
-                $this->addFlash('success', 'Votre mot de passe à bien été changé !');
+                $this->addFlash('success', 'Votre mot de passe a bien été changé !');
                 return $this->redirectToRoute('profile_edit', ['id' => $user->getId()]);
             } else {
                 $this->addFlash('danger', "Ce n'est pas le bon ancien mot de passe");

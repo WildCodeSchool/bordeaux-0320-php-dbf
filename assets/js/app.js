@@ -27,6 +27,7 @@ require('./deletor');
 require('./transferCall');
 require('./searchPage');
 require('./editor');
+require('./newUser');
 
 
 

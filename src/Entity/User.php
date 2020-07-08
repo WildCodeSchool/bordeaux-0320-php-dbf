@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -241,10 +242,14 @@ class User implements UserInterface
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @ORM\PrePersist
+     * @return $this
+     * @throws Exception
+     */
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new DateTime('Europe/Paris');
         return $this;
     }
 
