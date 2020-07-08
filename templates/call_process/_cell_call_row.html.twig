@@ -1,4 +1,9 @@
-<li class="collection-item cell-item" data-date="{{ call.recallDate|date('Ymd') }}{{ call.recallDate|date('Hi') }}" id="call-{{ call.id }}">
+<li
+        class="collection-item cell-item"
+        data-date="{{ call.recallDate|date('Ymd') }}{{ call.recallDate|date('Hi') }}"
+        id="call-{{ call.id }}"
+        data-status="{% if app.request.get('_route') == 'user_home' %}new{% else %} inprocess{% endif %}"
+>
     <div class="row call-list-row-cell">
         <div class="col s10">
             <div class="row">

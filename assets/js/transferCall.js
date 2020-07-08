@@ -11,6 +11,28 @@ const closeList = (target) => {
     document.getElementById(target).classList.add('hide');
 }
 
+const updateTotalCallToProcess = (method = 'add') => {
+    const counter = document.getElementById('nb-calls-to-process');
+    let total = parseInt(counter.innerHTML);
+    if (method === 'dec') {
+        total--
+    } else {
+        total++
+    }
+    counter.innerHTML = total
+}
+
+const updateTotalCallInProcess = (method = 'add') => {
+    const counter = document.getElementById('nb-calls-in-process');
+    let total = parseInt(counter.innerHTML);
+    if (method === 'dec') {
+        total--
+    } else {
+        total++
+    }
+    counter.innerHTML = total;
+}
+
 const transferCall = (callId, userId) => {
                     const url    = `/call/process/${callId}/transferto/${userId}`;
                     const params = {
@@ -18,11 +40,17 @@ const transferCall = (callId, userId) => {
                     }
                     fetch(url, params)
                         .then(response => {
-                            console.log(response.status)
                             if(response.status === 202) {
+                                const callLine = document.getElementById(`call-${callId}`)
+                                const status = callLine.dataset.status
+                                if (status === 'new') {
+                                    updateTotalCallToProcess('dec')
+                                } else {
+                                    updateTotalCallInProcess('dec')
+                                }
                                 M.toast({html: 'Appel transféré', classes:'red'})
                                 document.getElementById(`users-in-service-${callId}`).classList.add('hide');
-                                document.getElementById(`call-${callId}`).remove();
+                                callLine.remove();
                             }
                         })
                 }
