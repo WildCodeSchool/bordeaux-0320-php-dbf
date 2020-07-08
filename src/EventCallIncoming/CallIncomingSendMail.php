@@ -3,15 +3,18 @@
 
 namespace App\EventCallIncoming;
 
+use App\Entity\Call;
 use App\Entity\User;
 use App\Events;
+use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Mailer\Mailer;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Twig\Environment;
 
-class CallIncominglSendMail implements EventSubscriberInterface
+class CallIncomingSendMail implements EventSubscriberInterface
 {
 
     /**
@@ -19,12 +22,14 @@ class CallIncominglSendMail implements EventSubscriberInterface
      */
     private $mailer;
     private $sender;
+    private $templating;
 
-    public function __construct(Mailer $mailer, $sender)
+    public function __construct(MailerInterface $mailer, $sender, Environment $twig)
     {
         // On injecte notre expediteur et la classe pour envoyer des mails
         $this->mailer = $mailer;
         $this->sender = $sender;
+        $this->templating = $twig;
     }
 
     public static function getSubscribedEvents()
@@ -36,15 +41,16 @@ class CallIncominglSendMail implements EventSubscriberInterface
     }
     public function callIncoming(GenericEvent $event): void
     {
-        /** @var User $user */
-        $user = $event->getSubject();
+        /** @var Call $call*/
+        $call= $event->getSubject();
 
-        $subject = "Un appel a été ajouté";
+        $subject = "Un appel ajouté";
         $email = (new Email())
-            ->from()
-            ->to($user->getEmail())
+            ->from($this->sender)
+            ->to($call->getRecipient()->getEmail())
             ->subject($subject)
-            ->html($this->renderView);
+            ->html($this->templating->render('call/mail/notification.html.twig', ['call'=> $call]));
+
 
         $this->mailer->send($email);
     }

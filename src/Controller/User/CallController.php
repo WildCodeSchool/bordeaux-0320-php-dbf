@@ -3,6 +3,7 @@
 namespace App\Controller\User;
 
 use App\Entity\Call;
+use App\Events;
 use App\Service\CallTreatmentDataMaker;
 use DateInterval;
 use DateTime;
@@ -18,10 +19,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Service\CallOnTheWayDataMaker;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/call")
@@ -53,6 +56,7 @@ class CallController extends AbstractController
      * @param ClientRepository $clientRepository
      * @param CallRepository $callRepository
      * @param CallTreatmentDataMaker $callTreatmentDataMaker
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
     public function add(
@@ -61,7 +65,8 @@ class CallController extends AbstractController
         VehicleRepository $vehicleRepository,
         ClientRepository $clientRepository,
         CallRepository $callRepository,
-        CallTreatmentDataMaker $callTreatmentDataMaker
+        CallTreatmentDataMaker $callTreatmentDataMaker,
+        EventDispatcherInterface $eventDispatcher
     ): Response {
         $author = $this->getUser();
         $addedCalls = $callRepository->findCallsAddedToday($author);
@@ -104,6 +109,8 @@ class CallController extends AbstractController
             $entityManager->persist($call);
 
             $entityManager->flush();
+            $event = new GenericEvent($call);
+            $eventDispatcher->dispatch($event, Events::CALL_INCOMING);
 
             $this->addFlash('success', 'Appel ajouté ');
 
