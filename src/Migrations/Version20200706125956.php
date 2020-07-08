@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200610195605 extends AbstractMigration
+final class Version20200706125956 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -22,7 +22,9 @@ final class Version20200610195605 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE `call` CHANGE is_process_ended is_process_ended TINYINT(1) DEFAULT NULL, CHANGE is_appointment_taken is_appointment_taken TINYINT(1) DEFAULT NULL, CHANGE is_processed is_processed TINYINT(1) DEFAULT NULL');
+        $this->addSql('CREATE TABLE city_head (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, city_id INT NOT NULL, INDEX IDX_44BDCBF4A76ED395 (user_id), INDEX IDX_44BDCBF48BAC62AF (city_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('ALTER TABLE city_head ADD CONSTRAINT FK_44BDCBF4A76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
+        $this->addSql('ALTER TABLE city_head ADD CONSTRAINT FK_44BDCBF48BAC62AF FOREIGN KEY (city_id) REFERENCES city (id)');
     }
 
     public function down(Schema $schema) : void
@@ -30,6 +32,6 @@ final class Version20200610195605 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE `call` CHANGE is_process_ended is_process_ended TINYINT(1) NOT NULL, CHANGE is_appointment_taken is_appointment_taken TINYINT(1) NOT NULL, CHANGE is_processed is_processed TINYINT(1) NOT NULL');
+        $this->addSql('DROP TABLE city_head');
     }
 }

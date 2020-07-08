@@ -79,7 +79,7 @@ class CivilityController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('civility_index');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('civility/edit.html.twig', [
@@ -100,7 +100,7 @@ class CivilityController extends AbstractController
         $entityManager->flush();
 
         $response = new JsonResponse();
-        $status = JsonResponse::HTTP_OK;
+        $status = JsonResponse::HTTP_NO_CONTENT;
         $response->setStatusCode($status);
 
         return $response;

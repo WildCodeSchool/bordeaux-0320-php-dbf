@@ -17,11 +17,14 @@
             <td>{{ service.name }}</td>
             <td> {{ service.concession.name }}</td>
             <td>
-                <a href="{{ path('service_show', {'id': service.id}) }}"><i class="material-icons">edit</i></a>
+                <a href="#" class="edit-service-button" data-target="{{ service.id }}"><i class="material-icons">edit</i></a>
             </td>
             <td>
                 <a href="#" class="delete-service-button" data-target="{{ service.id }}"><i class="material-icons">delete</i></a>
             </td>
+        </tr>
+        <tr class="hide editor-line" id="service-line-edit-{{ service.id }}">
+            <td id="service-td-edit-{{ service.id }}" colspan="5"></td>
         </tr>
     {% else %}
         <tr>

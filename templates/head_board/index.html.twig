@@ -10,7 +10,22 @@
             {% for service in services %}
                 <li class="">
                     <div class="collapsible-header">
-                        <i class="material-icons">home</i> {{ service.name }} : {{ service.not_processed }} appels à traiter / {{ service.processed }} appels en cours de traitement
+                        <table class="table-in-collapse">
+                            <tr>
+                                <td>
+                                    <i class="material-icons">home</i>
+                                </td>
+                                <td>
+                                    <h5 class="cyan-text">{{ service.name }}</h5>
+                                </td>
+                                <td>
+                                    <span class="chip cyan white-text">{{ service.not_processed }}</span> appels à traiter
+                                </td>
+                                <td>
+                                    <span class="chip light-green white-text">{{ service.processed }}</span> appels en cours de traitement
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="collapsible-body">
                         <table>

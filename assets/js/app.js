@@ -24,6 +24,10 @@ require('./recipientTransfer');
 require('./searchClientByPhone');
 require('./reattributePhone');
 require('./deletor');
+require('./transferCall');
+require('./searchPage');
+require('./editor');
+
 
 
 

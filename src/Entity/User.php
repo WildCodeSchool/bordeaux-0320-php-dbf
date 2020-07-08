@@ -106,6 +106,16 @@ class User implements UserInterface
      */
     private $serviceHeads;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ConcessionHead::class, mappedBy="user")
+     */
+    private $concessionHeads;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CityHead::class, mappedBy="user")
+     */
+    private $cityHeads;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
@@ -115,6 +125,8 @@ class User implements UserInterface
         $this->rightByLocations = new ArrayCollection();
         $this->callsUserCreate = new ArrayCollection();
         $this->serviceHeads = new ArrayCollection();
+        $this->concessionHeads = new ArrayCollection();
+        $this->cityHeads = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -217,6 +229,11 @@ class User implements UserInterface
         $this->lastname = $lastname;
 
         return $this;
+    }
+
+    public function getFullName()
+    {
+        return $this->firstname . ' ' . $this->lastname;
     }
 
     public function getPhone(): ?string
@@ -500,6 +517,68 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($serviceHead->getUser() === $this) {
                 $serviceHead->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ConcessionHead[]
+     */
+    public function getConcessionHeads(): Collection
+    {
+        return $this->concessionHeads;
+    }
+
+    public function addConcessionHead(ConcessionHead $concessionHead): self
+    {
+        if (!$this->concessionHeads->contains($concessionHead)) {
+            $this->concessionHeads[] = $concessionHead;
+            $concessionHead->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConcessionHead(ConcessionHead $concessionHead): self
+    {
+        if ($this->concessionHeads->contains($concessionHead)) {
+            $this->concessionHeads->removeElement($concessionHead);
+            // set the owning side to null (unless already changed)
+            if ($concessionHead->getUser() === $this) {
+                $concessionHead->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CityHead[]
+     */
+    public function getCityHeads(): Collection
+    {
+        return $this->cityHeads;
+    }
+
+    public function addCityHead(CityHead $cityHead): self
+    {
+        if (!$this->cityHeads->contains($cityHead)) {
+            $this->cityHeads[] = $cityHead;
+            $cityHead->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCityHead(CityHead $cityHead): self
+    {
+        if ($this->cityHeads->contains($cityHead)) {
+            $this->cityHeads->removeElement($cityHead);
+            // set the owning side to null (unless already changed)
+            if ($cityHead->getUser() === $this) {
+                $cityHead->setUser(null);
             }
         }
 
