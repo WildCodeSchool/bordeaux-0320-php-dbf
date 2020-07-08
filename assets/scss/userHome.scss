@@ -1,3 +1,5 @@
+
+
 .call-stepper {
   border:none;
   font-size:0.9rem;
@@ -91,6 +93,23 @@ ul {
           }
         }
       }
+    }
+  }
+}
+
+a {
+  &.chip {
+    font-size: 1rem;
+    height:35px;
+    border-radius: 200px;
+    .btn-floating {
+      &.btn-small {
+        width:25px;
+        height:25px;
+        line-height: 25px;
+        margin-right: 5px;
+      }
+
     }
   }
 }
