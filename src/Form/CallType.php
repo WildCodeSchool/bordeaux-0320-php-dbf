@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class CallType extends AbstractType
 {
@@ -31,16 +32,19 @@ class CallType extends AbstractType
     private $serviceRepository;
     private $userRepository;
 
+
     public function __construct(
         CityRepository $cityRepository,
         ConcessionRepository $concessionRepository,
         ServiceRepository $serviceRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        Security $security
     ) {
         $this->cityRepository       = $cityRepository;
         $this->concessionRepository = $concessionRepository;
         $this->serviceRepository    = $serviceRepository;
         $this->userRepository       = $userRepository;
+        $this->security             = $security;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -49,7 +53,7 @@ class CallType extends AbstractType
         if ($post) {
             $data = json_decode($post);
         }
-
+        $user = $this->security->getUser();
         $builder
             ->add('freeComment', TextType::class, [
                 'label' => 'Commentaire éventuel',
@@ -57,8 +61,19 @@ class CallType extends AbstractType
             ])
             ->add('city', ChoiceType::class, [
                 'choices' => $this->getAllCities(),
+                'mapped'  => false,
+                'data' => $user->getService()->getConcession()->getTown()->getId(),
+            ])
+            ->add('concession', ChoiceType::class, [
+                'choices' => $this->getConcessions($user->getService()->getConcession()->getTown()->getId()),
+                'mapped' => false,
+                'data' => $user->getService()->getConcession()->getId(),
+            ])
+            ->add('service_choice', ChoiceType::class, [
+                'choices' => $this->getServices($user->getService()->getConcession()->getId()),
                 'mapped'  => false
             ])
+
             ->add('service', EntityType::class, [
                 'class'         => Service::class,
                 'choice_label' => 'name'
@@ -69,11 +84,14 @@ class CallType extends AbstractType
             ]);
 
         if (isset($data->City)) {
-            $builder->
-            add('concession', ChoiceType::class, [
-                'choices' => $this->getConcessions($data->City),
-                'mapped'  => false
-            ]);
+            // TODO change != 4
+            if ($data->City != 4) {
+                $builder->
+                add('concession', ChoiceType::class, [
+                    'choices' => $this->getConcessions($data->City),
+                    'mapped' => false
+                ]);
+            }
         }
         if (isset($data->Concession)) {
             $builder->
@@ -84,7 +102,7 @@ class CallType extends AbstractType
         }
         if (isset($data->Service)) {
             $builder->add('recipient_choice', ChoiceType::class, [
-                'choices' => $this->getRecipients(/*$data->Service*/),
+                'choices' => $this->getRecipients($data->Service),
                 'mapped'  => false
             ]);
         }
