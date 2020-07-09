@@ -83,15 +83,27 @@ class UserController extends AbstractController
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      * @param Request $request
      * @param UserRepository $userRepository
+     * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
-    public function edit(Request $request, UserRepository $userRepository): Response
-    {
+    public function edit(
+        Request $request,
+        UserRepository $userRepository,
+        UserPasswordEncoderInterface $passwordEncoder
+    ): Response {
 
         $user = $userRepository->findWithCity($request->get('id'));
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('user_index');
