@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     autocompleteUsers.addEventListener('change', (e) => {
         const formZone = document.getElementById('form-edit-user');
         const user = e.target.value;
+        console.log(formZone);
         console.log(userAjaxer.getName(user));
         formZone.innerHTML = '<h6>' + userAjaxer.getName(user) +
             ' <span class="secondary-content">ID : ' + userAjaxer.getId(user) +
