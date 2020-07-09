@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -34,6 +36,37 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newEncodedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+
+    /**
+     * @param int $id
+     * @return mixed
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function findWithCity(int $id)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u, s, conc, c')
+            ->join('u.service', 's')
+            ->join('s.concession', 'conc')
+            ->join('conc.town', 'c')
+            ->where('u.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    public function findAllWithCity()
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u, s, conc, c')
+            ->join('u.service', 's')
+            ->join('s.concession', 'conc')
+            ->join('conc.town', 'c')
+            ->getQuery()
+            ->getResult();
     }
 
     // /**

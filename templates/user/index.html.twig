@@ -8,13 +8,14 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Email</th>
                 <th>Roles</th>
-                <th>Password</th>
                 <th>Firstname</th>
                 <th>Lastname</th>
                 <th>Phone</th>
+                <th>Service</th>
+                <th>Concession</th>
+                <th>Plaque</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
                 <th>actions</th>
@@ -23,13 +24,14 @@
         <tbody>
         {% for user in users %}
             <tr>
-                <td>{{ user.id }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.lastname }}</td>
-                <td>{{ user.phone }}</td>
+                <td>{{ user.phone ? user.phone|phoneNumber : '' }}</td>
+                <td>{{ user.service ? user.service.name : ''  }}</td>
+                <td>{{ user.service ? user.service.concession.name : ''  }}</td>
+                <td>{{ user.service ? user.service.concession.town.name : ''  }}</td>
                 <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>

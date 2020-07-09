@@ -6,6 +6,8 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +27,7 @@ class UserController extends AbstractController
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $userRepository->findAllWithCity(),
         ]);
     }
 
@@ -46,12 +48,12 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
+                  $user->setPassword(
+                      $passwordEncoder->encodePassword(
+                          $user,
+                          $form->get('password')->getData()
+                      )
+                  );
             $entityManager->persist($user);
             $entityManager->flush();
             $this->addFlash('success', 'Un compte a  été créé !');
@@ -80,11 +82,13 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      * @param Request $request
-     * @param User $user
+     * @param UserRepository $userRepository
      * @return Response
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request, UserRepository $userRepository): Response
     {
+
+        $user = $userRepository->findWithCity($request->get('id'));
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

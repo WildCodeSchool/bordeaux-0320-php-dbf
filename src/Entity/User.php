@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -99,6 +100,7 @@ class User implements UserInterface
     /**
      * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
+     * @Assert\NotBlank()
      */
     private $service;
 
