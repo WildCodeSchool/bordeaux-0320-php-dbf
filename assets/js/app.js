@@ -28,6 +28,7 @@ require('./transferCall');
 require('./searchPage');
 require('./editor');
 require('./newUser');
+require('./userAdmin');
 
 
 

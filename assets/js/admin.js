@@ -77,6 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
         html:true
     });
 
+    const modalSearchUser = document.getElementById('modal-search-user');
+    const instanceModalSearchUser = M.Modal.init(modalSearchUser, {});
+
+    const modalAddUser = document.getElementById('modal-add-user');
+    const instanceModalAddUser = M.Modal.init(modalAddUser, {});
 
 })
 

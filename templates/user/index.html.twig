@@ -3,40 +3,40 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
-
-    <table class="table">
+    <div class="container">
+    <h1>Collaborateurs</h1>
+        <a href="{{ path('user_new') }}" class="btn light-blue darken-2">Ajouter</a>
+    <table class="table highlight">
         <thead>
             <tr>
+                <th>Prénom</th>
+                <th>Nom</th>
                 <th>Email</th>
-                <th>Roles</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
-                <th>Phone</th>
+                <th>Téléphone</th>
                 <th>Service</th>
                 <th>Concession</th>
                 <th>Plaque</th>
+                <th>Roles</th>
                 <th>CreatedAt</th>
                 <th>UpdatedAt</th>
-                <th>actions</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
         {% for user in users %}
             <tr>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.lastname }}</td>
+                <td>{{ user.email }}</td>
                 <td>{{ user.phone ? user.phone|phoneNumber : '' }}</td>
                 <td>{{ user.service ? user.service.name : ''  }}</td>
                 <td>{{ user.service ? user.service.concession.name : ''  }}</td>
                 <td>{{ user.service ? user.service.concession.town.name : ''  }}</td>
+                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
                 <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+                    <a href="{{ path('user_edit', {'id': user.id}) }}"><i class="material-icons">edit</i></a>
                 </td>
             </tr>
         {% else %}
@@ -47,5 +47,6 @@
         </tbody>
     </table>
 
-    <a href="{{ path('user_new') }}">Create new</a>
+
+    </div>
 {% endblock %}

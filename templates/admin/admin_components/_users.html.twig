@@ -12,13 +12,49 @@
     </div>
     <div class="card-content grey lighten-4">
         <div id="users-list">
-            Liste des users (autocomplete)
+            <a href="{{ path('user_index') }}" class="btn modal-trigger orange"><i class="material-icons ">list</i></a>
+            <a href="#modal-search-user" class="btn modal-trigger orange"><i class="material-icons">search</i></a>
         </div>
         <div id="users-add">
-            Ajouter utilisateur
+            <a  href="{{path('user_new')}}" class="btn orange"><i class="material-icons">add</i></a>
         </div>
         <div id="users-roles">
             Roles
+        </div>
+    </div>
+</div>
+
+<!-- FENETRE MODALE RECHERCHE UTILISATEUR -->
+
+<div id="modal-search-user" class="modal">
+    <div class="modal-content">
+        <h4>Rechercher un collaborateur</h4>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">person</i>
+                    <input type="text" id="autocomplete-user-name" class="autocomplete">
+                    <label for="autocomplete-input">Saisissez le nom d'un colllaborateur</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s10 offset-s1" id="form-edit-client">
+                    Un formulaire se chargera ici en fonction du client choisi
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE AJOUT civilité -->
+
+<div id="modal-add-user" class="modal">
+    <div class="modal-content">
+        <h4 class="center-align">Ajouter un collaborateur</h4>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                    //include modal
+            </div>
         </div>
     </div>
 </div>
