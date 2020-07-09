@@ -10,6 +10,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -132,5 +133,21 @@ class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * @Route("/list", name="user_list", methods={"POST"})
+     * @param UserRepository $userRepository
+     * @return JsonResponse
+     */
+    public function listAllUser(UserRepository $userRepository): JsonResponse
+    {
+        $users = $userRepository->findAllOrderBy('lastname', 'ASC');
+        $dataList = [];
+        foreach ($users as $user) {
+            /* @var $user User */
+            $dataList[$user->getFirstname(). ' ' . $user->getLastname()]  = null;
+        }
+        return new JsonResponse($dataList);
     }
 }
