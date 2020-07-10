@@ -106,11 +106,12 @@ class UserType extends AbstractType
                 'choices'=> $city ? $city->getConcessions(): [],
             ]
         );
+
         $builder->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) {
                 $form = $event->getForm();
-                $this->addServiceField($form->getParent(), $form->getData());
+                    $this->addServiceField($form->getParent(), $form->getData());
             }
         );
         $form->add($builder->getForm());
