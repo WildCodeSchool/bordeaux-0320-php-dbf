@@ -206,7 +206,7 @@ class CallType extends AbstractType
         $choices = [];
         $choices['Choisir un service'] = '';
         foreach ($services as $service) {
-            $choices[$service->getName().$service->getId()] = $service->getId();
+            $choices[$service->getName()] = $service->getId();
         }
 
         return $choices;

@@ -38,11 +38,11 @@ class CallTransferType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $call = $builder->getData();
-
         $builder
             ->add('city', EntityType::class, [
                 'class'         => City::class,
                 'choice_label'  => 'name',
+                'data'          => $call->getConcession()->getTown(),
                 'mapped'        => false
             ])
             ->add('concession', ChoiceType::class, [
@@ -61,9 +61,9 @@ class CallTransferType extends AbstractType
                 'mapped'  => false
             ])
             ->add('commentTransfer', TextType::class, [
-                'label' => 'commentaire',
-                'required'   => false,
-                'mapped'  => false
+                'label'    => 'commentaire',
+                'required' => false,
+                'mapped'   => false
             ])
         ;
     }
@@ -95,7 +95,7 @@ class CallTransferType extends AbstractType
         $choices = [];
         $choices['Choisir un service'] = '';
         foreach ($services as $service) {
-            $choices[$service->getName().$service->getId()] = $service->getId();
+            $choices[$service->getName()] = $service->getId();
         }
 
         return $choices;
