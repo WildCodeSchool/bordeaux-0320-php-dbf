@@ -38,7 +38,6 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
-
     /**
      * @param int $id
      * @return mixed
@@ -77,6 +76,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             $query->setMaxResults($limit);
         }
         return $query->getQuery()->getResult();
+    }
+
+    public function getRandomUser()
+    {
+        $query = $this->createQueryBuilder('u')
+            ->getQuery()
+            ->getResult()
+            ;
+        shuffle($query);
+        return $query[0];
     }
 
     // /**

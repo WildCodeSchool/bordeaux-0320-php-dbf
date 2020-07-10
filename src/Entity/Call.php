@@ -188,7 +188,7 @@ class Call
         return $this->id;
     }
 
-    public function getService()
+    public function getService(): ?Service
     {
         return $this->service;
     }

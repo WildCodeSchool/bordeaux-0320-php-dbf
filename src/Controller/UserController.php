@@ -23,7 +23,20 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/", name="user_index", methods={"GET","POST"})
+     * @Route("/random", name="user_random", methods={"GET"})
+     */
+    public function randomCellUser(UserRepository $userRepository)
+    {
+        $response = new JsonResponse();
+        $response->setStatusCode(JsonResponse::HTTP_OK);
+        $response->setData([
+            'recipientId' => $userRepository->getRandomUser()->getId()
+        ]);
+        return $response;
+    }
+
+    /**
+     * @Route("/", name="user_index", methods={"GET"})
      * @param UserRepository $userRepository
      * @return Response
      */

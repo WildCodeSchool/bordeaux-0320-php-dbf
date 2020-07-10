@@ -3,6 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\ServiceHead;
+use App\Entity\User;
+use App\Entity\Service;
+use App\Entity\Call;
+use App\Entity\Concession;
+use App\Entity\City;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +22,26 @@ class ServiceHeadRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, ServiceHead::class);
+    }
+
+    public function getHeadServiceCalls(User $user)
+    {
+        $expr = $this->getEntityManager()->getExpressionBuilder();
+
+        $query = $this->createQueryBuilder('sh');
+        $query
+            ->select('ci.name city')
+            ->select('co.id concession')
+            ->select('sh.service')
+            ->select('se.name serviceName')
+            ->join(Service::class, 'se', 'se.id = sh.service')
+            ->join(Concession::class, 'co', 'co.id = se.concession')
+            ->join(City::class, 'ci', 'ci.id = co.town')
+            ->where('sh.user =:u')
+            ->setParameter('u', $user)
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
 
