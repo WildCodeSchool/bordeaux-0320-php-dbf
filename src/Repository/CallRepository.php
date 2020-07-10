@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Data\SearchData;
 use App\Entity\Call;
 use App\Entity\Client;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
@@ -210,6 +211,26 @@ class CallRepository extends ServiceEntityRepository
             ->orderBy('c.recallDate', 'DESC')
             ->addOrderBy('c.recallHour', 'DESC')
             ->addOrderBy('c.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getCallsAddedByUser(
+        User $user,
+        $from = null,
+        $to = null
+    ) {
+        $to = (!is_null($to)) ? $to : new DateTime('now');
+        $from = (!is_null($from)) ? $from : $to->sub(new DateInterval('P365D'));
+
+        return $this->createQueryBuilder('c')
+            ->Where('c.author = :auth')
+            ->setParameter('auth', $user)
+            ->andWhere('c.createdAt >= :from')
+            ->setParameter('from', $from)
+            ->andWhere('c.createdAt <= :to')
+            ->setParameter('to', $to)
             ->getQuery()
             ->getResult()
             ;
