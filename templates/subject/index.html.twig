@@ -7,8 +7,9 @@
                 <th>Id</th>
                 <th>Motifs</th>
                 <th>Rendez-vous en atelier</th>
-                <th>modifier</th>
-                <th>supprimer</th>
+                <th>Plaques</th>
+                <th>Modifier</th>
+                <th>Supprimer</th>
             </tr>
         </thead>
         <tbody>
@@ -17,12 +18,16 @@
                 <td>{{ subject.id }}</td>
                 <td>{{ subject.name }}</td>
                 <td>{{ subject.isForAppWorkshop ? 'Oui' : 'Non' }}</td>
+                <td>{{ subject.city.name }}</td>
                 <td>
-                    <a href="{{ path('subject_edit', {'id': subject.id}) }}"><i class="material-icons">edit</i></a>
+                    <a href="#" class="edit-subject-button" data-target="{{ subject.id }}"><i class="material-icons">edit</i></a>
                 </td>
                 <td>
                     <a href="#" class="delete-subject-button" data-target="{{ subject.id }}"><i class="material-icons">delete</i></a>
                 </td>
+            </tr>
+            <tr class="hide editor-line" id="subject-line-edit-{{ subject.id }}">
+                <td id="subject-td-edit-{{ subject.id }}" colspan="5"></td>
             </tr>
         {% else %}
             <tr>

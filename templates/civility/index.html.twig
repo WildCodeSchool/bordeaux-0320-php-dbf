@@ -16,12 +16,14 @@
                 <td>{{ civility.id }}</td>
                 <td>{{ civility.name }}</td>
                 <td>
-                    <a href="{{ path('civility_show', {'id': civility.id}) }}"><i class="material-icons">edit</i></a>
-
+                    <a href="#" class="edit-civility-button" data-target="{{ civility.id }}"><i class="material-icons">edit</i></a>
                 </td>
                 <td>
-                    <a href="#" class="delete-civility-button" data-target="{{civility.id}}" ><i class="material-icons">delete</i></a>
+                    <a href="#" class="delete-civility-button" data-target="{{civility.id}}"><i class="material-icons">delete</i></a>
                 </td>
+            </tr>
+            <tr class="hide editor-line" id="civility-line-edit-{{ civility.id }}">
+                <td id="civility-td-edit-{{ civility.id }}" colspan="5"></td>
             </tr>
         {% else %}
             <tr>

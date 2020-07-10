@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use App\Entity\CallProcessing;
 use App\Entity\CallTransfer;
+use App\Entity\RecallPeriod;
 use App\Form\CallProcessingType;
 use App\Repository\CallRepository;
 use App\Repository\ContactTypeRepository;
+use App\Repository\RecallPeriodRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
 use App\Service\CallStepChecker;
@@ -19,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\CallTransferType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/call/process")
@@ -59,7 +62,8 @@ class CallProcessController extends AbstractController
         ContactTypeRepository $contactTypeRepository,
         Request $request,
         EntityManagerInterface $entityManager,
-        CallStepChecker $callStepChecker
+        CallStepChecker $callStepChecker,
+        RecallPeriodRepository $recallPeriodRepository
     ) {
 
         $contactType = $contactTypeRepository->findOneById(
@@ -69,7 +73,9 @@ class CallProcessController extends AbstractController
         $call
             ->setIsProcessed(true)
             ->setAppointmentDate($callStepChecker->checkAppointmentDate($request))
-            ->setIsAppointmentTaken($callStepChecker->checkAppointment($request));
+            ->setIsAppointmentTaken($callStepChecker->checkAppointment($request))
+            ->setIsUrgent(false)
+            ->setRecallPeriod($recallPeriodRepository->findOneBy(['identifier' => RecallPeriod::AUTOUR_DE]));
 
         if ($callStepChecker->isCallToBeEnded($request)) {
             $call->setIsProcessEnded(true);
@@ -165,6 +171,43 @@ class CallProcessController extends AbstractController
         $response->setData([
             'callId' => $call->getId(),
         ]);
+        return $response;
+    }
+
+    /**
+     * @Route("/{callId}/transferto/{userId}", name="call_transfer_to", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     * @param int $callId
+     * @param int $userId
+     * @param CallRepository $callRepository
+     * @return JsonResponse
+     */
+    public function callTransferTo(
+        $callId,
+        $userId,
+        CallRepository $callRepository,
+        UserRepository $userRepository,
+        Request $request,
+        EntityManagerInterface $entityManager
+    ) {
+        $call            = $callRepository->findOneById($callId);
+        $fromWhom        = $call->getRecipient();
+        $call->setRecipient($userRepository->findOneById($userId));
+        $toWhom          = $call->getRecipient();
+        $byWhom          = $this->getUser();
+        $transfer        = new CallTransfer();
+        $transfer
+            ->setReferedCall($call)
+            ->setFromWhom($fromWhom)
+            ->setByWhom($byWhom)
+            ->setToWhom($toWhom);
+
+        $entityManager->persist($transfer);
+        $entityManager->persist($call);
+        $entityManager->flush();
+
+        $response = new JsonResponse();
+        $response->setStatusCode(JsonResponse::HTTP_ACCEPTED);
         return $response;
     }
 }

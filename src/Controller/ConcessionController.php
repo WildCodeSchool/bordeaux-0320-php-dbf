@@ -72,12 +72,12 @@ class ConcessionController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('concession_index');
+            return $this->redirectToRoute('admin_dashboard');
         }
 
         return $this->render('concession/edit.html.twig', [
             'concession' => $concession,
-            'form' => $form->createView(),
+            'form_concession' => $form->createView(),
         ]);
     }
 
@@ -92,7 +92,7 @@ class ConcessionController extends AbstractController
         $entityManager->flush();
 
         $response = new JsonResponse();
-        $status = JsonResponse::HTTP_OK;
+        $status = JsonResponse::HTTP_NO_CONTENT;
         $response->setStatusCode($status);
 
         return $response;

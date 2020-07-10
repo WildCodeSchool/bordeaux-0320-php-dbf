@@ -1,4 +1,12 @@
-
+i {
+  &.small-more {
+    font-size:1.5rem;
+    display:inline-block;
+    margin-left:3px;
+    margin-top:5px;
+    transform:rotate(45deg);
+  }
+}
 .paddleft {
   padding-left: 49px;
   ul {
@@ -195,4 +203,25 @@ a.btn-rounded {
 
 .form-profile {
   margin-top: 5%;
+}
+
+.collapsible {
+  .collapsible-header {
+    padding:0.2rem;
+    h5 {
+      margin:10px;
+    }
+    table {
+      tr {
+        td {
+          vertical-align: middle;
+          line-height: 40px;
+          i {
+            vertical-align: middle;
+            line-height: 40px;
+          }
+        }
+      }
+    }
+  }
 }

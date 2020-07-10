@@ -39,10 +39,11 @@ class HeadBoardData
     {
         $responseData =[];
 
+
         foreach ($servicesHead as $serviceHead) {
             $service = $serviceHead->getService();
-            $totalNotProcessingCalls = $this->callRepository->getNotInProcessCallsByService($service)[1];
-            $totalProcessingCalls    = $this->callRepository->getInProcessCallsByService($service)[1];
+            $totalNotProcessingCalls = $this->callRepository->getNotInProcessCallsByService($service);
+            $totalProcessingCalls    = $this->callRepository->getInProcessCallsByService($service);
 
             $users = $service->getUsers();
             $usersCalls = [];

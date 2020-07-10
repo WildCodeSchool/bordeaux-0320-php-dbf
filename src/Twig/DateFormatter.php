@@ -18,7 +18,7 @@ class DateFormatter extends AbstractExtension
         ];
     }
 
-    public static function formatDate($dateTime)
+    public static function formatDate(DateTime $dateTime): string
     {
         $today     = new DateTime('now');
         $yesterday = new DateTime('now');
@@ -39,7 +39,7 @@ class DateFormatter extends AbstractExtension
         }
         return $dateName;
     }
-    public static function formatTime($dateTime)
+    public static function formatTime(DateTime $dateTime): string
     {
         $minutes = ($dateTime->format('i') === '00') ? '' : $dateTime->format('i');
         return $dateTime->format('H') . 'h'. $minutes;

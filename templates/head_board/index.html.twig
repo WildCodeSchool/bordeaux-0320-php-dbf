@@ -3,41 +3,85 @@
 {% block title %}Hello HeadBoardController!{% endblock %}
 
 {% block body %}
-
-<div class="row">
-    <div class="col s12">
-        <ul class="collapsible">
-            {% for service in services %}
-                <li class="">
-                    <div class="collapsible-header">
-                        <i class="material-icons">home</i> {{ service.name }} : {{ service.not_processed }} appels à traiter / {{ service.processed }} appels en cours de traitement
-                    </div>
-                    <div class="collapsible-body">
-                        <table>
-                            <thead>
-                            <tr>
-                                <th>Collaborateur</th>
-                                <th class="center-align">Appels à traiter</th>
-                                <th class="center-align">Appels en cours de traitement</th>
+    <div class="row">
+        <div class="col s12">
+            <ul class="collapsible">
+                <li>
+                    <div class="collapsible-header  grey lighten-4">
+                        <table class="table-in-collapse">
+                            <tr class="row">
+                                <td class="col s1">
+                                    <i class="material-icons">person</i>
+                                </td>
+                                <td class="col s5">
+                                    <h5 class="cyan-text left-align">Vos appels</h5>
+                                </td>
+                                <td class="col s2">
+                                    <span class="chip cyan white-text">{{ calls_to_process }}</span> <a href="{{ path('user_home') }}">appels à effectuer</a>
+                                </td>
+                                <td class="col s2">
+                                    <span class="chip light-green white-text">{{ calls_in_process }}</span> <a href="{{ path('user_calls_in_process') }}">rappels à effectuer</a>
+                                </td>
+                                <td class="col s2">
+                                    <span class="chip light-green white-text">{{ calls_added_by_user }}</span> appels ajoutés
+                                </td>
                             </tr>
-                            </thead>
-                            <tbody>
-                            {% for user in service.users %}
-                                <tr>
-                                    <td>{{user.name}}</td>
-                                    <td class="center-align"><span class="chip light-blue white-text">{{ user.to_process }}</span></td>
-                                    <td class="center-align"><span class="chip light-green white-text">{{ user.in_process }}</span></td>
-                                </tr>
-                            {% endfor %}
-                            </tbody>
-
-
                         </table>
                     </div>
                 </li>
-            {% endfor %}
-        </ul>
+            </ul>
+        </div>
     </div>
 
-</div>
+    <div class="row">
+        <div class="col s12">
+            <ul class="collapsible">
+                {% for service in services %}
+                    <li class="">
+                        <div class="collapsible-header">
+                            <table class="table-in-collapse">
+                                <tr class="row">
+                                    <td class="col s1">
+                                        <i class="material-icons">settings</i>
+                                    </td>
+                                    <td class="col s5">
+                                        <h5 class="cyan-text left-align">{{ service.name }}</h5>
+                                    </td>
+                                    <td class="col s3">
+                                        <span class="chip cyan white-text">{{ service.not_processed }}</span> appels à effectuer
+                                    </td>
+                                    <td class="col s3">
+                                        <span class="chip light-green white-text">{{ service.processed }}</span> rappels à effectuer
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="collapsible-body">
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Collaborateur</th>
+                                    <th class="center-align">Appels à traiter</th>
+                                    <th class="center-align">Appels en cours de traitement</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in service.users %}
+                                    <tr>
+                                        <td>{{user.name}}</td>
+                                        <td class="center-align"><span class="chip light-blue white-text">{{ user.to_process }}</span></td>
+                                        <td class="center-align"><span class="chip light-green white-text">{{ user.in_process }}</span></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+
+
+                            </table>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
 {% endblock %}

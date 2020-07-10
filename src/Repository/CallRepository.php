@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Data\SearchData;
 use App\Entity\Call;
 use App\Entity\Client;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
@@ -36,6 +37,18 @@ class CallRepository extends ServiceEntityRepository
         'chassis'=> 'v',
         'freeComment'=> 'c',
         'commentTransfer'=> 'ct',
+    ];
+    const TUPLES_IN_SELECT_AWAY_FROM_CALL = [
+        'hasCome',
+        'contactType',
+        'town',
+        'concession',
+    ];
+    const TUPLES_IN_SELECT_BELONG_TO_WHICH_TABLE = [
+        'hasCome'=> 'v',
+        'contactType'=>'cp',
+        'town'=>'concession',
+        'concession'=>'serv',
     ];
 
     public function __construct(ManagerRegistry $registry)
@@ -203,6 +216,26 @@ class CallRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getCallsAddedByUser(
+        User $user,
+        $from = null,
+        $to = null
+    ) {
+        $to = (!is_null($to)) ? $to : new DateTime('now');
+        $from = (!is_null($from)) ? $from : $to->sub(new DateInterval('P365D'));
+
+        return $this->createQueryBuilder('c')
+            ->Where('c.author = :auth')
+            ->setParameter('auth', $user)
+            ->andWhere('c.createdAt >= :from')
+            ->setParameter('from', $from)
+            ->andWhere('c.createdAt <= :to')
+            ->setParameter('to', $to)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     public function findSearch(SearchData $searchData): array
     {
@@ -238,7 +271,7 @@ class CallRepository extends ServiceEntityRepository
             ->andWhere('c.isProcessEnded IS NULL')
             ->andWhere('c.isProcessed IS NULL')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getSingleScalarResult()
             ;
     }
     public function getInProcessCallsByService($service)
@@ -250,7 +283,7 @@ class CallRepository extends ServiceEntityRepository
             ->andWhere('c.isProcessEnded IS NULL')
             ->andWhere('c.isProcessed IS NOT NULL')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getSingleScalarResult()
             ;
     }
 
@@ -265,9 +298,16 @@ class CallRepository extends ServiceEntityRepository
             );
     }
 
-    private function queryWithEqualMaker($property, &$query, $value)
+    private function queryWithEqualMakerInCallTable($property, &$query, $value)
     {
         return $query->andWhere('c.' . $property . ' = :' . $property)
+            ->setParameter($property, $value);
+    }
+
+    private function queryWithEqualMakerElsewhere($property, &$query, $value)
+    {
+        return $query->andWhere(self::TUPLES_IN_SELECT_BELONG_TO_WHICH_TABLE[$property] . '.' .
+            $property . ' = :' . $property)
             ->setParameter($property, $value);
     }
 
@@ -277,13 +317,17 @@ class CallRepository extends ServiceEntityRepository
             if (!empty($searchData->$property)) {
                 if (in_array($property, self::TUPLES_FOR_SEARCH_WITH_TEXT)) {
                     $query = $this->queryWithLikeMaker($property, $query, $value);
+                } elseif (in_array($property, self::TUPLES_IN_SELECT_AWAY_FROM_CALL)) {
+                   //autres table que call
+                    $query = $this->queryWithEqualMakerElsewhere($property, $query, $value);
                 } else {
-                    $query = $this->queryWithEqualMaker($property, $query, $value);
+                    $query = $this->queryWithEqualMakerInCallTable($property, $query, $value);
                 }
             }
         }
         return $query;
     }
+
 
     /**
 

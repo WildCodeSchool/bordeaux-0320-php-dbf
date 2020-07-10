@@ -39,11 +39,17 @@ class City
      */
     private $rightByLocations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CityHead::class, mappedBy="city")
+     */
+    private $cityHeads;
+
     public function __construct()
     {
         $this->concessions = new ArrayCollection();
         $this->subjects = new ArrayCollection();
         $this->rightByLocations = new ArrayCollection();
+        $this->cityHeads = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -150,6 +156,37 @@ class City
             // set the owning side to null (unless already changed)
             if ($rightByLocation->getCity() === $this) {
                 $rightByLocation->setCity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CityHead[]
+     */
+    public function getCityHeads(): Collection
+    {
+        return $this->cityHeads;
+    }
+
+    public function addCityHead(CityHead $cityHead): self
+    {
+        if (!$this->cityHeads->contains($cityHead)) {
+            $this->cityHeads[] = $cityHead;
+            $cityHead->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCityHead(CityHead $cityHead): self
+    {
+        if ($this->cityHeads->contains($cityHead)) {
+            $this->cityHeads->removeElement($cityHead);
+            // set the owning side to null (unless already changed)
+            if ($cityHead->getCity() === $this) {
+                $cityHead->setCity(null);
             }
         }
 

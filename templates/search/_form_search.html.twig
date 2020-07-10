@@ -1,140 +1,148 @@
 {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
 
 <div class="row">
-    <!--AUTEUR ---->
     <div class="col s6">
-        <h5 class="light-blue-text"><i class="material-icons left">create</i> Auteur
-        </h5>
-        <div class="row mgt15">
-            <div class="input-field col s5">
-                <small class="grey-text label-for-select ">Auteur</small><br>
-                {{ form_widget(form.author) }}
-            </div>
-            <div class="col s2 offset-s2 mgt15 flex">
-                <label>
-                    {{form_widget(form.isUrgent)}}
-                    <span></span>
-                </label>
-                <p>URGENT</p>
-            </div>
+        <h5 class="light-blue-text"><i class="material-icons left">date_range</i> Date</h5>
+        <div class="col s4 input-field">
+            <small class="grey-text label-for-select ">Du</small><br>
+            {{ form_widget(form.dateFrom) }}
+        </div>
+        <div class="col s4 input-field">
+            <small class="grey-text label-for-select ">Au</small><br>
+            {{ form_widget(form.dateTo) }}
         </div>
     </div>
-    <div class="col s6">
-            <h5 class="light-blue-text"><i class="material-icons left">date_range</i> Date</h5>
-            <div class="col s4 input-field">
-                <small class="grey-text label-for-select ">Du</small><br>
-                {{ form_widget(form.dateFrom) }}
-            </div>
-            <div class="col s4 input-field">
-                <small class="grey-text label-for-select ">Au</small><br>
-                {{ form_widget(form.dateTo) }}
-            </div>
-    </div>
 </div>
-<!-- DESTINATAIRES ----->
-    <div class="row">
-        <div class="col s12">
+<ul class="collapsible">
+    <li>
+        <div class="collapsible-header"> <h5 class="light-blue-text"><i class="material-icons left">create</i> Auteur</div>
+        <div class="collapsible-body">
+            <span>
+                <div class="row mgt15">
+                    <div class="input-field col s5">
+                        <small class="grey-text label-for-select ">Auteur</small><br>
+                        {{ form_widget(form.author) }}
+                    </div>
+                    <div class="col s2 offset-s2 mgt15 flex">
+                        <label>
+                            {{form_widget(form.isUrgent)}}
+                            <span></span>
+                        </label>
+                        <p>URGENT</p>
+                    </div>
+                </div>
+            </span>
+        </div>
+    </li>
+    <li>
+        <div class="collapsible-header">
             <h5 class="light-blue-text"><i class="material-icons left">person_pin</i> Destinataire</h5>
-            <div class="row">
-                <div class="col s4 input-field" >
-                    <small class="grey-text label-for-select ">Plaque</small><br>
-                    {{ form_widget(form.city) }}
-                </div>
-                <div class="col s4 input-field">
-                    <small class="grey-text label-for-select ">Concession</small><br>
-                    {{ form_widget(form.concession) }}
-                </div>
-                <div class="col s4 input-field" >
-                    <small class="grey-text label-for-select ">Service</small><br>
-                    {{ form_widget(form.service) }}
-                </div>
-            </div>
         </div>
-    </div>
-    <!-- CLIENT ----->
-<div class="row">
-    <div class="col s8">
-        <h5 class="light-blue-text"><i class="material-icons left">person</i> Client
-        </h5>
-        <div class="row mgt15">
-            <div class=" input-field col s5">
-                <small class="grey-text label-for-select ">Nom ou raison sociale</small><br>
-                {{ form_widget(form.name) }}
-            </div>
-            <div class="input-field col s5 ">
-                <small class="grey-text label-for-select ">Numéro de téléphone</small><br>
-                {{ form_widget(form.phone) }}
-            </div>
-
-            <div class=" input-field col s6">
-                {{ form_label(form.email) }}
-                {{ form_widget(form.email) }}
-            </div>
+        <div class="collapsible-body">
+            <span>
+                <div class="row">
+                    <div class="col s4 input-field" >
+                        <small class="grey-text label-for-select ">Plaque</small><br>
+                        {{ form_widget(form.town) }}
+                    </div>
+                    <div class="col s4 input-field">
+                        <small class="grey-text label-for-select ">Concession</small><br>
+                        {{ form_widget(form.concession) }}
+                    </div>
+                    <div class="col s4 input-field" >
+                        <small class="grey-text label-for-select ">Service</small><br>
+                        {{ form_widget(form.service) }}
+                    </div>
+                </div>
+            </span>
         </div>
-    </div>
-
-    <!-- VEHICLE ----->
-    <div class="col s4">
-        <h5 class="light-blue-text"><i class="material-icons left">directions_car</i> Véhicule</h5>
-        <div class="row mgt15">
-            <div class="input-field col s6 ">
-                <small class="grey-text label-for-select ">Immatriculation</small><br>
-                {{ form_widget(form.immatriculation) }}
-            </div>
-            <div class="input-field col s6">
-                <small class="grey-text label-for-select ">Déjà passé en atelier ?</small><br>
-                {{ form_widget(form.hasCome) }}
-            </div>
-            <div class="input-field col s12 ">
-                {{ form_label(form.chassis) }}
-                {{ form_widget(form.chassis) }}
-            </div>
+    </li>
+    <li>
+        <div class="collapsible-header row">
+            <h5 class="light-blue-text col s8"><i class="material-icons left">person</i> Client</h5>
+            <h5 class="light-blue-text col s4"><i class="material-icons left">directions_car</i> Véhicule</h5>
         </div>
-    </div>
-</div>
-
-
-
-    <!-- OBJET ----->
-<div class="row">
-    <div class="col s12">
-        <h5 class="light-blue-text"><i class="material-icons left">phone</i> Objet de l'appel</h5>
-        <div class="row">
-            <div class="col s6">
-                <div class="input-field col s6">
-                    <small class="grey-text label-for-select ">Motif</small><br>
-                    {{ form_widget(form.subject) }}
-                </div>
-                <div class="input-field col s6">
-                    <small class="grey-text label-for-select ">Comm.</small><br>
-                    {{ form_widget(form.comment) }}
-                </div>
-                <div class="input-field col s12">
-                    <small class="grey-text label-for-select ">Comm. 2</small><br>
-                    {{ form_widget(form.freeComment) }}
-                </div>
-            </div>
-            <div class="col s6">
-                <div class="col s6 input-field">
-                    <small class="grey-text label-for-select ">Contact</small><br>
-                    {{ form_widget(form.contactType) }}
-                </div>
-                <div class="col s6 input-field">
-                    <small class="grey-text label-for-select ">RDV</small><br>
-                    {{ form_widget(form.isAppointmentTaken) }}
-                </div>
-                <div class="col s12 input-field">
-                    <small class="grey-text label-for-select ">Remarque</small><br>
-                    {{ form_widget(form.commentTransfer) }}
-                </div>
-            </div>
+        <div class="collapsible-body">
+            <span class="row">
+                    <div class="col s8">
+                        <div class="row mgt15">
+                            <div class=" input-field col s5">
+                                <small class="grey-text label-for-select ">Nom ou raison sociale</small><br>
+                                {{ form_widget(form.name) }}
+                            </div>
+                            <div class="input-field col s5 ">
+                                <small class="grey-text label-for-select ">Numéro de téléphone</small><br>
+                                {{ form_widget(form.phone) }}
+                            </div>
+                            <div class=" input-field col s6">
+                                {{ form_label(form.email) }}
+                                {{ form_widget(form.email) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col s4">
+                        <div class="row mgt15">
+                            <div class="input-field col s6 ">
+                                <small class="grey-text label-for-select ">Immatriculation</small><br>
+                                {{ form_widget(form.immatriculation) }}
+                            </div>
+                            <div class="input-field col s6">
+                                <small class="grey-text label-for-select ">Déjà passé en atelier ?</small><br>
+                                {{ form_widget(form.hasCome) }}
+                            </div>
+                            <div class="input-field col s12 ">
+                                {{ form_label(form.chassis) }}
+                                {{ form_widget(form.chassis) }}
+                            </div>
+                        </div>
+                    </div>
+            </span>
         </div>
-    </div>
-</div>
+    </li>
+    <li>
+        <div class="collapsible-header">
+            <h5 class="light-blue-text"><i class="material-icons left">phone</i> Objet de l'appel</h5>
+        </div>
+        <div class="collapsible-body">
+            <span>
+                 <div class="row">
+                    <div class="col s6">
+                        <div class="input-field col s6">
+                        <small class="grey-text label-for-select ">Motif</small><br>
+                        {{ form_widget(form.subject) }}
+                    </div>
+                    <div class="input-field col s6">
+                        <small class="grey-text label-for-select ">Comm.</small><br>
+                        {{ form_widget(form.comment) }}
+                    </div>
+                    <div class="input-field col s12">
+                        <small class="grey-text label-for-select ">Comm. 2</small><br>
+                        {{ form_widget(form.freeComment) }}
+                    </div>
+                </div>
+                <div class="col s6">
+                    <div class="col s6 input-field">
+                        <small class="grey-text label-for-select ">Contact</small><br>
+                        {{ form_widget(form.contactType) }}
+                    </div>
+                    <div class="col s6 input-field">
+                        <small class="grey-text label-for-select ">RDV</small><br>
+                        {{ form_widget(form.isAppointmentTaken) }}
+                    </div>
+                    <div class="col s12 input-field">
+                        <small class="grey-text label-for-select ">Remarque</small><br>
+                        {{ form_widget(form.commentTransfer) }}
+                    </div>
+                </div>
+            </span>
+        </div>
+    </li>
+</ul>
 
 <div class="row center-align ">
-    <button class="btn light-blue">{{ button_label|default('Rechercher') }}</button>
-    <a href="#" class="btn light-blue">Exporter en CSV</a>
+    <button class="btn light-blue" id="searchBtn">{{ button_label|default('Rechercher') }}</button>
+    <img src="{{ asset('build/loader.gif') }}" width="20px" class="hide" alt="loader" id="loaderSearch">
 </div>
 {{ form_end(form) }}
+
 
