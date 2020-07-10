@@ -87,7 +87,7 @@
 
                 <div class="col s5" id="call-history-{{ call.id }}">
                     {% for process in call.callProcessings|reverse[:1] %}
-                        <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName}}</span>
+                        <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName | raw}}</span>
                         <b>
                             {{ process.createdAt|dateName }}
                             à {{ process.createdAt|timeFormat }}

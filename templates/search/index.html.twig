@@ -11,6 +11,11 @@
         <div>
         {% include('/search/_form_search.html.twig') %}
         </div>
+
+        {% if export is defined  and is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('export_to_csv', {'exportedCalls': export}) }}" class="btn light-blue">Exporter en CSV</a>
+        {% endif %}
+        {% include 'components/_flashes.html.twig' %}
         <div>
             <h4 class="light-blue-text">Résultats</h4>
             <div class="col s12">

@@ -1,6 +1,7 @@
 class recipientsAjaxTool {
     constructor(url) {
         this.urlToAdd     = url
+        this.urlToRandom = '/user/random';
         this.init()
     }
 
@@ -49,18 +50,37 @@ class recipientsAjaxTool {
         this.initializeSelects()
 
         this.citySelector.addEventListener('change', () => {
-            this.concessionZone.innerHTML = this.addLoader()
+            // TODO change != 4
+            if (this.citySelector.value != 4) {
+                this.concessionZone.innerHTML = this.addLoader()
+            } else {
+                this.concessionZone.innerHTML ='';
+            }
             const postdata = {
                 'City' : this.citySelector.value
             }
             if (this.authorizedToPost) {
                 this.authorizedToPost = false;
-                this.sendData(postdata, (data) => {
-                    this.concessionZone.innerHTML = '<small class="grey-text">Choisir une concession</small><br>' + this.getHtmlElement(data, 'call_concession');
-                    this.serviceZone.innerHTML = "";
-                    this.recipientZone.innerHTML = "";
-                    this.init(postdata)
-                })
+                // TODO change != 4
+                if (this.citySelector.value != 4) {
+                    this.sendData(postdata, (data) => {
+                        this.concessionZone.innerHTML = '<small class="grey-text">Choisir une concession</small><br>' + this.getHtmlElement(data, 'call_concession');
+                        this.serviceZone.innerHTML = "";
+                        this.recipientZone.innerHTML = "";
+                        this.init(postdata)
+                    })
+                } else {
+                    this.citySelector.setAttribute('disabled', 'disabled');
+                    this.getRandomUser(data => {
+                        console.log(data);
+                        //TODO GET DATA
+                        this.selectValueInSelect(this.recipientField, data.recipientId)
+                        this.concessionZone.innerHTML = "";
+                        this.serviceZone.innerHTML = "";
+                        this.init(postdata)
+                    })
+                    this.initializeSelects()
+                }
             }
         })
 
@@ -138,6 +158,20 @@ class recipientsAjaxTool {
         })
             .then(function (response) {
                 return response.text();
+            }).then(function (html) {
+                action(html);
+        });
+    }
+
+    getRandomUser(action) {
+        fetch(this.urlToRandom, {
+            method      : 'GET',
+            headers     : {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(function (response) {
+                return response.json();
             }).then(function (html) {
                 action(html);
         });
