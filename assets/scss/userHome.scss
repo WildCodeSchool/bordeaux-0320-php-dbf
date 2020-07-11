@@ -15,6 +15,13 @@
   }
 }
 
+.bolder {
+  font-weight:bold;
+}
+.d-block {
+  display:block;
+}
+
 ul {
   &.list-calls {
     li {
@@ -23,7 +30,14 @@ ul {
         border-bottom: none;
         &.cell-item {
           padding-bottom:0px;
-
+          .history-line {
+            display:block;
+            font-size:0.9rem;
+            margin-bottom:5px;
+          }
+          .chassis {
+            font-size:0.9rem;
+          }
           .place-name {
             margin-left:30px;
           }
