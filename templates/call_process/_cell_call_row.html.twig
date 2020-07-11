@@ -27,16 +27,18 @@
                         </div>
                         ">description</i>
                     {% endif %}
-                    <a
-                            href="#"
-                            class="white-text left tooltipped delete-call"
-                            data-call="{{ call.id }}"
-                            data-position="top"
-                            data-tooltip="supprimer cet appel"
-                            data-status="{% if app.request.get('_route') == 'user_home' %}new{% else %}inprocess{% endif %}"
-                    >
-                        <i class="material-icons red-text">delete_forever</i>
-                    </a>
+                    {% if (is_granted('ROLE_ADMIN')) %}
+                        <a
+                                href="#"
+                                class="white-text left tooltipped delete-call"
+                                data-call="{{ call.id }}"
+                                data-position="top"
+                                data-tooltip="supprimer cet appel"
+                                data-status="{% if app.request.get('_route') == 'user_home' %}new{% else %}inprocess{% endif %}"
+                        >
+                            <i class="material-icons red-text">delete_forever</i>
+                        </a>
+                    {% endif %}
                 </div>
                 <div class="col s8 recipient-zone">
                     <div class="list-dest hide" id="users-in-service-{{ call.id }}">

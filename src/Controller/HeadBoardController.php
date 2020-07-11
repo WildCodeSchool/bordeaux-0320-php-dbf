@@ -26,14 +26,13 @@ class HeadBoardController extends AbstractController
     ) {
         $user = $this->getUser();
         $res = $serviceHeadRepository->getHeadServiceCalls($user);
-        $headServices = $user->getServiceHeads();
-        $dataForServices = $headBoardData->makeDataForHeads($headServices);
+        $dataForServices = $headBoardData->makeDataForHead($res);
         $totalToProcess = count($callRepository->callsToProcessByUser($user));
         $totalInProcess = count($callRepository->callsInProcessByUser($user));
-        $callsAddedByUser = count($callRepository->getCallsAddedByUser($user));
+        $callsAddedByUser = count($callRepository->getCallsAddedByUserToday($user));
 
         return $this->render('head_board/index.html.twig', [
-            'services' => $dataForServices,
+            'cities' => $dataForServices,
             'calls_in_process' => $totalInProcess,
             'calls_to_process' => $totalToProcess,
             'calls_added_by_user' => $callsAddedByUser,

@@ -62,7 +62,6 @@ class ServiceHeadRepository extends ServiceEntityRepository
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('u', $user->getId());
         $stmt->execute();
-        dd($stmt->fetchAll());
         return $stmt->fetchAll();
     }
 

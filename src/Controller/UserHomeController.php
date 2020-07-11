@@ -52,7 +52,7 @@ class UserHomeController extends AbstractController
         $totalInProcess = count($callRepository->callsInProcessByUser($appUser));
 
         $lastCall = $callRepository->lastCallToProcessByUser($appUser);
-        $this->get('session')->set('lastCallId', 0);
+        $this->get('session')->set('lastCallId', null);
         if ($lastCall) {
             $this->get('session')->set('lastCallId', $lastCall->getId());
         }
