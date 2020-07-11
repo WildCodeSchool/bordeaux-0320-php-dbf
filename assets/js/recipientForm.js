@@ -5,6 +5,16 @@ class recipientsAjaxTool {
         this.init()
     }
 
+    getPhoneCityId(callback) {
+        fetch('/phoneCity/getId')
+            .then(response=>{
+                return response.json()
+            })
+            .then(json=> {
+                callback(json.phoneCityId);
+            });
+    }
+
     init(data = null) {
         this.citySelectorId       = 'call_city'
         this.concessionSelectorId = 'call_concession'
@@ -26,7 +36,10 @@ class recipientsAjaxTool {
         this.recipientZone        = document.getElementById(this.recipientZoneId);
         this.serviceField         = document.getElementById(this.serviceFieldId);
         this.recipientField       = document.getElementById(this.recipientFieldId);
-
+        this.phoneCityId          = null
+        this.getPhoneCityId((phoneCityId => {
+            this.phoneCityId = phoneCityId;
+        }));
         if (data) {
             this.values = data
         } else {
@@ -50,8 +63,7 @@ class recipientsAjaxTool {
         this.initializeSelects()
 
         this.citySelector.addEventListener('change', () => {
-            // TODO change != 4
-            if (this.citySelector.value != 4) {
+            if (this.citySelector.value != this.phoneCityId) {
                 this.concessionZone.innerHTML = this.addLoader()
             } else {
                 this.concessionZone.innerHTML ='';
@@ -61,8 +73,7 @@ class recipientsAjaxTool {
             }
             if (this.authorizedToPost) {
                 this.authorizedToPost = false;
-                // TODO change != 4
-                if (this.citySelector.value != 4) {
+                if (this.citySelector.value != this.phoneCityId) {
                     this.sendData(postdata, (data) => {
                         this.concessionZone.innerHTML = '<small class="grey-text">Choisir une concession</small><br>' + this.getHtmlElement(data, 'call_concession');
                         this.serviceZone.innerHTML = "";
@@ -71,13 +82,10 @@ class recipientsAjaxTool {
                     })
                 } else {
                     this.citySelector.setAttribute('disabled', 'disabled');
-                    this.getRandomUser(data => {
-                        console.log(data);
-                        //TODO GET DATA
-                        this.selectValueInSelect(this.recipientField, data.recipientId)
+                    this.getRandomUser(json => {
+                        this.selectValueInSelect(this.recipientField, json.recipientId)
                         this.concessionZone.innerHTML = "";
                         this.serviceZone.innerHTML = "";
-                        this.init(postdata)
                     })
                     this.initializeSelects()
                 }
@@ -139,7 +147,6 @@ class recipientsAjaxTool {
         return domElem.outerHTML;
     }
 
-
     addLoader() {
         return '<div class="progress grey lighten-3 mgt30">\n' +
             '      <div class="indeterminate light-blue"></div>\n' +
@@ -172,8 +179,8 @@ class recipientsAjaxTool {
         })
             .then(function (response) {
                 return response.json();
-            }).then(function (html) {
-                action(html);
+            }).then(function (json) {
+                action(json);
         });
     }
 
