@@ -8,6 +8,8 @@ use Twig\TwigFilter;
 
 class PhoneFormatter extends AbstractExtension
 {
+    const FRANCE = '33';
+
     public function getFilters()
     {
         return [
@@ -15,12 +17,12 @@ class PhoneFormatter extends AbstractExtension
         ];
     }
 
-    private static function removeNationInPhoneNumber(string $phoneNumber): string
+    protected static function removeNationInPhoneNumber(string $phoneNumber): string
     {
-        $searchStrings = ['+33','33(', '33 ('];
+        $searchStrings = ['+' . self::FRANCE, self::FRANCE . '(', self::FRANCE . ' ('];
         $phoneNumber = str_replace($searchStrings, '', $phoneNumber);
         $firstNumbers = substr($phoneNumber, 0, 2);
-        if ($firstNumbers === '33') {
+        if ($firstNumbers === self::FRANCE) {
             $phoneNumber = substr($phoneNumber, 2);
         }
         return $phoneNumber;
