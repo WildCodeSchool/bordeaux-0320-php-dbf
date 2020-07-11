@@ -4,10 +4,12 @@ const getNewCalls = (action) => {
         fetch('/newcallsforuser', {
         })
         .then(function (response) {
-            return response.text()
-        }).then(function (html) {
-            action(html);
-        });
+            if (response.status === 200) {
+               return response.text();
+            }
+        }).then(html => {
+            action(html)
+        })
 }
 
 const updateTotalCallToProcess = (method = 'add') => {
@@ -229,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const checker = setInterval(()=> {
         getNewCalls(html => {
-            if (html != ' ') {
+            if(html) {
                 const listOfCallsZone = document.getElementById('list-calls-to-process')
                 updateTotalCallToProcess();
                 //TODO Insert row at the good place not a the end

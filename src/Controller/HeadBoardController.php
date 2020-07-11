@@ -25,7 +25,7 @@ class HeadBoardController extends AbstractController
         CallRepository $callRepository
     ) {
         $user = $this->getUser();
-
+        $res = $serviceHeadRepository->getHeadServiceCalls($user);
         $headServices = $user->getServiceHeads();
         $dataForServices = $headBoardData->makeDataForHeads($headServices);
         $totalToProcess = count($callRepository->callsToProcessByUser($user));
