@@ -29,6 +29,7 @@ require('./transferCall');
 require('./searchPage');
 require('./editor');
 require('./deleteCall');
+require('./Collapsor');
 
 
 

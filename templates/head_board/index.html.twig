@@ -36,123 +36,63 @@
 
     <div class="row">
         <div class="col s12">
-            <ul class="collapsible">
+
+            <h5>Les appels pour les sites dont vous êtes responsable</h5>
+            <table class="headboard-table">
                 {% for cityName, city in cities %}
-                    <li class="">
-                        <div class="collapsible-header">
-                            <table class="table-in-collapse">
-                                <tr class="row">
-                                    <td class="col s1">
-                                        <i class="material-icons">home</i>
-                                    </td>
-                                    <td class="col s5">
-                                        <h5 class="cyan-text left-align">{{ cityName }}</h5>
-                                    </td>
-                                    <td class="col s2">
-                                    </td>
-                                    <td class="col s2">
-                                        <span class="chip cyan white-text">{{ city.to_process }}</span> appels à effectuer
-                                    </td>
-                                    <td class="col s2">
-                                        <span class="chip light-green white-text">{{ city.in_process }}</span> rappels à effectuer
-                                    </td>
-
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="collapsible-body">
-                            <ul class="collapsible">
-                                {% for concessionName, concession in city.concessions %}
-                                    <li class="">
-                                        <div class="collapsible-header">
-                                            <table class="table-in-collapse">
-                                                <tr class="row">
-                                                    <td class="col s1">
-                                                        <i class="material-icons">settings</i>
-                                                    </td>
-                                                    <td class="col s5">
-                                                        <h5 class="cyan-text left-align">{{ concessionName }}</h5>
-                                                    </td>
-                                                    <td class="col s2">
-                                                    </td>
-                                                    <td class="col s2">
-                                                        <span class="chip cyan white-text">{{ concession.to_process }}</span> appels à effectuer
-                                                    </td>
-                                                    <td class="col s2">
-                                                        <span class="chip light-green white-text">{{ concession.in_process }}</span> rappels à effectuer
-                                                    </td>
-
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <div class="collapsible-body">
-                                            <ul class="collapsible">
-                                                {% for serviceName, service in concession.services %}
-                                                    <li class="">
-                                                        <div class="collapsible-header">
-                                                            <table class="table-in-collapse">
-                                                                <tr class="row">
-                                                                    <td class="col s1">
-                                                                        <i class="material-icons">settings</i>
-                                                                    </td>
-                                                                    <td class="col s5">
-                                                                        <h5 class="cyan-text left-align">{{ serviceName }}</h5>
-                                                                    </td>
-                                                                    <td class="col s2">
-                                                                    </td>
-                                                                    <td class="col s2">
-                                                                        <span class="chip cyan white-text">{{ service.to_process }}</span> appels à effectuer
-                                                                    </td>
-                                                                    <td class="col s2">
-                                                                        <span class="chip light-green white-text">{{ service.in_process }}</span> rappels à effectuer
-                                                                    </td>
-
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                        <div class="collapsible-body">
-                                                            <ul class="collapsible">
-                                                                {% for userName, user in service.collaborators %}
-                                                                    <li class="">
-                                                                        <div class="collapsible-header">
-                                                                            <table class="table-in-collapse">
-                                                                                <tr class="row">
-                                                                                    <td class="col s1">
-                                                                                        <i class="material-icons">settings</i>
-                                                                                    </td>
-                                                                                    <td class="col s5">
-                                                                                        <h5 class="cyan-text left-align">{{ userName }}</h5>
-                                                                                    </td>
-                                                                                    <td class="col s2">
-                                                                                    </td>
-                                                                                    <td class="col s2">
-                                                                                        <span class="chip cyan white-text">{{ user.to_process }}</span> appels à effectuer
-                                                                                    </td>
-                                                                                    <td class="col s2">
-                                                                                        <span class="chip light-green white-text">{{ user.in_process }}</span> rappels à effectuer
-                                                                                    </td>
-
-                                                                                </tr>
-                                                                            </table>
-                                                                        </div>
-                                                                        <div class="collapsible-body">
-
-                                                                        </div>
-                                                                    </li>
-                                                                {% endfor %}
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </li>
+                    <tr class="row collapsor city-line" data-collapse="{{ city.slug }}" data-type="city">
+                        <td class="col s8 subrow" colspan="3">
+                            <i class="material-icons left tiny red-text">location_city</i>
+                            <span class="city-name red-text">{{ cityName }}</span>
+                        </td>
+                        <td class="col s2"><span class="btn red white-text">{{city.to_process}}</span></td>
+                        <td class="col s2"><span class="btn red darken-3 white-text">{{city.in_process}}</span></td>
+                    </tr>
+                {% for concessionName, concession in city.concessions %}
+                    <tr class="row collapsor concession-line hide {{ city.slug }}"
+                        data-collapse="{{ concession.slug }}"
+                        data-city="{{ city.slug }}"
+                        data-type="concession"
+                    >
+                        <td class="col s8 subrow" colspan="3">
+                            <i class="material-icons left tiny cyan-text">home</i>
+                            <span class="bolder concession-name cyan-text">{{ concessionName }}</span>
+                        </td>
+                        <td class="col s2"><span class="btn cyan white-text">{{concession.to_process}}</span></td>
+                        <td class="col s2"><span class="btn cyan darken-3 white-text">{{concession.in_process}}</span></td>
+                    </tr>
+                    {% for serviceName, service in concession.services %}
+                        <tr class="row collapsor {{ concession.slug }} service-line hide"
+                            data-collapse = "{{ service.slug }}"
+                            data-concession="{{ concession.slug }}"
+                            data-city="{{ city.slug }}"
+                            data-type="service"
+                        >
+                            <td class="col s8 subrow" colspan="3">
+                                <i class="material-icons left tiny">settings</i>
+                                <span class="bolder service-name">{{ serviceName }}</span>
+                            </td>
+                            <td class="col s2"><span class="btn grey white-text service-name">{{service.to_process}}</span></td>
+                            <td class="col s2"><span class="btn grey darken-3 white-text">{{service.in_process}}</span></td>
+                        </tr>
+                        {% for userName, user in service.collaborators %}
+                            <tr class="row hide user-line {{ service.slug }}"
+                                data-concession="{{ concession.slug }}"
+                                data-city="{{ city.slug }}"
+                                data-service="{{ service.slug }}"
+                            >
+                                <td class="col s8 subrow" colspan="3">
+                                    <i class="material-icons left tiny">person</i>
+                                    <span class="user-name">{{ userName }}</span>
+                                </td>
+                                <td class="col s2"><span class="chip light-green white-text">{{user.to_process}}</span></td>
+                                <td class="col s2"><span class="chip cyan white-text">{{user.in_process}}</span></td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
                 {% endfor %}
-            </ul>
+                {% endfor %}
+            </table>
         </div>
 
     </div>
