@@ -26,22 +26,43 @@ class ServiceHeadRepository extends ServiceEntityRepository
 
     public function getHeadServiceCalls(User $user)
     {
-        $expr = $this->getEntityManager()->getExpressionBuilder();
-
-        $query = $this->createQueryBuilder('sh');
-        $query
-            ->select('ci.name city')
-            ->select('co.id concession')
-            ->select('sh.service')
-            ->select('se.name serviceName')
-            ->join(Service::class, 'se', 'se.id = sh.service')
-            ->join(Concession::class, 'co', 'co.id = se.concession')
-            ->join(City::class, 'ci', 'ci.id = co.town')
-            ->where('sh.user =:u')
-            ->setParameter('u', $user)
-            ->getQuery()
-            ->getResult()
-            ;
+        $connection = $this->getEntityManager()->getConnection();
+        $sql = 'SELECT
+                ci.name city, 
+                co.name concession, 
+                sh.service_id, 
+                se.name service, 
+                catp.toprocess toprocess, 
+                caip.inprocess inprocess 
+                FROM service_head sh 
+                JOIN service se 
+                ON se.id = sh.service_id 
+                JOIN concession co 
+                ON co.id = se.concession_id 
+                JOIN city ci 
+                ON ci.id = co.town_id 
+                LEFT JOIN (
+                    SELECT count(*) toprocess, service_id  
+                    FROM `call` ca 
+                    WHERE ca.is_processed 
+                    IS NULL GROUP BY service_id
+                    ) catp 
+                ON catp.service_id = sh.service_id 
+                LEFT JOIN (
+                    SELECT count(*) inprocess, service_id  
+                    FROM `call` ca 
+                    WHERE ca.is_processed 
+                    IS NOT NULL 
+                    AND ca.is_process_ended IS NULL 
+                    GROUP BY service_id
+                    ) caip 
+                ON caip.service_id = sh.service_id 
+                WHERE sh.user_id = :u
+                ORDER BY ci.name, co.name, se.name';
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('u', $user->getId());
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
 

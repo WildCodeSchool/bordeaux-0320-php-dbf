@@ -6,40 +6,57 @@
 >
     <div class="row call-list-row-cell">
         <div class="col s10">
+
             <div class="row">
                 <div class="col s4">
                     <small>
                     crée
-                    <b>
+                    <span class="bolder">
                             {{call.createdAt|dateName}}
                             à {{ call.createdAt|timeFormat}}
-                    </b>
-                    par <b>{{call.service.concession.town.name}}</b>
+                    </span>
+                        par <span class="bolder">{{call.service.concession.town.name}}</span>
                     </small>
                     {% if call.callTransfers is not empty %}
                         <i class="material-icons left tooltipped" data-position="right" data-tooltip="<div class='left-align'>
                         {% for transfer in call.callTransfers|reverse %}
-                            - Transféré par {{ transfer.byWhom.firstName }} {{ transfer.byWhom.lastName }} {{ transfer.createdAt|dateName }} à {{ transfer.createdAt|timeFormat }}<br>
+                            <span class='history-line'>
+                            - Transféré par {{ transfer.byWhom.firstName }} {{ transfer.byWhom.lastName }} {{ transfer.createdAt|dateName }} à {{ transfer.createdAt|timeFormat }}
+                            <span><br>
                         {% endfor %}
                         </div>
-                        ">description</i><br>
+                        ">description</i>
+                    {% endif %}
+                    {% if (is_granted('ROLE_ADMIN')) %}
+                        <a
+                                href="#"
+                                class="white-text left tooltipped delete-call"
+                                data-call="{{ call.id }}"
+                                data-position="top"
+                                data-tooltip="supprimer cet appel"
+                                data-status="{% if app.request.get('_route') == 'user_home' %}new{% else %}inprocess{% endif %}"
+                        >
+                            <i class="material-icons red-text">delete_forever</i>
+                        </a>
                     {% endif %}
                 </div>
                 <div class="col s8 recipient-zone">
+                    {% if call.service.users is not empty %}
                     <div class="list-dest hide" id="users-in-service-{{ call.id }}">
                         <span class="before">Transférer à ...
-                            <a href="#" class="close-list secondary-content grey darken-3 white-text" data-target="users-in-service-{{ call.id }}"><i class="material-icons">close</i></a>
+                            <a href="#" class="close-list secondary-content white-text" data-target="users-in-service-{{ call.id }}"><i class="material-icons">close</i></a>
                         </span>
 
                         <ul class="">
                             {%  for user in call.service.users %}
-                                <li class="">
+                                <li class="dest-item">
                                     <a href="#" class="recipients-to-transfer" data-for="{{ user.id }}" data-call="{{ call.id }}">{{user.firstname}} {{user.lastname}} </a>
                                     <i class="material-icons white-text secondary-content">phone_forwarded</i>
                                 </li>
                             {% endfor %}
                         </ul>
                     </div>
+                    {% endif %}
                     <span class="chip flow-text black-text grey lighten-2 recipient-changer" data-call="{{ call.id }}">
                         <i class="material-icons left ">person</i>
                         {{ call.recipient.firstname }} {{ call.recipient.lastname }}
@@ -54,9 +71,9 @@
                     <a class="grey darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
                     </span>
                 </div>
-
             </div>
-           <div class="row">
+
+            <div class="row">
                <div class="col s4">
                     <span class="title">
                         {{call.client.civility.name}} {{call.client.name}}
@@ -71,33 +88,30 @@
                <div class="col s4">
                    <i class="material-icons left grey-text">label</i>{{ call.comment.name }}
                </div>
-
            </div>
+
             <div class="row">
                 <div class="col s4">
                     <span class="chip ">{{call.client.phone|phoneNumber}}</span>
                 </div>
-
                 <div class="col s8">
                     <em>{{ call.freeComment }}</em>
                 </div>
-
             </div>
+
             <div class="row">
                 <div class="col s4">
                     {% if call.client.phone2 is defined and call.client.phone2 is not null and call.client.phone2 is not empty %}
                         <span class="chip">{{ call.client.phone2|phoneNumber }}</span>
                     {% endif %}
                 </div>
-
-
                 <div class="col s5" id="call-history-{{ call.id }}">
                     {% for process in call.callProcessings|reverse[:1] %}
                             <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName}}</span>
-                            <b>
+                            <span class="bolder">
                                 {{ process.createdAt|dateName }}
                                 à {{ process.createdAt|timeFormat }}
-                            </b>
+                            </span>
                     {% endfor %}
                 </div>
                 <div class="col s3 right-align">
@@ -108,12 +122,11 @@
                         <i class="material-icons left red-text tooltipped small-more" data-tooltip="Jamais venu à l'atelier" data-position="top">build</i>
                     {% endif %}
                     {% if call.vehicle.chassis %}
-                    <br>
-                    <small class="left"><b>Chassis : </b>{{ call.vehicle.chassis }}</small>
+                       <span class="d-block left chassis"><span class="bolder">Chassis : </span>{{ call.vehicle.chassis }}</span>
                     {% endif %}
                 </div>
-
             </div>
+
         </div>
 
         <div class="col s2 left-align ">
@@ -125,13 +138,13 @@
                     </span>
                 </div>
                 <div class="call-cal-body">
-                    <b>
+                    <span class="bolder">
                     {% if call.isUrgent %}
                         <span class="red-text" id="recall-urgent-{{ call.id }}">urgent</span>
                     {% else %}
                         <span class="grey-text text-darken-4">{{call.recallPeriod.name}} {{call.recallHour|timeFormat}}</span>
                     {% endif %}
-                    </b>
+                    </span>
                 </div>
                 <div class="call-cal-action">
                     <a class="{% if call.isUrgent %}urgent{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
