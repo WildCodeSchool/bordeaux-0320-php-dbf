@@ -43,12 +43,12 @@
                 <div class="col s8 recipient-zone">
                     <div class="list-dest hide" id="users-in-service-{{ call.id }}">
                         <span class="before">Transférer à ...
-                            <a href="#" class="close-list secondary-content grey darken-3 white-text" data-target="users-in-service-{{ call.id }}"><i class="material-icons">close</i></a>
+                            <a href="#" class="close-list secondary-content white-text" data-target="users-in-service-{{ call.id }}"><i class="material-icons">close</i></a>
                         </span>
 
                         <ul class="">
                             {%  for user in call.service.users %}
-                                <li class="">
+                                <li class="dest-item">
                                     <a href="#" class="recipients-to-transfer" data-for="{{ user.id }}" data-call="{{ call.id }}">{{user.firstname}} {{user.lastname}} </a>
                                     <i class="material-icons white-text secondary-content">phone_forwarded</i>
                                 </li>

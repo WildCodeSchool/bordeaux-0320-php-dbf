@@ -34,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault()
             const callId = callDeletors[i].dataset.call
             const status = callDeletors[i].dataset.status
-            console.log(status);
             if (confirm('Etes vous sur de vouloir supprimer cet appel ?')) {
                 deleteCall(callId)
                 if(status === 'new') {
