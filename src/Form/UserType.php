@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Repository\CityRepository;
 use App\Repository\ConcessionRepository;
 use App\Repository\ServiceRepository;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -27,28 +28,39 @@ class UserType extends AbstractType
     private $cityRepository;
     private $concessionRepository;
     private $serviceRepository;
+    private $userRepository;
 
     public function __construct(
         CityRepository $cityRepository,
         ConcessionRepository $concessionRepository,
-        ServiceRepository $serviceRepository
+        ServiceRepository $serviceRepository,
+        UserRepository $userRepository
     ) {
         $this->cityRepository       = $cityRepository;
         $this->concessionRepository = $concessionRepository;
         $this->serviceRepository    = $serviceRepository;
+        $this->userRepository       = $userRepository;
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('email')
             ->add('password', PasswordType::class, [
-                'label'=>'Mot de passe'
+                'label' => 'Mot de passe'
             ])
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
             ->add('phone', TextType::class, [
-                'required'=>false
+                'required' => false
             ])
+            ->add('service', EntityType::class, [
+                'class' => Service::class,
+                'choice_label' => 'name',
+            ])
+        ;
+    }
+
+            /**
             ->add('city', EntityType::class, [
                 'class'=>City::class,
                 'choice_label' => 'name',
@@ -68,7 +80,7 @@ class UserType extends AbstractType
             FormEvents::POST_SET_DATA,
             function (FormEvent $event) {
                 $data = $event->getData();
-                /* @var $service Service */
+
                 $service = $data->getService();
                 $form = $event->getForm();
                 if ($service) {
@@ -85,48 +97,50 @@ class UserType extends AbstractType
             }
         );
     }
-
-    /**
+**/
+    /*
      * @param FormInterface $form
      * @param City $city
      */
-    private function addConcessionField(FormInterface $form, ?City $city)
-    {
-        $builder = $form->getConfig()->getFormFactory()->createNamedBuilder(
-            'concession',
-            EntityType::class,
-            null,
-            [
-                'class'=> Concession::class,
-                'choice_label'=>'name',
-                'placeholder'=>$city ? 'sélectionner une concession': 'sélectionner d\'abord une plaque',
-                'mapped'=> false,
-                'required'=> false,
-                'auto_initialize'=> false,
-                'choices'=> $city ? $city->getConcessions(): [],
-            ]
-        );
-
-        $builder->addEventListener(
-            FormEvents::POST_SUBMIT,
-            function (FormEvent $event) {
-                $form = $event->getForm();
-                    $this->addServiceField($form->getParent(), $form->getData());
-            }
-        );
-        $form->add($builder->getForm());
-    }
-
-    private function addServiceField(FormInterface $form, ?Concession $concession)
-    {
-        $form->add('service', EntityType::class, [
-            'class'=> Service::class,
-            'placeholder'=> $concession ?'sélectionner un service': 'sélectionner d\'abord votre concession',
-            'choices'=> $concession ? $concession->getServices() : [],
-            'choice_label'=>'name'
-        ]);
-    }
-
+        /**
+         * private function addConcessionField(FormInterface $form, ?City $city)
+         * {
+         * $builder = $form->getConfig()->getFormFactory()->createNamedBuilder(
+         * 'concession',
+         * EntityType::class,
+         * null,
+         * [
+         * 'class'=> Concession::class,
+         * 'choice_label'=>'name',
+         * 'placeholder'=>$city ? 'sélectionner une concession': 'sélectionner d\'abord une plaque',
+         * 'mapped'=> false,
+         * 'required'=> false,
+         * 'auto_initialize'=> false,
+         * 'choices'=> $city ? $city->getConcessions(): [],
+         * ]
+         * );
+         *
+         * $builder->addEventListener(
+         * FormEvents::POST_SUBMIT,
+         * function (FormEvent $event) {
+         * $form = $event->getForm();
+         * $this->addServiceField($form->getParent(), $form->getData());
+         * }
+         * );
+         * $form->add($builder->getForm());
+         * }
+         *
+         * private function addServiceField(FormInterface $form, ?Concession $concession)
+         * {
+         * $form->add('service', EntityType::class, [
+         * 'class'=> Service::class,
+         * 'placeholder'=> $concession ?'sélectionner un service': 'sélectionner d\'abord votre concession',
+         * 'choices'=> $concession ? $concession->getServices() : [],
+         * 'choice_label'=>'name'
+         * ]);
+         * }
+         * @param OptionsResolver $resolver
+         */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
