@@ -26,7 +26,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     }
     const USERS = [
         [
-            'firstname'=>'François',
+            'firstname'=>'Roland',
             'lastname' => 'Munoz',
             'phone'=>'+33 7 46 21 18 36',
         ],
@@ -101,8 +101,9 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $test = new User();
         $test->setEmail('test@dbf.com');
         $test->setFirstname('test');
-        $test->setLastname('');
+        $test->setLastname('test');
         $test->setCreatedAt(new DateTime());
+        $test->setService($this->getReference('services_4'));
         $test->setRoles(['ROLE_COLLABORATOR']);
         $test->setPassword($this->passwordEncoder->encodePassword(
             $test,
@@ -112,18 +113,17 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($test);
 
         $key = 0;
-        $faker = Faker\Factory::create('fr_FR');
         foreach (self::USERS as $data => $datum) {
             $user = new User();
             $user->setFirstname($datum['firstname']);
             $user->setLastname($datum['lastname']);
-            $user->setEmail($datum['firstname'] . '.' . $datum['lastname'] . '@dbf.com');
+            $user->setEmail(mb_strtolower($datum['firstname']) . '.' . mb_strtolower($datum['lastname']) . '@dbf.com');
             $user->setPhone($datum['phone']);
             $user->setPassword($this->passwordEncoder->encodePassword(
                 $user,
                 '123456'
             ));
-            $user->setCreatedAt($faker->dateTime);
+            $user->setCreatedAt(new DateTime());
             $user->setRoles(['ROLE_COLLABORATOR']);
             $user->setService($this->getReference('services_' . $key));
             $manager->persist($user);
