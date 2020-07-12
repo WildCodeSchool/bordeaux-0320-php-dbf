@@ -13,7 +13,7 @@
         </div>
 
         {% if export is defined  and is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('export_to_csv', {'exportedCalls': export}) }}" class="btn light-blue">Exporter en CSV</a>
+            <a href="{{ path('export_to_csv', {'exportedCalls': export}) }}" download="export{{ "now"|date("d_m_Y") }}.csv" class="btn light-blue">Exporter en CSV</a>
         {% endif %}
         {% include 'components/_flashes.html.twig' %}
         <div>
