@@ -24,6 +24,45 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     {
         return [ServiceFixtures::class];
     }
+    const USERS = [
+        [
+            'firstname'=>'François',
+            'lastname' => 'Munoz',
+            'phone'=>'+33 7 46 21 18 36',
+        ],
+        [
+            'firstname'=>'Julien',
+            'lastname' => 'Boutin',
+            'phone'=>'01 46 11 52 67',
+        ],
+        [
+            'firstname'=>'Michelle',
+            'lastname' => 'Bourdin',
+            'phone'=>'0699912716',
+        ],
+        [
+            'firstname'=>'Yves',
+            'lastname' => 'Neveu',
+            'phone'=>'0895234953',
+        ],
+        [
+            'firstname'=>'Isaac',
+            'lastname' => 'Aubert',
+            'phone'=>'+33 5 10 39 28 46',
+        ],
+        [
+            'firstname'=>'Alphonsine',
+            'lastname' => 'Caron',
+            'phone'=>'04 96 13 33 92',
+        ],
+        [
+            'firstname'=>'Raymond',
+            'lastname' => 'Pinto',
+            'phone'=> '06 21 64 56 64'
+        ],
+    ];
+
+
 
     public function load(ObjectManager $manager)
     {
@@ -50,6 +89,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $admin->setLastname('dbf');
         $admin->setCreatedAt(new DateTime());
         $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setService($this->getReference('services_1'));
         $admin->setPassword($this->passwordEncoder->encodePassword(
             $admin,
             'adminpassword'
@@ -71,20 +111,45 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($test);
 
+        $key = 0;
         $faker = Faker\Factory::create('fr_FR');
-        for ($i = 0; $i < 10; $i++) {
+        foreach (self::USERS as $data => $datum) {
+            $user = new User();
+            $user->setFirstname($datum['firstname']);
+            $user->setLastname($datum['lastname']);
+            $user->setEmail($datum['firstname'] . '.' . $datum['lastname'] . '@dbf.com');
+            $user->setPhone($datum['phone']);
+            $user->setPassword($this->passwordEncoder->encodePassword(
+                $user,
+                '123456'
+            ));
+            $user->setCreatedAt($faker->dateTime);
+            $user->setRoles(['ROLE_COLLABORATOR']);
+            $user->setService($this->getReference('services_' . $key));
+            $manager->persist($user);
+            $this->addReference('user_' . $key, $user);
+            $key ++;
+        }
+
+        /**
+         * $faker = Faker\Factory::create('fr_FR');
+        for $i = 0; $i (< 10; $i++) {
             $user = new User();
             $user->setLastname($faker->lastName);
             $user->setFirstname($faker->firstName);
             $user->setEmail($faker->email);
             $user->setPhone($faker->phoneNumber);
-            $user->setPassword('12345');
+            $user->setPassword($this->passwordEncoder->encodePassword(
+                $user,
+                '123456'
+            ));
             $user->setCreatedAt($faker->dateTime);
+            $user->setRoles(['ROLE_COLLABORATOR']);
+            $user->setService($this->getReference('services_' . rand(0, 9)));
             $manager->persist($user);
             $this->addReference('user_' . $i, $user);
-
+**/
             // Sauvegarde des  utilisateurs :
             $manager->flush();
-        }
     }
 }
