@@ -95,10 +95,15 @@ class HeadBoardData
 
             $result[$datum['city']]['concessions'][$datum['concession']]['slug']
                 = $slugify->slugify($datum['concession']);
+
             $result[$datum['city']]['concessions'][$datum['concession']]['in_process'] = (!isset($result[$datum['city']]
-                ['concessions'][$datum['concession']]['in_process'])) ? 0 : $result[$datum['city']]['in_process'];
+                ['concessions'][$datum['concession']]['in_process'])) ? 0 : $result[$datum['city']]['concessions']
+                [$datum['concession']]['in_process'];
+
             $result[$datum['city']]['concessions'][$datum['concession']]['to_process'] = (!isset($result[$datum['city']]
-                ['concessions'][$datum['concession']]['to_process'])) ? 0 : $result[$datum['city']]['to_process'];
+                ['concessions'][$datum['concession']]['to_process'])) ? 0 : $result[$datum['city']]['concessions']
+                [$datum['concession']]['to_process'];
+
             $result[$datum['city']]['concessions'][$datum['concession']]['in_process'] += (is_null($datum['inprocess']))
                 ? 0 : $datum['inprocess'];
             $result[$datum['city']]['concessions'][$datum['concession']]['to_process'] += (is_null($datum['toprocess']))
