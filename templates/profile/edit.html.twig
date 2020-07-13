@@ -48,6 +48,21 @@
             </div>
         </div>
         <div class="row">
+            <div class="input-field col s6 offset-l3">
+        <p class="grey-text text-lighten_2">Déja passé en atelier ?</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6 offset-l3 switch">
+                <label>
+                    Non
+                    {{ form_widget(form.hasAcceptedAlert)  }}
+                    <span class="lever"></span>
+                    Oui
+                </label>
+            </div>
+        </div>
+        <div class="row">
             <div class="s6 col offset-l7 sauvegarder ">
                 <button class="btn">{{ button_label|default('Sauvegarder') }}</button>
             </div>

@@ -43,17 +43,17 @@ class CallIncomingSendMail implements EventSubscriberInterface
     {
         /** @var Call $call*/
         $call= $event->getSubject();
+        $recipient = $call->getRecipient();
 
         $subject = "Un appel ajouté";
         $email = (new Email())
             ->from($this->sender)
-            ->to($call->getRecipient()->getEmail())
+            ->to($recipient->getEmail())
             ->subject($subject)
             ->html($this->templating->render('call/mail/notification.html.twig', ['call'=> $call]));
 
-        if ($call->getIsUrgent() || $call->getRecipient()->getHasAcceptedAlert()) {
+        if ($call->getIsUrgent() || $recipient->getHasAcceptedAlert()) {
             $this->mailer->send($email);
         }
-
     }
 }

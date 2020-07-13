@@ -6,6 +6,7 @@ use App\Entity\Civility;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -32,6 +33,11 @@ class UserProfileType extends AbstractType
             ->add('lastname', TextType::class, ['label' => 'Nom'])
             ->add('phone', TextType::class, ['label' => 'Numéro de téléphone',
                 'required'=>false
+            ])
+            ->add('hasAcceptedAlert', CheckboxType::class, [
+                'label' => 'Recevoir des emails',
+                'required' => false,
+
             ])
         ;
     }
