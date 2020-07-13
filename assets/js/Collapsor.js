@@ -9,6 +9,7 @@ class Collapsor {
         this.unCollapsors = document.getElementsByClassName(this.classToUncollapse);
         for (let i = 0; i < this.collapsors.length; i++) {
             this.collapsors[i].addEventListener('click', (event) => {
+                event.preventDefault();
                 if (this.collapsors[i].classList.contains('active')) {
                     this.hideChildren(this.collapsors[i])
                 } else {
