@@ -6,6 +6,7 @@
     <div class="container">
     <h1>Collaborateurs</h1>
         <a href="{{ path('user_new') }}" class="btn light-blue darken-2">Ajouter</a>
+        {% include 'components/_flashes.html.twig' %}
     <table class="table highlight">
         <thead>
             <tr>
@@ -32,7 +33,7 @@
                 <td>{{ user.service ? user.service.name : ''  }}</td>
                 <td>{{ user.service ? user.service.concession.name : ''  }}</td>
                 <td>{{ user.service ? user.service.concession.town.name : ''  }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>{{ user.roles == ["ROLE_ADMIN","ROLE_USER"]? "Admin": '' }}</td>
                 <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>

@@ -30,6 +30,9 @@ class UserType extends AbstractType
     private $concessionRepository;
     private $serviceRepository;
     private $userRepository;
+    const ROLES = [
+    'User'=>'ROLE_USER',
+    'Admin'=>'ROLE_ADMIN',];
 
     public function __construct(
         CityRepository $cityRepository,
@@ -54,10 +57,6 @@ class UserType extends AbstractType
             ->add('phone', TextType::class, [
                 'required' => false
             ])
-            ->add('service', EntityType::class, [
-                'class' => Service::class,
-                'choice_label' => 'name',
-            ])
             ->add('roles', CollectionType::class, [
                 'entry_type'   => ChoiceType::class,
                 'entry_options'  => [
@@ -66,11 +65,7 @@ class UserType extends AbstractType
                         'Collaborateur'=> 'ROLE_COLLABORATOR',
                     ],
                 ],
-            ]);
-        ;
-    }
-
-            /**
+            ])
             ->add('city', EntityType::class, [
                 'class'=>City::class,
                 'choice_label' => 'name',
@@ -107,50 +102,52 @@ class UserType extends AbstractType
             }
         );
     }
-**/
-    /*
+
+
+    /**
      * @param FormInterface $form
      * @param City $city
      */
-        /**
-         * private function addConcessionField(FormInterface $form, ?City $city)
-         * {
-         * $builder = $form->getConfig()->getFormFactory()->createNamedBuilder(
-         * 'concession',
-         * EntityType::class,
-         * null,
-         * [
-         * 'class'=> Concession::class,
-         * 'choice_label'=>'name',
-         * 'placeholder'=>$city ? 'sélectionner une concession': 'sélectionner d\'abord une plaque',
-         * 'mapped'=> false,
-         * 'required'=> false,
-         * 'auto_initialize'=> false,
-         * 'choices'=> $city ? $city->getConcessions(): [],
-         * ]
-         * );
-         *
-         * $builder->addEventListener(
-         * FormEvents::POST_SUBMIT,
-         * function (FormEvent $event) {
-         * $form = $event->getForm();
-         * $this->addServiceField($form->getParent(), $form->getData());
-         * }
-         * );
-         * $form->add($builder->getForm());
-         * }
-         *
-         * private function addServiceField(FormInterface $form, ?Concession $concession)
-         * {
-         * $form->add('service', EntityType::class, [
-         * 'class'=> Service::class,
-         * 'placeholder'=> $concession ?'sélectionner un service': 'sélectionner d\'abord votre concession',
-         * 'choices'=> $concession ? $concession->getServices() : [],
-         * 'choice_label'=>'name'
-         * ]);
-         * }
-         * @param OptionsResolver $resolver
-         */
+
+    private function addConcessionField(FormInterface $form, ?City $city)
+    {
+        $builder = $form->getConfig()->getFormFactory()->createNamedBuilder(
+            'concession',
+            EntityType::class,
+            null,
+            [
+                'class'=> Concession::class,
+                'choice_label'=>'name',
+                'placeholder'=>$city ? 'sélectionner une concession': 'sélectionner d\'abord une plaque',
+                'mapped'=> false,
+                'required'=> false,
+                'auto_initialize'=> false,
+                'choices'=> $city ? $city->getConcessions(): [],
+            ]
+        );
+
+        $builder->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) {
+                $form = $event->getForm();
+                $this->addServiceField($form->getParent(), $form->getData());
+            }
+        );
+        $form->add($builder->getForm());
+    }
+
+    private function addServiceField(FormInterface $form, ?Concession $concession)
+    {
+        $form->add('service', EntityType::class, [
+            'class'=> Service::class,
+            'placeholder'=> $concession ?'sélectionner un service': 'sélectionner d\'abord votre concession',
+            'choices'=> $concession ? $concession->getServices() : [],
+            'choice_label'=>'name'
+        ]);
+    }
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
