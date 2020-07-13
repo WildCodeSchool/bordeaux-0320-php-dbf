@@ -11,6 +11,16 @@ use Doctrine\Persistence\ObjectManager;
 class ConcessionFixtures extends Fixture implements DependentFixtureInterface
 {
     const CONCESSIONS = [
+        'Cellule Téléphonique' =>[
+            'town' => 'city_3',
+            'name' => 'Cellule Téléphonique',
+            'address' => ' ',
+            'postcode' => '33000',
+            'city' => ' ',
+            'brand' =>'  ',
+            'phone' => ' ',
+        ],
+
         'La Teste' =>[
             'town' => 'city_0',
             'name' => 'La Teste',
