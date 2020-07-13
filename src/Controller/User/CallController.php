@@ -153,18 +153,23 @@ class CallController extends AbstractController
 
     /**
      * @Route("/{id}", name="call_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
-     * @param Call $call
+     * @param int $id
      * @param EntityManagerInterface $entityManager
+     * @param CallRepository $callRepository
      * @return Response
      */
-    public function delete(Request $request, Call $call, EntityManagerInterface $entityManager): Response
+    public function delete($id, CallRepository $callRepository, EntityManagerInterface $entityManager): JsonResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$call->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($call);
-            $entityManager->flush();
-        }
-        return $this->redirectToRoute('call_index');
+        $call = $callRepository->findOneById($id);
+        $entityManager->remove($call);
+        $entityManager->flush();
+        $data = ['callId' => $id];
+        $response = new JsonResponse();
+        $response->setStatusCode(Response::HTTP_OK);
+        $response->setData($data);
+        return $response;
     }
 
     /**

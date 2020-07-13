@@ -17,14 +17,15 @@
                                     <h5 class="cyan-text left-align">Vos appels</h5>
                                 </td>
                                 <td class="col s2">
+                                    <span class="chip light-green white-text">{{ calls_added_by_user }}</span> appels ajoutés ce jour
+                                </td>
+                                <td class="col s2">
                                     <span class="chip cyan white-text">{{ calls_to_process }}</span> <a href="{{ path('user_home') }}">appels à effectuer</a>
                                 </td>
                                 <td class="col s2">
                                     <span class="chip light-green white-text">{{ calls_in_process }}</span> <a href="{{ path('user_calls_in_process') }}">rappels à effectuer</a>
                                 </td>
-                                <td class="col s2">
-                                    <span class="chip light-green white-text">{{ calls_added_by_user }}</span> appels ajoutés
-                                </td>
+
                             </tr>
                         </table>
                     </div>
@@ -32,56 +33,67 @@
             </ul>
         </div>
     </div>
-
+    {% if cities %}
     <div class="row">
         <div class="col s12">
-            <ul class="collapsible">
-                {% for service in services %}
-                    <li class="">
-                        <div class="collapsible-header">
-                            <table class="table-in-collapse">
-                                <tr class="row">
-                                    <td class="col s1">
-                                        <i class="material-icons">settings</i>
-                                    </td>
-                                    <td class="col s5">
-                                        <h5 class="cyan-text left-align">{{ service.name }}</h5>
-                                    </td>
-                                    <td class="col s3">
-                                        <span class="chip cyan white-text">{{ service.not_processed }}</span> appels à effectuer
-                                    </td>
-                                    <td class="col s3">
-                                        <span class="chip light-green white-text">{{ service.processed }}</span> rappels à effectuer
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="collapsible-body">
-                            <table>
-                                <thead>
-                                <tr>
-                                    <th>Collaborateur</th>
-                                    <th class="center-align">Appels à traiter</th>
-                                    <th class="center-align">Appels en cours de traitement</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {% for user in service.users %}
-                                    <tr>
-                                        <td>{{user.name}}</td>
-                                        <td class="center-align"><span class="chip light-blue white-text">{{ user.to_process }}</span></td>
-                                        <td class="center-align"><span class="chip light-green white-text">{{ user.in_process }}</span></td>
-                                    </tr>
-                                {% endfor %}
-                                </tbody>
-
-
-                            </table>
-                        </div>
-                    </li>
+            <h5>Les appels pour les sites dont vous êtes responsable</h5>
+            <table class="headboard-table">
+                {% for cityName, city in cities %}
+                    <tr class="row collapsor city-line" data-collapse="{{ city.slug }}" data-type="city">
+                        <td class="col s8 subrow" colspan="3">
+                            <i class="material-icons left tiny cyan-text text-darken-3">location_city</i>
+                            <span class="city-name cyan-text text-darken-3">{{ cityName }}</span>
+                        </td>
+                        <td class="col s2"><span class="chip cyan darken-4 white-text">{{city.to_process}}</span></td>
+                        <td class="col s2"><span class="chip light-green darken-4 white-text">{{city.in_process}}</span></td>
+                    </tr>
+                {% for concessionName, concession in city.concessions %}
+                    <tr class="row collapsor concession-line hide {{ city.slug }}"
+                        data-collapse="{{ concession.slug }}"
+                        data-city="{{ city.slug }}"
+                        data-type="concession"
+                    >
+                        <td class="col s8 subrow" colspan="3">
+                            <i class="material-icons left tiny cyan-text">home</i>
+                            <span class="bolder concession-name cyan-text">{{ concessionName }}</span>
+                        </td>
+                        <td class="col s2"><span class="chip cyan darken-1 white-text">{{concession.to_process}}</span></td>
+                        <td class="col s2"><span class="chip light-green darken-1 white-text">{{concession.in_process}}</span></td>
+                    </tr>
+                    {% for serviceName, service in concession.services %}
+                        <tr class="row collapsor {{ concession.slug }} service-line hide"
+                            data-collapse = "{{ service.slug }}"
+                            data-concession="{{ concession.slug }}"
+                            data-city="{{ city.slug }}"
+                            data-type="service"
+                        >
+                            <td class="col s8 subrow" colspan="3">
+                                <i class="material-icons left tiny">settings</i>
+                                <span class="bolder service-name">{{ serviceName }}</span>
+                            </td>
+                            <td class="col s2"><span class="chip cyan lighten-1 white-text service-name">{{service.to_process}}</span></td>
+                            <td class="col s2"><span class="chip light-green lighten-1 white-text">{{service.in_process}}</span></td>
+                        </tr>
+                        {% for userName, user in service.collaborators %}
+                            <tr class="row hide user-line {{ service.slug }}"
+                                data-concession="{{ concession.slug }}"
+                                data-city="{{ city.slug }}"
+                                data-service="{{ service.slug }}"
+                            >
+                                <td class="col s8 subrow" colspan="3">
+                                    <i class="material-icons left tiny">person</i>
+                                    <span class="user-name">{{ userName }}</span>
+                                </td>
+                                <td class="col s2"><span class="chip cyan lighten-3 white-text">{{user.to_process}}</span></td>
+                                <td class="col s2"><span class="chip light-green lighten-3 white-text">{{user.in_process}}</span></td>
+                            </tr>
+                        {% endfor %}
+                    {% endfor %}
                 {% endfor %}
-            </ul>
+                {% endfor %}
+            </table>
         </div>
 
     </div>
+    {% endif %}
 {% endblock %}

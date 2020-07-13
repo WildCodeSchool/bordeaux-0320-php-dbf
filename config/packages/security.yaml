@@ -37,6 +37,7 @@ security:
     access_control:
          - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/user, roles: ROLE_ADMIN }
+         - { path: ^/search, roles: ROLE_USER }
         # - { path: ^/profile, roles: ROLE_USER }
     role_hierarchy:
         ROLE_COLLABORATOR: ROLE_USER
