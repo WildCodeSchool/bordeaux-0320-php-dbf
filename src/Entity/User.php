@@ -121,6 +121,11 @@ class User implements UserInterface
      */
     private $civility;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $hasAcceptedAlert;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
@@ -598,6 +603,18 @@ class User implements UserInterface
     public function setCivility(?Civility $civility): self
     {
         $this->civility = $civility;
+
+        return $this;
+    }
+
+    public function getHasAcceptedAlert(): ?bool
+    {
+        return $this->hasAcceptedAlert;
+    }
+
+    public function setHasAcceptedAlert(bool $hasAcceptedAlert): self
+    {
+        $this->hasAcceptedAlert = $hasAcceptedAlert;
 
         return $this;
     }
