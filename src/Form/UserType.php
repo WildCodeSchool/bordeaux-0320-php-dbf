@@ -23,6 +23,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Security;
 
 class UserType extends AbstractType
 {
@@ -30,9 +31,6 @@ class UserType extends AbstractType
     private $concessionRepository;
     private $serviceRepository;
     private $userRepository;
-    const ROLES = [
-    'User'=>'ROLE_USER',
-    'Admin'=>'ROLE_ADMIN',];
 
     public function __construct(
         CityRepository $cityRepository,
@@ -45,27 +43,63 @@ class UserType extends AbstractType
         $this->serviceRepository    = $serviceRepository;
         $this->userRepository       = $userRepository;
     }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $post = file_get_contents('php://input');
+        if ($post) {
+            $data = json_decode($post);
+        }
         $builder
-            ->add('email')
-            ->add('password', PasswordType::class, [
-                'label' => 'Mot de passe'
-            ])
-            ->add('firstname', TextType::class)
-            ->add('lastname', TextType::class)
-            ->add('phone', TextType::class, [
-                'required' => false
-            ])
-            ->add('roles', CollectionType::class, [
-                'entry_type'   => ChoiceType::class,
-                'entry_options'  => [
-                    'choices'  => [
-                        'Administrateur' => 'ROLE_ADMIN',
-                        'Collaborateur'=> 'ROLE_COLLABORATOR',
-                    ],
+        ->add('email')
+        ->add('password', PasswordType::class, [
+            'label' => 'Mot de passe'
+        ])
+        ->add('firstname', TextType::class)
+        ->add('lastname', TextType::class)
+        ->add('phone', TextType::class, [
+            'required' => false
+        ])
+        ->add('roles', CollectionType::class, [
+            'entry_type' => ChoiceType::class,
+            'entry_options' => [
+                'choices' => [
+                    'Administrateur' => 'ROLE_ADMIN',
+                    'Collaborateur' => 'ROLE_COLLABORATOR',
                 ],
-            ])
+            ],
+        ])
+        ->add('city', ChoiceType::class, [
+            'choices' => $this->getAllCities(),
+            'mapped' => false,
+        ])
+        ->add('service', EntityType::class, [
+            'class' => Service::class,
+            'choice_label' => 'name',
+        ]);
+
+        if (isset($data->City)) {
+            $city = $this->cityRepository->findOneById($data->City);
+            if (!$city->isPhoneCity()) {
+                $builder->
+                add('concession', ChoiceType::class, [
+                'choices' => $this->getConcessions($data->City),
+                'mapped' => false
+                ]);
+            }
+        }
+        if (isset($data->Concession)) {
+            $builder->
+            add('service_choice', ChoiceType::class, [
+            'choices' => $this->getServices($data->Concession),
+            'mapped' => false
+            ]);
+        }
+    }
+
+
+
+            /**
             ->add('city', EntityType::class, [
                 'class'=>City::class,
                 'choice_label' => 'name',
@@ -102,13 +136,12 @@ class UserType extends AbstractType
             }
         );
     }
-
-
-    /**
+**/
+    /*
      * @param FormInterface $form
      * @param City $city
      */
-
+/**
     private function addConcessionField(FormInterface $form, ?City $city)
     {
         $builder = $form->getConfig()->getFormFactory()->createNamedBuilder(
@@ -145,6 +178,9 @@ class UserType extends AbstractType
             'choice_label'=>'name'
         ]);
     }
+ **/
+
+
     /**
      * @param OptionsResolver $resolver
      */
@@ -154,5 +190,47 @@ class UserType extends AbstractType
             'data_class' => User::class,
             'allow_extra_fields' => true,
         ]);
+    }
+
+    public function getAllCities()
+    {
+        $cities = $this->cityRepository->findAll();
+        $choices = [];
+        $choices['Choisir une plaque'] = '';
+        foreach ($cities as $city) {
+            $choices[$city->getName()] = $city->getId();
+        }
+        return $choices;
+    }
+
+    public function getConcessions($cityId = null)
+    {
+        if (!$cityId) {
+            $concessions = $this->concessionRepository->findAll();
+        } else {
+            $concessions = $this->concessionRepository->findBy(['town' => $cityId]);
+        }
+        $choices = [];
+        $choices['Choisir une concession'] = '';
+        foreach ($concessions as $concession) {
+            $choices[$concession->getName()] = $concession->getId();
+        }
+        return $choices;
+    }
+
+    public function getServices($concessionId = null)
+    {
+        if (is_null($concessionId)) {
+            $services = $this->serviceRepository->findAll();
+        } else {
+            $services = $this->serviceRepository->findBy(['concession' => $concessionId]);
+        }
+        $choices = [];
+        $choices['Choisir un service'] = '';
+        foreach ($services as $service) {
+            $choices[$service->getName()] = $service->getId();
+        }
+
+        return $choices;
     }
 }

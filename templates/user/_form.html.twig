@@ -2,6 +2,11 @@
 <div class="container">
 {{ form_start(form) }}
     {{ form_widget(form) }}
+
+    <div class="col s3" id="recipient-concession">
+    </div>
+    <div class="col s3" id="recipient-service">
+    </div>
     <button class="btn light-blue darken-2">{{ button_label|default('Ajouter') }}</button>
 {{ form_end(form) }}
 </div>

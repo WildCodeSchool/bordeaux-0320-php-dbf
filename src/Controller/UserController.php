@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Call;
 use App\Entity\User;
+use App\Form\RecipientType;
 use App\Form\UserEditType;
 use App\Form\UserType;
 use App\Repository\UserRepository;
@@ -152,7 +154,6 @@ class UserController extends AbstractController
         $users = $userRepository->findAllOrderBy('lastname', 'ASC');
         $dataList = [];
         foreach ($users as $user) {
-            /* @var $user User */
             $dataList[$user->getFirstname(). ' ' . $user->getLastname()]  = null;
         }
         return new JsonResponse($dataList);
