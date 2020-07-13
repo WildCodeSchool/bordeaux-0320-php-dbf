@@ -1,7 +1,18 @@
 class recipientsAjaxTool {
     constructor(url) {
         this.urlToAdd     = url
+        this.urlToRandom = '/user/random';
         this.init()
+    }
+
+    getPhoneCityId(callback) {
+        fetch('/phoneCity/getId')
+            .then(response=>{
+                return response.json()
+            })
+            .then(json=> {
+                callback(json.phoneCityId);
+            });
     }
 
     init(data = null) {
@@ -25,7 +36,10 @@ class recipientsAjaxTool {
         this.recipientZone        = document.getElementById(this.recipientZoneId);
         this.serviceField         = document.getElementById(this.serviceFieldId);
         this.recipientField       = document.getElementById(this.recipientFieldId);
-
+        this.phoneCityId          = null
+        this.getPhoneCityId((phoneCityId => {
+            this.phoneCityId = phoneCityId;
+        }));
         if (data) {
             this.values = data
         } else {
@@ -49,18 +63,32 @@ class recipientsAjaxTool {
         this.initializeSelects()
 
         this.citySelector.addEventListener('change', () => {
-            this.concessionZone.innerHTML = this.addLoader()
+            if (this.citySelector.value != this.phoneCityId) {
+                this.concessionZone.innerHTML = this.addLoader()
+            } else {
+                this.concessionZone.innerHTML ='';
+            }
             const postdata = {
                 'City' : this.citySelector.value
             }
             if (this.authorizedToPost) {
                 this.authorizedToPost = false;
-                this.sendData(postdata, (data) => {
-                    this.concessionZone.innerHTML = '<small class="grey-text">Choisir une concession</small><br>' + this.getHtmlElement(data, 'call_concession');
-                    this.serviceZone.innerHTML = "";
-                    this.recipientZone.innerHTML = "";
-                    this.init(postdata)
-                })
+                if (this.citySelector.value != this.phoneCityId) {
+                    this.sendData(postdata, (data) => {
+                        this.concessionZone.innerHTML = '<small class="grey-text">Choisir une concession</small><br>' + this.getHtmlElement(data, 'call_concession');
+                        this.serviceZone.innerHTML = "";
+                        this.recipientZone.innerHTML = "";
+                        this.init(postdata)
+                    })
+                } else {
+                    this.citySelector.setAttribute('disabled', 'disabled');
+                    this.getRandomUser(json => {
+                        this.selectValueInSelect(this.recipientField, json.recipientId)
+                        this.concessionZone.innerHTML = "";
+                        this.serviceZone.innerHTML = "";
+                    })
+                    this.initializeSelects()
+                }
             }
         })
 
@@ -119,7 +147,6 @@ class recipientsAjaxTool {
         return domElem.outerHTML;
     }
 
-
     addLoader() {
         return '<div class="progress grey lighten-3 mgt30">\n' +
             '      <div class="indeterminate light-blue"></div>\n' +
@@ -140,6 +167,20 @@ class recipientsAjaxTool {
                 return response.text();
             }).then(function (html) {
                 action(html);
+        });
+    }
+
+    getRandomUser(action) {
+        fetch(this.urlToRandom, {
+            method      : 'GET',
+            headers     : {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(function (response) {
+                return response.json();
+            }).then(function (json) {
+                action(json);
         });
     }
 

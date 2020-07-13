@@ -15,6 +15,13 @@
   }
 }
 
+.bolder {
+  font-weight:bold;
+}
+.d-block {
+  display:block;
+}
+
 ul {
   &.list-calls {
     li {
@@ -23,7 +30,14 @@ ul {
         border-bottom: none;
         &.cell-item {
           padding-bottom:0px;
-
+          .history-line {
+            display:block;
+            font-size:0.9rem;
+            margin-bottom:5px;
+          }
+          .chassis {
+            font-size:0.9rem;
+          }
           .place-name {
             margin-left:30px;
           }
@@ -52,6 +66,7 @@ ul {
     border:1px solid $greyLight1;
     background:$greyLight2;
     z-index:9999;
+    border-radius:7px;
     .before {
       position:absolute;
       display:block;
@@ -64,11 +79,22 @@ ul {
       line-height: 30px;
       vertical-align: middle;
       padding-left:7px;
-      font-size:1.3rem;
+      font-size:1.2rem;
+      font-weight: bold;
       z-index:99999;
       .close-list {
-        height:30px;
+        height:25px;
+        width:25px;
+        margin-top:2px;
+        border-radius:50%;
         margin-right:15px;
+        i {
+          height: 25px;
+          width:25px;
+          vertical-align: middle;
+          font-size:1.2rem;
+          text-align: center;
+        }
       }
     }
     ul {
@@ -78,11 +104,15 @@ ul {
         border:none;
         vertical-align: middle;
         padding:5px 10px 5px 10px;
+        &.dest-item {
+          i {
+            font-size:1.2rem;
+          }
+        }
         &:hover {
-          background: $grey;
+          background: $blue-dbf;
           a {
             color:white;
-
           }
         }
         a {

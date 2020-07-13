@@ -192,4 +192,9 @@ class City
 
         return $this;
     }
+
+    public function isPhoneCity(): bool
+    {
+        return ($this->getName() === 'Cellule Téléphonique') ? true : false;
+    }
 }

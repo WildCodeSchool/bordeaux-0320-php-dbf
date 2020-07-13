@@ -204,3 +204,24 @@ a.btn-rounded {
 .form-profile {
   margin-top: 5%;
 }
+
+.collapsible {
+  .collapsible-header {
+    padding:0.2rem;
+    h5 {
+      margin:10px;
+    }
+    table {
+      tr {
+        td {
+          vertical-align: middle;
+          line-height: 40px;
+          i {
+            vertical-align: middle;
+            line-height: 40px;
+          }
+        }
+      }
+    }
+  }
+}
