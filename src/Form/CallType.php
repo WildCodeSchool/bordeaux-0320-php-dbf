@@ -31,7 +31,7 @@ class CallType extends AbstractType
     private $concessionRepository;
     private $serviceRepository;
     private $userRepository;
-
+    private $security;
 
     public function __construct(
         CityRepository $cityRepository,
@@ -84,8 +84,8 @@ class CallType extends AbstractType
             ]);
 
         if (isset($data->City)) {
-            // TODO change != 4
-            if ($data->City != 4) {
+            $city = $this->cityRepository->findOneById($data->City);
+            if (!$city->isPhoneCity()) {
                 $builder->
                 add('concession', ChoiceType::class, [
                     'choices' => $this->getConcessions($data->City),

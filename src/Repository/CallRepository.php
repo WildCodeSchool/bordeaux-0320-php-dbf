@@ -216,21 +216,17 @@ class CallRepository extends ServiceEntityRepository
             ;
     }
 
-    public function getCallsAddedByUser(
-        User $user,
-        $from = null,
-        $to = null
-    ) {
-        $to = (!is_null($to)) ? $to : new DateTime('now');
-        $from = (!is_null($from)) ? $from : $to->sub(new DateInterval('P365D'));
-
+    public function getCallsAddedByUserToday(User $user)
+    {
+        $start = new DateTime(date('Y-m-d 00:00:00'));
+        $end = new DateTime(date('Y-m-d 23:59:00'));
         return $this->createQueryBuilder('c')
             ->Where('c.author = :auth')
             ->setParameter('auth', $user)
-            ->andWhere('c.createdAt >= :from')
-            ->setParameter('from', $from)
-            ->andWhere('c.createdAt <= :to')
-            ->setParameter('to', $to)
+            ->andWhere('c.createdAt >= :start')
+            ->setParameter('start', $start)
+            ->andWhere('c.createdAt <= :end')
+            ->setParameter('end', $end)
             ->getQuery()
             ->getResult()
             ;
