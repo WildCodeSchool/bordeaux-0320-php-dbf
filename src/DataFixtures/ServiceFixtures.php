@@ -32,7 +32,7 @@ class ServiceFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $key = 0;
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 1; $i < 11; $i++) {
             foreach (self::SERVICES as $serviceName) {
                 $service = new Service();
                 $service->setName($serviceName);
@@ -42,6 +42,12 @@ class ServiceFixtures extends Fixture implements DependentFixtureInterface
                 $key++;
             }
         }
+        $key++;
+        $service = new Service();
+        $service->setName('Cellule téléphonique');
+        $service->setConcession($this->getReference('concession_0'));
+        $manager->persist($service);
+        $this->addReference('services_' . $key, $service);
         $manager->flush();
     }
 }

@@ -3,6 +3,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\ServiceHead;
 use DateTime;
 use Faker;
 use App\Entity\User;
@@ -74,16 +75,17 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $collaborator->setCreatedAt(new DateTime());
         $collaborator->setRoles(['ROLE_COLLABORATOR']);
         $collaborator->setService($this->getReference('services_4'));
-
         $collaborator->setPassword($this->passwordEncoder->encodePassword(
             $collaborator,
             'collabpassword'
         ));
-
         $manager->persist($collaborator);
+        $this->addReference('collaboratorUser', $collaborator);
+
 
         // Création d’un utilisateur de type “admin”
         $admin = new User();
+
         $admin->setEmail('admin@dbf.com');
         $admin->setFirstname('Admin');
         $admin->setLastname('dbf');
@@ -94,8 +96,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $admin,
             'adminpassword'
         ));
-
         $manager->persist($admin);
+        $this->addReference('adminUser', $admin);
 
         // Création d’un utilisateur de test
         $test = new User();
@@ -113,7 +115,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($test);
 
         $key = 0;
-        foreach (self::USERS as $data => $datum) {
+        foreach (self::USERS as $datum) {
             $user = new User();
             $user->setFirstname($datum['firstname']);
             $user->setLastname($datum['lastname']);
