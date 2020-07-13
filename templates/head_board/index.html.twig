@@ -39,7 +39,7 @@
             <h5>Les appels pour les sites dont vous êtes responsable</h5>
             <table class="headboard-table">
                 {% for cityName, city in cities %}
-                    <tr class="row collapsor city-line" data-collapse="{{ city.slug }}" data-type="city">
+                    <tr class="row collapsor city-line" data-collapse="{{ city.slug }}" data-type="city"">
                         <td class="col s8 subrow" colspan="3">
                             <i class="material-icons left tiny cyan-text text-darken-3">location_city</i>
                             <span class="city-name cyan-text text-darken-3">{{ cityName }}</span>
@@ -49,8 +49,8 @@
                     </tr>
                 {% for concessionName, concession in city.concessions %}
                     <tr class="row collapsor concession-line hide {{ city.slug }}"
-                        data-collapse="{{ concession.slug }}"
-                        data-city="{{ city.slug }}"
+                        data-collapse="{{ city.slug }}-{{ concession.slug }}"
+                        data-parent="{{ city.slug }}"
                         data-type="concession"
                     >
                         <td class="col s8 subrow" colspan="3">
@@ -62,9 +62,8 @@
                     </tr>
                     {% for serviceName, service in concession.services %}
                         <tr class="row collapsor {{ concession.slug }} service-line hide"
-                            data-collapse = "{{ service.slug }}"
-                            data-concession="{{ concession.slug }}"
-                            data-city="{{ city.slug }}"
+                            data-collapse = "{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}"
+                            data-parent="{{ city.slug }}-{{ concession.slug }}"
                             data-type="service"
                         >
                             <td class="col s8 subrow" colspan="3">
@@ -77,8 +76,7 @@
                         {% for userName, user in service.collaborators %}
                             <tr class="row hide user-line {{ service.slug }}"
                                 data-concession="{{ concession.slug }}"
-                                data-city="{{ city.slug }}"
-                                data-service="{{ service.slug }}"
+                                data-parent="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}"
                             >
                                 <td class="col s8 subrow" colspan="3">
                                     <i class="material-icons left tiny">person</i>

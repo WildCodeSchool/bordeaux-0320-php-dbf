@@ -116,11 +116,13 @@ class HeadBoardData
                 'slug'          => $slugify->slugify($serviceName),
             ];
             foreach ($collaborators as $collaborator) {
+                $collaboratorName = $collaborator->getFirstname() . ' ' . $collaborator->getLastname();
                 $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName]['collaborators']
-                    [$collaborator->getFirstname() . ' ' . $collaborator->getLastname()] =
+                    [$collaboratorName] =
                     [
-                        'user_id'   => $collaborator->getId(),
-                        'user_name' => $collaborator->getFirstname() . ' ' . $collaborator->getLastname(),
+                        'user_id'    => $collaborator->getId(),
+                        'slug'       => $slugify->slugify($collaboratorName),
+                        'user_name'  => $collaboratorName,
                         'to_process' => count($this->callRepository->callsToProcessByUser($collaborator)),
                         'in_process' => count($this->callRepository->callsInProcessByUser($collaborator)),
                     ];

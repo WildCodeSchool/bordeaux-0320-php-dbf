@@ -18,15 +18,45 @@ class Collapsor {
         }
     }
 
-    getAllChildren(elem) {
+    mergeNodeLists(a, b) {
+        const slice = Array.prototype.slice;
+        return slice.call(a).concat(slice.call(b));
+    }
+
+    getAllChildrenToShow(elem) {
+        const typeName = elem.dataset.collapse;
+        return document.querySelectorAll("[data-parent=" + typeName + "]");
+    }
+
+    getAllChildrenToHide(elem) {
         const type = elem.dataset.type;
         const typeName = elem.dataset.collapse;
-        const children = document.querySelectorAll("[data-" + type + "='" + typeName + "']");
+        let children = null;
+        if (type === 'service') {
+            children = document.querySelectorAll(
+                "[data-parent=" + typeName + "]"
+            );
+        }
+        if (type === 'concession') {
+            children = document.querySelectorAll("[data-parent=" + typeName + "]");
+            for (let i = 0; i < children.length; i ++) {
+                children = this.mergeNodeLists(children, this.getAllChildrenToShow(children[i]))
+            }
+        }
+        if (type === 'city') {
+            children = document.querySelectorAll("[data-parent=" + typeName + "]");
+            for (let i = 0; i < children.length; i ++) {
+                children = this.mergeNodeLists(children, this.getAllChildrenToShow(children[i]))
+                for (let j = 0; j < children[i].length; j ++) {
+                    children = this.mergeNodeLists(children[i], this.getAllChildrenToShow(children[j]))
+                }
+            }
+        }
         return children;
     }
 
     showChildren(row) {
-        const children = document.getElementsByClassName(row.getAttribute('data-collapse'));
+        const children = this.getAllChildrenToShow(row);
         if (children.length>0) {
             row.classList.add('active')
             for (let i = 0; i < children.length; i++) {
@@ -40,7 +70,7 @@ class Collapsor {
 
     hideChildren(row) {
         row.classList.remove('active')
-        const children = this.getAllChildren(row);
+        const children = this.getAllChildrenToHide(row);
         for (let i = 0; i < children.length; i++) {
             const child = children[i];
             child.classList.remove('active');
