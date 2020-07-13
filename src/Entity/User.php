@@ -116,6 +116,11 @@ class User implements UserInterface
      */
     private $cityHeads;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Civility::class)
+     */
+    private $civility;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
@@ -581,6 +586,18 @@ class User implements UserInterface
                 $cityHead->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCivility(): ?Civility
+    {
+        return $this->civility;
+    }
+
+    public function setCivility(?Civility $civility): self
+    {
+        $this->civility = $civility;
 
         return $this;
     }
