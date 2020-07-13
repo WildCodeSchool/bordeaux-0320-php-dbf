@@ -62,14 +62,13 @@ class UserController extends AbstractController
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
-                  $user->setPassword(
-                      $passwordEncoder->encodePassword(
-                          $user,
-                          $form->get('password')->getData()
-                      )
-                  );
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password')->getData()
+                )
+            );
             $entityManager->persist($user);
             $entityManager->flush();
             $this->addFlash('success', 'Un compte a  été créé !');
