@@ -70,8 +70,8 @@
                                 <i class="material-icons left tiny">settings</i>
                                 <span class="bolder service-name">{{ serviceName }}</span>
                             </td>
-                            <td class="col s2"><span class="chip cyan lighten-1 white-text service-name">{{service.to_process}}</span></td>
-                            <td class="col s2"><span class="chip light-green lighten-1 white-text">{{service.in_process}}</span></td>
+                            <td class="col s2"><span class="chip cyan lighten-3 black-text service-name">{{service.to_process}}</span></td>
+                            <td class="col s2"><span class="chip light-green lighten-3 black-text">{{service.in_process}}</span></td>
                         </tr>
                         {% for userName, user in service.collaborators %}
                             <tr class="row hide user-line {{ service.slug }}"
@@ -82,8 +82,8 @@
                                     <i class="material-icons left tiny">person</i>
                                     <span class="user-name">{{ userName }}</span>
                                 </td>
-                                <td class="col s2"><span class="chip cyan lighten-3 white-text">{{user.to_process}}</span></td>
-                                <td class="col s2"><span class="chip light-green lighten-3 white-text">{{user.in_process}}</span></td>
+                                <td class="col s2"><span class="chip blue darken-3 white-text">{{user.to_process}}</span></td>
+                                <td class="col s2"><span class="chip green darken-2 white-text">{{user.in_process}}</span></td>
                             </tr>
                         {% endfor %}
                     {% endfor %}
