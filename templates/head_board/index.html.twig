@@ -39,7 +39,7 @@
             <h5>Les appels pour les sites dont vous êtes responsable</h5>
             <table class="headboard-table">
                 {% for cityName, city in cities %}
-                    <tr class="row collapsor city-line" data-collapse="{{ city.slug }}" data-type="city">
+                    <tr class="row collapsor city-line" data-collapse="{{ city.slug }}" data-type="city"">
                         <td class="col s8 subrow" colspan="3">
                             <i class="material-icons left tiny cyan-text text-darken-3">location_city</i>
                             <span class="city-name cyan-text text-darken-3">{{ cityName }}</span>
@@ -49,8 +49,8 @@
                     </tr>
                 {% for concessionName, concession in city.concessions %}
                     <tr class="row collapsor concession-line hide {{ city.slug }}"
-                        data-collapse="{{ concession.slug }}"
-                        data-city="{{ city.slug }}"
+                        data-collapse="{{ city.slug }}-{{ concession.slug }}"
+                        data-parent="{{ city.slug }}"
                         data-type="concession"
                     >
                         <td class="col s8 subrow" colspan="3">
@@ -62,30 +62,28 @@
                     </tr>
                     {% for serviceName, service in concession.services %}
                         <tr class="row collapsor {{ concession.slug }} service-line hide"
-                            data-collapse = "{{ service.slug }}"
-                            data-concession="{{ concession.slug }}"
-                            data-city="{{ city.slug }}"
+                            data-collapse = "{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}"
+                            data-parent="{{ city.slug }}-{{ concession.slug }}"
                             data-type="service"
                         >
                             <td class="col s8 subrow" colspan="3">
                                 <i class="material-icons left tiny">settings</i>
                                 <span class="bolder service-name">{{ serviceName }}</span>
                             </td>
-                            <td class="col s2"><span class="chip cyan lighten-1 white-text service-name">{{service.to_process}}</span></td>
-                            <td class="col s2"><span class="chip light-green lighten-1 white-text">{{service.in_process}}</span></td>
+                            <td class="col s2"><span class="chip cyan lighten-3 black-text service-name">{{service.to_process}}</span></td>
+                            <td class="col s2"><span class="chip light-green lighten-3 black-text">{{service.in_process}}</span></td>
                         </tr>
                         {% for userName, user in service.collaborators %}
                             <tr class="row hide user-line {{ service.slug }}"
                                 data-concession="{{ concession.slug }}"
-                                data-city="{{ city.slug }}"
-                                data-service="{{ service.slug }}"
+                                data-parent="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}"
                             >
                                 <td class="col s8 subrow" colspan="3">
                                     <i class="material-icons left tiny">person</i>
                                     <span class="user-name">{{ userName }}</span>
                                 </td>
-                                <td class="col s2"><span class="chip cyan lighten-3 white-text">{{user.to_process}}</span></td>
-                                <td class="col s2"><span class="chip light-green lighten-3 white-text">{{user.in_process}}</span></td>
+                                <td class="col s2"><span class="chip blue darken-3 white-text">{{user.to_process}}</span></td>
+                                <td class="col s2"><span class="chip green darken-2 white-text">{{user.in_process}}</span></td>
                             </tr>
                         {% endfor %}
                     {% endfor %}
