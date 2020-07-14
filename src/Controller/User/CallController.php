@@ -146,12 +146,17 @@ class CallController extends AbstractController
      */
     public function takeCall(Call $call, EntityManagerInterface $entityManager)
     {
-        $call->setService(null);
-        $call->setRecipient($this->getUser());
-        $entityManager->flush();
-        return $this->redirect(
-            $this->generateUrl('user_home') . '#call-' . $call->getId()
-        );
+        if (is_null($call->getRecipient())) {
+            $call->setService(null);
+            $call->setRecipient($this->getUser());
+            $entityManager->flush();
+            return $this->redirect(
+                $this->generateUrl('user_home') . '#call-' . $call->getId()
+            );
+        } else {
+            $this->addFlash('error', 'Cet appel a déja été pris en charge');
+            return $this->redirectToRoute('user_home');
+        }
     }
 
     /**
