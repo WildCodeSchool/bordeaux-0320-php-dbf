@@ -149,7 +149,9 @@ class CallController extends AbstractController
         $call->setService(null);
         $call->setRecipient($this->getUser());
         $entityManager->flush();
-        return $this->redirectToRoute('user_home');
+        return $this->redirect(
+            $this->generateUrl('user_home') . '#call-' . $call->getId()
+        );
     }
 
     /**
