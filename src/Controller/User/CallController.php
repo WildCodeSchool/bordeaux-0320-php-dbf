@@ -154,7 +154,7 @@ class CallController extends AbstractController
                 $this->generateUrl('user_home') . '#call-' . $call->getId()
             );
         } else {
-            $this->addFlash('error', 'Cet appel a déja été pris en charge');
+            $this->addFlash('error', 'Cet appel a déjà été pris en charge');
             return $this->redirectToRoute('user_home');
         }
     }
