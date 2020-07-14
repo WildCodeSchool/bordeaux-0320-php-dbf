@@ -23,7 +23,9 @@ class UserHomeController extends AbstractController
     {
         $appUser = $this->getUser();
         $callsToProcess = $callRepository->callsToProcessByUser($appUser);
-        $totalToProcess = count($callRepository->callsToProcessByUser($appUser));
+        $callsToProcessForUserInService = $callRepository->callsToProcessByService($appUser->getService());
+        $callsToProcess = array_merge($callsToProcessForUserInService, $callsToProcess);
+        $totalToProcess = count($callsToProcess);
         $totalInProcess = count($callRepository->callsInProcessByUser($appUser));
 
         $lastCall = $callRepository->lastCallToProcessByUser($appUser);

@@ -85,6 +85,7 @@ class HeadBoardData
             $service       = $this->serviceRepository->findOneById($serviceId);
             $serviceName   = $service->getName();
             $collaborators = $service->getUsers();
+
             $result[$datum['city']]['slug'] = $slugify->slugify($datum['city']);
             $result[$datum['city']]['in_process'] = (!isset($result[$datum['city']]['in_process']))
                 ? 0 : $result[$datum['city']]['in_process'];
@@ -126,6 +127,59 @@ class HeadBoardData
                         'to_process' => count($this->callRepository->callsToProcessByUser($collaborator)),
                         'in_process' => count($this->callRepository->callsInProcessByUser($collaborator)),
                     ];
+            }
+        }
+        return $result;
+    }
+
+
+    public function makeDataForHeadUpdater(array $data): array
+    {
+        $result = [];
+        $slugify = new Slugify();
+        foreach ($data as $datum) {
+            $serviceId     = (int)$datum['service_id'];
+            $service       = $this->serviceRepository->findOneById($serviceId);
+            $serviceName   = $service->getName();
+            $collaborators = $service->getUsers();
+
+            $citySlug = $slugify->slugify($datum['city']);
+
+            $result[$citySlug . '-in-process'] = (!isset($result[$citySlug. '-in-process']))
+                ? 0 : $result[$citySlug . '-in-process'];
+            $result[$citySlug . '-to-process'] = (!isset($result[$citySlug. '-to-process']))
+                ? 0 : $result[$citySlug . '-to-process'];
+            $result[$citySlug . '-in-process'] += (is_null($datum['inprocess'])) ? 0 : $datum['inprocess'];
+            $result[$citySlug . '-to-process'] += (is_null($datum['toprocess'])) ? 0 : $datum['toprocess'];
+
+            $concessionSlug    = $slugify->slugify($datum['concession']);
+
+            $result[$citySlug . '-' . $concessionSlug . '-in-process'] =
+                (!isset($result[$citySlug . '-' . $concessionSlug . '-in-process'])) ?
+                    0 : $result[$citySlug . '-' . $concessionSlug . '-in-process'];
+
+            $result[$citySlug . '-' . $concessionSlug . '-to-process'] =
+                (!isset($result[$citySlug . '-' . $concessionSlug . '-to-process'])) ?
+                    0 : $result[$citySlug . '-' . $concessionSlug . '-to-process'];
+            $result[$citySlug . '-' . $concessionSlug . '-in-process'] += (is_null($datum['inprocess']))
+                ? 0 : $datum['inprocess'];
+            $result[$citySlug . '-' . $concessionSlug . '-to-process'] += (is_null($datum['toprocess']))
+                ? 0 : $datum['toprocess'];
+
+            $serviceSlug = $slugify->slugify($serviceName);
+
+            $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .'-to-process'] =
+                (is_null($datum['toprocess'])) ? 0 : (int)$datum['toprocess'];
+            $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .'-in-process'] =
+                (is_null($datum['inprocess'])) ? 0 : (int)$datum['inprocess'];
+
+            foreach ($collaborators as $collaborator) {
+                $collSlug =
+                    $slugify->slugify($collaborator->getFirstname() . ' ' . $collaborator->getLastname());
+                $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . '-to-process'] =
+                    count($this->callRepository->callsToProcessByUser($collaborator));
+                $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . '-in-process'] =
+                    count($this->callRepository->callsInProcessByUser($collaborator));
             }
         }
         return $result;
