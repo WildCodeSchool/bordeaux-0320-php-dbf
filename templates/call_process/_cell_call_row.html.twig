@@ -15,7 +15,7 @@
                             {{call.createdAt|dateName}}
                             à {{ call.createdAt|timeFormat}}
                     </span>
-                        par <span class="bolder">{{call.service.concession.town.name}}</span>
+                        par <span class="bolder">{{call.recipient.service.concession.town.name}}</span>
                     </small>
                     {% if call.callTransfers is not empty %}
                         <i class="material-icons left tooltipped" data-position="right" data-tooltip="<div class='left-align'>
@@ -41,14 +41,14 @@
                     {% endif %}
                 </div>
                 <div class="col s8 recipient-zone">
-                    {% if call.service.users is not empty %}
+                    {% if call.recipient.service.users is not empty %}
                     <div class="list-dest hide" id="users-in-service-{{ call.id }}">
                         <span class="before">Transférer à ...
                             <a href="#" class="close-list secondary-content white-text" data-target="users-in-service-{{ call.id }}"><i class="material-icons">close</i></a>
                         </span>
 
                         <ul class="">
-                            {%  for user in call.service.users %}
+                            {%  for user in call.recipient.service.users %}
                                 <li class="dest-item">
                                     <a href="#" class="recipients-to-transfer" data-for="{{ user.id }}" data-call="{{ call.id }}">{{user.firstname}} {{user.lastname}} </a>
                                     <i class="material-icons white-text secondary-content">phone_forwarded</i>
@@ -57,18 +57,24 @@
                         </ul>
                     </div>
                     {% endif %}
-                    <span class="chip flow-text black-text grey lighten-2 recipient-changer" data-call="{{ call.id }}">
-                        <i class="material-icons left ">person</i>
-                        {{ call.recipient.firstname }} {{ call.recipient.lastname }}
-                    </span>
+                    {% if call.recipient %}
+                        <span class="chip flow-text black-text grey lighten-2 recipient-changer" data-call="{{ call.id }}">
+                            <i class="material-icons left ">person</i>
+                            {{ call.recipient.firstname }} {{ call.recipient.lastname }}
+                        </span>
+                    {% else %}
+                        <a href="{{ path('take_call', {'id' : call.id}) }}" class="btn cyan white-text">Prendre en charge</a>
+                    {% endif %}
                     <span class="place-name">
                         <i class="material-icons tiny">home</i>
-                        {{call.service.concession.name}}
+                        {{call.recipient.service.concession.name}}
                     </span>
                     <span class="place-name service-name">
                         <i class="material-icons tiny">settings</i>
-                        {{ call.service.name }}
-                    <a class="grey darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
+                        {{ call.recipient.service.name }}
+                        {% if call.recipient %}
+                            <a class="grey darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
+                        {% endif %}
                     </span>
                 </div>
             </div>

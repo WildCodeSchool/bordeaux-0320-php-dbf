@@ -139,6 +139,20 @@ class CallController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/take", name="take_call", methods={"GET"})
+     * @param Call $call
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function takeCall(Call $call, EntityManagerInterface $entityManager)
+    {
+        $call->setService();
+        $call->setRecipient($this->getUser());
+        $entityManager->flush();
+        return $this->redirectToRoute('user_home');
+    }
+
+    /**
      * @Route("/{id}/edit", name="call_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Call $call

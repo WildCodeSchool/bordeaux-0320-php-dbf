@@ -141,6 +141,7 @@ class Call
 
     private $cityTransfer = 0;
     private $concessionTransfer = 0;
+    private $serviceTransfer = 0;
 
     /**
      * @return mixed
@@ -174,7 +175,21 @@ class Call
         $this->concessionTransfer = $concessionTransfer;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getServiceTransfer()
+    {
+        return $this->serviceTransfer;
+    }
 
+    /**
+     * @param mixed $serviceTransfer
+     */
+    public function setServiceTransfer($serviceTransfer): void
+    {
+        $this->serviceTransfer = $serviceTransfer;
+    }
 
 
     public function __construct()

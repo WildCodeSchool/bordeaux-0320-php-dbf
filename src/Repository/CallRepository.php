@@ -127,8 +127,8 @@ class CallRepository extends ServiceEntityRepository
 
     public function callsToProcessByUser($recipient)
     {
-
-        return $this->createQueryBuilder('c')
+        $service = $recipient->getService();
+        $queryRecipient = $this->createQueryBuilder('c')
             ->Where('c.recipient = :recipient')
             ->setParameter('recipient', $recipient)
             ->innerJoin('c.recipient', 'r')
@@ -146,6 +146,23 @@ class CallRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+        $queryService = $this->createQueryBuilder('c')
+            ->Where('c.service = :service')
+            ->setParameter('service', $service)
+            ->innerJoin('c.recallPeriod', 'rp')
+            ->addSelect('rp')
+            ->innerJoin('c.subject', 's')
+            ->addSelect('s')
+            ->innerJoin('c.comment', 'co')
+            ->addSelect('co')
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed IS NULL')
+            ->orderBy('c.isUrgent', 'DESC')
+            ->addOrderBy('c.recallDate, c.recallHour', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+        return array_merge($queryRecipient, $queryService);
     }
 
     public function lastCallToProcessByUser($recipient)

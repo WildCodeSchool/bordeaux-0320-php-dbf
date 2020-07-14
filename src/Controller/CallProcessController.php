@@ -118,12 +118,19 @@ class CallProcessController extends AbstractController
         $serviceId = 0
     ) {
         $call = $callRepository->findOneById($callId);
+        $call->setCityTransfer($call->getRecipient()->getService()->getConcession()->getTown()->getId());
+        $call->setConcessionTransfer($call->getRecipient()->getService()->getConcession()->getId());
+        $call->setServiceTransfer($call->getRecipient()->getService()->getId());
         if ($cityId != 0) {
             $call->setCityTransfer($cityId);
         }
         if ($concessionId != 0) {
             $call->setConcessionTransfer($concessionId);
         }
+        if ($serviceId != 0) {
+            $call->setServiceTransfer($serviceId);
+        }
+
 
         $form = $this->createForm(CallTransferType::class, $call);
 
