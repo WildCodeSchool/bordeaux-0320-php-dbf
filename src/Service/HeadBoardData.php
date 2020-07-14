@@ -85,6 +85,7 @@ class HeadBoardData
             $service       = $this->serviceRepository->findOneById($serviceId);
             $serviceName   = $service->getName();
             $collaborators = $service->getUsers();
+
             $result[$datum['city']]['slug'] = $slugify->slugify($datum['city']);
             $result[$datum['city']]['in_process'] = (!isset($result[$datum['city']]['in_process']))
                 ? 0 : $result[$datum['city']]['in_process'];
@@ -141,6 +142,7 @@ class HeadBoardData
             $service       = $this->serviceRepository->findOneById($serviceId);
             $serviceName   = $service->getName();
             $collaborators = $service->getUsers();
+
             $citySlug = $slugify->slugify($datum['city']);
 
             $result[$citySlug . '-in-process'] = (!isset($result[$citySlug. '-in-process']))

@@ -146,7 +146,7 @@ class CallController extends AbstractController
      */
     public function takeCall(Call $call, EntityManagerInterface $entityManager)
     {
-        $call->setService();
+        $call->setService(null);
         $call->setRecipient($this->getUser());
         $entityManager->flush();
         return $this->redirectToRoute('user_home');

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Data\SearchData;
 use App\Entity\Call;
 use App\Entity\Client;
+use App\Entity\Service;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManager;
@@ -146,6 +147,11 @@ class CallRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+        return array_merge($queryRecipient);
+    }
+
+    public function callsToProcessByService(Service $service)
+    {
         $queryService = $this->createQueryBuilder('c')
             ->Where('c.service = :service')
             ->setParameter('service', $service)
@@ -162,7 +168,7 @@ class CallRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-        return array_merge($queryRecipient, $queryService);
+        return $queryService;
     }
 
     public function lastCallToProcessByUser($recipient)
