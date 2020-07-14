@@ -65,7 +65,7 @@ class Call
 
     /**
      * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="calls", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $service;
 
