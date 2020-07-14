@@ -266,6 +266,7 @@ class CallRepository extends ServiceEntityRepository
             ->join('concession.town', 'city')->addSelect('city')
             ->leftJoin('c.callProcessings', 'cp')->addSelect('cp')
             ->leftJoin('c.callTransfers', 'ct')->addSelect('ct')
+            ->where('c.recipient IS NOT NULL')
         ;
 
         $this->addSearchParametersToQuery($searchData, $query);
