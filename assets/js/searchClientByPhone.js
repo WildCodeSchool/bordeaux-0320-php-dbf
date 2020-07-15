@@ -83,7 +83,7 @@ const alertForCalls = (data) => {
                 '<td>' + call.call_date + '</td>' +
                 '<td>' + call.call_hour + '</td>' +
                 '<td>' + call.call_vehicule + '</td>' +
-                '<td><a class="btn light-blue" data-call="' + call.call_id + '">continuer</a></td>' +
+                '<td><a class="btn light-blue modal-close" href="/call/process/' + call.call_id + '/callback">continuer</a></td>' +
                 '</tr>'
             tableForCalls.innerHTML = tableForCalls.innerHTML + html
         })

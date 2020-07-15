@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Repository\CallRepository;
 use App\Repository\UserRepository;
 use App\Service\CallOnTheWayDataMaker;
+use App\Service\ClientCallbacks;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -113,6 +114,25 @@ class UserHomeController extends AbstractController
         } else {
             $response = new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);
         }
+        return $response;
+    }
+
+    /**
+     * @Route("/callbacksforuser", name="client_callbacks")
+     * @IsGranted("ROLE_USER")
+     */
+    public function clientCallbacksForUser(
+        CallRepository $callRepository,
+        UserRepository $userRepository,
+        ClientCallbacks $callbacks
+    ) {
+        $appUser = $this->getUser();
+        $callsInProcess = $callRepository->callsInProcessByUser($appUser);
+        $callsToProcess = $callRepository->callsToProcessByUser($appUser);
+        $data = $callbacks::formatCallbacksData($callsInProcess, $callsToProcess);
+        $response = new JsonResponse();
+        $response->setData($data);
+        $response->setStatusCode(Response::HTTP_OK);
         return $response;
     }
 }

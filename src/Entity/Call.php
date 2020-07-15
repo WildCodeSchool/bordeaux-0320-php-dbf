@@ -144,6 +144,11 @@ class Call
     private $serviceTransfer = 0;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $clientCallback;
+
+    /**
      * @return mixed
      */
     public function getCityTransfer()
@@ -516,5 +521,17 @@ class Call
     public function getLastProcessColor()
     {
         return CallTreatmentDataMaker::stepMaker($this);
+    }
+
+    public function getClientCallback(): ?int
+    {
+        return $this->clientCallback;
+    }
+
+    public function setClientCallback(int $clientCallback = 0): self
+    {
+        $this->clientCallback = $clientCallback;
+
+        return $this;
     }
 }
