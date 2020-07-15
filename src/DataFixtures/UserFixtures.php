@@ -75,6 +75,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $collaborator->setCreatedAt(new DateTime());
         $collaborator->setRoles(['ROLE_COLLABORATOR']);
         $collaborator->setService($this->getReference('services_4'));
+        $collaborator->setHasAcceptedAlert(true);
         $collaborator->setPassword($this->passwordEncoder->encodePassword(
             $collaborator,
             'collabpassword'
@@ -92,6 +93,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $admin->setCreatedAt(new DateTime());
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setService($this->getReference('services_1'));
+        $admin->setHasAcceptedAlert(true);
+
         $admin->setPassword($this->passwordEncoder->encodePassword(
             $admin,
             'adminpassword'
@@ -107,6 +110,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $test->setCreatedAt(new DateTime());
         $test->setService($this->getReference('services_4'));
         $test->setRoles(['ROLE_COLLABORATOR']);
+        $test->setHasAcceptedAlert(true);
         $test->setPassword($this->passwordEncoder->encodePassword(
             $test,
             'test'
@@ -121,6 +125,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             $user->setLastname($datum['lastname']);
             $user->setEmail(mb_strtolower($datum['firstname']) . '.' . mb_strtolower($datum['lastname']) . '@dbf.com');
             $user->setPhone($datum['phone']);
+            $user->setHasAcceptedAlert(true);
             $user->setPassword($this->passwordEncoder->encodePassword(
                 $user,
                 '123456'
