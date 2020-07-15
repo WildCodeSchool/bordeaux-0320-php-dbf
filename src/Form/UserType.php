@@ -49,18 +49,11 @@ class UserType extends AbstractType
                 'class'=>Civility::class,
                 'choice_label'=>'name'
             ])
-        ->add('password', PasswordType::class, [
-            'label' => 'Mot de passe'
-        ])
-        ->add('firstname', TextType::class, [
-            'label'=>'Prénom'
-        ])
-        ->add('lastname', TextType::class, [
-            'label'=>'Nom'
-        ])
+        ->add('password', PasswordType::class)
+        ->add('firstname', TextType::class)
+        ->add('lastname', TextType::class)
         ->add('phone', TextType::class, [
             'required' => false,
-            'label'=>'Téléphone'
         ])
         ->add('roles', ChoiceType::class, [
             'choices' => [

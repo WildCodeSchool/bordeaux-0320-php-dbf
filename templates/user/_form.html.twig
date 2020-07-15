@@ -2,30 +2,31 @@
 <div class="container mgt30">
 {{ form_start(form) }}
     <div class="row">
-        <div class="col s2">
-            {{ form_label(form.civility) }}
+        <div class="col s2 input-field">
+            <small class="grey-text label-for-select ">Civilité</small><br>
             {{ form_widget(form.civility) }}
         </div>
-        <div class="col s5">
-            {{ form_label(form.firstname) }}
+        <div class="col s5 input-field">
+            <small class="grey-text label-for-select ">Prénom</small><br>
             {{ form_widget(form.firstname) }}
         </div>
-        <div class="col s5">
-            {{ form_label(form.lastname) }}
+        <div class="col s5 input-field">
+            <small class="grey-text label-for-select ">Nom</small><br>
             {{ form_widget(form.lastname) }}
         </div>
     </div>
     <div class="row">
-        <div class="col s5">
-            {{ form_label(form.email) }}
+        <div class="col s5 input-field">
+            <small class="grey-text label-for-select ">Email</small><br>
             {{ form_widget(form.email) }}
         </div>
-            <div class="col s4">
-                {{ form_label(form.phone) }}
+            <div class="col s4 input-field">
+                <small class="grey-text label-for-select ">Téléphone</small><br>
                 {{ form_widget(form.phone) }}
             </div>
-        <div class="col s3">
-            {{ form_row(form.roles) }}
+        <div class="col s3 input-field">
+            <small class="grey-text label-for-select ">Rôle</small><br>
+            {{ form_widget(form.roles) }}
 
         </div>
     </div>
@@ -47,8 +48,8 @@
         </div>
     </div>
     <div class="row">
-        <div class="col s4">
-            {{ form_label(form.password) }}
+        <div class="col s4 input-field">
+            <small class="grey-text label-for-select ">Mot de passe</small><br>
             {{ form_widget(form.password) }}
         </div>
     </div>
