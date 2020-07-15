@@ -201,6 +201,7 @@ class HeadBoardData
                     $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . '-in-process'];
             }
         }
+
         return $result;
     }
 }
