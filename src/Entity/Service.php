@@ -210,4 +210,13 @@ class Service
 
         return $this;
     }
+    public function isServiceHead(User $user): bool
+    {
+        foreach ($this->getServiceHeads() as $head) {
+            if ($head->getUser() === $user) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
