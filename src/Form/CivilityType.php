@@ -17,7 +17,6 @@ class CivilityType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Civilité',
-                'required' => false
             ]);
     }
 

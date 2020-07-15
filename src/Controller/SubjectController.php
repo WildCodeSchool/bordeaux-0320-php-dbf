@@ -42,11 +42,18 @@ class SubjectController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($subject);
             $entityManager->flush();
-
-
-            return $this->redirectToRoute('admin_dashboard');
+            $this->addFlash("success", "Vous avez bien ajouté un motif d'appel");
+        } else {
+            $errors['name'] = $formSubject['name']->getErrors();
+            $errors['city'] = $formSubject['city']->getErrors();
+            $errors['isForAppWorkshop'] = $formSubject['isForAppWorkshop']->getErrors();
+            foreach ($errors as $index => $fieldErrors) {
+                foreach ($fieldErrors as $error) {
+                    $this->addFlash("error", $error->getMessage());
+                }
+            }
         }
-
+        return $this->redirectToRoute('admin_dashboard');
         return $this->render('subject/new.html.twig', [
             'subject' => $subject,
             'form_subject' => $formSubject->createView(),
