@@ -19,7 +19,6 @@
                 <th>Plaque</th>
                 <th>Roles</th>
                 <th>CreatedAt</th>
-                <th>UpdatedAt</th>
                 <th></th>
             </tr>
         </thead>
@@ -35,7 +34,7 @@
                 <td>{{ user.service ? user.service.concession.town.name : ''  }}</td>
                 <td>{{ user.roles == ["ROLE_ADMIN","ROLE_USER"]? "Admin": '' }}</td>
                 <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td><a href="#">#</a></td>
                 <td>
                     <a href="{{ path('user_edit', {'id': user.id}) }}"><i class="material-icons">edit</i></a>
                 </td>

@@ -5,40 +5,66 @@ namespace App\Form;
 
 use App\Entity\Service;
 use App\Entity\User;
+use App\Repository\CityRepository;
+use App\Repository\ConcessionRepository;
+use App\Repository\ServiceRepository;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserEditType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('email')
-        ->add('firstname', TextType::class)
-        ->add('lastname', TextType::class)
-        ->add('phone', TextType::class, [
-            'required' => false
-        ])
-        ->add('service', EntityType::class, [
-            'class' => Service::class,
-            'choice_label' => 'name',
-        ])
-        ->add('roles', CollectionType::class, [
-            'entry_type'   => ChoiceType::class,
-            'entry_options'  => [
-                'choices'  => [
-                    'Administrateur' => 'ROLE_ADMIN',
-                    'Collaborateur'=> 'ROLE_COLLABORATOR',
-                ],
-            ],
-        ]);
+    private $cityRepository;
+    private $concessionRepository;
+    private $serviceRepository;
+    private $userRepository;
+
+    public function __construct(
+        CityRepository $cityRepository,
+        ConcessionRepository $concessionRepository,
+        ServiceRepository $serviceRepository,
+        UserRepository $userRepository
+    ) {
+        $this->cityRepository       = $cityRepository;
+        $this->concessionRepository = $concessionRepository;
+        $this->serviceRepository    = $serviceRepository;
+        $this->userRepository       = $userRepository;
     }
 
+
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $post = file_get_contents('php://input');
+        if ($post) {
+            $data = json_decode($post);
+        }
+        $builder
+            ->add('email', EmailType::class)
+            ->add('firstname', TextType::class)
+            ->add('lastname', TextType::class)
+            ->add('phone', TextType::class, [
+                'required' => false
+            ])
+            ->add('roles', ChoiceType::class, [
+                'choices' => [
+                    'Collaborateur' => 'ROLE_COLLABORATOR',
+                    'Administrateur' => 'ROLE_ADMIN',
+                ],
+                'mapped'=>false
+            ])
+            ->add('service', EntityType::class, [
+                'class' => Service::class,
+                'choice_label' => function ($service) {
+                    return $service->getConcessionAndCityFromService();
+                }
+
+            ]);
+    }
 
     public function configureOptions(OptionsResolver $resolver)
     {

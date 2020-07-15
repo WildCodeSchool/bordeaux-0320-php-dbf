@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Form\RecipientType;
 use App\Form\UserEditType;
 use App\Form\UserType;
+use App\Repository\CityRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -65,6 +66,7 @@ class UserController extends AbstractController
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -72,7 +74,9 @@ class UserController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
+
             $user->setRoles([$request->request->get('user')['roles']]);
+            $user->setHasAcceptedAlert(true);
             $entityManager->persist($user);
             $entityManager->flush();
             $this->addFlash('success', 'Un compte a  été créé !');
@@ -118,7 +122,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
+            $this->addFlash('success', 'Utilisateur modifié ');
             return $this->redirectToRoute('user_index');
         }
 
@@ -140,6 +144,7 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
+            $this->addFlash('success', 'Utilisateur supprimé');
         }
 
         return $this->redirectToRoute('user_index');

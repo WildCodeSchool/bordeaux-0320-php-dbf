@@ -1,7 +1,16 @@
-class serviceAjaxTool {
+export class ServiceAjaxTool {
     constructor(url) {
         this.urlToAdd = url;
         this.init();
+    }
+    getPhoneCityId(callback) {
+        fetch('/phoneCity/getId')
+            .then(response=>{
+                return response.json()
+            })
+            .then(json=> {
+                callback(json.phoneCityId);
+            });
     }
 
 
@@ -20,7 +29,9 @@ class serviceAjaxTool {
         this.concessionZone = document.getElementById(this.concessionZoneId);
         this.serviceZone = document.getElementById(this.serviceZoneId);
         this.serviceField = document.getElementById(this.serviceFieldId);
-
+        this.getPhoneCityId(((phoneCityId) => {
+            this.phoneCityId = phoneCityId;
+        }));
 
         if (data) {
             this.values = data;
@@ -49,13 +60,12 @@ class serviceAjaxTool {
             const postdata = {
                 City: this.citySelector.value,
             };
+                this.sendData(postdata, (data) => {
+                    this.concessionZone.innerHTML = `<small class="grey-text">Choisir une concession</small><br>${this.getHtmlElement(data, 'user_concession')}`;
+                    this.serviceZone.innerHTML = '';
+                    this.init(postdata);
+                });
 
-
-            this.sendData(postdata, (data) => {
-                this.concessionZone.innerHTML = `<small class="grey-text">Choisir une concession</small><br>${this.getHtmlElement(data, 'user_concession')}`;
-                this.serviceZone.innerHTML = '';
-                this.init(postdata);
-            });
             this.initializeSelects();
         });
 
@@ -126,5 +136,5 @@ class serviceAjaxTool {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const clientAjaxer = new serviceAjaxTool('/user/new', '');
+    const serviceAjaxer = new ServiceAjaxTool('/user/new', '');
 });

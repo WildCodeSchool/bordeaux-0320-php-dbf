@@ -1,7 +1,12 @@
 
 <div class="container">
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.firstname) }}
+    {{ form_row(form.lastname) }}
+    {{ form_row(form.phone) }}
+    {{ form_row(form.roles) }}
+    {{form_row(form.service)}}
     <button class="btn light-blue darken-2">{{ button_label|default('Ajouter') }}</button>
     {{ form_end(form) }}
 </div>
