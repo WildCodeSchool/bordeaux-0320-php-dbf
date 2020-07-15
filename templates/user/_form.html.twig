@@ -1,7 +1,13 @@
 
 <div class="container">
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.firstname) }}
+    {{ form_row(form.lastname) }}
+    {{ form_row(form.password) }}
+    {{ form_row(form.phone) }}
+    {{ form_row(form.roles) }}
+    {{ form_row(form.city) }}
 
     <div class="col s3" id="recipient-concession">
     </div>

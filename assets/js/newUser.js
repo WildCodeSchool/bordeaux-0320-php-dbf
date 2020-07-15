@@ -52,21 +52,20 @@ class serviceAjaxTool {
 
 
             this.sendData(postdata, (data) => {
-                console.log('data', data);
                 this.concessionZone.innerHTML = `<small class="grey-text">Choisir une concession</small><br>${this.getHtmlElement(data, 'user_concession')}`;
                 this.serviceZone.innerHTML = '';
                 this.init(postdata);
             });
             this.initializeSelects();
         });
-        /**
+
         if (this.concessionSelector) {
             this.concessionSelector.addEventListener('change', () => {
-                this.serviceZone.innerHTML = this.addLoader()
+                this.serviceZone.innerHTML = this.addLoader();
                 const postdata = {
                     'City'       : this.citySelector.value,
-                    'Concession' : this.concessionSelector.value
-                }
+                    'Concession' : this.concessionSelector.value,
+                };
                 if (this.authorizedToPost) {
                     this.authorizedToPost = false;
                     this.sendData(postdata, (data) => {
@@ -75,11 +74,15 @@ class serviceAjaxTool {
                         this.init(postdata);
                     });
                 }
-
             });
-        }* */
+        }
+        if (this.serviceSelector) {
+            this.serviceSelector.addEventListener('change', () => {
+                this.selectValueInSelect(this.serviceField, this.serviceSelector.value);
+                this.serviceField.value = this.serviceSelector.value;
+            })
+        }
     }
-
     getHtmlElement(html, elemId) {
         const parser = new DOMParser();
         const result = parser.parseFromString(html, 'text/html');

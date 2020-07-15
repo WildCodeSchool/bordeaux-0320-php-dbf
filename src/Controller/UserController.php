@@ -74,7 +74,6 @@ class UserController extends AbstractController
             );
             $user->setRoles([$request->request->get('user')['roles']]);
             $entityManager->persist($user);
-
             $entityManager->flush();
             $this->addFlash('success', 'Un compte a  été créé !');
 
