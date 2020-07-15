@@ -7,6 +7,9 @@
     </div>
     <div class="col s3" id="recipient-service">
     </div>
+    <div class="row with-hidden-fields">
+            {{form_widget(form.service)}}
+    </div>
     <button class="btn light-blue darken-2">{{ button_label|default('Ajouter') }}</button>
 {{ form_end(form) }}
 </div>

@@ -47,6 +47,7 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $post = file_get_contents('php://input');
+        dump($post);
         if ($post) {
             $data = json_decode($post);
         }
@@ -60,14 +61,12 @@ class UserType extends AbstractType
         ->add('phone', TextType::class, [
             'required' => false
         ])
-        ->add('roles', CollectionType::class, [
-            'entry_type' => ChoiceType::class,
-            'entry_options' => [
-                'choices' => [
-                    'Administrateur' => 'ROLE_ADMIN',
-                    'Collaborateur' => 'ROLE_COLLABORATOR',
-                ],
+        ->add('roles', ChoiceType::class, [
+            'choices' => [
+                'Administrateur' => 'ROLE_ADMIN',
+                'Collaborateur' => 'ROLE_COLLABORATOR',
             ],
+            'mapped'=>false
         ])
         ->add('city', ChoiceType::class, [
             'choices' => $this->getAllCities(),
@@ -77,7 +76,7 @@ class UserType extends AbstractType
             'class' => Service::class,
             'choice_label' => 'name',
         ]);
-
+/**
         if (isset($data->City)) {
             $city = $this->cityRepository->findOneById($data->City);
             if (!$city->isPhoneCity()) {
@@ -94,7 +93,7 @@ class UserType extends AbstractType
             'choices' => $this->getServices($data->Concession),
             'mapped' => false
             ]);
-        }
+        }**/
     }
 
 

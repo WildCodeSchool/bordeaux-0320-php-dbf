@@ -72,7 +72,9 @@ class UserController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
+            $user->setRoles([$request->request->get('user')['roles']]);
             $entityManager->persist($user);
+
             $entityManager->flush();
             $this->addFlash('success', 'Un compte a  été créé !');
 
