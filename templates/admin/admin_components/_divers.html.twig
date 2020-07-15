@@ -5,16 +5,12 @@
     </div>
     <div class="card-tabs">
         <ul class="tabs tabs-fixed-width" id="divers-tabs">
-            <li class="tab" id="divers-tab-1"><a href="#divers-profil" class=" active cyan-text" >mon profil</a></li>
-            <li class="tab" id="divers-tab-2"><a href="#divers-mailer" class="active cyan-text">Mail utilisateurs</a></li>
+            <li class="tab" id="divers-tab-1"><a href="#divers-profil" class="active cyan-text" >Mon profil</a></li>
         </ul>
     </div>
     <div class="card-content grey lighten-4">
         <div id="divers-profil">
-            mon profil
-        </div>
-        <div id="divers-mailer">
-            mailer
+            <a href="{{ path('profile_edit', { 'id': app.user.id }) }}" class="btn cyan darken-2"><i class="material-icons">person</i></a>
         </div>
     </div>
 </div>
