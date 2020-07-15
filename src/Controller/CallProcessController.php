@@ -157,7 +157,6 @@ class CallProcessController extends AbstractController
         $call            = $callRepository->findOneById($callId);
         $fromWhom        = $call->getRecipient();
         $call->setRecipient($userRepository->findOneById($request->request->get('call_transfer')['recipient']));
-        $call->setService($serviceRepository->findOneById($request->request->get('call_transfer')['service']));
         $toWhom          = $call->getRecipient();
         $byWhom          = $this->getUser();
         $transferComment = $request->request->get('call_transfer')['commentTransfer'];
