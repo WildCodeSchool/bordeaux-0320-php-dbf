@@ -146,7 +146,7 @@ class Call
     /**
      * @ORM\Column(type="integer")
      */
-    private $clientCallback;
+    private $clientCallback = 0;
 
     /**
      * @return mixed
