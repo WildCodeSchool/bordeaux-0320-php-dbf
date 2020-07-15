@@ -119,6 +119,16 @@ class User implements UserInterface
      */
     private $cityHeads;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Civility::class)
+     */
+    private $civility;
+
+    /**
+     * @ORM\Column(type="boolean", options={"default": 1})
+     */
+    private $hasAcceptedAlert;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
@@ -588,6 +598,30 @@ class User implements UserInterface
                 $cityHead->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCivility(): ?Civility
+    {
+        return $this->civility;
+    }
+
+    public function setCivility(?Civility $civility): self
+    {
+        $this->civility = $civility;
+
+        return $this;
+    }
+
+    public function getHasAcceptedAlert(): ?bool
+    {
+        return $this->hasAcceptedAlert;
+    }
+
+    public function setHasAcceptedAlert(bool $hasAcceptedAlert): self
+    {
+        $this->hasAcceptedAlert = $hasAcceptedAlert;
 
         return $this;
     }

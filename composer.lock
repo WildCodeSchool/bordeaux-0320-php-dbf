@@ -3748,21 +3748,21 @@
         },
         {
             "name": "symfony/mailer",
-            "version": "v4.4.8",
+            "version": "v4.4.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mailer.git",
-                "reference": "939553797698f6702fb00bdc2870bfa23f976473"
+                "reference": "fd16ff23c18146be32b1ea51f6cc43dc505ce361"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mailer/zipball/939553797698f6702fb00bdc2870bfa23f976473",
-                "reference": "939553797698f6702fb00bdc2870bfa23f976473",
+                "url": "https://api.github.com/repos/symfony/mailer/zipball/fd16ff23c18146be32b1ea51f6cc43dc505ce361",
+                "reference": "fd16ff23c18146be32b1ea51f6cc43dc505ce361",
                 "shasum": ""
             },
             "require": {
                 "egulias/email-validator": "^2.1.10",
-                "php": "^7.1.3",
+                "php": ">=7.1.3",
                 "psr/log": "~1.0",
                 "symfony/event-dispatcher": "^4.3",
                 "symfony/mime": "^4.4|^5.0",
@@ -3812,7 +3812,21 @@
             ],
             "description": "Symfony Mailer Component",
             "homepage": "https://symfony.com",
-            "time": "2020-04-23T12:41:43+00:00"
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2020-06-10T05:55:43+00:00"
         },
         {
             "name": "symfony/mime",

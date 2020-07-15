@@ -3,6 +3,7 @@
 namespace App\Controller\User;
 
 use App\Entity\Call;
+use App\Events;
 use App\Service\CallTreatmentDataMaker;
 use DateInterval;
 use DateTime;
@@ -18,10 +19,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Service\CallOnTheWayDataMaker;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/call")
@@ -54,6 +57,7 @@ class CallController extends AbstractController
      * @param ServiceRepository $serviceRepository
      * @param CallRepository $callRepository
      * @param CallTreatmentDataMaker $callTreatmentDataMaker
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
     public function add(
@@ -63,6 +67,7 @@ class CallController extends AbstractController
         ClientRepository $clientRepository,
         CallRepository $callRepository,
         CallTreatmentDataMaker $callTreatmentDataMaker,
+        EventDispatcherInterface $eventDispatcher,
         ServiceRepository $serviceRepository
     ): Response {
         $author = $this->getUser();
@@ -113,6 +118,8 @@ class CallController extends AbstractController
             $entityManager->persist($call);
 
             $entityManager->flush();
+            $event = new GenericEvent($call);
+            $eventDispatcher->dispatch($event, Events::CALL_INCOMING);
 
             $this->addFlash('success', 'Appel ajouté ');
 
