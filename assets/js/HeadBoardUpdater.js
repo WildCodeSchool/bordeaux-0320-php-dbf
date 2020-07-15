@@ -9,7 +9,15 @@ class headBoardUpdater {
         })
         .then(json => {
             for (var [key, value] of Object.entries(json)){
-                document.getElementById(key).innerHTML = value
+                if(document.getElementById(key)) {
+                    document.getElementById(key).innerHTML = value
+                    if (value != 0) {
+                        document.getElementById(key).classList.remove('hide')
+                    }
+                    if (value === 0 && !document.getElementById(key).classList.contains('hide')) {
+                        document.getElementById(key).classList.add('hide')
+                    }
+                }
             }
         });
     }
