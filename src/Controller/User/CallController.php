@@ -51,6 +51,7 @@ class CallController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param VehicleRepository $vehicleRepository
      * @param ClientRepository $clientRepository
+     * @param ServiceRepository $serviceRepository
      * @param CallRepository $callRepository
      * @param CallTreatmentDataMaker $callTreatmentDataMaker
      * @return Response
@@ -61,7 +62,8 @@ class CallController extends AbstractController
         VehicleRepository $vehicleRepository,
         ClientRepository $clientRepository,
         CallRepository $callRepository,
-        CallTreatmentDataMaker $callTreatmentDataMaker
+        CallTreatmentDataMaker $callTreatmentDataMaker,
+        ServiceRepository $serviceRepository
     ): Response {
         $author = $this->getUser();
         $addedCalls = $callRepository->findCallsAddedToday($author);
@@ -99,6 +101,14 @@ class CallController extends AbstractController
                 $entityManager->flush();
             }
 
+            if (strstr($request->request->get('call')['recipient_choice'], 'service-')) {
+                $recipient = explode('service-', $request->request->get('call')['recipient_choice']);
+                $serviceId = (int)$recipient[1];
+                $service   = $serviceRepository->findOneById($serviceId);
+                $call->setRecipient(null);
+                $call->setService($service);
+            }
+
             $vehicle->setClient($client);
             $entityManager->persist($call);
 
@@ -126,6 +136,27 @@ class CallController extends AbstractController
         return $this->render('call/show.html.twig', [
             'call' => $call,
         ]);
+    }
+
+    /**
+     * @Route("/{id}/take", name="take_call", methods={"GET"})
+     * @param Call $call
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function takeCall(Call $call, EntityManagerInterface $entityManager)
+    {
+        if (is_null($call->getRecipient())) {
+            $call->setService(null);
+            $call->setRecipient($this->getUser());
+            $entityManager->flush();
+            return $this->redirect(
+                $this->generateUrl('user_home') . '#call-' . $call->getId()
+            );
+        } else {
+            $this->addFlash('error', 'Cet appel a déjà été pris en charge');
+            return $this->redirectToRoute('user_home');
+        }
     }
 
     /**

@@ -57,10 +57,17 @@
                             </ul>
                         </div>
                     {% endif %}
+                    {% if call.recipient %}
                     <span class="chip flow-text black-text grey lighten-2 recipient-changer" data-call="{{ call.id }}">
                         <i class="material-icons left ">person</i>
                         {{ call.recipient.firstname }} {{ call.recipient.lastname }}
                     </span>
+                    {% else %}
+                    <span class="chip flow-text black-text grey lighten-2 recipient-changer" data-call="{{ call.id }}">
+                        <i class="material-icons left ">person</i>
+                        TOUS
+                    </span>
+                    {% endif %}
                     <span class="place-name">
                         <i class="material-icons tiny">home</i>
                         {{call.service.concession.name}}

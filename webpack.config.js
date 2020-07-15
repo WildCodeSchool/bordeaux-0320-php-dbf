@@ -25,6 +25,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('newcalls', './assets/js/updateCalls.js')
+    .addEntry('headBoardUpdater', './assets/js/HeadBoardUpdater')
 
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
