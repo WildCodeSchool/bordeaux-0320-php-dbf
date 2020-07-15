@@ -61,7 +61,7 @@ export class ServiceAjaxTool {
                 City: this.citySelector.value,
             };
                 this.sendData(postdata, (data) => {
-                    this.concessionZone.innerHTML = `<small class="grey-text">Choisir une concession</small><br>${this.getHtmlElement(data, 'user_concession')}`;
+                    this.concessionZone.innerHTML = `<small class="grey-text label-for-select">Concession</small><br>${this.getHtmlElement(data, 'user_concession')}`;
                     this.serviceZone.innerHTML = '';
                     this.init(postdata);
                 });
@@ -80,7 +80,7 @@ export class ServiceAjaxTool {
                     this.authorizedToPost = false;
                     this.sendData(postdata, (data) => {
                         this.serviceZone.innerHTML = data;
-                        this.serviceZone.innerHTML = '<small class="grey-text">Choisir un service</small><br>' + this.getHtmlElement(data, 'user_service_choice');
+                        this.serviceZone.innerHTML = '<small class="grey-text label-for-select">Service</small><br>' + this.getHtmlElement(data, 'user_service_choice');
                         this.init(postdata);
                     });
                 }

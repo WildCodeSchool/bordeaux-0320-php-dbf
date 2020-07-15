@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Civility;
 use App\Entity\Service;
 use App\Entity\User;
 use App\Repository\CityRepository;
@@ -44,13 +45,22 @@ class UserType extends AbstractType
         }
         $builder
         ->add('email', EmailType::class)
+            ->add('civility', EntityType::class, [
+                'class'=>Civility::class,
+                'choice_label'=>'name'
+            ])
         ->add('password', PasswordType::class, [
             'label' => 'Mot de passe'
         ])
-        ->add('firstname', TextType::class)
-        ->add('lastname', TextType::class)
+        ->add('firstname', TextType::class, [
+            'label'=>'Prénom'
+        ])
+        ->add('lastname', TextType::class, [
+            'label'=>'Nom'
+        ])
         ->add('phone', TextType::class, [
-            'required' => false
+            'required' => false,
+            'label'=>'Téléphone'
         ])
         ->add('roles', ChoiceType::class, [
             'choices' => [

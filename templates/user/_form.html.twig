@@ -1,21 +1,59 @@
 
-<div class="container">
+<div class="container mgt30">
 {{ form_start(form) }}
-    {{ form_row(form.email) }}
-    {{ form_row(form.firstname) }}
-    {{ form_row(form.lastname) }}
-    {{ form_row(form.password) }}
-    {{ form_row(form.phone) }}
-    {{ form_row(form.roles) }}
-    {{ form_row(form.city) }}
+    <div class="row">
+        <div class="col s2">
+            {{ form_label(form.civility) }}
+            {{ form_widget(form.civility) }}
+        </div>
+        <div class="col s5">
+            {{ form_label(form.firstname) }}
+            {{ form_widget(form.firstname) }}
+        </div>
+        <div class="col s5">
+            {{ form_label(form.lastname) }}
+            {{ form_widget(form.lastname) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s5">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+        </div>
+            <div class="col s4">
+                {{ form_label(form.phone) }}
+                {{ form_widget(form.phone) }}
+            </div>
+        <div class="col s3">
+            {{ form_row(form.roles) }}
 
-    <div class="col s3" id="recipient-concession">
+        </div>
     </div>
-    <div class="col s3" id="recipient-service">
+    <div class="row">
+        <div class="col s12">
+            <div class="row">
+                <div class="col s4 input-field" id="recipient-city">
+                    <small class="grey-text label-for-select ">Plaque</small><br>
+                    {{form_widget(form.city)}}
+                </div>
+                <div class="col s4 input-field" id="recipient-concession">
+                </div>
+                <div class="col s4 input-field" id="recipient-service">
+                </div>
+                <div class="row with-hidden-fields">
+                    {{form_widget(form.service)}}
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="row with-hidden-fields">
-            {{form_widget(form.service)}}
+    <div class="row">
+        <div class="col s4">
+            {{ form_label(form.password) }}
+            {{ form_widget(form.password) }}
+        </div>
     </div>
-    <button class="btn light-blue darken-2">{{ button_label|default('Ajouter') }}</button>
+    <button class="btn light-blue darken-2 mgt30">{{ button_label|default('Ajouter') }}</button>
 {{ form_end(form) }}
 </div>
+
+

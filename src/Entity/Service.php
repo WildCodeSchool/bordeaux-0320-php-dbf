@@ -218,6 +218,6 @@ class Service
     {
         $concession = $this->getConcession();
         $city = $concession->getTown();
-        return $city->getName() . '>' . $concession->getName() . '>' . $this->getName();
+        return $city->getName() . ' > ' . $concession->getName() . ' > ' . $this->getName();
     }
 }

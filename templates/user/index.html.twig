@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}Utilisateurs{% endblock %}
 
 {% block body %}
     <div class="container">
     <h1>Collaborateurs</h1>
-        <a href="{{ path('user_new') }}" class="btn light-blue darken-2">Ajouter</a>
+        <a href="{{ path('user_new') }}" class="btn light-blue">Ajouter</a>
         {% include 'components/_flashes.html.twig' %}
     <table class="table highlight">
         <thead>
@@ -18,7 +18,8 @@
                 <th>Concession</th>
                 <th>Plaque</th>
                 <th>Roles</th>
-                <th>CreatedAt</th>
+                <th>Créé le</th>
+                <th>Modifié le</th>
                 <th></th>
             </tr>
         </thead>
@@ -32,8 +33,9 @@
                 <td>{{ user.service ? user.service.name : ''  }}</td>
                 <td>{{ user.service ? user.service.concession.name : ''  }}</td>
                 <td>{{ user.service ? user.service.concession.town.name : ''  }}</td>
-                <td>{{ user.roles == ["ROLE_ADMIN","ROLE_USER"]? "Admin": '' }}</td>
+                <td>{{ user.roles == ["ROLE_ADMIN","ROLE_USER"]? "Administrateur": '' }}</td>
                 <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td><a href="#">#</a></td>
                 <td>
                     <a href="{{ path('user_edit', {'id': user.id}) }}"><i class="material-icons">edit</i></a>
