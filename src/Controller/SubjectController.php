@@ -47,7 +47,7 @@ class SubjectController extends AbstractController
             $errors['name'] = $formSubject['name']->getErrors();
             $errors['city'] = $formSubject['city']->getErrors();
             $errors['isForAppWorkshop'] = $formSubject['isForAppWorkshop']->getErrors();
-            foreach ($errors as $index => $fieldErrors) {
+            foreach ($errors as $fieldErrors) {
                 foreach ($fieldErrors as $error) {
                     $this->addFlash("error", $error->getMessage());
                 }
