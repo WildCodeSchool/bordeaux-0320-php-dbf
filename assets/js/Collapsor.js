@@ -6,7 +6,6 @@ class Collapsor {
 
     init() {
         this.collapsors = document.getElementsByClassName(this.classToCollapse);
-        this.unCollapsors = document.getElementsByClassName(this.classToUncollapse);
         for (let i = 0; i < this.collapsors.length; i++) {
             this.collapsors[i].addEventListener('click', (event) => {
                 event.preventDefault();
