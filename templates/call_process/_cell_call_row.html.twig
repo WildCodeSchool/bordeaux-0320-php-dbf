@@ -150,6 +150,15 @@
 
         <div class="col s2 left-align ">
             <div class="call-calendar small grey lighten-4">
+
+                <div
+                        class="alert-callback tooltipped {% if call.clientCallback == 0 %} hide {% endif %}"
+                        data-position="top"
+                        data-tooltip="rappel(s) du client"
+                        id="client-callback-{{ call.id }}"
+                >
+                    {{ call.clientCallback }}
+                </div>
                 <div class="call-cal-header {% if call.lastProcessColor is not empty %} {{ call.lastProcessColor.class}} {% endif %}{% if call.isUrgent %}urgent{% endif %}" id="cal-head-{{ call.id }}">
                     <i class="material-icons ">event_date </i>
                     <span class="call-cal-date">
