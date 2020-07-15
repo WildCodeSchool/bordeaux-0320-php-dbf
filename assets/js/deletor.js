@@ -19,57 +19,43 @@ const deletor = (button, urlPrefix, name, nameFr) => {
                 return response.status;
             })
             .then((status) => {
-                if (status === 200) {
+                if (status === 204) {
                     objectContainer.remove();
                     removeValueInSelect(document.getElementById(`${name}-selector`), objectId)
                     initializeSelects();
+                } else {
+                    M.toast({html:'Opération impossible', classes:'red'});
                 }
             });
     }
 };
 
+const deletorAction = (collection, route, name, nameFr) => {
+    for (let i = 0; i < collection.length; i++) {
+        collection[i].addEventListener('click', (e) => {
+            e.preventDefault();
+            deletor(collection[i], route, name, nameFr);
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const deleteSubjectsButtons = document.getElementsByClassName('delete-subject-button');
-    for (let i = 0; i < deleteSubjectsButtons.length; i++) {
-        deleteSubjectsButtons[i].addEventListener('click', (e) => {
-            e.preventDefault();
-            deletor(deleteSubjectsButtons[i], '/subject/delete/', 'subject', 'motif');
-        });
-    }
+    deletorAction(deleteSubjectsButtons, '/subject/delete/', 'subject', 'motif')
+
     const deleteCommentButtons = document.getElementsByClassName('delete-comment-button');
-    for (let i = 0; i < deleteCommentButtons.length; i++) {
-        deleteCommentButtons[i].addEventListener('click', (e) => {
-            e.preventDefault();
-            deletor(deleteCommentButtons[i], '/comment/delete/', 'comment', 'commentaire');
-        });
-    }
+    deletorAction(deleteCommentButtons, '/comment/delete/', 'comment', 'commentaire')
+
     const deleteCivilityButtons = document.getElementsByClassName('delete-civility-button');
-    for (let i = 0; i < deleteCivilityButtons.length; i++) {
-        deleteCivilityButtons[i].addEventListener('click', (e) => {
-            e.preventDefault();
-            deletor(deleteCivilityButtons[i], '/civility/delete/', 'civility', 'civilité');
-        });
-    }
+    deletorAction(deleteCivilityButtons, '/civility/delete/', 'civility', 'civilité')
+
     const deleteCityButtons = document.getElementsByClassName('delete-city-button');
-    for (let i = 0; i < deleteCityButtons.length; i++) {
-        deleteCityButtons[i].addEventListener('click', (e) => {
-            e.preventDefault();
-            deletor(deleteCityButtons[i], '/city/delete/', 'city', 'plaque');
-        });
-    }
+    deletorAction(deleteCityButtons, '/city/delete/', 'city', 'plaque')
+
     const deleteConcessionButtons = document.getElementsByClassName('delete-concession-button');
-    for (let i = 0; i < deleteConcessionButtons.length; i++) {
-        deleteConcessionButtons[i].addEventListener('click', (e) => {
-            e.preventDefault();
-            deletor(deleteConcessionButtons[i], '/concession/delete/', 'concession', 'concession');
-        });
-    }
+    deletorAction(deleteConcessionButtons, '/concession/delete/', 'concession', 'concession')
+
     const deleteServiceButtons = document.getElementsByClassName('delete-service-button');
-    for (let i = 0; i < deleteServiceButtons.length; i++) {
-        deleteServiceButtons[i].addEventListener('click', (e) => {
-            e.preventDefault();
-            deletor(deleteServiceButtons[i], '/service/delete/', 'service', 'service');
-        });
-    }
+    deletorAction(deleteServiceButtons[i], '/service/delete/', 'service', 'service')
 
 }) //end of document eventListener

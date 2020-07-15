@@ -15,6 +15,7 @@ require('../scss/app.scss');
 
 require('./materialize.js');
 require('./base.js');
+require('./CallsCounter');
 require('./switchHasCome');
 require('./AddCall');
 require('./admin.js');
@@ -27,6 +28,8 @@ require('./deletor');
 require('./transferCall');
 require('./searchPage');
 require('./editor');
+require('./deleteCall');
+require('./Collapsor');
 
 
 

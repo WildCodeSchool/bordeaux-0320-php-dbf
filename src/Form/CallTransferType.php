@@ -38,32 +38,32 @@ class CallTransferType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $call = $builder->getData();
-
         $builder
             ->add('city', EntityType::class, [
                 'class'         => City::class,
                 'choice_label'  => 'name',
+                'data'          => $call->getRecipient()->getService()->getConcession()->getTown(),
                 'mapped'        => false
             ])
             ->add('concession', ChoiceType::class, [
                 'choices' => $this->getConcessions($call->getCityTransfer()),
-                'data'    => $call->getConcession()->getId(),
+                'data'    => $call->getRecipient()->getService()->getConcession()->getId(),
                 'mapped'  => false
             ])
             ->add('service', ChoiceType::class, [
                 'choices' => $this->getServices($call->getConcessionTransfer()),
-                'data'    => $call->getService()->getId(),
+                'data'    => $call->getRecipient()->getService()->getId(),
                 'mapped'  => false
             ])
             ->add('recipient', ChoiceType::class, [
-                'choices' => $this->getRecipients(),
+                'choices' => $this->getRecipients($call->getServiceTransfer()),
                 'data'    => $call->getRecipient()->getId(),
                 'mapped'  => false
             ])
             ->add('commentTransfer', TextType::class, [
-                'label' => 'commentaire',
-                'required'   => false,
-                'mapped'  => false
+                'label'    => 'commentaire',
+                'required' => false,
+                'mapped'   => false
             ])
         ;
     }
@@ -95,7 +95,7 @@ class CallTransferType extends AbstractType
         $choices = [];
         $choices['Choisir un service'] = '';
         foreach ($services as $service) {
-            $choices[$service->getName().$service->getId()] = $service->getId();
+            $choices[$service->getName()] = $service->getId();
         }
 
         return $choices;

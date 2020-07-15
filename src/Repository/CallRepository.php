@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Data\SearchData;
 use App\Entity\Call;
 use App\Entity\Client;
+use App\Entity\Service;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
@@ -126,8 +128,8 @@ class CallRepository extends ServiceEntityRepository
 
     public function callsToProcessByUser($recipient)
     {
-
-        return $this->createQueryBuilder('c')
+        $service = $recipient->getService();
+        $queryRecipient = $this->createQueryBuilder('c')
             ->Where('c.recipient = :recipient')
             ->setParameter('recipient', $recipient)
             ->innerJoin('c.recipient', 'r')
@@ -145,6 +147,28 @@ class CallRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+        return array_merge($queryRecipient);
+    }
+
+    public function callsToProcessByService(Service $service)
+    {
+        $queryService = $this->createQueryBuilder('c')
+            ->Where('c.service = :service')
+            ->setParameter('service', $service)
+            ->innerJoin('c.recallPeriod', 'rp')
+            ->addSelect('rp')
+            ->innerJoin('c.subject', 's')
+            ->addSelect('s')
+            ->innerJoin('c.comment', 'co')
+            ->addSelect('co')
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed IS NULL')
+            ->orderBy('c.isUrgent', 'DESC')
+            ->addOrderBy('c.recallDate, c.recallHour', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+        return $queryService;
     }
 
     public function lastCallToProcessByUser($recipient)
@@ -215,6 +239,22 @@ class CallRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getCallsAddedByUserToday(User $user)
+    {
+        $start = new DateTime(date('Y-m-d 00:00:00'));
+        $end = new DateTime(date('Y-m-d 23:59:00'));
+        return $this->createQueryBuilder('c')
+            ->Where('c.author = :auth')
+            ->setParameter('auth', $user)
+            ->andWhere('c.createdAt >= :start')
+            ->setParameter('start', $start)
+            ->andWhere('c.createdAt <= :end')
+            ->setParameter('end', $end)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     public function findSearch(SearchData $searchData): array
     {
@@ -226,6 +266,7 @@ class CallRepository extends ServiceEntityRepository
             ->join('concession.town', 'city')->addSelect('city')
             ->leftJoin('c.callProcessings', 'cp')->addSelect('cp')
             ->leftJoin('c.callTransfers', 'ct')->addSelect('ct')
+            ->where('c.recipient IS NOT NULL')
         ;
 
         $this->addSearchParametersToQuery($searchData, $query);

@@ -54,6 +54,7 @@ class CallController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param VehicleRepository $vehicleRepository
      * @param ClientRepository $clientRepository
+     * @param ServiceRepository $serviceRepository
      * @param CallRepository $callRepository
      * @param CallTreatmentDataMaker $callTreatmentDataMaker
      * @param EventDispatcherInterface $eventDispatcher
@@ -66,7 +67,8 @@ class CallController extends AbstractController
         ClientRepository $clientRepository,
         CallRepository $callRepository,
         CallTreatmentDataMaker $callTreatmentDataMaker,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ServiceRepository $serviceRepository
     ): Response {
         $author = $this->getUser();
         $addedCalls = $callRepository->findCallsAddedToday($author);
@@ -83,7 +85,6 @@ class CallController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $call->setAuthor($author);
-
             $call->setIsUrgent(false);
             if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
                 $call->setIsUrgent(true);
@@ -103,6 +104,14 @@ class CallController extends AbstractController
                 $call->setVehicle($vehicle);
                 $entityManager->persist($vehicle);
                 $entityManager->flush();
+            }
+
+            if (strstr($request->request->get('call')['recipient_choice'], 'service-')) {
+                $recipient = explode('service-', $request->request->get('call')['recipient_choice']);
+                $serviceId = (int)$recipient[1];
+                $service   = $serviceRepository->findOneById($serviceId);
+                $call->setRecipient(null);
+                $call->setService($service);
             }
 
             $vehicle->setClient($client);
@@ -137,6 +146,27 @@ class CallController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/take", name="take_call", methods={"GET"})
+     * @param Call $call
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function takeCall(Call $call, EntityManagerInterface $entityManager)
+    {
+        if (is_null($call->getRecipient())) {
+            $call->setService(null);
+            $call->setRecipient($this->getUser());
+            $entityManager->flush();
+            return $this->redirect(
+                $this->generateUrl('user_home') . '#call-' . $call->getId()
+            );
+        } else {
+            $this->addFlash('error', 'Cet appel a déjà été pris en charge');
+            return $this->redirectToRoute('user_home');
+        }
+    }
+
+    /**
      * @Route("/{id}/edit", name="call_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Call $call
@@ -161,18 +191,23 @@ class CallController extends AbstractController
 
     /**
      * @Route("/{id}", name="call_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
-     * @param Call $call
+     * @param int $id
      * @param EntityManagerInterface $entityManager
+     * @param CallRepository $callRepository
      * @return Response
      */
-    public function delete(Request $request, Call $call, EntityManagerInterface $entityManager): Response
+    public function delete($id, CallRepository $callRepository, EntityManagerInterface $entityManager): JsonResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$call->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($call);
-            $entityManager->flush();
-        }
-        return $this->redirectToRoute('call_index');
+        $call = $callRepository->findOneById($id);
+        $entityManager->remove($call);
+        $entityManager->flush();
+        $data = ['callId' => $id];
+        $response = new JsonResponse();
+        $response->setStatusCode(Response::HTTP_OK);
+        $response->setData($data);
+        return $response;
     }
 
     /**

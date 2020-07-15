@@ -141,11 +141,8 @@
 
 <div class="row center-align ">
     <button class="btn light-blue" id="searchBtn">{{ button_label|default('Rechercher') }}</button>
-    <img src="{{ asset('build/loader.gif') }}" width="20px" class="hide" alt="loader" id="loaderSearch">
+    <img src="{{ asset('build/loader.gif') }}" width="20px" download=""class="hide" alt="loader" id="loaderSearch">
 </div>
 {{ form_end(form) }}
-{% if export is defined %}
-<a href="{{ path('export_to_csv', {'exportedCalls': export}) }}" class="btn light-blue">Exporter en CSV</a>
-{% endif %}
 
 

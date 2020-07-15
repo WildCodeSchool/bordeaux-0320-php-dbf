@@ -6,12 +6,16 @@ use App\Data\SearchData;
 use App\Form\SearchType;
 use App\Repository\CallRepository;
 use App\Service\ExportDataToCsv;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @IsGranted("ROLE_USER")
+ * */
 class SearchController extends AbstractController
 {
     /**
@@ -45,6 +49,7 @@ class SearchController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/export/{exportedCalls}", name="export_to_csv")
      * @param ExportDataToCsv $exportDataToCsv
      * @param null $exportedCalls
@@ -54,8 +59,13 @@ class SearchController extends AbstractController
     {
 
         $searchedCalls = json_decode($exportedCalls, true);
-        $response = $exportDataToCsv->exportDataToCsv($searchedCalls, 'export_' . $this->getUser()->getId());
 
+        if (is_null($searchedCalls)) {
+            $this->addFlash('error', 'Faites d\'abord une recherche');
+            $response = $this->redirectToRoute('search');
+        } else {
+            $response = $exportDataToCsv->exportDataToCsv($searchedCalls, 'export_' . $this->getUser()->getId());
+        }
         return $response;
     }
 }

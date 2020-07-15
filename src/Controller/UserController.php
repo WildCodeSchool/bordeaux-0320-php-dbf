@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +16,19 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UserController extends AbstractController
 {
+    /**
+     * @Route("/random", name="user_random", methods={"GET"})
+     */
+    public function randomCellUser(UserRepository $userRepository)
+    {
+        $response = new JsonResponse();
+        $response->setStatusCode(JsonResponse::HTTP_OK);
+        $response->setData([
+            'recipientId' => $userRepository->getRandomUser()->getId()
+        ]);
+        return $response;
+    }
+
     /**
      * @Route("/", name="user_index", methods={"GET"})
      * @param UserRepository $userRepository
