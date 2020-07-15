@@ -87,12 +87,23 @@
                                             <i class="material-icons left tiny">person</i>
                                             <span class="user-name">{{ userName }}</span>
                                         </td>
-                                        {% if user.to_process > 0 %}
-                                            <td class="col s2"><span class="chip blue darken-3 white-text counter {% if user.to_process == 0 %} hide {% endif %}" id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-{{ user.slug }}-to-process">{{user.to_process}}</span></td>
-                                        {% endif %}
-                                        {% if concession.in_process > 0 %}
-                                            <td class="col s2"><span class="chip green darken-2 white-text counter {% if user.in_process ==0 %} hide {% endif %}" id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-{{ user.slug }}-in-process">{{user.in_process}}</span></td>
-                                        {% endif %}
+                                        <td class="col s2">
+                                            <a href="{{ path('user_home', {'id' : user.user_id}) }}">
+                                                <span class="chip blue darken-3 white-text counter {% if user.in_process == 0 %} hide {% endif %}"
+                                                      id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-{{ user.slug }}-to-process">
+                                                    {{ user.to_process }}
+                                                </span>
+                                            </a>
+                                        </td>
+                                        <td class="col s2">
+                                            <a href="{{ path('user_calls_in_process', {'id' : user.user_id}) }}">
+                                                <span class="chip green darken-2 white-text counter {% if user.in_process == 0 %} hide {% endif %}"
+                                                      id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-{{ user.slug }}-in-process">
+                                                    {{ user.in_process }}
+                                                </span>
+                                            </a>
+                                        </td>
+
                                     </tr>
                                 {% endfor %}
                             {% endfor %}
