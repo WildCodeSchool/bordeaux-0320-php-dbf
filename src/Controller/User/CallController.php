@@ -105,7 +105,7 @@ class CallController extends AbstractController
                 $entityManager->persist($vehicle);
                 $entityManager->flush();
             }
-
+            $call->setService(null);
             if (strstr($request->request->get('call')['recipient_choice'], 'service-')) {
                 $recipient = explode('service-', $request->request->get('call')['recipient_choice']);
                 $serviceId = (int)$recipient[1];
