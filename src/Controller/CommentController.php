@@ -45,10 +45,15 @@ class CommentController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
             $entityManager->flush();
-
+            $this->addFlash("success", "Vous avez bien ajouté un commentaire");
             return $this->redirectToRoute('admin_dashboard');
+        } else {
+            $errors = $formComment['name']->getErrors();
+            foreach ($errors as $error) {
+                $this->addFlash("error", $error->getMessage());
+                return $this->redirectToRoute('admin_dashboard');
+            }
         }
-
         return $this->render('comment/new.html.twig', [
             'comment' => $comment,
             'form_comment' => $formComment->createView(),

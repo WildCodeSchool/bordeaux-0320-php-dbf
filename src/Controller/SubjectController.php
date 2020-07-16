@@ -31,6 +31,8 @@ class SubjectController extends AbstractController
 
     /**
      * @Route("/new", name="subject_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {

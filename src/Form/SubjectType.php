@@ -19,19 +19,16 @@ class SubjectType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Motifs',
-                'required' => false
             ])
             ->add('isForAppWorkshop', ChoiceType::class, [
                 'choices'  => [
                     'Oui' => true,
                     'Non' => false,
                 ],
-                'required'=> false,
                 'label' => 'Rendez-vous en atelier'
             ])
             ->add('city', EntityType::class, ['class' => City::class,
                 'choice_label' => 'name',
-                'required' => false,
                 'label' => 'Plaque'])
         ;
     }
