@@ -6,18 +6,25 @@
     <div class="container">
         <h1>Ajouter un responsable</h1>
         <a href="{{ path('service_head_index') }}" class="btn light-blue ">back to list</a>
-
-        <div class="container">
-            <h2>Service</h2>
-            {{ include('service_head/_form.html.twig') }}
-        </div>
-        <div class="container">
-            <h2>Concession</h2>
-            {{ include('concession_head/_form.html.twig') }}
-        </div>
-        <div class="container">
-            <h2>Plaque</h2>
-            {{ include('city_head/_form.html.twig') }}
-        </div>
+        <ul class="collapsible mgt30">
+            <li>
+                <div class="collapsible-header"><h5 class="light-blue-text"><i class="material-icons">settings</i>Service</h5></div>
+                <div class="collapsible-body">
+                    {{ include('service_head/_form.html.twig') }}
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header"><h5 class="light-blue-text"><i class="material-icons">home</i>Concession</h5></div>
+                <div class="collapsible-body">
+                    {{ include('concession_head/_form.html.twig') }}
+                </div>
+            </li>
+            <li>
+                <div class="collapsible-header"><h5 class="light-blue-text"><i class="material-icons">location_city</i>Plaque</h5></div>
+                <div class="collapsible-body">
+                    {{ include('city_head/_form.html.twig') }}
+                </div>
+            </li>
+        </ul>
     </div>
 {% endblock %}
