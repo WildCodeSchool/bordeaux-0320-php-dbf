@@ -76,6 +76,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $collaborator->setRoles(['ROLE_COLLABORATOR']);
         $collaborator->setService($this->getReference('services_4'));
         $collaborator->setHasAcceptedAlert(true);
+        $collaborator->setCanBeRecipient(true);
         $collaborator->setPassword($this->passwordEncoder->encodePassword(
             $collaborator,
             'collabpassword'
@@ -94,6 +95,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setService($this->getReference('services_1'));
         $admin->setHasAcceptedAlert(true);
+        $admin->setCanBeRecipient(true);
 
         $admin->setPassword($this->passwordEncoder->encodePassword(
             $admin,
@@ -111,6 +113,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $test->setService($this->getReference('services_4'));
         $test->setRoles(['ROLE_COLLABORATOR']);
         $test->setHasAcceptedAlert(true);
+        $test->setCanBeRecipient(true);
         $test->setPassword($this->passwordEncoder->encodePassword(
             $test,
             'test'
@@ -132,6 +135,11 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             ));
             $user->setCreatedAt(new DateTime());
             $user->setRoles(['ROLE_COLLABORATOR']);
+            if ($key % 2 === 1) {
+                $user->setCanBeRecipient(true);
+            } else {
+                $user->setCanBeRecipient(false);
+            }
             $user->setService($this->getReference('services_' . $key));
             $manager->persist($user);
             $this->addReference('user_' . $key, $user);

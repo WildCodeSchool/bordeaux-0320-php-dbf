@@ -69,7 +69,8 @@ class UserType extends AbstractType
         ->add('service', EntityType::class, [
             'class' => Service::class,
             'choice_label' => 'name',
-        ]);
+        ])
+            ->add('canBeRecipient');
 
         if (isset($data->City)) {
             $city = $this->cityRepository->findOneById($data->City);

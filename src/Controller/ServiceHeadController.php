@@ -101,6 +101,14 @@ class ServiceHeadController extends AbstractController
                 $concessionHead->setUser($user);
                 $concessionHead->setConcession($concessions[$i]);
                 $entityManager->persist($concessionHead);
+
+                $services = $concessions[$i]->getServices();
+                for ($j=0; $j<count($services); $j++) {
+                    $serviceHead = new ServiceHead();
+                    $serviceHead->setUser($user);
+                    $serviceHead->setService($services[$j]);
+                    $entityManager->persist($serviceHead);
+                }
             }
             $entityManager->persist($cityHead);
             $entityManager->flush();
@@ -121,6 +129,10 @@ class ServiceHeadController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="service_head_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param ServiceHead $serviceHead
+     * @param EntityManagerInterface $entityManager
+     * @return Response
      */
     public function edit(Request $request, ServiceHead $serviceHead, EntityManagerInterface $entityManager): Response
     {

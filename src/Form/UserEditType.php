@@ -63,7 +63,8 @@ class UserEditType extends AbstractType
                     return $service->getConcessionAndCityFromService();
                 }
 
-            ]);
+            ])
+            ->add('canBeRecipient');
     }
 
     public function configureOptions(OptionsResolver $resolver)

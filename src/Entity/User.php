@@ -129,6 +129,11 @@ class User implements UserInterface
      */
     private $hasAcceptedAlert;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $canBeRecipient;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
@@ -622,6 +627,18 @@ class User implements UserInterface
     public function setHasAcceptedAlert(bool $hasAcceptedAlert): self
     {
         $this->hasAcceptedAlert = $hasAcceptedAlert;
+
+        return $this;
+    }
+
+    public function getCanBeRecipient(): ?bool
+    {
+        return $this->canBeRecipient;
+    }
+
+    public function setCanBeRecipient(bool $canBeRecipient): self
+    {
+        $this->canBeRecipient = $canBeRecipient;
 
         return $this;
     }

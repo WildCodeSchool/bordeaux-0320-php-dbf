@@ -48,10 +48,20 @@
         </div>
     </div>
     <div class="row">
-        <div class="col s4 input-field">
+        <div class="col s3 input-field">
             <small class="grey-text label-for-select ">Mot de passe</small><br>
             {{ form_widget(form.password) }}
         </div>
+        <div class="input-field col s4 switch mgt30">
+            <p>Peut être destinataire d'un appel</p>
+            <label>
+                Non
+                {{ form_widget(form.canBeRecipient)  }}
+                <span class="lever"></span>
+                Oui
+            </label>
+        </div>
+
     </div>
     <button class="btn light-blue darken-2 mgt30">{{ button_label|default('Ajouter') }}</button>
 {{ form_end(form) }}

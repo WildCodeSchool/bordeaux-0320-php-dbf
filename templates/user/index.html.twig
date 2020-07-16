@@ -17,6 +17,7 @@
                 <th>Roles</th>
                 <th>Date de création</th>
                 <th>Date de modification</th>
+                <th>Peut être désigné destinataire ?</th>
                 <th></th>
             </tr>
         </thead>
@@ -30,6 +31,9 @@
                 <td>{{ user.roles == ["ROLE_ADMIN","ROLE_USER"]? "Administrateur": '' }}</td>
                 <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td><span class="material-icons">{{ user.canBeRecipient ? 'done' : '' }}
+                    </span>
+                </td>
                 <td>
                     <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn mgt15 light-blue darken-1"><i class="material-icons">edit</i></a>
                     {{ include('user/_delete_form.html.twig') }}
