@@ -3,9 +3,21 @@
 {% block title %}New ServiceHead{% endblock %}
 
 {% block body %}
-    <h1>Create new ServiceHead</h1>
+    <div class="container">
+        <h1>Ajouter un responsable</h1>
+        <a href="{{ path('service_head_index') }}" class="btn light-blue ">back to list</a>
 
-    {{ include('service_head/_form.html.twig') }}
-
-    <a href="{{ path('service_head_index') }}">back to list</a>
+        <div class="container">
+            <h2>Service</h2>
+            {{ include('service_head/_form.html.twig') }}
+        </div>
+        <div class="container">
+            <h2>Concession</h2>
+            {{ include('concession_head/_form.html.twig') }}
+        </div>
+        <div class="container">
+            <h2>Plaque</h2>
+            {{ include('city_head/_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}

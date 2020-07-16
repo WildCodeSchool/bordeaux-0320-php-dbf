@@ -4,13 +4,12 @@
 
 {% block body %}
     <div class="container">
-    <h1>Responsables de service</h1>
-        <a href="{{ path('service_head_new') }}">Create new</a>
+    <h1>Responsables</h1>
+        <a href="{{ path('service_head_new') }}" class="btn light-blue ">Ajouter</a>
 
         <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Collaborateur</th>
                 <th>est responsable du Service</th>
                 <th>actions</th>
@@ -19,9 +18,8 @@
         <tbody>
         {% for service_head in service_heads %}
             <tr>
-                <td>{{ service_head.id }}</td>
                 <td>{{ service_head.user.firstname ~ ' '  ~ service_head.user.lastname}}</td>
-                <td>{{ service_head.service.name }}</td>
+                <td>{{  service_head.service.concession.town.name ~ ' > ' ~ service_head.service.concession.name ~ ' > ' ~service_head.service.name  }}</td>
                 <td>
                     <a href="{{ path('service_head_edit', {'id': service_head.id}) }}">edit</a>
                 </td>

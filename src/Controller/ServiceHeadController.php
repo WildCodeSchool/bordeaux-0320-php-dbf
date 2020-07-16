@@ -2,9 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\City;
+use App\Entity\CityHead;
+use App\Entity\ConcessionHead;
 use App\Entity\ServiceHead;
+use App\Form\CityHeadType;
+use App\Form\ConcessionHeadType;
 use App\Form\ServiceHeadType;
+use App\Repository\CityRepository;
+use App\Repository\ConcessionRepository;
 use App\Repository\ServiceHeadRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,10 +40,17 @@ class ServiceHeadController extends AbstractController
      * @Route("/new", name="service_head_new", methods={"GET","POST"})
      * @param Request $request
      * @param EntityManagerInterface $entityManager
-     * @return Response
+     * @param CityRepository $cityRepository
+     * @param UserRepository $userRepository
+     * @return void
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        CityRepository $cityRepository,
+        ConcessionRepository $concessionRepository,
+        UserRepository $userRepository
+    ): Response {
         $serviceHead = new ServiceHead();
         $form = $this->createForm(ServiceHeadType::class, $serviceHead);
         $form->handleRequest($request);
@@ -43,13 +58,58 @@ class ServiceHeadController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($serviceHead);
             $entityManager->flush();
+            return $this->redirectToRoute('service_head_index');
+        }
+
+        $concessionHead = new ConcessionHead();
+        $formConcessionHead = $this->createForm(ConcessionHeadType::class, $concessionHead);
+        $formConcessionHead->handleRequest($request);
+
+        if ($formConcessionHead->isSubmitted() && $formConcessionHead->isValid()) {
+            $user = $userRepository->findOneById($request->request->get('concession_head')['user']);
+            $concession = $concessionRepository->findOneById($request->request->get('concession_head')['concession']);
+            $services = $concession->getServices();
+            for ($i=0; $i<count($services); $i++) {
+                $serviceHead = new ServiceHead();
+                $serviceHead->setUser($user);
+                $serviceHead->setService($services[$i]);
+                $entityManager->persist($serviceHead);
+            }
+            $entityManager->persist($concessionHead);
+            $entityManager->flush();
 
             return $this->redirectToRoute('service_head_index');
         }
 
+        $cityHead = new CityHead();
+        $formCityHead = $this->createForm(CityHeadType::class, $cityHead);
+        $formCityHead->handleRequest($request);
+
+        if ($formCityHead->isSubmitted() &&  $formCityHead->isValid()) {
+            $city = $cityRepository->findOneById($request->request->get('city_head')['city']);
+            $user = $userRepository->findOneById($request->request->get('city_head')['user']);
+            $concessions = $city->getConcessions();
+            for ($i = 0; $i< count($concessions); $i++) {
+                $concessionHead = new ConcessionHead();
+                $concessionHead->setUser($user);
+                $concessionHead->setConcession($concessions[$i]);
+                $entityManager->persist($concessionHead);
+            }
+
+            $entityManager->persist($cityHead);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('service_head_index');
+        }
+
+
         return $this->render('service_head/new.html.twig', [
             'service_head' => $serviceHead,
             'form' => $form->createView(),
+            'concession_head' => $concessionHead,
+            'form_head_concession'=> $formConcessionHead->createView(),
+            'city_head'=> $cityHead,
+            'form_head_city'=> $formCityHead->createView()
         ]);
     }
 
