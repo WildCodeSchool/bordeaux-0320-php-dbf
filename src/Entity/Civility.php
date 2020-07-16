@@ -20,7 +20,7 @@ class Civility
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank
+     * @Assert\NotBlank(message="Veuillez remplir cette case avant de valider")
      */
     private $name;
 

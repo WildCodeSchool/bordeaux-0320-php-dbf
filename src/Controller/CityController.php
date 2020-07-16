@@ -7,12 +7,14 @@ use App\Form\CityType;
 use App\Repository\CityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/city")
+ * @IsGranted("ROLE_ADMIN")
  */
 class CityController extends AbstractController
 {
@@ -43,14 +45,14 @@ class CityController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($city);
             $entityManager->flush();
-
-            return $this->redirectToRoute('admin_dashboard');
+            $this->addFlash("success", "Vous avez crée une plaque !");
+        } else {
+            $errors = $formCity['name']->getErrors();
+            foreach ($errors as $error) {
+                $this->addFlash("error", $error->getMessage());
+            }
         }
-
-        return $this->render('city/new.html.twig', [
-            'city' => $city,
-            'form-city' => $formCity->createView(),
-        ]);
+        return $this->redirectToRoute('admin_dashboard');
     }
 
     /**

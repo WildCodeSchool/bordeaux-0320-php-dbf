@@ -45,13 +45,14 @@ class CivilityController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($civility);
             $entityManager->flush();
-            return $this->redirectToRoute('admin_dashboard');
+            $this->addFlash("success", "Vous avez bien ajouté une civilité");
+        } else {
+            $errors = $formCivility['name']->getErrors();
+            foreach ($errors as $error) {
+                $this->addFlash("error", $error->getMessage());
+            }
         }
-
-        return $this->render('civility/new.html.twig', [
-            'civility' => $civility,
-            'form_civility' => $formCivility->createView(),
-        ]);
+        return $this->redirectToRoute('admin_dashboard');
     }
 
     /**
