@@ -14,3 +14,11 @@
 @import "addCall";
 @import "call_calendar";
 @import "headBoard";
+
+table{
+  tr{
+    &.bg-striped-row{
+      background: $warm-color;
+    }
+  }
+}

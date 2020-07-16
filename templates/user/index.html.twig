@@ -31,7 +31,6 @@
                 <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="#" class="btn light-blue darken-1"><i class="material-icons">supervisor_account</i></a>
                     <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn mgt15 light-blue darken-1"><i class="material-icons">edit</i></a>
                     {{ include('user/_delete_form.html.twig') }}
                 </td>

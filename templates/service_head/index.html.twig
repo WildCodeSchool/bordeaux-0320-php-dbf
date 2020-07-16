@@ -7,7 +7,7 @@
     <h1>Responsables</h1>
         <a href="{{ path('service_head_new') }}" class="btn light-blue ">Ajouter</a>
 
-        <table class="table">
+        <table class="table highlight">
         <thead>
             <tr>
                 <th>Collaborateur</th>
@@ -16,12 +16,18 @@
             </tr>
         </thead>
         <tbody>
+        <tr class="bg-striped-row">
+            <td >Services</td>
+            <td></td>
+            <td></td>
+        </tr>
         {% for service_head in service_heads %}
             <tr>
                 <td>{{ service_head.user.firstname ~ ' '  ~ service_head.user.lastname}}</td>
                 <td>{{  service_head.service.concession.town.name ~ ' > ' ~ service_head.service.concession.name ~ ' > ' ~service_head.service.name  }}</td>
                 <td>
-                    <a href="{{ path('service_head_edit', {'id': service_head.id}) }}">edit</a>
+                    <a href="{{ path('service_head_edit', {'id': service_head.id}) }}" class="btn mgt15 light-blue darken-1"><i class="material-icons">edit</i></a>
+                    {{ include('service_head/_delete_form.html.twig') }}
                 </td>
             </tr>
         {% else %}
@@ -29,6 +35,49 @@
                 <td colspan="2">no records found</td>
             </tr>
         {% endfor %}
+        <tr class="bg-striped-row">
+            <td>
+                Concessions
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% for concession_head in concession_heads %}
+        <tr>
+            <td>{{ concession_head.user.firstname ~ ' '  ~ concession_head.user.lastname}}</td>
+            <td>{{ concession_head.concession.town.name ~ ' > ' ~ concession_head.concession.name}}</td>
+            <td>
+                <a href="{{ path('concession_head_edit', {'id': concession_head.id}) }}" class="btn mgt15 light-blue darken-1"><i class="material-icons">edit</i></a>
+                {{ include('concession_head/_delete_form.html.twig') }}
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="2">no records found</td>
+        </tr>
+        {% endfor %}
+        <tr class="bg-striped-row">
+            <td>
+                Plaques
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% for city_head in city_heads %}
+            <tr>
+                <td>{{ city_head.user.firstname ~ ' '  ~ city_head.user.lastname}}</td>
+                <td>{{ city_head.city.name }}</td>
+                <td>
+                    <a href="{{ path('city_head_edit', {'id': city_head.id}) }}" class="btn mgt15 light-blue darken-1"><i class="material-icons">edit</i></a>
+                    {{ include('city_head/_delete_form.html.twig') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+
         </tbody>
     </table>
     </div>

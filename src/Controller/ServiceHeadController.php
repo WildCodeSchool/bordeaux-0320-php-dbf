@@ -9,7 +9,9 @@ use App\Entity\ServiceHead;
 use App\Form\CityHeadType;
 use App\Form\ConcessionHeadType;
 use App\Form\ServiceHeadType;
+use App\Repository\CityHeadRepository;
 use App\Repository\CityRepository;
+use App\Repository\ConcessionHeadRepository;
 use App\Repository\ConcessionRepository;
 use App\Repository\ServiceHeadRepository;
 use App\Repository\UserRepository;
@@ -27,12 +29,19 @@ class ServiceHeadController extends AbstractController
     /**
      * @Route("/", name="service_head_index", methods={"GET"})
      * @param ServiceHeadRepository $serviceHeadRepository
+     * @param ConcessionHeadRepository $concessionHeadRepository
+     * @param CityHeadRepository $cityHeadRepository
      * @return Response
      */
-    public function index(ServiceHeadRepository $serviceHeadRepository): Response
-    {
+    public function index(
+        ServiceHeadRepository $serviceHeadRepository,
+        ConcessionHeadRepository $concessionHeadRepository,
+        CityHeadRepository $cityHeadRepository
+    ): Response {
         return $this->render('service_head/index.html.twig', [
             'service_heads' => $serviceHeadRepository->findAll(),
+            'concession_heads'=> $concessionHeadRepository->findAll(),
+            'city_heads'=> $cityHeadRepository->findAll()
         ]);
     }
 
@@ -41,8 +50,9 @@ class ServiceHeadController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param CityRepository $cityRepository
+     * @param ConcessionRepository $concessionRepository
      * @param UserRepository $userRepository
-     * @return void
+     * @return Response
      */
     public function new(
         Request $request,
@@ -54,7 +64,6 @@ class ServiceHeadController extends AbstractController
         $serviceHead = new ServiceHead();
         $form = $this->createForm(ServiceHeadType::class, $serviceHead);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($serviceHead);
             $entityManager->flush();
@@ -64,7 +73,6 @@ class ServiceHeadController extends AbstractController
         $concessionHead = new ConcessionHead();
         $formConcessionHead = $this->createForm(ConcessionHeadType::class, $concessionHead);
         $formConcessionHead->handleRequest($request);
-
         if ($formConcessionHead->isSubmitted() && $formConcessionHead->isValid()) {
             $user = $userRepository->findOneById($request->request->get('concession_head')['user']);
             $concession = $concessionRepository->findOneById($request->request->get('concession_head')['concession']);
@@ -84,7 +92,6 @@ class ServiceHeadController extends AbstractController
         $cityHead = new CityHead();
         $formCityHead = $this->createForm(CityHeadType::class, $cityHead);
         $formCityHead->handleRequest($request);
-
         if ($formCityHead->isSubmitted() &&  $formCityHead->isValid()) {
             $city = $cityRepository->findOneById($request->request->get('city_head')['city']);
             $user = $userRepository->findOneById($request->request->get('city_head')['user']);
@@ -95,7 +102,6 @@ class ServiceHeadController extends AbstractController
                 $concessionHead->setConcession($concessions[$i]);
                 $entityManager->persist($concessionHead);
             }
-
             $entityManager->persist($cityHead);
             $entityManager->flush();
 
