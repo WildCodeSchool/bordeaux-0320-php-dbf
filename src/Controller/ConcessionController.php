@@ -34,20 +34,33 @@ class ConcessionController extends AbstractController
     public function new(Request $request): Response
     {
         $concession = new Concession();
-        $form = $this->createForm(ConcessionType::class, $concession);
-        $form->handleRequest($request);
+        $formConcession= $this->createForm(ConcessionType::class, $concession);
+        $formConcession->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($formConcession->isSubmitted() && $formConcession->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($concession);
             $entityManager->flush();
-
+            $this->addFlash("success", "Vous avez bien ajouté une concession");
+            return $this->redirectToRoute('admin_dashboard');
+        } else {
+            $errors['name'] = $formConcession['name']->getErrors();
+            $errors['address'] = $formConcession['address']->getErrors();
+            $errors['postcode'] = $formConcession['postcode']->getErrors();
+            $errors['city'] = $formConcession['city']->getErrors();
+            $errors['brand'] = $formConcession['brand']->getErrors();
+            $errors['phone'] = $formConcession['phone']->getErrors();
+            $errors['town'] = $formConcession['town']->getErrors();
+            foreach ($errors as $fieldErrors) {
+                foreach ($fieldErrors as $error) {
+                    $this->addFlash("error", $error->getMessage());
+                }
+            }
             return $this->redirectToRoute('admin_dashboard');
         }
-
         return $this->render('concession/new.html.twig', [
             'concession' => $concession,
-            'form' => $form->createView(),
+            'form_concession' => $formConcession->createView(),
         ]);
     }
 
