@@ -3,11 +3,10 @@
 {% block title %}Edit ConcessionHead{% endblock %}
 
 {% block body %}
-    <h1>Edit ConcessionHead</h1>
+    <div class="container">    <h1>Edit ConcessionHead</h1>
+    <a href="{{ path('service_head_index') }}" class="btn mgt15 light-blue darken-1">Retour à la liste</a>
 
-    {{ include('concession_head/_form_edit.html.twig', {'button_label': 'Update'}) }}
+    {{ include('concession_head/_form_edit.html.twig', {'button_label': 'Modifier'}) }}
+    </div>
 
-    <a href="{{ path('concession_head_index') }}">back to list</a>
-
-    {{ include('concession_head/_delete_form.html.twig') }}
 {% endblock %}

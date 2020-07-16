@@ -16,51 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class CityHeadController extends AbstractController
 {
     /**
-     * @Route("/", name="city_head_index", methods={"GET"})
-     */
-    public function index(CityHeadRepository $cityHeadRepository): Response
-    {
-        return $this->render('city_head/index.html.twig', [
-            'city_heads' => $cityHeadRepository->findAll(),
-        ]);
-    }
-
-    /**
-     * @Route("/new", name="city_head_new", methods={"GET","POST"})
-     * @param Request $request
-     * @return Response
-     */
-    public function new(Request $request): Response
-    {
-        $cityHead = new CityHead();
-        $formHeadCity = $this->createForm(CityHeadType::class, $cityHead);
-        $formHeadCity->handleRequest($request);
-
-        if ($formHeadCity->isSubmitted() && $formHeadCity->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($cityHead);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('city_head_index');
-        }
-
-        return $this->render('city_head/new.html.twig', [
-            'city_head' => $cityHead,
-            'form_head_city' => $formHeadCity->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="city_head_show", methods={"GET"})
-     */
-    public function show(CityHead $cityHead): Response
-    {
-        return $this->render('city_head/show.html.twig', [
-            'city_head' => $cityHead,
-        ]);
-    }
-
-    /**
      * @Route("/{id}/edit", name="city_head_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, CityHead $cityHead): Response
@@ -71,7 +26,7 @@ class CityHeadController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('city_head_index');
+            return $this->redirectToRoute('service_head_index');
         }
 
         return $this->render('city_head/edit.html.twig', [
@@ -91,6 +46,6 @@ class CityHeadController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('city_head_index');
+        return $this->redirectToRoute('service_head_index');
     }
 }
