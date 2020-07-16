@@ -5,10 +5,7 @@ namespace App\Controller\User;
 use App\Entity\Call;
 use App\Events;
 use App\Service\CallTreatmentDataMaker;
-use DateInterval;
-use DateTime;
 use App\Entity\RecallPeriod;
-use App\Entity\User;
 use App\Form\CallType;
 use App\Form\RecipientType;
 use App\Repository\CallRepository;
@@ -72,7 +69,6 @@ class CallController extends AbstractController
     ): Response {
         $author = $this->getUser();
         $addedCalls = $callRepository->findCallsAddedToday($author);
-
         $steps = [];
         foreach ($addedCalls as $addedCall) {
             $steps[ $addedCall->getId()] = $callTreatmentDataMaker->stepMaker($addedCall);

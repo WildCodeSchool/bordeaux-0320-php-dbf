@@ -57,9 +57,9 @@ class ExportDataToCsv
             $dataReadyToExport[] = [
                 $field->getCreatedAt()->format('d-m-Y H:i'),
                 $field->getAuthor()->getFullName(),
-                $field->getConcession()->getName(),
-                $field->getService()->getConcession()->getTown()->getName(),
-                $field->getService()->getConcession()->getName(),
+                $field->getRecipient()->getService()->getConcession()->getName(),
+                $field->getRecipient()->getService()->getConcession()->getTown()->getName(),
+                $field->getRecipient()->getService()->getConcession()->getName(),
                 (!is_null($field->getRecipient()->getService())) ? $field->getRecipient()->getService()->getName() : '',
                 $field->getSubject()->getName(),
                 $field->getComment()->getName(),

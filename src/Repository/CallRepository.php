@@ -4,11 +4,9 @@ namespace App\Repository;
 
 use App\Data\SearchData;
 use App\Entity\Call;
-use App\Entity\Client;
 use App\Entity\Service;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 use \DateTime;
 use \DateInterval;
@@ -77,6 +75,7 @@ class CallRepository extends ServiceEntityRepository
 
     public function findCallsAddedToday($author)
     {
+
         $qb = $this->createQueryBuilder('c')
             ->Where('c.author = :author')
             ->setParameter('author', $author)
@@ -84,8 +83,6 @@ class CallRepository extends ServiceEntityRepository
             ->orderBy('c.createdAt', 'DESC')
             ->join('c.client', 'cl')->addSelect('cl')
             ->join('cl.civility', 'civ')->addSelect('civ')
-            ->join('c.service', 's')->addSelect('s')
-            ->join('s.concession', 'concession')->addSelect('concession')
             ->join('c.recallPeriod', 'rp')->addSelect('rp')
             ->join('c.comment', 'co')->addSelect('co')
             ->join('c.subject', 'subj')->addSelect('subj')
@@ -261,9 +258,6 @@ class CallRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('c')
             ->join('c.client', 'cl')->addSelect('cl')
             ->join('c.vehicle', 'v')->addSelect('v')
-            ->join('c.service', 'serv')->addSelect('serv')
-            ->join('serv.concession', 'concession')->addSelect('concession')
-            ->join('concession.town', 'city')->addSelect('city')
             ->leftJoin('c.callProcessings', 'cp')->addSelect('cp')
             ->leftJoin('c.callTransfers', 'ct')->addSelect('ct')
             ->where('c.recipient IS NOT NULL')
