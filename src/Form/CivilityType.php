@@ -16,7 +16,7 @@ class CivilityType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Civilité',
+                'label' => 'Civilité'
             ]);
     }
 

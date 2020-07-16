@@ -45,13 +45,18 @@ class CityController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($city);
             $entityManager->flush();
-
+            $this->addFlash("success", "Vous avez crée une plaque !");
             return $this->redirectToRoute('admin_dashboard');
+        } else {
+            $errors = $formCity['name']->getErrors();
+            foreach ($errors as $error) {
+                $this->addFlash("error", $error->getMessage());
+                return $this->redirectToRoute('admin_dashboard');
+            }
         }
-
         return $this->render('city/new.html.twig', [
             'city' => $city,
-            'form-city' => $formCity->createView(),
+            'form_city' => $formCity->createView(),
         ]);
     }
 
