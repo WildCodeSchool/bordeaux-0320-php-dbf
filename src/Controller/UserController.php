@@ -2,14 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Call;
-use App\Entity\ServiceHead;
 use App\Entity\User;
 use App\Form\HeadType;
-use App\Form\RecipientType;
 use App\Form\UserEditType;
 use App\Form\UserType;
-use App\Repository\CityRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -49,7 +45,7 @@ class UserController extends AbstractController
     public function index(UserRepository $userRepository): Response
     {
         return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAllWithCity(),
+            'users' => $userRepository->findAllInCity(),
         ]);
     }
 
