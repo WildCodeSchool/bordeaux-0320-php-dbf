@@ -76,6 +76,11 @@ const initButtons = (modal) => {
                             const target = document.getElementById('call-history-' + data.callId);
                             const callLine = document.getElementById('call-' + data.callId);
                             const callStatus = callLine.dataset.status;
+
+                            const notification = document.getElementById(`client-callback-${data.callId}`);
+                            if (notification && !notification.classList.contains('hide')) {
+                                notification.classList.add('hide')
+                            }
                             if (callStatus === 'new') {
                                 callLine.remove();
                                 counter.updateTotalCallToProcess('dec');
@@ -199,6 +204,27 @@ const initializeSelects = () => {
     const instancesOfSelects = M.FormSelect.init(selects, {});
 }
 
+const clientCallbacks = () => {
+    fetch('/callbacksforuser')
+        .then(response => {
+            if (response.status === 200) {
+                return response.json()
+            }
+        })
+        .then(json => {
+            for (var [key, value] of Object.entries(json)){
+                const notification = document.getElementById(key);
+                if (notification) {
+                    notification.innerHTML = value
+                    if (notification.classList.contains('hide') && value != 0) {
+                        notification.classList.remove('hide')
+                    } else if (!notification.classList.contains('hide') && value === 0) {
+                        notification.classList.add('hide')
+                    }
+                }
+            }
+        })
+}
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -211,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTransferButtons(modalCallTransferInstance);
 
     const checker = setInterval(()=> {
+
         getNewCalls(html => {
             if(html) {
                 const listOfCallsZone = document.getElementById('list-calls-to-process')
@@ -220,6 +247,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 initButtons(modalCallTreatmentInstance);
             }
         })
+        clientCallbacks()
+
     }, 15000);
 
 })

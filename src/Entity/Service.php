@@ -211,6 +211,7 @@ class Service
         return $this;
     }
 
+
     /**
      * @return string
      */
@@ -219,5 +220,15 @@ class Service
         $concession = $this->getConcession();
         $city = $concession->getTown();
         return $city->getName() . ' > ' . $concession->getName() . ' > ' . $this->getName();
+    }
+
+    public function isServiceHead(User $user): bool
+    {
+        foreach ($this->getServiceHeads() as $head) {
+            if ($head->getUser() === $user) {
+                return true;
+            }
+        }
+        return false;
     }
 }

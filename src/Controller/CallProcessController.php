@@ -75,7 +75,8 @@ class CallProcessController extends AbstractController
             ->setAppointmentDate($callStepChecker->checkAppointmentDate($request))
             ->setIsAppointmentTaken($callStepChecker->checkAppointment($request))
             ->setIsUrgent(false)
-            ->setRecallPeriod($recallPeriodRepository->findOneBy(['identifier' => RecallPeriod::AUTOUR_DE]));
+            ->setRecallPeriod($recallPeriodRepository->findOneBy(['identifier' => RecallPeriod::AUTOUR_DE]))
+            ->setClientCallback(0);
 
         if ($callStepChecker->isCallToBeEnded($request)) {
             $call->setIsProcessEnded(true);
@@ -215,5 +216,29 @@ class CallProcessController extends AbstractController
         $response = new JsonResponse();
         $response->setStatusCode(JsonResponse::HTTP_ACCEPTED);
         return $response;
+    }
+
+    /**
+     * @Route("/{callId}/callback", name="client_callback", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     * @param int $callId
+     * @param CallRepository $callRepository
+     * @param EntityManagerInterface $entityManager
+     * @return JsonResponse
+     */
+    public function clientCallback(
+        $callId,
+        CallRepository $callRepository,
+        EntityManagerInterface $entityManager
+    ) {
+        $call = $callRepository->findOneById($callId);
+        $countCallback = $call->getClientCallback();
+        $countCallback++;
+        $call->setClientCallback($countCallback);
+        $entityManager->persist($call);
+        $entityManager->flush();
+        $this->addFlash('success', 'Rappel par le client enregistré');
+
+        return $this->redirectToRoute('call_add');
     }
 }
