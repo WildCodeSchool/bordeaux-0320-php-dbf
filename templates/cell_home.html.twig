@@ -31,9 +31,17 @@
             <div class="col s12 mgt30">
                 <div class="col s12">
                     {% if app.request.get('_route') == 'user_home' %}
-                    <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos appels à effectuer</h5>
+                        {% if (app.request.get('id') is not null and header) %}
+                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Les appels à effectuer par {{ user.firstname }} {{ user.lastname }}</h5>
+                        {% else  %}
+                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos appels à effectuer</h5>
+                        {% endif %}
                     {% else  %}
-                    <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos rappels à effectuer</h5>
+                        {% if (app.request.get('id') is not null and header) %}
+                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Les rappels à effectuer par {{ user.firstname }} {{ user.lastname }}</h5>
+                        {% else  %}
+                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos rappels à effectuer</h5>
+                        {% endif %}
                     {% endif %}
                 </div>
                 <div class="col s12">

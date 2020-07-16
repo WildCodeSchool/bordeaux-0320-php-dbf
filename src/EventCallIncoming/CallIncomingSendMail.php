@@ -26,7 +26,6 @@ class CallIncomingSendMail implements EventSubscriberInterface
 
     public function __construct(MailerInterface $mailer, $sender, Environment $twig)
     {
-        // On injecte notre expediteur et la classe pour envoyer des mails
         $this->mailer = $mailer;
         $this->sender = $sender;
         $this->templating = $twig;
@@ -35,7 +34,6 @@ class CallIncomingSendMail implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            // le nom de l'event et le nom de la fonction qui sera déclenché
             Events::CALL_INCOMING => 'callIncoming',
         ];
     }
@@ -44,16 +42,17 @@ class CallIncomingSendMail implements EventSubscriberInterface
         /** @var Call $call*/
         $call= $event->getSubject();
         $recipient = $call->getRecipient();
+        if (!is_null($recipient)) {
+            $subject = "Un appel ajouté";
+            $email = (new Email())
+                ->from($this->sender)
+                ->to($recipient->getEmail())
+                ->subject($subject)
+                ->html($this->templating->render('call/mail/notification.html.twig', ['call' => $call]));
 
-        $subject = "Un appel ajouté";
-        $email = (new Email())
-            ->from($this->sender)
-            ->to($recipient->getEmail())
-            ->subject($subject)
-            ->html($this->templating->render('call/mail/notification.html.twig', ['call'=> $call]));
-
-        if ($call->getIsUrgent() || $recipient->getHasAcceptedAlert()) {
-            $this->mailer->send($email);
+            if ($call->getIsUrgent() || $recipient->getHasAcceptedAlert()) {
+                $this->mailer->send($email);
+            }
         }
     }
 }
