@@ -16,10 +16,8 @@ class ServiceType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'Nom de service',
-                'required'=> false
         ])
             ->add('concession', EntityType::class, [
-                'required'=> false,
                'class'=> Concession::class,
                 'choice_label'=> 'name'
             ])

@@ -47,8 +47,7 @@ class ServiceController extends AbstractController
             $entityManager->persist($service);
             $entityManager->flush();
             $this->addFlash('success', 'Vous avez bien ajouté un service');
-            return $this->redirectToRoute('admin_dashboard');
-        }else {
+        } else {
             $errors['name'] = $formService['name']->getErrors();
             $errors['concession'] = $formService['concession']->getErrors();
             foreach ($errors as $fieldErrors) {
@@ -56,13 +55,8 @@ class ServiceController extends AbstractController
                     $this->addFlash("error", $error->getMessage());
                 }
             }
-            return $this->redirectToRoute('admin_dashboard');
         }
-
-        return $this->render('service/new.html.twig', [
-            'service' => $service,
-            'form_service' => $formService->createView(),
-        ]);
+        return $this->redirectToRoute('admin_dashboard');
     }
 
     /**

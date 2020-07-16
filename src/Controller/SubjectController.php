@@ -56,10 +56,6 @@ class SubjectController extends AbstractController
             }
         }
         return $this->redirectToRoute('admin_dashboard');
-        return $this->render('subject/new.html.twig', [
-            'subject' => $subject,
-            'form_subject' => $formSubject->createView(),
-        ]);
     }
 
     /**
@@ -105,7 +101,7 @@ class SubjectController extends AbstractController
         $entityManager->flush();
 
         $response = new JsonResponse();
-        $status = JsonResponse::HTTP_OK;
+        $status = JsonResponse::HTTP_NO_CONTENT;
         $response->setStatusCode($status);
 
         return $response;

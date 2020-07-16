@@ -51,13 +51,8 @@ class CivilityController extends AbstractController
             foreach ($errors as $error) {
                 $this->addFlash("error", $error->getMessage());
             }
-            return $this->redirectToRoute('admin_dashboard');
         }
-
-        return $this->render('civility/new.html.twig', [
-            'civility' => $civility,
-            'form_civility' => $formCivility->createView(),
-        ]);
+        return $this->redirectToRoute('admin_dashboard');
     }
 
     /**

@@ -42,7 +42,6 @@ class ConcessionController extends AbstractController
             $entityManager->persist($concession);
             $entityManager->flush();
             $this->addFlash("success", "Vous avez bien ajouté une concession");
-            return $this->redirectToRoute('admin_dashboard');
         } else {
             $errors['name'] = $formConcession['name']->getErrors();
             $errors['address'] = $formConcession['address']->getErrors();
@@ -56,12 +55,8 @@ class ConcessionController extends AbstractController
                     $this->addFlash("error", $error->getMessage());
                 }
             }
-            return $this->redirectToRoute('admin_dashboard');
         }
-        return $this->render('concession/new.html.twig', [
-            'concession' => $concession,
-            'form_concession' => $formConcession->createView(),
-        ]);
+        return $this->redirectToRoute('admin_dashboard');
     }
 
     /**
