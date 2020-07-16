@@ -46,7 +46,16 @@ class ServiceController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($service);
             $entityManager->flush();
-            $this->addFlash('success', 'Vous avez bien ajouté une civilité');
+            $this->addFlash('success', 'Vous avez bien ajouté un service');
+            return $this->redirectToRoute('admin_dashboard');
+        }else {
+            $errors['name'] = $formService['name']->getErrors();
+            $errors['concession'] = $formService['concession']->getErrors();
+            foreach ($errors as $fieldErrors) {
+                foreach ($fieldErrors as $error) {
+                    $this->addFlash("error", $error->getMessage());
+                }
+            }
             return $this->redirectToRoute('admin_dashboard');
         }
 
