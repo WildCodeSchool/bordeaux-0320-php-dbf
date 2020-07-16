@@ -30,7 +30,7 @@ use \DateTime;
 
 /**
  * @Route("/admin", name="admin")
- *
+ * @IsGranted("ROLE_ADMIN")
  */
 class AdminPanelController extends AbstractController
 {

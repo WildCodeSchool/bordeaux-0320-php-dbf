@@ -6,8 +6,8 @@
             <tr>
                 <th>Id</th>
                 <th>Civilité</th>
-                <th>Modifier</th>
-                <th>Supprimer</th>
+                <th class="center-align">Modifier</th>
+                <th class="center-align">Supprimer</th>
             </tr>
         </thead>
         <tbody>
@@ -15,10 +15,10 @@
             <tr  id="civility-line-{{civility.id}}">
                 <td>{{ civility.id }}</td>
                 <td>{{ civility.name }}</td>
-                <td>
+                <td class="center-align">
                     <a href="#" class="edit-civility-button" data-target="{{ civility.id }}"><i class="material-icons">edit</i></a>
                 </td>
-                <td>
+                <td class="center-align">
                     <a href="#" class="delete-civility-button" data-target="{{civility.id}}"><i class="material-icons">delete</i></a>
                 </td>
             </tr>

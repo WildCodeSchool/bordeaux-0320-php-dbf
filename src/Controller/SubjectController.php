@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Entity\Subject;
 use App\Form\SubjectType;
 use App\Repository\SubjectRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/subject")
+ * @IsGranted("ROLE_ADMIN")
  */
 class SubjectController extends AbstractController
 {
@@ -29,6 +31,8 @@ class SubjectController extends AbstractController
 
     /**
      * @Route("/new", name="subject_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -40,15 +44,18 @@ class SubjectController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($subject);
             $entityManager->flush();
-
-
-            return $this->redirectToRoute('admin_dashboard');
+            $this->addFlash("success", "Vous avez bien ajouté un motif d'appel");
+        } else {
+            $errors['name'] = $formSubject['name']->getErrors();
+            $errors['city'] = $formSubject['city']->getErrors();
+            $errors['isForAppWorkshop'] = $formSubject['isForAppWorkshop']->getErrors();
+            foreach ($errors as $fieldErrors) {
+                foreach ($fieldErrors as $error) {
+                    $this->addFlash("error", $error->getMessage());
+                }
+            }
         }
-
-        return $this->render('subject/new.html.twig', [
-            'subject' => $subject,
-            'form_subject' => $formSubject->createView(),
-        ]);
+        return $this->redirectToRoute('admin_dashboard');
     }
 
     /**
@@ -94,7 +101,7 @@ class SubjectController extends AbstractController
         $entityManager->flush();
 
         $response = new JsonResponse();
-        $status = JsonResponse::HTTP_OK;
+        $status = JsonResponse::HTTP_NO_CONTENT;
         $response->setStatusCode($status);
 
         return $response;

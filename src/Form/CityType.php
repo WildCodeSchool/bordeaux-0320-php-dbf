@@ -14,7 +14,8 @@ class CityType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom de la plaque'])
+                'label' => 'Nom de la plaque'
+            ])
         ;
     }
 

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\SubjectRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,16 +22,19 @@ class Subject
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez remplir le Nom du motif avant de valider")
      */
     private $name;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Assert\NotBlank(message="Veuillez cocher la case Rendez-vous en atelier avant de valider")
      */
     private $isForAppWorkshop;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="subjects")
+     * @Assert\NotBlank(message="Veuillez remplir la plaque avant de valider")
      */
     private $city;
 
