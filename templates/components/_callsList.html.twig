@@ -70,9 +70,6 @@
                         <span class="place-name service-name">
                         <i class="material-icons tiny">settings</i>
                         {{ call.recipient.service.name }}
-                            {% if call.recipient %}
-                                <a class="grey darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
-                            {% endif %}
                     </span>
                     {% else %}
                         <a href="{{ path('take_call', {'id' : call.id}) }}" class="btn cyan white-text">Prendre en charge</a>
@@ -83,9 +80,6 @@
                         <span class="place-name service-name">
                         <i class="material-icons tiny">settings</i>
                         {{ call.service.name }}
-                            {% if call.recipient %}
-                                <a class="grey darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
-                            {% endif %}
                     </span>
                     {% endif %}
 
@@ -173,9 +167,6 @@
                         <span class="grey-text text-darken-4">{{call.recallPeriod.name}} {{call.recallHour|timeFormat}}</span>
                     {% endif %}
                     </span>
-                </div>
-                <div class="call-cal-action">
-                    <a class="{% if call.isUrgent %}urgent{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
                 </div>
             </div>
         </div>
