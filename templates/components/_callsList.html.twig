@@ -12,10 +12,11 @@
                     <small>
                         crée
                         <span class="bolder">
-                            {{call.createdAt|dateName}}
-                            à {{ call.createdAt|timeFormat}}
+                            {{call.createdAt|dateName}} à {{ call.createdAt|timeFormat}}
                     </span>
-                        par <span class="bolder">{{call.service.concession.town.name}}</span>
+                        {% if call.recipient %}
+                            par <span class="bolder">{{call.recipient.service.concession.town.name}}</span>
+                        {% endif %}
                     </small>
                     {% if call.callTransfers is not empty %}
                         <i class="material-icons left tooltipped" data-position="right" data-tooltip="<div class='left-align'>
@@ -41,14 +42,14 @@
                     {% endif %}
                 </div>
                 <div class="col s8 recipient-zone">
-                    {% if call.service.users is not empty %}
+                    {% if call.recipient and call.recipient.service.users is not empty %}
                         <div class="list-dest hide" id="users-in-service-{{ call.id }}">
                         <span class="before">Transférer à ...
                             <a href="#" class="close-list secondary-content white-text" data-target="users-in-service-{{ call.id }}"><i class="material-icons">close</i></a>
                         </span>
 
                             <ul class="">
-                                {%  for user in call.service.users %}
+                                {%  for user in call.recipient.service.users %}
                                     <li class="dest-item">
                                         <a href="#" class="recipients-to-transfer" data-for="{{ user.id }}" data-call="{{ call.id }}">{{user.firstname}} {{user.lastname}} </a>
                                         <i class="material-icons white-text secondary-content">phone_forwarded</i>
@@ -57,18 +58,37 @@
                             </ul>
                         </div>
                     {% endif %}
-                    <span class="chip flow-text black-text grey lighten-2 recipient-changer" data-call="{{ call.id }}">
-                        <i class="material-icons left ">person</i>
-                        {{ call.recipient.firstname }} {{ call.recipient.lastname }}
+                    {% if call.recipient %}
+                        <span class="chip flow-text black-text grey lighten-2 recipient-changer" data-call="{{ call.id }}">
+                            <i class="material-icons left ">person</i>
+                            {{ call.recipient.firstname }} {{ call.recipient.lastname }}
+                        </span>
+                        <span class="place-name">
+                        <i class="material-icons tiny">home</i>
+                        {{call.recipient.service.concession.name}}
                     </span>
-                    <span class="place-name">
+                        <span class="place-name service-name">
+                        <i class="material-icons tiny">settings</i>
+                        {{ call.recipient.service.name }}
+                            {% if call.recipient %}
+                                <a class="grey darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
+                            {% endif %}
+                    </span>
+                    {% else %}
+                        <a href="{{ path('take_call', {'id' : call.id}) }}" class="btn cyan white-text">Prendre en charge</a>
+                        <span class="place-name">
                         <i class="material-icons tiny">home</i>
                         {{call.service.concession.name}}
                     </span>
-                    <span class="place-name service-name">
+                        <span class="place-name service-name">
                         <i class="material-icons tiny">settings</i>
                         {{ call.service.name }}
+                            {% if call.recipient %}
+                                <a class="grey darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
+                            {% endif %}
                     </span>
+                    {% endif %}
+
                 </div>
             </div>
 
@@ -106,7 +126,7 @@
                 </div>
                 <div class="col s5" id="call-history-{{ call.id }}">
                     {% for process in call.callProcessings|reverse[:1] %}
-                        <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName |raw}}</span>
+                        <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName|raw}}</span>
                         <span class="bolder">
                                 {{ process.createdAt|dateName }}
                                 à {{ process.createdAt|timeFormat }}
@@ -130,6 +150,15 @@
 
         <div class="col s2 left-align ">
             <div class="call-calendar small grey lighten-4">
+
+                <div
+                        class="alert-callback tooltipped {% if call.clientCallback == 0 %} hide {% endif %}"
+                        data-position="top"
+                        data-tooltip="rappel(s) du client"
+                        id="client-callback-{{ call.id }}"
+                >
+                    {{ call.clientCallback }}
+                </div>
                 <div class="call-cal-header {% if call.lastProcessColor is not empty %} {{ call.lastProcessColor.class}} {% endif %}{% if call.isUrgent %}urgent{% endif %}" id="cal-head-{{ call.id }}">
                     <i class="material-icons ">event_date </i>
                     <span class="call-cal-date">
@@ -144,6 +173,9 @@
                         <span class="grey-text text-darken-4">{{call.recallPeriod.name}} {{call.recallHour|timeFormat}}</span>
                     {% endif %}
                     </span>
+                </div>
+                <div class="call-cal-action">
+                    <a class="{% if call.isUrgent %}urgent{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
                 </div>
             </div>
         </div>

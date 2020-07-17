@@ -24,7 +24,7 @@ class ConcessionHead
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Concession::class, inversedBy="concessionHeads")
+     * @ORM\ManyToOne(targetEntity=Concession::class, inversedBy="concessionHeads", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $concession;

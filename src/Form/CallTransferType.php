@@ -42,21 +42,21 @@ class CallTransferType extends AbstractType
             ->add('city', EntityType::class, [
                 'class'         => City::class,
                 'choice_label'  => 'name',
-                'data'          => $call->getConcession()->getTown(),
+                'data'          => $call->getRecipient()->getService()->getConcession()->getTown(),
                 'mapped'        => false
             ])
             ->add('concession', ChoiceType::class, [
                 'choices' => $this->getConcessions($call->getCityTransfer()),
-                'data'    => $call->getConcession()->getId(),
+                'data'    => $call->getRecipient()->getService()->getConcession()->getId(),
                 'mapped'  => false
             ])
             ->add('service', ChoiceType::class, [
                 'choices' => $this->getServices($call->getConcessionTransfer()),
-                'data'    => $call->getService()->getId(),
+                'data'    => $call->getRecipient()->getService()->getId(),
                 'mapped'  => false
             ])
             ->add('recipient', ChoiceType::class, [
-                'choices' => $this->getRecipients(),
+                'choices' => $this->getRecipients($call->getServiceTransfer()),
                 'data'    => $call->getRecipient()->getId(),
                 'mapped'  => false
             ])

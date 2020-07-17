@@ -223,6 +223,7 @@ class CallType extends AbstractType
         }
         $choices = [];
         $choices['Choisir un destinataire'] = '';
+        $choices['Tous les collaborateurs'] = 'service-' . $serviceId;
         foreach ($recipients as $user) {
             $choices[$user->getFirstname() . ' ' . $user->getLastname()] = $user->getId();
         }

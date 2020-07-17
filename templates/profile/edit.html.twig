@@ -10,27 +10,20 @@
         </div>
     </div>
     <div class="col s4">
-        {% for type, messages in app.session.flashbag.all() %}
-            {% for message in messages %}
-                <div class="flashes {{ type }}">
-                    <span class="flash-{{ type }}">{{ message }}</span>
-                    {% if type == 'success' %}
-                        <i class="material-icons light-blue-text right">check</i>
-                    {% else %}
-                        <i class="material-icons red-text right">error</i>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        {% endfor %}
+        {% include 'components/_flashes.html.twig' %}
     </div>
     <a class="btn  blue darken-1 right" href="{{ path('pass_edit', { 'id': app.user.id }) }}"> Changer mon mot de passe</a>
     <div class="form-profile">
     {{ form_start(form) }}
     <div class="section">
     <div class="row mgt15">
-        <div class="input-field col s6 offset-l3 ">
-    {{ form_label(form.email) }}
-    {{ form_widget(form.email) }}
+        <div class="input-field col s2 offset-l3 ">
+    {{ form_label(form.civility) }}
+    {{ form_widget(form.civility) }}
+        </div>
+        <div class="input-field col s4 ">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
         </div>
     </div>
     </div>
@@ -52,6 +45,21 @@
     {{ form_label(form.phone) }}
     {{ form_widget(form.phone) }}
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6 offset-l3">
+        <p class="grey-text text-lighten_2">Je souhaite reçevoir un mail quand un appel m'est destiné</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6 offset-l3 switch">
+                <label>
+                    Non
+                    {{ form_widget(form.hasAcceptedAlert)  }}
+                    <span class="lever"></span>
+                    Oui
+                </label>
             </div>
         </div>
         <div class="row">

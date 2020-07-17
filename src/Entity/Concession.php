@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ConcessionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -21,37 +22,44 @@ class Concession
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank(message="Veuillez remplir le Nom de la concession avant de valider")
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez remplir l'adresse de la concession avant de valider")
      */
     private $address;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="Veuillez remplir le code postal avant de valider")
      */
     private $postcode;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez mettre la ville avant de valider")
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez mettre une marque de voiture avant de valider")
      */
     private $brand;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Veuillez mettre un numéro avant de valider")
      */
     private $phone;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="concessions")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Veuillez selectionner une plaque avant de valider")
      */
     private $town;
 

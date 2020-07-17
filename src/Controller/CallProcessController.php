@@ -75,7 +75,8 @@ class CallProcessController extends AbstractController
             ->setAppointmentDate($callStepChecker->checkAppointmentDate($request))
             ->setIsAppointmentTaken($callStepChecker->checkAppointment($request))
             ->setIsUrgent(false)
-            ->setRecallPeriod($recallPeriodRepository->findOneBy(['identifier' => RecallPeriod::AUTOUR_DE]));
+            ->setRecallPeriod($recallPeriodRepository->findOneBy(['identifier' => RecallPeriod::AUTOUR_DE]))
+            ->setClientCallback(0);
 
         if ($callStepChecker->isCallToBeEnded($request)) {
             $call->setIsProcessEnded(true);
@@ -118,12 +119,19 @@ class CallProcessController extends AbstractController
         $serviceId = 0
     ) {
         $call = $callRepository->findOneById($callId);
+        $call->setCityTransfer($call->getRecipient()->getService()->getConcession()->getTown()->getId());
+        $call->setConcessionTransfer($call->getRecipient()->getService()->getConcession()->getId());
+        $call->setServiceTransfer($call->getRecipient()->getService()->getId());
         if ($cityId != 0) {
             $call->setCityTransfer($cityId);
         }
         if ($concessionId != 0) {
             $call->setConcessionTransfer($concessionId);
         }
+        if ($serviceId != 0) {
+            $call->setServiceTransfer($serviceId);
+        }
+
 
         $form = $this->createForm(CallTransferType::class, $call);
 
@@ -150,7 +158,6 @@ class CallProcessController extends AbstractController
         $call            = $callRepository->findOneById($callId);
         $fromWhom        = $call->getRecipient();
         $call->setRecipient($userRepository->findOneById($request->request->get('call_transfer')['recipient']));
-        $call->setService($serviceRepository->findOneById($request->request->get('call_transfer')['service']));
         $toWhom          = $call->getRecipient();
         $byWhom          = $this->getUser();
         $transferComment = $request->request->get('call_transfer')['commentTransfer'];
@@ -209,5 +216,29 @@ class CallProcessController extends AbstractController
         $response = new JsonResponse();
         $response->setStatusCode(JsonResponse::HTTP_ACCEPTED);
         return $response;
+    }
+
+    /**
+     * @Route("/{callId}/callback", name="client_callback", methods={"GET"})
+     * @IsGranted("ROLE_USER")
+     * @param int $callId
+     * @param CallRepository $callRepository
+     * @param EntityManagerInterface $entityManager
+     * @return JsonResponse
+     */
+    public function clientCallback(
+        $callId,
+        CallRepository $callRepository,
+        EntityManagerInterface $entityManager
+    ) {
+        $call = $callRepository->findOneById($callId);
+        $countCallback = $call->getClientCallback();
+        $countCallback++;
+        $call->setClientCallback($countCallback);
+        $entityManager->persist($call);
+        $entityManager->flush();
+        $this->addFlash('success', 'Rappel par le client enregistré');
+
+        return $this->redirectToRoute('call_add');
     }
 }

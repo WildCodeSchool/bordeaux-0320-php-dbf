@@ -6,9 +6,8 @@
             <tr>
                 <th>Id</th>
                 <th>Commentaires</th>
-                <th>Identifier</th>
-                <th>modifier</th>
-                <th>supprimer</th>
+                <th class="center-align">Modifier</th>
+                <th class="center-align">Supprimer</th>
             </tr>
         </thead>
         <tbody>
@@ -16,11 +15,10 @@
             <tr id="comment-line-{{ comment.id }}">
                 <td>{{ comment.id }}</td>
                 <td>{{ comment.name }}</td>
-                <td>{{ comment.identifier }}</td>
-                <td>
+                <td class="center-align">
                     <a href="#" class="edit-comment-button" data-target="{{ comment.id }}" ><i class="material-icons">edit</i></a>
                 </td>
-                <td>
+                <td class="center-align">
                     <a href="#" class="delete-comment-button" data-target="{{ comment.id }}"><i class="material-icons">delete</i></a>
                 </td>
             </tr>
