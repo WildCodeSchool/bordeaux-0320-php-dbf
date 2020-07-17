@@ -129,9 +129,9 @@
                 </div>
                 <div class="col s3 right-align">
                     <i class="material-icons small left">directions_car</i> <span class="immat left">{{ call.vehicle.immatriculation }}</span>
-                    {% if call.vehicle.hasCome == 1 %}
+                    {% if call.vehicle.hasCome is constant('App\\Entity\\Vehicle::TRISWITCH_YES_VALUE') %}
                         <i class="material-icons left light-green-text tooltipped small-more" data-tooltip="Déja venu à l'atelier" data-position="top">build</i>
-                    {% elseif call.vehicle.hasCome == 2 %}
+                    {% elseif call.vehicle.hasCome is constant('App\\Entity\\Vehicle::TRISWITCH_NO_VALUE') %}
                         <i class="material-icons left red-text tooltipped small-more" data-tooltip="Jamais venu à l'atelier" data-position="top">build</i>
                     {% endif %}
                     {% if call.vehicle.chassis %}
