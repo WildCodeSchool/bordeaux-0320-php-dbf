@@ -34,47 +34,33 @@ const editor = (button, url, classLine, classBtn, entity) => {
     editLine.classList.remove('hide');
 };
 
+const editorAction = (collection, classLine, classBtn, entity) => {
+    for (let i = 0; i < collection.length; i++) {
+        collection[i].addEventListener('click', (event) => {
+            editor(collection[i], `/${entity}/${collection[i].dataset.target}/edit`, classLine, classBtn, entity)
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded',() => {
     //edition des subjects
     const editorSubjectButtons = document.getElementsByClassName('edit-subject-button');
-    for (let i = 0; i < editorSubjectButtons.length; i++) {
-        editorSubjectButtons[i].addEventListener('click', (event) => {
-            editor(editorSubjectButtons[i], `/subject/${editorSubjectButtons[i].dataset.target}/edit`, 'editor-line', 'edit-subject-button', 'subject')
-        });
-    }
+    editorAction(editorSubjectButtons, 'editor-line', 'edit-subject-button', 'subject')
+
     // fin edition subjects
     const editorCivilityButtons = document.getElementsByClassName('edit-civility-button');
-    for (let i = 0; i < editorCivilityButtons.length; i++) {
-        editorCivilityButtons[i].addEventListener('click', (event) => {
-            event.preventDefault();
-            editor(editorCivilityButtons[i], `/civility/${editorCivilityButtons[i].dataset.target}/edit`, 'editor-line', 'edit-civility-button', 'civility')
-        });
-    }
+    editorAction(editorCivilityButtons, 'editor-line', 'edit-civility-button', 'civility')
+
     const editorCommentButtons = document.getElementsByClassName('edit-comment-button');
-    for (let i = 0; i < editorCommentButtons.length; i++) {
-        editorCommentButtons[i].addEventListener('click', (event) => {
-            event.preventDefault();
-            editor(editorCommentButtons[i], `/comment/${editorCommentButtons[i].dataset.target}/edit`, 'editor-line', 'edit-comment-button', 'comment')
-        });
-    }
+    editorAction(editorCommentButtons, 'editor-line', 'edit-comment-button', 'comment')
+
     const editorCityButtons = document.getElementsByClassName('edit-city-button');
-    for (let i = 0; i < editorCityButtons.length; i++) {
-        editorCityButtons[i].addEventListener('click', (event) => {
-            event.preventDefault();
-            editor(editorCityButtons[i], `/city/${editorCityButtons[i].dataset.target}/edit`, 'editor-line', 'edit-city-button', 'city')
-        });
-    }
+    editorAction(editorCityButtons, 'editor-line', 'edit-city-button', 'city');
+
     const editorConcessionButtons = document.getElementsByClassName('edit-concession-button');
-    for (let i = 0; i < editorConcessionButtons.length; i++) {
-        editorConcessionButtons[i].addEventListener('click', (event) => {
-            event.preventDefault();
-            editor(editorConcessionButtons[i], `/concession/${editorConcessionButtons[i].dataset.target}/edit`, 'editor-line', 'edit-concession-button', 'concession')
-        });
-    }
+    editorAction(editorConcessionButtons, 'editor-line', 'edit-concession-button', 'concession');
+
     const editorServiceButtons = document.getElementsByClassName('edit-service-button');
-    for (let i = 0; i < editorServiceButtons.length; i++) {
-        editorServiceButtons[i].addEventListener('click', (event) => {
-            editor(editorServiceButtons[i], `/service/${editorServiceButtons[i].dataset.target}/edit`, 'editor-line', 'edit-service-button', 'service')
-        });
-    }
+    editorAction(editorServiceButtons, 'editor-line', 'edit-service-button', 'service');
+
 }) //end of document

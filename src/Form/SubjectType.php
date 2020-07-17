@@ -18,7 +18,7 @@ class SubjectType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'motifs'
+                'label' => 'Motifs',
             ])
             ->add('isForAppWorkshop', ChoiceType::class, [
                 'choices'  => [

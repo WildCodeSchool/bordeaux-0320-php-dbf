@@ -3,11 +3,9 @@
 namespace App\Controller\User;
 
 use App\Entity\Call;
+use App\Events;
 use App\Service\CallTreatmentDataMaker;
-use DateInterval;
-use DateTime;
 use App\Entity\RecallPeriod;
-use App\Entity\User;
 use App\Form\CallType;
 use App\Form\RecipientType;
 use App\Repository\CallRepository;
@@ -18,10 +16,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Service\CallOnTheWayDataMaker;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/call")
@@ -51,8 +51,10 @@ class CallController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param VehicleRepository $vehicleRepository
      * @param ClientRepository $clientRepository
+     * @param ServiceRepository $serviceRepository
      * @param CallRepository $callRepository
      * @param CallTreatmentDataMaker $callTreatmentDataMaker
+     * @param EventDispatcherInterface $eventDispatcher
      * @return Response
      */
     public function add(
@@ -61,11 +63,12 @@ class CallController extends AbstractController
         VehicleRepository $vehicleRepository,
         ClientRepository $clientRepository,
         CallRepository $callRepository,
-        CallTreatmentDataMaker $callTreatmentDataMaker
+        CallTreatmentDataMaker $callTreatmentDataMaker,
+        EventDispatcherInterface $eventDispatcher,
+        ServiceRepository $serviceRepository
     ): Response {
         $author = $this->getUser();
         $addedCalls = $callRepository->findCallsAddedToday($author);
-
         $steps = [];
         foreach ($addedCalls as $addedCall) {
             $steps[ $addedCall->getId()] = $callTreatmentDataMaker->stepMaker($addedCall);
@@ -98,11 +101,21 @@ class CallController extends AbstractController
                 $entityManager->persist($vehicle);
                 $entityManager->flush();
             }
+            $call->setService(null);
+            if (strstr($request->request->get('call')['recipient_choice'], 'service-')) {
+                $recipient = explode('service-', $request->request->get('call')['recipient_choice']);
+                $serviceId = (int)$recipient[1];
+                $service   = $serviceRepository->findOneById($serviceId);
+                $call->setRecipient(null);
+                $call->setService($service);
+            }
 
             $vehicle->setClient($client);
             $entityManager->persist($call);
 
             $entityManager->flush();
+            $event = new GenericEvent($call);
+            $eventDispatcher->dispatch($event, Events::CALL_INCOMING);
 
             $this->addFlash('success', 'Appel ajouté ');
 
@@ -126,6 +139,27 @@ class CallController extends AbstractController
         return $this->render('call/show.html.twig', [
             'call' => $call,
         ]);
+    }
+
+    /**
+     * @Route("/{id}/take", name="take_call", methods={"GET"})
+     * @param Call $call
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    public function takeCall(Call $call, EntityManagerInterface $entityManager)
+    {
+        if (is_null($call->getRecipient())) {
+            $call->setService(null);
+            $call->setRecipient($this->getUser());
+            $entityManager->flush();
+            return $this->redirect(
+                $this->generateUrl('user_home') . '#call-' . $call->getId()
+            );
+        } else {
+            $this->addFlash('error', 'Cet appel a déjà été pris en charge');
+            return $this->redirectToRoute('user_home');
+        }
     }
 
     /**
@@ -153,18 +187,23 @@ class CallController extends AbstractController
 
     /**
      * @Route("/{id}", name="call_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_ADMIN")
      * @param Request $request
-     * @param Call $call
+     * @param int $id
      * @param EntityManagerInterface $entityManager
+     * @param CallRepository $callRepository
      * @return Response
      */
-    public function delete(Request $request, Call $call, EntityManagerInterface $entityManager): Response
+    public function delete($id, CallRepository $callRepository, EntityManagerInterface $entityManager): JsonResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$call->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($call);
-            $entityManager->flush();
-        }
-        return $this->redirectToRoute('call_index');
+        $call = $callRepository->findOneById($id);
+        $entityManager->remove($call);
+        $entityManager->flush();
+        $data = ['callId' => $id];
+        $response = new JsonResponse();
+        $response->setStatusCode(Response::HTTP_OK);
+        $response->setData($data);
+        return $response;
     }
 
     /**

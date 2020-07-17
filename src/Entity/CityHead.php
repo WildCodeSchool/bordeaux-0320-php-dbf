@@ -24,7 +24,7 @@ class CityHead
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="cityHeads")
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="cityHeads", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $city;

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,6 +22,7 @@ class City
 
     /**
      * @ORM\Column(type="string", length=155)
+     * @Assert\NotBlank(message="Veuillez remplir le Nom de la plaque avant de valider")
      */
     private $name;
 
@@ -191,5 +193,10 @@ class City
         }
 
         return $this;
+    }
+
+    public function isPhoneCity(): bool
+    {
+        return ($this->getName() === 'Cellule Téléphonique') ? true : false;
     }
 }

@@ -1,35 +1,18 @@
 import { transferTool } from './recipientTransfer';
+import {CallsCounter} from './CallsCounter';
+
+const counter = new CallsCounter();
 
 const getNewCalls = (action) => {
         fetch('/newcallsforuser', {
         })
         .then(function (response) {
-            return response.text()
-        }).then(function (html) {
-            action(html);
-        });
-}
-
-const updateTotalCallToProcess = (method = 'add') => {
-    const counter = document.getElementById('nb-calls-to-process');
-    let total = parseInt(counter.innerHTML);
-    if (method === 'dec') {
-        total--
-    } else {
-        total++
-    }
-    counter.innerHTML = total
-}
-
-const updateTotalCallInProcess = (method = 'add') => {
-    const counter = document.getElementById('nb-calls-in-process');
-    let total = parseInt(counter.innerHTML);
-    if (method === 'dec') {
-        total--
-    } else {
-        total++
-    }
-    counter.innerHTML = total;
+            if (response.status === 200) {
+               return response.text();
+            }
+        }).then(html => {
+            action(html)
+        })
 }
 
 const initButtons = (modal) => {
@@ -87,16 +70,21 @@ const initButtons = (modal) => {
 
                         if (data.is_ended){
                             document.getElementById(`call-${data.callId}`).classList.add('hide')
-                            updateTotalCallInProcess('dec');
+                            counter.updateTotalCallInProcess('dec');
                         } else {
                             changeCallStatus(data.callId, data.colors.class);
                             const target = document.getElementById('call-history-' + data.callId);
                             const callLine = document.getElementById('call-' + data.callId);
                             const callStatus = callLine.dataset.status;
+
+                            const notification = document.getElementById(`client-callback-${data.callId}`);
+                            if (notification && !notification.classList.contains('hide')) {
+                                notification.classList.add('hide')
+                            }
                             if (callStatus === 'new') {
                                 callLine.remove();
-                                updateTotalCallToProcess('dec');
-                                updateTotalCallInProcess();
+                                counter.updateTotalCallToProcess('dec');
+                                counter.updateTotalCallInProcess();
                             } else {
                                 const targetHtml = '<span class="chip ' + data.colors.bgColor + ' black-text">' + data.colors.stepName + '</span>\n' +
                                     '                            <b>\n' +
@@ -164,9 +152,9 @@ const initTransferButtons = (modal) => {
                             const callLine = document.getElementById('call-' + data.callId);
                             const status = callLine.dataset.status;
                             if (status === 'new') {
-                                updateTotalCallToProcess('dec');
+                                counter.updateTotalCallToProcess('dec');
                             } else {
-                                updateTotalCallInProcess('dec');
+                                counter.updateTotalCallInProcess('dec');
                             }
                         document.getElementById('transfer-preloader').classList.add('hide');
                         modal.close();
@@ -216,6 +204,27 @@ const initializeSelects = () => {
     const instancesOfSelects = M.FormSelect.init(selects, {});
 }
 
+const clientCallbacks = () => {
+    fetch('/callbacksforuser')
+        .then(response => {
+            if (response.status === 200) {
+                return response.json()
+            }
+        })
+        .then(json => {
+            for (var [key, value] of Object.entries(json)){
+                const notification = document.getElementById(key);
+                if (notification) {
+                    notification.innerHTML = value
+                    if (notification.classList.contains('hide') && value != 0) {
+                        notification.classList.remove('hide')
+                    } else if (!notification.classList.contains('hide') && value === 0) {
+                        notification.classList.add('hide')
+                    }
+                }
+            }
+        })
+}
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -228,15 +237,18 @@ document.addEventListener('DOMContentLoaded', () => {
     initTransferButtons(modalCallTransferInstance);
 
     const checker = setInterval(()=> {
+
         getNewCalls(html => {
-            if (html != ' ') {
+            if(html) {
                 const listOfCallsZone = document.getElementById('list-calls-to-process')
-                updateTotalCallToProcess();
+                counter.updateTotalCallToProcess();
                 //TODO Insert row at the good place not a the end
                 listOfCallsZone.innerHTML += html
                 initButtons(modalCallTreatmentInstance);
             }
         })
+        clientCallbacks()
+
     }, 15000);
 
 })

@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ServiceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,12 +22,14 @@ class Service
 
     /**
      * @ORM\Column(type="string", length=255)
+     *  @Assert\NotBlank(message="Veuillez remplir le Nom du service avant de valider")
      */
     private $name;
 
     /**
      * @ORM\ManyToOne(targetEntity=Concession::class, inversedBy="services")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank(message="Veuillez sélectionner une concession avant de valider")
      */
     private $concession;
 
@@ -209,5 +212,26 @@ class Service
         }
 
         return $this;
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getConcessionAndCityFromService(): string
+    {
+        $concession = $this->getConcession();
+        $city = $concession->getTown();
+        return $city->getName() . ' > ' . $concession->getName() . ' > ' . $this->getName();
+    }
+
+    public function isServiceHead(User $user): bool
+    {
+        foreach ($this->getServiceHeads() as $head) {
+            if ($head->getUser() === $user) {
+                return true;
+            }
+        }
+        return false;
     }
 }

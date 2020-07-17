@@ -1,4 +1,4 @@
-class AjaxTools {
+export class AjaxTools {
     constructor(urlToAdd, urlToShow) {
         this.urlToAdd     = urlToAdd
         this.urlToShow    = urlToShow

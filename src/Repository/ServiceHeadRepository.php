@@ -5,10 +5,10 @@ namespace App\Repository;
 use App\Entity\ServiceHead;
 use App\Entity\User;
 use App\Entity\Service;
-use App\Entity\Call;
 use App\Entity\Concession;
 use App\Entity\City;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -26,22 +26,43 @@ class ServiceHeadRepository extends ServiceEntityRepository
 
     public function getHeadServiceCalls(User $user)
     {
-        $expr = $this->getEntityManager()->getExpressionBuilder();
+        $query = $this->createQueryBuilder('sh')
+            ->Where('sh.user = :u')
+            ->setParameter('u', $user->getId())
+            ->join(Service::class, 'se', Join::WITH, 'se.id = sh.service')
+            ->addSelect('se.name service')
+            ->addSelect('se.id service_id')
+            ->join(Concession::class, 'co', Join::WITH, 'se.concession = co.id')
+            ->addSelect('co.name concession')
+            ->join(City::class, 'ci', Join::WITH, 'co.town = ci.id')
+            ->addSelect('ci.name city')
+            ->addOrderBy('city', 'ASC')
+            ->addOrderBy('concession', 'ASC')
+            ->addOrderBy('service', 'ASC')
+            ->getQuery()->getResult();
+        return $query;
 
-        $query = $this->createQueryBuilder('sh');
-        $query
-            ->select('ci.name city')
-            ->select('co.id concession')
-            ->select('sh.service')
-            ->select('se.name serviceName')
-            ->join(Service::class, 'se', 'se.id = sh.service')
-            ->join(Concession::class, 'co', 'co.id = se.concession')
-            ->join(City::class, 'ci', 'ci.id = co.town')
-            ->where('sh.user =:u')
-            ->setParameter('u', $user)
-            ->getQuery()
-            ->getResult()
-            ;
+            /*
+        $connection = $this->getEntityManager()->getConnection();
+        $sql = 'SELECT
+                ci.name city,
+                co.name concession,
+                sh.service_id,
+                se.name service
+                FROM service_head sh
+                JOIN service se
+                ON se.id = sh.service_id
+                JOIN concession co
+                ON co.id = se.concession_id
+                JOIN city ci
+                ON ci.id = co.town_id
+                WHERE sh.user_id = :u
+                ORDER BY ci.name, co.name, se.name';
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('u', $user->getId());
+        $stmt->execute();
+        return $stmt->fetchAll();
+            */
     }
 
 

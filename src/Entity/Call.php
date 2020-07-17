@@ -65,7 +65,7 @@ class Call
 
     /**
      * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="calls", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $service;
 
@@ -141,6 +141,12 @@ class Call
 
     private $cityTransfer = 0;
     private $concessionTransfer = 0;
+    private $serviceTransfer = 0;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $clientCallback = 0;
 
     /**
      * @return mixed
@@ -174,7 +180,21 @@ class Call
         $this->concessionTransfer = $concessionTransfer;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getServiceTransfer()
+    {
+        return $this->serviceTransfer;
+    }
 
+    /**
+     * @param mixed $serviceTransfer
+     */
+    public function setServiceTransfer($serviceTransfer): void
+    {
+        $this->serviceTransfer = $serviceTransfer;
+    }
 
 
     public function __construct()
@@ -501,5 +521,17 @@ class Call
     public function getLastProcessColor()
     {
         return CallTreatmentDataMaker::stepMaker($this);
+    }
+
+    public function getClientCallback(): ?int
+    {
+        return $this->clientCallback;
+    }
+
+    public function setClientCallback(int $clientCallback = 0): self
+    {
+        $this->clientCallback = $clientCallback;
+
+        return $this;
     }
 }

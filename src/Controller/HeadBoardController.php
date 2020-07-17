@@ -7,6 +7,8 @@ use App\Repository\ServiceHeadRepository;
 use App\Repository\UserRepository;
 use App\Service\HeadBoardData;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -25,18 +27,36 @@ class HeadBoardController extends AbstractController
         CallRepository $callRepository
     ) {
         $user = $this->getUser();
-
-        $headServices = $user->getServiceHeads();
-        $dataForServices = $headBoardData->makeDataForHeads($headServices);
+        $res = $serviceHeadRepository->getHeadServiceCalls($user);
+        $dataForServices = $headBoardData->makeDataForHead($res);
         $totalToProcess = count($callRepository->callsToProcessByUser($user));
         $totalInProcess = count($callRepository->callsInProcessByUser($user));
-        $callsAddedByUser = count($callRepository->getCallsAddedByUser($user));
+        $callsAddedByUser = count($callRepository->getCallsAddedByUserToday($user));
 
         return $this->render('head_board/index.html.twig', [
-            'services' => $dataForServices,
+            'cities' => $dataForServices,
             'calls_in_process' => $totalInProcess,
             'calls_to_process' => $totalToProcess,
             'calls_added_by_user' => $callsAddedByUser,
         ]);
+    }
+
+    /**
+     * @Route("/head/data", name="head_board_data", methods={"GET"})
+     */
+    public function getHeadBoardData(
+        ServiceHeadRepository $serviceHeadRepository,
+        HeadBoardData $headBoardData
+    ) {
+        $user = $this->getUser();
+        $res = $serviceHeadRepository->getHeadServiceCalls($user);
+        $data = $headBoardData->makeDataForHeadUpdater($res);
+        $response = new JsonResponse();
+        $response->setStatusCode(Response::HTTP_OK);
+        if (is_null($data)) {
+            $response->setStatusCode(Response::HTTP_NO_CONTENT);
+        }
+        $response->setData($data);
+        return $response;
     }
 }

@@ -7,18 +7,18 @@
         <ul class="tabs tabs-fixed-width" id="call-tabs">
             <li class="tab" id="call-tab-1"><a href="#call-list" class=" active teal-text" >Liste</a></li>
             <li class="tab" id="call-tab-2"><a href="#call-search" class="active teal-text">Recherche</a></li>
-            <li class="tab" id="call-tab-3"><a href="#call-manage" class="teal-text" >gestion</a></li>
+            <li class="tab" id="call-tab-3"><a href="#call-manage" class="teal-text" >Gestion</a></li>
         </ul>
     </div>
     <div class="card-content grey lighten-4">
         <div id="call-list">
-            liste appels en cours de traitement
+            Liste appels en cours de traitement
         </div>
         <div id="call-search">
-            form recherche
+            <a href="{{ path('search') }}" class="btn teal lighten-2"><i class="material-icons">search</i></a>
         </div>
         <div id="call-manage">
-            Gestion ?
+            <a href="{{ path('head_board') }}" class="btn teal darken-2"><i class="material-icons">view_day</i></a>
         </div>
     </div>
 </div>

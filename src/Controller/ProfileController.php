@@ -5,18 +5,22 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ChangePasswordType;
 use App\Form\UserProfileType;
-use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * @Route("/profile")
+ * @IsGranted("ROLE_COLLABORATOR")
+ */
 class ProfileController extends AbstractController
 {
 
     /**
-     * @Route("profile/edit/{id}", name="profile_edit", methods={"GET","POST"})
+     * @Route("/edit/{id}", name="profile_edit", methods={"GET","POST"})
      * @param Request $request
      * @param User $user
      * @return Response
@@ -63,7 +67,7 @@ class ProfileController extends AbstractController
                 $user->setPassword($newEncodedPassword);
                 $entityManager->persist($user);
                 $entityManager->flush();
-                $this->addFlash('success', 'Votre mot de passe à bien été changé !');
+                $this->addFlash('success', 'Votre mot de passe a bien été changé !');
                 return $this->redirectToRoute('profile_edit', ['id' => $user->getId()]);
             } else {
                 $this->addFlash('danger', "Ce n'est pas le bon ancien mot de passe");

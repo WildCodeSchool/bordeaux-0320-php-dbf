@@ -15,7 +15,9 @@ class ConcessionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, ['label' => 'Nom de concession'])
+            ->add('name', TextType::class, ['label' => 'Nom de concession'
+
+            ])
             ->add('address', TextType::class, ['label' => 'Adresse'])
             ->add('postcode', TextType::class, ['label' => 'Code Postal'])
             ->add('city', TextType::class, ['label' => 'Ville'])

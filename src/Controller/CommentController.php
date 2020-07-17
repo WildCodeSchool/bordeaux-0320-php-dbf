@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/comment")
+ * @IsGranted("ROLE_ADMIN")
  */
 class CommentController extends AbstractController
 {
@@ -43,14 +45,14 @@ class CommentController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($comment);
             $entityManager->flush();
-
-            return $this->redirectToRoute('admin_dashboard');
+            $this->addFlash("success", "Vous avez bien ajouté un commentaire");
+        } else {
+            $errors = $formComment['name']->getErrors();
+            foreach ($errors as $error) {
+                $this->addFlash("error", $error->getMessage());
+            }
         }
-
-        return $this->render('comment/new.html.twig', [
-            'comment' => $comment,
-            'form_comment' => $formComment->createView(),
-        ]);
+        return $this->redirectToRoute('admin_dashboard');
     }
 
     /**
@@ -101,7 +103,7 @@ class CommentController extends AbstractController
         $entityManager->flush();
 
         $response = new JsonResponse();
-        $status = JsonResponse::HTTP_OK;
+        $status = JsonResponse::HTTP_NO_CONTENT;
         $response->setStatusCode($status);
 
         return $response;
