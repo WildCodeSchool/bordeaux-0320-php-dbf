@@ -68,6 +68,28 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
+    public function findOperationnalUsers()
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u')
+            ->where('u.canBeRecipient = :status')
+            ->setParameter('status', true)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOperationnalUsersInService($service)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u')
+            ->where('u.canBeRecipient = :status')
+            ->setParameter('status', true)
+            ->where('u.service = :service')
+            ->setParameter('service', $service)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllOrderBy($field, $order = 'ASC', $limit = null)
     {
         $query = $this->createQueryBuilder('u')
