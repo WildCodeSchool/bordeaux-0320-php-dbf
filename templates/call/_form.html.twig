@@ -127,7 +127,14 @@
     </div>
 </div>
 <div class="row center-align">
-    <button class="btn light-blue">{{ button_label|default('Ajouter') }}</button>
+    <div class="col s6 right-align">
+        <button class="btn light-blue" id="call-add-btn">{{ button_label|default('Ajouter') }}</button>
+    </div>
+    <div class="col s2 right-align">
+        <div class="progress  grey lighten-3 hide" id="call-add-loader">
+            <div class="indeterminate cyan"></div>
+        </div>
+    </div>
 </div>
 
 {{ form_end(form) }}

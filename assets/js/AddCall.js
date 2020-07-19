@@ -15,4 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
             M.toast({html:'Elément copié', classes:'light-blue'})
         })
     }
+
+    const addCallBtn = document.getElementById('call-add-btn')
+    const addCallLoader = document.getElementById('call-add-loader')
+    addCallBtn.addEventListener('click', () => {
+        addCallLoader.classList.remove('hide')
+    })
 });
