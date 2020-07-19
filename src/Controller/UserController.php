@@ -138,6 +138,7 @@ class UserController extends AbstractController
     }
 
 
+
     /**
      * @Route("/list", name="user_list", methods={"POST"})
      * @param UserRepository $userRepository
@@ -152,4 +153,5 @@ class UserController extends AbstractController
         }
         return new JsonResponse($dataList);
     }
+
 }
