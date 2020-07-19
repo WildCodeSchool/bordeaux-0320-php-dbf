@@ -219,8 +219,7 @@ class CallType extends AbstractType
         if (is_null($serviceId)) {
             $recipients = $this->userRepository->findOperationnalUsers();
         } else {
-            $service = $this->serviceRepository->findOneById($serviceId);
-            $recipients = $this->userRepository->findOperationnalUsersInService($service);
+            $recipients = $this->userRepository->findOperationnalUsersInService($serviceId);
         }
         $choices = [];
         $choices['Choisir un destinataire'] = '';

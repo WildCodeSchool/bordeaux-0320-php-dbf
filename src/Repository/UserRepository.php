@@ -72,8 +72,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         return $this->createQueryBuilder('u')
             ->select('u')
-            ->where('u.canBeRecipient = :status')
-            ->setParameter('status', true)
+            ->where('u.canBeRecipient = true')
             ->getQuery()
             ->getResult();
     }
@@ -82,9 +81,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         return $this->createQueryBuilder('u')
             ->select('u')
-            ->where('u.canBeRecipient = :status')
-            ->setParameter('status', true)
-            ->where('u.service = :service')
+            ->where('u.canBeRecipient = true')
+            ->andWhere('u.service = :service')
             ->setParameter('service', $service)
             ->getQuery()
             ->getResult();
