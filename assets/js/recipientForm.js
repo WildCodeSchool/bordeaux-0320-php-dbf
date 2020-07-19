@@ -1,7 +1,7 @@
 class recipientsAjaxTool {
     constructor(url) {
         this.urlToAdd     = url
-        this.urlToRandom = '/user/random';
+        this.urlToRandom = '/phoneCity/random';
         this.init()
     }
 
@@ -74,6 +74,7 @@ class recipientsAjaxTool {
             if (this.authorizedToPost) {
                 this.authorizedToPost = false;
                 if (this.citySelector.value != this.phoneCityId) {
+                    console.log(this.phoneCityId)
                     this.sendData(postdata, (data) => {
                         this.concessionZone.innerHTML = '<small class="grey-text">Choisir une concession</small><br>' + this.getHtmlElement(data, 'call_concession');
                         this.serviceZone.innerHTML = "";
@@ -81,6 +82,7 @@ class recipientsAjaxTool {
                         this.init(postdata)
                     })
                 } else {
+                    console.log('cell')
                     this.citySelector.setAttribute('disabled', 'disabled');
                     this.getRandomUser(json => {
                         this.selectValueInSelect(this.recipientField, json.recipientId)
