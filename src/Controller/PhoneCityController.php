@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\CityRepository;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,6 +26,19 @@ class PhoneCityController extends AbstractController
         $status = ($phoneCityId) ? JsonResponse::HTTP_OK : JsonResponse::HTTP_NO_CONTENT;
         $response->setData($data);
         $response->setStatusCode($status);
+        return $response;
+    }
+
+    /**
+     * @Route("/random", name="user_random", methods={"GET"})
+     */
+    public function randomCellUser(UserRepository $userRepository)
+    {
+        $response = new JsonResponse();
+        $response->setStatusCode(JsonResponse::HTTP_OK);
+        $response->setData([
+            'recipientId' => $userRepository->getRandomUser()->getId()
+        ]);
         return $response;
     }
 }
