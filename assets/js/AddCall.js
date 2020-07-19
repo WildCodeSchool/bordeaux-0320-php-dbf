@@ -1,9 +1,11 @@
 import { Switch3 } from 'triswitch';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const switcherAddCall = new Switch3(['non', '?', 'oui'], [2, 0, 1], 'switcher_add_call', 0,
-        '', 'call_vehicle_hasCome');
-    switcherAddCall.init();
+    if(document.getElementById('switcher_add_call')) {
+        const switcherAddCall = new Switch3(['non', '?', 'oui'], [2, 0, 1], 'switcher_add_call', 0,
+            '', 'call_vehicle_hasCome');
+        switcherAddCall.init();
+    }
 
     const copyers = document.getElementsByClassName('copyer');
     for (let i = 0; i < copyers.length; i++) {
@@ -18,7 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addCallBtn = document.getElementById('call-add-btn')
     const addCallLoader = document.getElementById('call-add-loader')
-    addCallBtn.addEventListener('click', () => {
-        addCallLoader.classList.remove('hide')
-    })
+
+    if(addCallBtn) {
+        addCallBtn.addEventListener('click', () => {
+            addCallLoader.classList.remove('hide')
+        })
+    }
+
 });

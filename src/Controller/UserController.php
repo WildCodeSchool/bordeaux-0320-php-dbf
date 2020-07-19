@@ -136,4 +136,22 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('user_index');
     }
+
+
+
+    /**
+     * @Route("/list", name="user_list", methods={"POST"})
+     * @param UserRepository $userRepository
+     * @return JsonResponse
+     */
+    public function listAllUser(UserRepository $userRepository): JsonResponse
+    {
+        $users = $userRepository->findAllOrderBy('lastname', 'ASC');
+        $dataList = [];
+        foreach ($users as $user) {
+            $dataList[$user->getFirstname(). ' ' . $user->getLastname()]  = null;
+        }
+        return new JsonResponse($dataList);
+    }
+
 }
