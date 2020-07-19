@@ -61,38 +61,39 @@ class recipientsAjaxTool {
         }
 
         this.initializeSelects()
-
-        this.citySelector.addEventListener('change', () => {
-            if (this.citySelector.value != this.phoneCityId) {
-                this.concessionZone.innerHTML = this.addLoader()
-            } else {
-                this.concessionZone.innerHTML ='';
-            }
-            const postdata = {
-                'City' : this.citySelector.value
-            }
-            if (this.authorizedToPost) {
-                this.authorizedToPost = false;
+        if(this.citySelector) {
+            this.citySelector.addEventListener('change', () => {
                 if (this.citySelector.value != this.phoneCityId) {
-                    console.log(this.phoneCityId)
-                    this.sendData(postdata, (data) => {
-                        this.concessionZone.innerHTML = '<small class="grey-text">Choisir une concession</small><br>' + this.getHtmlElement(data, 'call_concession');
-                        this.serviceZone.innerHTML = "";
-                        this.recipientZone.innerHTML = "";
-                        this.init(postdata)
-                    })
+                    this.concessionZone.innerHTML = this.addLoader()
                 } else {
-                    console.log('cell')
-                    this.citySelector.setAttribute('disabled', 'disabled');
-                    this.getRandomUser(json => {
-                        this.selectValueInSelect(this.recipientField, json.recipientId)
-                        this.concessionZone.innerHTML = "";
-                        this.serviceZone.innerHTML = "";
-                    })
-                    this.initializeSelects()
+                    this.concessionZone.innerHTML = '';
                 }
-            }
-        })
+                const postdata = {
+                    'City': this.citySelector.value
+                }
+                if (this.authorizedToPost) {
+                    this.authorizedToPost = false;
+                    if (this.citySelector.value != this.phoneCityId) {
+                        console.log(this.phoneCityId)
+                        this.sendData(postdata, (data) => {
+                            this.concessionZone.innerHTML = '<small class="grey-text">Choisir une concession</small><br>' + this.getHtmlElement(data, 'call_concession');
+                            this.serviceZone.innerHTML = "";
+                            this.recipientZone.innerHTML = "";
+                            this.init(postdata)
+                        })
+                    } else {
+                        console.log('cell')
+                        this.citySelector.setAttribute('disabled', 'disabled');
+                        this.getRandomUser(json => {
+                            this.selectValueInSelect(this.recipientField, json.recipientId)
+                            this.concessionZone.innerHTML = "";
+                            this.serviceZone.innerHTML = "";
+                        })
+                        this.initializeSelects()
+                    }
+                }
+            })
+        }
 
         if (this.concessionSelector) {
             this.concessionSelector.addEventListener('change', () => {
@@ -187,9 +188,11 @@ class recipientsAjaxTool {
     }
 
     selectValueInSelect(selector, selectorValue) {
-        if ( selector.querySelector('option[value="' + selectorValue + '"]')) {
-            selector.querySelector('option[value="' + selectorValue + '"]')
-                .setAttribute('selected', 'selected');
+        if(selector) {
+            if (selector.querySelector('option[value="' + selectorValue + '"]')) {
+                selector.querySelector('option[value="' + selectorValue + '"]')
+                    .setAttribute('selected', 'selected');
+            }
         }
     }
 

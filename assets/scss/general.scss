@@ -117,6 +117,10 @@ ul {
   margin-left: 30px;
 }
 
+.mgl12 {
+  margin-left: 12px;
+}
+
 label:not(.active) {
   font-size:0.9rem;
   margin-left:5px;
@@ -132,6 +136,7 @@ label.active {
   margin-top:3px;
   background:#fff;
   padding:0 5px;
+  z-index:2;
 }
 
 input:not([type]), input[type="text"]:not(.browser-default), input[type="password"]:not(.browser-default), input[type="email"]:not(.browser-default), input[type="url"]:not(.browser-default), input[type="time"]:not(.browser-default), input[type="date"]:not(.browser-default), input[type="datetime"]:not(.browser-default), input[type="datetime-local"]:not(.browser-default), input[type="tel"]:not(.browser-default), input[type="number"]:not(.browser-default), input[type="search"]:not(.browser-default), textarea.materialize-textarea {

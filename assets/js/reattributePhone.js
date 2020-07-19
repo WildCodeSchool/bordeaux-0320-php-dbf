@@ -17,22 +17,24 @@ const emptyClientForm = () => {
 document.addEventListener('DOMContentLoaded', () => {
     const reattributeBtn = document.getElementById('reattribute');
     const loaderChangeNumber = document.getElementById('loaderChangeNumber');
+    if(reattributeBtn) {
+        reattributeBtn.addEventListener('click', (event) => {
+            event.preventDefault();
+            loaderChangeNumber.classList.remove('hide');
+            const client = reattributeBtn.getAttribute('data-client');
 
-    reattributeBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-        loaderChangeNumber.classList.remove('hide');
-        const client = reattributeBtn.getAttribute('data-client');
-
-        fetch('/call/reattribute/' + client, {
-            method      : 'GET',
-            headers     : {
-                'Content-Type': 'application/json',
-            },
-        }).then(((response) => {
-            emptyClientForm();
-            loaderChangeNumber.classList.add('hide');
-            event.target.classList.add('hide');
-            return response.text();
-        }));
-    });
+            fetch('/call/reattribute/' + client, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(((response) => {
+                    emptyClientForm();
+                    loaderChangeNumber.classList.add('hide');
+                    event.target.classList.add('hide');
+                    return response.text();
+                }));
+        });
+    }
 });

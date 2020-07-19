@@ -1,129 +1,134 @@
 {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
 
-    <div class="row">
-        <!-- CLIENT ----->
-        <div class="col s8">
-                <h5 class="light-blue-text"><i class="material-icons left">person</i> Client
-                    <span class="addon">
-                        <a href="#" class="btn grey darken-3 white-text btn-small editor hide" id="reattribute" data-client="">cliquez ici pour réattribuer le numéro</a>
-                        <img src="{{ asset('build/loader.gif') }}" width="20px" class="hide" alt="loader" id="loaderChangeNumber">
+<div class="row">
+    <!-- CLIENT ----->
+    <div class="col s8">
+        <h5 class="light-blue-text"><i class="material-icons left">person</i> Client
+            <span class="addon">
+                        <a href="#" class="btn grey darken-3 white-text btn-small editor hide" id="reattribute"
+                           data-client="">cliquez ici pour réattribuer le numéro</a>
+                        <img src="{{ asset('build/loader.gif') }}" width="20px" class="hide" alt="loader"
+                             id="loaderChangeNumber">
                         </span>
-                </h5>
-                <div class="row mgt15">
-                    <div class="input-field col s5">
-                        {{ form_label(form.client.phone) }}
-                        {{ form_widget(form.client.phone) }}
-                        <a class="copyer" href="#" data-copy="call_client_phone"><i class="material-icons">content_copy</i></a>
-                    </div>
-                    <div class=" input-field col s5">
-                        {{ form_label(form.client.phone2) }}
-                        {{ form_widget(form.client.phone2) }}
-                    </div>
-                </div>
-                <div class="row mgt15">
-                    <div class=" input-field col s2">
-                        {{ form_widget(form.client.civility) }}
-                    </div>
-                    <div class=" input-field col s5">
-                        {{ form_label(form.client.name) }}
-                        {{ form_widget(form.client.name) }}
-                    </div>
-                    <div class=" input-field col s5">
-                        {{ form_label(form.client.email) }}
-                        {{ form_widget(form.client.email) }}
-                    </div>
-                </div>
+        </h5>
+        <div class="row mgt15">
+            <div class="input-field col s5">
+                {{ form_label(form.client.phone) }}
+                {{ form_widget(form.client.phone) }}
+                <a class="copyer" href="#" data-copy="call_client_phone"><i class="material-icons">content_copy</i></a>
             </div>
-        <!-- VEHICLE ----->
-        <div class="col s4">
-            <h5 class="light-blue-text"><i class="material-icons left">directions_car</i> Véhicule</h5>
-            <div class="row mgt15">
-                <div class="input-field col s6 ">
-                    {{ form_label(form.vehicle.immatriculation) }}
-                    {{ form_widget(form.vehicle.immatriculation) }}
-                    <a class="copyer" href="#" data-copy="call_vehicle_immatriculation"><i class="material-icons">content_copy</i></a>
-                </div>
-                <div class="input-field col s6 call-switcher">
-                    {{ form_widget(form.vehicle.hasCome) }}
-                    <small class="grey-text text-lighten_2 mgt-30">Déja passé en atelier ?</small><br>
-                    <div class="col s6">
-                        <div id="switcher_add_call"></div>
-                    </div>
-                </div>
-                <div class="input-field col s12 ">
-                    {{ form_label(form.vehicle.chassis) }}
-                    {{ form_widget(form.vehicle.chassis) }}
-                    <a class="copyer" href="#" data-copy="call_vehicle_chassis"><i class="material-icons">content_copy</i></a>
-                </div>
-
+            <div class=" input-field col s5">
+                {{ form_label(form.client.phone2) }}
+                {{ form_widget(form.client.phone2) }}
             </div>
-
         </div>
-    </div>
-    <!-- DESTINATAIRES ----->
-    <div class="row">
-        <div class="col s12">
-            <h5 class="light-blue-text"><i class="material-icons left">person_pin</i> Destinataire</h5>
-            <div class="row">
-                <div class="col s3 input-field" id="recipient-city">
-                    <small class="grey-text label-for-select ">Choisir une plaque</small><br>
-                    {{form_widget(form.city)}}
-                </div>
-                <div class="col s3" id="recipient-concession">
-                    <small class="grey-text label-for-select ">Choisir une concession</small><br>
-                    {{form_widget(form.concession)}}
-                </div>
-                <div class="col s3" id="recipient-service">
-                    <small class="grey-text label-for-select ">Choisir un service</small><br>
-                    {{form_widget(form.service_choice)}}
-                </div>
-                <div class="col s3" id="recipient-recipient">
-                </div>
+        <div class="row mgt15">
+            <div class=" input-field col s2">
+                {{ form_widget(form.client.civility) }}
+            </div>
+            <div class=" input-field col s5">
+                {{ form_label(form.client.name) }}
+                {{ form_widget(form.client.name) }}
+            </div>
+            <div class=" input-field col s5">
+                {{ form_label(form.client.email) }}
+                {{ form_widget(form.client.email) }}
             </div>
         </div>
     </div>
-    <div class="row">
-        <!-- OBJET ----->
-        <div class="col s9">
+    <!-- VEHICLE ----->
+    <div class="col s4">
+        <h5 class="light-blue-text"><i class="material-icons left">directions_car</i> Véhicule</h5>
+        <div class="row mgt15">
+            <div class="input-field col s6 ">
+                {{ form_label(form.vehicle.immatriculation) }}
+                {{ form_widget(form.vehicle.immatriculation) }}
+                <a class="copyer" href="#" data-copy="call_vehicle_immatriculation"><i class="material-icons">content_copy</i></a>
+            </div>
+            <div class="input-field col s6 call-switcher">
+                {{ form_widget(form.vehicle.hasCome) }}
+                <small class="grey-text text-lighten_2 mgt-30">Déja passé en atelier ?</small><br>
+                <div class="col s6">
+                    <div id="switcher_add_call"></div>
+                </div>
+            </div>
+            <div class="input-field col s12 ">
+                {{ form_label(form.vehicle.chassis) }}
+                {{ form_widget(form.vehicle.chassis) }}
+                <a class="copyer" href="#" data-copy="call_vehicle_chassis"><i
+                            class="material-icons">content_copy</i></a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- DESTINATAIRES ----->
+<div class="row">
+    <div class="col s12">
+        <h5 class="light-blue-text"><i class="material-icons left">person_pin</i> Destinataire</h5>
+        <div class="row">
+            <div class="col s3 input-field" id="recipient-city">
+                <small class="grey-text label-for-select ">Choisir une plaque</small><br>
+                {{ form_widget(form.city) }}
+            </div>
+            <div class="col s3" id="recipient-concession">
+                <small class="grey-text label-for-select ">Choisir une concession</small><br>
+                {{ form_widget(form.concession) }}
+            </div>
+            <div class="col s3" id="recipient-service">
+                <small class="grey-text label-for-select ">Choisir un service</small><br>
+                {{ form_widget(form.service_choice) }}
+            </div>
+            <div class="col s3" id="recipient-recipient">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <!-- OBJET ----->
+    <div class="col s9">
         <h5 class="light-blue-text"><i class="material-icons left">phone</i> Objet de l'appel</h5>
-            <div class="row">
-                <div class="input-field col s6">
-                        {{form_widget(form.subject)}}
-                </div>
-                <div class="input-field col s6">
-                        {{ form_widget(form.comment) }}
-                </div>
+        <div class="row">
+            <div class="input-field col s6">
+                {{ form_widget(form.subject) }}
             </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    {{ form_label(form.freeComment) }}
-                    {{ form_widget(form.freeComment) }}
-                </div>
+            <div class="input-field col s6">
+                {{ form_widget(form.comment) }}
             </div>
         </div>
-        <!-- RAPPEL ----->
-        <div class="col s3">
-            <h5 class="light-blue-text"><i class="material-icons left">phone_forwarded</i> Rappel</h5>
-            <div class="col s12">
-                {{form_widget(form.recallDate)}}
-            </div>
-
-            <div class="col s6 recallPeriod">
-                {{form_widget(form.recallPeriod)}}
-            </div>
-            <div class="col s6 flex ">
-                {{ form_widget(form.recallHour.hour) }}
-                {{ form_widget(form.recallHour.minute) }}
-
+        <div class="row">
+            <div class="input-field col s12">
+                {{ form_label(form.freeComment) }}
+                {{ form_widget(form.freeComment) }}
             </div>
         </div>
     </div>
+    <!-- RAPPEL ----->
+    <div class="col s3">
+        <h5 class="light-blue-text"><i class="material-icons left">phone_forwarded</i> Rappel</h5>
+        <div class="col s12">
+            {{ form_widget(form.recallDate) }}
+        </div>
+        <div class="col s6 recallPeriod">
+            {{ form_widget(form.recallPeriod) }}
+        </div>
+        <div class="col s6 flex ">
+            <div class="col s6">
+                {{ form_widget(form.recallHour.hour) }}
+            </div>
+            <div class="col s6">
+                {{ form_widget(form.recallHour.minute) }}
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row with-hidden-fields">
     <div class="col s6">
-        {{form_widget(form.service)}}
+        {{ form_widget(form.service) }}
     </div>
     <div class="col s6">
-        {{form_widget(form.recipient)}}
+        {{ form_widget(form.recipient) }}
     </div>
 </div>
 <div class="row center-align">
@@ -154,16 +159,22 @@
         </p>
         <table>
             <thead>
-                <tr>
-                    <th>Sujet</th><th>Commentaire</th><th>Le</th><th>à</th><th>Véhicule</th><th></th>
-                </tr>
+            <tr>
+                <th>Sujet</th>
+                <th>Commentaire</th>
+                <th>Le</th>
+                <th>à</th>
+                <th>Véhicule</th>
+                <th></th>
+            </tr>
             </thead>
             <tbody id="calls-on-the-way-for-phone">
 
             </tbody>
         </table>
         <p>
-            <a class="btn light-blue darken-2 modal-close left"><i class="material-icons left">add</i> Créer un nouvel appel</a>
+            <a class="btn light-blue darken-2 modal-close left"><i class="material-icons left">add</i> Créer un nouvel
+                appel</a>
         </p>
     </div>
     <div class="modal-footer">
@@ -182,7 +193,10 @@
         <table>
             <thead>
             <tr>
-                <th>Immat</th><th>N°Chassis</th><th></th><th></th>
+                <th>Immat</th>
+                <th>N°Chassis</th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody id="client-vehicles-table">
