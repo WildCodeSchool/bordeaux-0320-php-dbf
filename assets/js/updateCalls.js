@@ -89,7 +89,7 @@ const initButtons = (modal) => {
                             if (notification && !notification.classList.contains('hide')) {
                                 notification.classList.add('hide')
                             }
-                            if (callStatus === 'new') {
+                            if (isRouteWelcome()) {
                                 callLine.remove();
                                 counter.updateTotalCallToProcess('dec');
                                 counter.updateTotalCallInProcess();
