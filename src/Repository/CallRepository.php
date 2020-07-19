@@ -60,14 +60,12 @@ class CallRepository extends ServiceEntityRepository
     {
         $date = new DateTime('now');
         $dateLimit = $date->sub(new DateInterval('P7D'));
-
         return $this->createQueryBuilder('c')
             ->Where('c.client = :client')
             ->setParameter('client', $clientId)
             ->andWhere('c.createdAt >= :limitDate')
-            ->andWhere('isProcessEnded = :status')
-            ->setParameter('status', false)
             ->setParameter('limitDate', $dateLimit)
+            ->andWhere('c.isProcessEnded IS NULL')
             ->orderBy('c.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
@@ -127,7 +125,6 @@ class CallRepository extends ServiceEntityRepository
 
     public function callsToProcessByUser($recipient)
     {
-        $service = $recipient->getService();
         $queryRecipient = $this->createQueryBuilder('c')
             ->Where('c.recipient = :recipient')
             ->setParameter('recipient', $recipient)
