@@ -64,9 +64,11 @@ class recipientsAjaxTool {
         if(this.citySelector) {
             this.citySelector.addEventListener('change', () => {
                 if (this.citySelector.value != this.phoneCityId) {
+
                     this.concessionZone.innerHTML = this.addLoader()
                 } else {
                     this.concessionZone.innerHTML = '';
+
                 }
                 const postdata = {
                     'City': this.citySelector.value

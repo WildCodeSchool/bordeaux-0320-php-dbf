@@ -20,9 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const addCallBtn = document.getElementById('call-add-btn')
     const addCallLoader = document.getElementById('call-add-loader')
+
     if(addCallBtn) {
         addCallBtn.addEventListener('click', () => {
             addCallLoader.classList.remove('hide')
         })
     }
+
 });
