@@ -8,14 +8,18 @@
             <div class="col s12">
                 <div class="row mgt30">
                     <div class="col s4 offset-s2 center-align">
-                        <a href="{{ path('user_home') }}" class="chip {% if app.request.get('_route') == 'user_home' %}cyan{% else %} grey{% endif %} white-text">
-                            <span class="btn-floating btn-small black white-text" id="nb-calls-to-process">{{ to_process }}</span>
+                        <a href="{{ path('user_home') }}"
+                           class="chip {% if app.request.get('_route') == 'user_home' %}cyan{% else %} grey{% endif %} white-text">
+                            <span class="btn-floating btn-small black white-text"
+                                  id="nb-calls-to-process">{{ to_process }}</span>
                             Appels à effectuer
                         </a>
                     </div>
                     <div class="col s4 center-align">
-                        <a href="{{ path('user_calls_in_process') }}"  class="chip {% if app.request.get('_route') == 'user_calls_in_process' %}cyan {% else %}grey {% endif %}  white-text">
-                            <span class="btn-floating btn-small black white-text" id="nb-calls-in-process">{{ in_process }}</span>
+                        <a href="{{ path('user_calls_in_process') }}"
+                           class="chip {% if app.request.get('_route') == 'user_calls_in_process' %}cyan {% else %}grey {% endif %}  white-text">
+                            <span class="btn-floating btn-small black white-text"
+                                  id="nb-calls-in-process">{{ in_process }}</span>
                             Rappels à effectuer
                         </a>
                     </div>
@@ -32,15 +36,19 @@
                 <div class="col s12">
                     {% if app.request.get('_route') == 'user_home' %}
                         {% if (app.request.get('id') is not null and header) %}
-                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Les appels à effectuer par {{ user.firstname }} {{ user.lastname }}</h5>
-                        {% else  %}
-                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos appels à effectuer</h5>
+                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Les appels à effectuer
+                                par {{ user.firstname }} {{ user.lastname }}</h5>
+                        {% else %}
+                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos appels à effectuer
+                            </h5>
                         {% endif %}
-                    {% else  %}
+                    {% else %}
                         {% if (app.request.get('id') is not null and header) %}
-                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Les rappels à effectuer par {{ user.firstname }} {{ user.lastname }}</h5>
-                        {% else  %}
-                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos rappels à effectuer</h5>
+                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Les rappels à
+                                effectuer par {{ user.firstname }} {{ user.lastname }}</h5>
+                        {% else %}
+                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos rappels à
+                                effectuer</h5>
                         {% endif %}
                     {% endif %}
                 </div>
