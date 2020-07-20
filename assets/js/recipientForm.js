@@ -37,6 +37,7 @@ class recipientsAjaxTool {
         this.serviceField         = document.getElementById(this.serviceFieldId);
         this.recipientField       = document.getElementById(this.recipientFieldId);
         this.phoneCityId          = null
+
         this.getPhoneCityId((phoneCityId => {
             this.phoneCityId = phoneCityId;
         }));
@@ -76,22 +77,23 @@ class recipientsAjaxTool {
                 if (this.authorizedToPost) {
                     this.authorizedToPost = false;
                     if (this.citySelector.value != this.phoneCityId) {
-                        console.log(this.phoneCityId)
                         this.sendData(postdata, (data) => {
                             this.concessionZone.innerHTML = '<small class="grey-text">Choisir une concession</small><br>' + this.getHtmlElement(data, 'call_concession');
                             this.serviceZone.innerHTML = "";
                             this.recipientZone.innerHTML = "";
                             this.init(postdata)
+                            this.initializeSelects()
                         })
                     } else {
-                        console.log('cell')
-                        this.citySelector.setAttribute('disabled', 'disabled');
                         this.getRandomUser(json => {
-                            this.selectValueInSelect(this.recipientField, json.recipientId)
-                            this.concessionZone.innerHTML = "";
-                            this.serviceZone.innerHTML = "";
+                            if (json) {
+                                this.selectValueInSelect(this.recipientField, json.recipientId)
+                            }
+                            this.concessionZone.innerHTML = '';
+                            this.serviceZone.innerHTML = '';
+                            this.recipientZone.innerHTML = '';
+                            this.init(postdata)
                         })
-                        this.initializeSelects()
                     }
                 }
             })
@@ -183,7 +185,11 @@ class recipientsAjaxTool {
             },
         })
             .then(function (response) {
-                return response.json();
+                if(response.status === 200) {
+                    return response.json();
+                } else {
+                    M.toast({html:'Aucun collaborateur trouvé dans la cellule téléphonique', classes:'red'});
+                }
             }).then(function (json) {
                 action(json);
         });
