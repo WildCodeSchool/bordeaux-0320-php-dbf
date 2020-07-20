@@ -32,6 +32,8 @@ require('./newUser');
 require('./userAdmin');
 require('./deleteCall');
 require('./Collapsor');
+require('./resetVehicule');
+require('./userHighlighting');
 
 
 

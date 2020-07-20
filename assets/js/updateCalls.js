@@ -15,6 +15,10 @@ const getNewCalls = (action) => {
         })
 }
 
+const isRouteWelcome = () => {
+    return (window.location.href.indexOf('welcome') != -1)
+}
+
 const initButtons = (modal) => {
     const buttons = document.getElementsByClassName('call-treatment-btn');
     const modalHtmlZone = document.getElementById('modal-content-call-treatment');
@@ -70,7 +74,11 @@ const initButtons = (modal) => {
 
                         if (data.is_ended){
                             document.getElementById(`call-${data.callId}`).classList.add('hide')
-                            counter.updateTotalCallInProcess('dec');
+                            if (isRouteWelcome()) {
+                                counter.updateTotalCallToProcess('dec');
+                            } else {
+                                counter.updateTotalCallInProcess('dec');
+                            }
                         } else {
                             changeCallStatus(data.callId, data.colors.class);
                             const target = document.getElementById('call-history-' + data.callId);
@@ -81,7 +89,7 @@ const initButtons = (modal) => {
                             if (notification && !notification.classList.contains('hide')) {
                                 notification.classList.add('hide')
                             }
-                            if (callStatus === 'new') {
+                            if (isRouteWelcome()) {
                                 callLine.remove();
                                 counter.updateTotalCallToProcess('dec');
                                 counter.updateTotalCallInProcess();
@@ -117,7 +125,6 @@ const changeCallStatus = (callId, newClass) => {
 
     calHead.classList.remove('urgent');
     calHead.classList.add(newClass);
-
 }
 
 const initTransferButtons = (modal) => {

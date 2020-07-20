@@ -21,21 +21,10 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 /**
  * @Route("/user")
  * @IsGranted("ROLE_ADMIN")
+
  */
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/random", name="user_random", methods={"GET"})
-     */
-    public function randomCellUser(UserRepository $userRepository)
-    {
-        $response = new JsonResponse();
-        $response->setStatusCode(JsonResponse::HTTP_OK);
-        $response->setData([
-            'recipientId' => $userRepository->getRandomUser()->getId()
-        ]);
-        return $response;
-    }
 
     /**
      * @Route("/", name="user_index", methods={"GET"})
@@ -148,6 +137,8 @@ class UserController extends AbstractController
         return $this->redirectToRoute('user_index');
     }
 
+
+
     /**
      * @Route("/list", name="user_list", methods={"POST"})
      * @param UserRepository $userRepository
@@ -158,7 +149,7 @@ class UserController extends AbstractController
         $users = $userRepository->findAllOrderBy('lastname', 'ASC');
         $dataList = [];
         foreach ($users as $user) {
-            $dataList[$user->getFirstname(). ' ' . $user->getLastname()]  = null;
+            $dataList[$user->getFirstname(). ' ' . $user->getLastname() . ' (' . $user->getId() . ')']  = null;
         }
         return new JsonResponse($dataList);
     }
