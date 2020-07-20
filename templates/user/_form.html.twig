@@ -1,4 +1,70 @@
+
+<div class="container mgt30">
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="row">
+        <div class="col s2 input-field">
+            <small class="grey-text label-for-select ">Civilité</small><br>
+            {{ form_widget(form.civility) }}
+        </div>
+        <div class="col s5 input-field">
+            <small class="grey-text label-for-select ">Prénom</small><br>
+            {{ form_widget(form.firstname) }}
+        </div>
+        <div class="col s5 input-field">
+            <small class="grey-text label-for-select ">Nom</small><br>
+            {{ form_widget(form.lastname) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s5 input-field">
+            <small class="grey-text label-for-select ">Email</small><br>
+            {{ form_widget(form.email) }}
+        </div>
+            <div class="col s4 input-field">
+                <small class="grey-text label-for-select ">Téléphone</small><br>
+                {{ form_widget(form.phone) }}
+            </div>
+        <div class="col s3 input-field">
+            <small class="grey-text label-for-select ">Rôle</small><br>
+            {{ form_widget(form.roles) }}
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s12">
+            <div class="row">
+                <div class="col s4 input-field" id="recipient-city">
+                    <small class="grey-text label-for-select ">Plaque</small><br>
+                    {{form_widget(form.city)}}
+                </div>
+                <div class="col s4 input-field" id="recipient-concession">
+                </div>
+                <div class="col s4 input-field" id="recipient-service">
+                </div>
+                <div class="row with-hidden-fields">
+                    {{form_widget(form.service)}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s3 input-field">
+            <small class="grey-text label-for-select ">Mot de passe</small><br>
+            {{ form_widget(form.password) }}
+        </div>
+        <div class="input-field col s4 switch mgt30">
+            <p>Peut être destinataire d'un appel</p>
+            <label>
+                Non
+                {{ form_widget(form.canBeRecipient)  }}
+                <span class="lever"></span>
+                Oui
+            </label>
+        </div>
+
+    </div>
+    <button class="btn light-blue darken-2 mgt30">{{ button_label|default('Ajouter') }}</button>
 {{ form_end(form) }}
+</div>
+
+

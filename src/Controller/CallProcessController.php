@@ -80,6 +80,7 @@ class CallProcessController extends AbstractController
 
         if ($callStepChecker->isCallToBeEnded($request)) {
             $call->setIsProcessEnded(true);
+            $call->setClientCallback(0);
         }
         $entityManager->persist($call);
 

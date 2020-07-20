@@ -14,22 +14,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     const sidebarController = document.getElementById('control-sidebar');
-    sidebarController.addEventListener('click', (e) => {
-        const itsAction = sidebarController.dataset.action;
-        if (itsAction === 'hide') {
-            instanceOfSidenav.close();
-            sidebarController.dataset.action = 'show';
-            Array.from(containers).forEach((e) => {
-                e.classList.add('large');
-                sidebarController.innerHTML = '<i class="material-icons">chevron_right</i>';
-            });
-        } else {
-            instanceOfSidenav.open();
-            sidebarController.dataset.action = 'hide';
-            Array.from(containers).forEach((e) => {
-                e.classList.remove('large');
-                sidebarController.innerHTML = '<i class="material-icons">chevron_left</i>';
-            });
-        }
-    });
+    if (sidebarController) {
+        sidebarController.addEventListener('click', (e) => {
+            const itsAction = sidebarController.dataset.action;
+            if (itsAction === 'hide') {
+                instanceOfSidenav.close();
+                sidebarController.dataset.action = 'show';
+                Array.from(containers)
+                    .forEach((e) => {
+                        e.classList.add('large');
+                        sidebarController.innerHTML = '<i class="material-icons">chevron_right</i>';
+                    });
+            } else {
+                instanceOfSidenav.open();
+                sidebarController.dataset.action = 'hide';
+                Array.from(containers)
+                    .forEach((e) => {
+                        e.classList.remove('large');
+                        sidebarController.innerHTML = '<i class="material-icons">chevron_left</i>';
+                    });
+            }
+        });
+    }
 });

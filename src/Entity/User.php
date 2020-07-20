@@ -7,7 +7,9 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -98,6 +100,7 @@ class User implements UserInterface
     /**
      * @ORM\ManyToOne(targetEntity=Service::class, inversedBy="users")
      * @ORM\JoinColumn(nullable=true)
+     * @Assert\NotBlank()
      */
     private $service;
 
@@ -125,6 +128,11 @@ class User implements UserInterface
      * @ORM\Column(type="boolean", options={"default": 1})
      */
     private $hasAcceptedAlert;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $canBeRecipient;
 
     public function __construct()
     {
@@ -263,10 +271,14 @@ class User implements UserInterface
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @ORM\PrePersist
+     * @return $this
+     * @throws Exception
+     */
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
-
+        $this->createdAt = new DateTime('Europe/Paris');
         return $this;
     }
 
@@ -615,6 +627,18 @@ class User implements UserInterface
     public function setHasAcceptedAlert(bool $hasAcceptedAlert): self
     {
         $this->hasAcceptedAlert = $hasAcceptedAlert;
+
+        return $this;
+    }
+
+    public function getCanBeRecipient(): ?bool
+    {
+        return $this->canBeRecipient;
+    }
+
+    public function setCanBeRecipient(bool $canBeRecipient): self
+    {
+        $this->canBeRecipient = $canBeRecipient;
 
         return $this;
     }

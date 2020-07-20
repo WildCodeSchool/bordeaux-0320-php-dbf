@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class City
 {
+    const PHONE_CITY = 'PHONECITY';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -45,6 +47,11 @@ class City
      * @ORM\OneToMany(targetEntity=CityHead::class, mappedBy="city")
      */
     private $cityHeads;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $identifier;
 
     public function __construct()
     {
@@ -197,6 +204,18 @@ class City
 
     public function isPhoneCity(): bool
     {
-        return ($this->getName() === 'Cellule Téléphonique') ? true : false;
+        return ($this->getIdentifier() === self::PHONE_CITY) ? true : false;
+    }
+
+    public function getIdentifier(): ?string
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(?string $identifier): self
+    {
+        $this->identifier = $identifier;
+
+        return $this;
     }
 }
