@@ -11,7 +11,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/phoneCity")
- * @IsGranted("ROLE_COLLABORATOR")
  */
 class PhoneCityController extends AbstractController
 {
