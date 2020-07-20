@@ -47,10 +47,22 @@ class ConcessionHeadController extends AbstractController
         //Serv A1 A2 A3
         $servicesRegistered = $concessionRegistered->getServices();
 
+
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $userRepository->findOneBy(['id'=> $request->request->get('concession_head')['user']]);
-
-
+            /**
+            $serviceHeads=[];
+            foreach ($servicesRegistered as $service) {
+                $serviceHeads[] = $serviceHeadRepository->getServiceHeadsInOneConcession($user, $service);
+            }
+            foreach ($serviceHeads as $serviceHead) {
+                if ($this->isCsrfTokenValid('delete'.$serviceHead[0]->getId(), $request->request->get('_token'))) {
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->remove($serviceHead);
+                    $entityManager->flush();
+                }
+            }
+             * **/
             //new services
             $concession = $concessionRepository
                 ->findBy(['id'=> $request->request->get('concession_head')['concession']]);
