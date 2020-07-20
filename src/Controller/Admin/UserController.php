@@ -149,7 +149,7 @@ class UserController extends AbstractController
         $users = $userRepository->findAllOrderBy('lastname', 'ASC');
         $dataList = [];
         foreach ($users as $user) {
-            $dataList[$user->getFirstname(). ' ' . $user->getLastname()]  = null;
+            $dataList[$user->getFirstname(). ' ' . $user->getLastname() . ' (' . $user->getId() . ')']  = null;
         }
         return new JsonResponse($dataList);
     }
