@@ -2,10 +2,14 @@
 
 namespace App\Repository;
 
+use App\Entity\City;
+use App\Entity\Concession;
+use App\Entity\Service;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
@@ -68,6 +72,26 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getResult();
     }
 
+    public function findOperationnalUsers()
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u')
+            ->where('u.canBeRecipient = true')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findOperationnalUsersInService($service)
+    {
+        return $this->createQueryBuilder('u')
+            ->select('u')
+            ->where('u.canBeRecipient = true')
+            ->andWhere('u.service = :service')
+            ->setParameter('service', $service)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllOrderBy($field, $order = 'ASC', $limit = null)
     {
         $query = $this->createQueryBuilder('u')
@@ -81,6 +105,12 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     public function getRandomUser()
     {
         $query = $this->createQueryBuilder('u')
+            ->where('u.canBeRecipient = true')
+            ->join(Service::class, 'se', Join::WITH, 'se.id = u.service')
+            ->join(Concession::class, 'co', Join::WITH, 'se.concession = co.id')
+            ->join(City::class, 'ci', Join::WITH, 'co.town = ci.id')
+            ->andWhere('ci.identifier = :cell')
+            ->setParameter('cell', 'PHONECITY')
             ->getQuery()
             ->getResult()
             ;
