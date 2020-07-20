@@ -3,8 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\ConcessionHead;
+use App\Entity\ServiceHead;
 use App\Form\ConcessionHeadType;
 use App\Repository\ConcessionHeadRepository;
+use App\Repository\ConcessionRepository;
+use App\Repository\ServiceHeadRepository;
+use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,17 +22,46 @@ class ConcessionHeadController extends AbstractController
 {
     /**
      * @Route("/{id}/edit", name="concession_head_edit", methods={"GET","POST"})
+     * @param $id
      * @param Request $request
      * @param ConcessionHead $concessionHead
+     * @param UserRepository $userRepository
+     * @param ConcessionRepository $concessionRepository
+     * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function edit(Request $request, ConcessionHead $concessionHead): Response
-    {
+    public function edit(
+        $id,
+        Request $request,
+        ConcessionHead $concessionHead,
+        UserRepository $userRepository,
+        ConcessionRepository $concessionRepository,
+        ServiceHeadRepository $serviceHeadRepository,
+        EntityManagerInterface $entityManager
+    ): Response {
         $form = $this->createForm(ConcessionHeadType::class, $concessionHead);
         $form->handleRequest($request);
+        //concessionA
+        $concessionRegistered = $concessionRepository->findOneBy(['id'=>$id]);
+
+        //Serv A1 A2 A3
+        $servicesRegistered = $concessionRegistered->getServices();
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $user = $userRepository->findOneBy(['id'=> $request->request->get('concession_head')['user']]);
+
+
+            //new services
+            $concession = $concessionRepository
+                ->findBy(['id'=> $request->request->get('concession_head')['concession']]);
+            $services = $concession[0]->getServices();
+            for ($i=0; $i<count($services); $i++) {
+                $serviceHead = new ServiceHead();
+                $serviceHead->setUser($user);
+                $serviceHead->setService($services[$i]);
+                $entityManager->persist($serviceHead);
+            }
+            $entityManager->flush();
 
             return $this->redirectToRoute('service_head_index');
         }
