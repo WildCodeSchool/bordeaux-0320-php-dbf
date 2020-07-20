@@ -37,10 +37,15 @@ class PhoneCityController extends AbstractController
     public function randomCellUser(UserRepository $userRepository)
     {
         $response = new JsonResponse();
-        $response->setStatusCode(JsonResponse::HTTP_OK);
-        $response->setData([
-            'recipientId' => $userRepository->getRandomUser()->getId()
-        ]);
+
+        if (null != $userRepository->getRandomUser()) {
+            $response->setStatusCode(JsonResponse::HTTP_OK);
+            $response->setData([
+                'recipientId' => $userRepository->getRandomUser()->getId()
+            ]);
+        } else {
+            $response->setStatusCode(JsonResponse::HTTP_NO_CONTENT);
+        }
         return $response;
     }
 }
