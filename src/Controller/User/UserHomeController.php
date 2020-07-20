@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\User;
 
 use App\Repository\CallRepository;
 use App\Repository\UserRepository;
