@@ -93,14 +93,18 @@ class SearchType extends AbstractType
             ])
             ->add('concession', EntityType::class, [
                 'class' => Concession::class,
-                'choice_label' => 'name',
+                'choice_label' => function ($concession) {
+                    return $concession->getTown()->getName() . ' > ' . $concession->getName();
+                },
                 'by_reference' => false,
                 'required' => false,
                 'label' => 'Concession'
             ])
             ->add('service', EntityType::class, [
                 'class' => Service::class,
-                'choice_label' => 'name',
+                'choice_label' => function ($service) {
+                    return $service->getConcessionAndCityFromService();
+                },
                 'by_reference' => false,
                 'required' => false,
                 'label' => 'Service'

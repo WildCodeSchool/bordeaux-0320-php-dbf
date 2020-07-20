@@ -137,8 +137,6 @@ class UserController extends AbstractController
         return $this->redirectToRoute('user_index');
     }
 
-
-
     /**
      * @Route("/list", name="user_list", methods={"POST"})
      * @param UserRepository $userRepository
