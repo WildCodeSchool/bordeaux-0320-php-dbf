@@ -15,12 +15,14 @@ const sendData = (phone, action) => {
 }
 
 const hydrateForm = (data) => {
-    for (var [key, value] of Object.entries(data)){
-        if (document.getElementById('call_' + key)) {
-            document.getElementById('call_' + key).value = value
-            if (key === 'client_civility') {
-                selectValueInSelect(document.getElementById('call_' + key), value)
-                M.FormSelect.init(document.getElementById('call_' + key), {})
+    if (data) {
+        for (var [key, value] of Object.entries(data)) {
+            if (document.getElementById('call_' + key)) {
+                document.getElementById('call_' + key).value = value
+                if (key === 'client_civility') {
+                    selectValueInSelect(document.getElementById('call_' + key), value)
+                    M.FormSelect.init(document.getElementById('call_' + key), {})
+                }
             }
         }
     }
@@ -119,7 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     if (data.client.vehicles.length <= 1) {
                         hydrateForm(data.client.vehicles[0])
-                        alertForCalls(data.calls)
+                        if(data.calls) {
+                            alertForCalls(data.calls)
+                        }
                     } else {
                         tableForVehicles.innerHTML = '';
                         data.client.vehicles.forEach((vehicle) => {

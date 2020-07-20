@@ -1,3 +1,13 @@
+.time-select {
+  .select-wrapper {
+    svg {
+      width:20px;
+      height: 20px;
+      margin-right:-5px;
+    }
+  }
+}
+
 i {
   &.small-more {
     font-size:1.5rem;
