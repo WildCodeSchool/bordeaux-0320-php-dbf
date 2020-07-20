@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         autocompleteUsers.addEventListener('change', (e) => {
             const formZone = document.getElementById('form-edit-user');
             const user = e.target.value;
-            formZone.innerHTML = '<a href="/user/"><h6>' + userAjaxer.getName(user) + '</h6></a>'
+            formZone.innerHTML = '<a href="/user/' + userAjaxer.getId(user) + '"><h6>' + userAjaxer.getName(user) + '</h6></a>'
         });
     }
 });
