@@ -5,12 +5,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const chassis = document.getElementById('call_vehicle_chassis')
     const vehicle = document.getElementById('call_vehicle_id')
     const button  = document.getElementById('add-vehicle-button')
-
-    button.addEventListener('click', () => {
-        immat.value = ''
-        hasCome.value = 0
-        chassis.value = ''
-        vehicle.removeAttribute('value')
-    })
+    if (button) {
+        button.addEventListener('click', () => {
+            immat.value = ''
+            hasCome.value = 0
+            chassis.value = ''
+            vehicle.removeAttribute('value')
+        })
+    }
 
 })
