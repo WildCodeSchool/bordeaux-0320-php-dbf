@@ -1,6 +1,3 @@
-{% set HAS_COME = 1 %}
-{% set DID_NOT_COME = 2 %}
-{% set DONT_KNOW = 0 %}
 <li
         class="collection-item cell-item"
         data-date="{{ call.recallDate|date('Ymd') }}{{ call.recallDate|date('Hi') }}"
@@ -138,9 +135,9 @@
                 </div>
                 <div class="col s3 right-align">
                     <i class="material-icons small left">directions_car</i> <span class="immat left">{{ call.vehicle.immatriculation }}</span>
-                    {% if call.vehicle.hasCome == HAS_COME %}
+                    {% if call.vehicle.hasCome is constant('App\\Entity\\Vehicle::TRISWITCH_YES_VALUE') %}
                         <i class="material-icons left light-green-text tooltipped small-more" data-tooltip="Déja venu à l'atelier" data-position="top">build</i>
-                    {% elseif call.vehicle.hasCome == DID_NOT_COME %}
+                    {% elseif call.vehicle.hasCome is constant('App\\Entity\\Vehicle::TRISWITCH_NO_VALUE') %}
                         <i class="material-icons left red-text tooltipped small-more" data-tooltip="Jamais venu à l'atelier" data-position="top">build</i>
                     {% endif %}
                     {% if call.vehicle.chassis %}

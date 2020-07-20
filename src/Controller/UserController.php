@@ -153,5 +153,4 @@ class UserController extends AbstractController
         }
         return new JsonResponse($dataList);
     }
-
 }
