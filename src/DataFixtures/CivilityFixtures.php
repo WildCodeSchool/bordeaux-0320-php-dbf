@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 class CivilityFixtures extends Fixture
 {
     const CIVILITY = [
-        'Mr',
+        'M.',
         'Mme',
         'Ste'
     ];

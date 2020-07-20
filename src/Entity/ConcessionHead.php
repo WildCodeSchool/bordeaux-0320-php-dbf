@@ -18,7 +18,7 @@ class ConcessionHead
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="concessionHeads")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="concessionHeads",cascade={"remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

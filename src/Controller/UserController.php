@@ -6,6 +6,9 @@ use App\Entity\User;
 use App\Form\HeadType;
 use App\Form\UserEditType;
 use App\Form\UserType;
+use App\Repository\CityHeadRepository;
+use App\Repository\ConcessionHeadRepository;
+use App\Repository\ServiceHeadRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -125,8 +128,10 @@ class UserController extends AbstractController
      * @param User $user
      * @return Response
      */
-    public function delete(Request $request, User $user): Response
-    {
+    public function delete(
+        Request $request,
+        User $user
+    ): Response {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
