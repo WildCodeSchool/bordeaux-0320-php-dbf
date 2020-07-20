@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'un appel{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <h3>Ajout d'un appel</h3>
+        </div>
+        <div class="col s4">
+           {% include 'components/_flashes.html.twig' %}
+        </div>
+
+    </div>
+    {{ include('call/_form.html.twig') }}
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col s12 mgt30">
+            <div class="col s12">
+                <h4 class="light-blue-text"><i class="material-icons left">add_ic_call</i> Vos appels ajoutés</h4>
+            </div>
+            <div class="col s12">
+                <ul class="list-calls" id="list-calls-to-process">
+                    {% for call in calls %}
+                        {% include 'components/_callsList.html.twig' %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+

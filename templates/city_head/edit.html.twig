@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit CityHead{% endblock %}
+
+{% block body %}
+    <div class="container">
+    <h1>Edit CityHead</h1>
+    <a href="{{ path('service_head_index') }}" class="btn mgt15 light-blue darken-1">Retour à la liste</a>
+    {{ include('city_head/_form_edit.html.twig', {'button_label': 'Modifier'}) }}
+    </div>
+{% endblock %}

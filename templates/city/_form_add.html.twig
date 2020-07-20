@@ -1,0 +1,4 @@
+{{ form_start(form_city, {'action': path('city_new')})}}
+    {{ form_widget(form_city) }}
+<button class="btn right">{{ button_label|default('Sauvegarder') }}</button>
+{{ form_end(form_city) }}

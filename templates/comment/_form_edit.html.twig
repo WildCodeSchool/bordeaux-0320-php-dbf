@@ -1,0 +1,12 @@
+<div class="row grey lighten-4">
+<form method="post" action="{{ path('comment_edit', {'id': comment.id}) }}">
+{{ form_start(form_comment)}}
+    <div class="input-field col s8">
+    {{ form_widget(form_comment.name) }}
+    </div>
+    <div class="col s4">
+<button class="btn modal-close light-blue btn-small" id="comment-button">{{ button_label|default('Sauvegarder') }}</button>
+    </div>
+{{ form_end(form_comment) }}
+
+</div>

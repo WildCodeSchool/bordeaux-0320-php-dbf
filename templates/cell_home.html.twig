@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Easy Auto{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <div class="row mgt30">
+                    <div class="col s4 offset-s2 center-align">
+                        <a href="{{ path('user_home') }}" class="chip {% if app.request.get('_route') == 'user_home' %}cyan{% else %} grey{% endif %} white-text">
+                            <span class="btn-floating btn-small black white-text" id="nb-calls-to-process">{{ to_process }}</span>
+                            Appels à effectuer
+                        </a>
+                    </div>
+                    <div class="col s4 center-align">
+                        <a href="{{ path('user_calls_in_process') }}"  class="chip {% if app.request.get('_route') == 'user_calls_in_process' %}cyan {% else %}grey {% endif %}  white-text">
+                            <span class="btn-floating btn-small black white-text" id="nb-calls-in-process">{{ in_process }}</span>
+                            Rappels à effectuer
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            {% include 'components/_flashes.html.twig' %}
+        </div>
+
+        <div class="row">
+            <div class="col s12 mgt30">
+                <div class="col s12">
+                    {% if app.request.get('_route') == 'user_home' %}
+                        {% if (app.request.get('id') is not null and header) %}
+                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Les appels à effectuer par {{ user.firstname }} {{ user.lastname }}</h5>
+                        {% else  %}
+                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos appels à effectuer</h5>
+                        {% endif %}
+                    {% else  %}
+                        {% if (app.request.get('id') is not null and header) %}
+                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Les rappels à effectuer par {{ user.firstname }} {{ user.lastname }}</h5>
+                        {% else  %}
+                            <h5 class="light-blue-text"><i class="material-icons left">person</i> Vos rappels à effectuer</h5>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div class="col s12">
+                    <ul class="list-calls" id="list-calls-to-process">
+                        {% for call in calls %}
+                            {% include 'call_process/_cell_call_row.html.twig' %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="modal-call-treatment" class="modal">
+        <div class="modal-content" id="modal-content-call-treatment">
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">fermer</a>
+        </div>
+    </div>
+
+
+    <div id="modal-call-transfer" class="modal">
+        <div class="modal-content" id="modal-content-call-transfer">
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">fermer</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('newcalls') }}
+{% endblock %}

@@ -1,0 +1,31 @@
+
+    <table class="table highlight">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Immatriculation</th>
+                <th>Chassis</th>
+                <th>HasCome</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Client</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for vehicle in vehicles %}
+            <tr>
+                <td>{{ vehicle.id }}</td>
+                <td>{{ vehicle.immatriculation }}</td>
+                <td>{{ vehicle.chassis }}</td>
+                <td>{{ vehicle.hasCome }}</td>
+                <td>{{ vehicle.createdAt ? vehicle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ vehicle.updatedAt ? vehicle.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ vehicle.client.name }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>

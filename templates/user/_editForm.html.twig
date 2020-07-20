@@ -1,0 +1,22 @@
+
+<div class="container">
+    {{ form_start(form) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.firstname) }}
+    {{ form_row(form.lastname) }}
+    {{ form_row(form.phone) }}
+    {{ form_row(form.roles) }}
+    {{form_row(form.service)}}
+    <div class="input-field col s4 switch mgt30">
+
+        <label>
+            Non
+            {{ form_widget(form.canBeRecipient)  }}
+            <span class="lever"></span>
+            Oui
+        </label>
+        <p>Peut être destinataire d'un appel</p>
+    </div>
+    <button class="btn light-blue darken-2">{{ button_label|default('Ajouter') }}</button>
+    {{ form_end(form) }}
+</div>

@@ -1,0 +1,40 @@
+{% block body %}
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Motifs</th>
+                <th>Rendez-vous en atelier</th>
+                <th>Plaques</th>
+                <th>Modifier</th>
+                <th>Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for subject in subjects %}
+            <tr id="subject-line-{{ subject.id }}">
+                <td>{{ subject.id }}</td>
+                <td>{{ subject.name }}</td>
+                <td>{{ subject.isForAppWorkshop ? 'Oui' : 'Non' }}</td>
+                <td>{{ subject.city.name }}</td>
+                <td class="center-align">
+                    <a href="#" class="edit-subject-button" data-target="{{ subject.id }}"><i class="material-icons">edit</i></a>
+                </td>
+                <td class="center-align">
+                    <a href="#" class="delete-subject-button" data-target="{{ subject.id }}"><i class="material-icons">delete</i></a>
+                </td>
+            </tr>
+            <tr class="hide editor-line" id="subject-line-edit-{{ subject.id }}">
+                <td id="subject-td-edit-{{ subject.id }}" colspan="5"></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

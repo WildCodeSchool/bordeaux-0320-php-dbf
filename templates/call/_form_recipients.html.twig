@@ -1,0 +1,22 @@
+
+ <div class="row">
+        <div class="input-field col s12 ">
+                {{ form_widget(recipientForm.city) }}
+        </div>
+        <div class="input-field col s12  ">
+            {% if recipientForm.concession is defined %}
+                {{ form_widget(recipientForm.concession) }}
+            {% endif %}
+        </div>
+        <div class="input-field col s12 ">
+            {% if recipientForm.service is defined %}
+                {{ form_widget(recipientForm.service) }}
+            {% endif %}
+        </div>
+        <div class="input-field col s12 ">
+            {% if recipientForm.recipient is defined %}
+                {{ form_widget(recipientForm.recipient)}}
+            {% endif %}
+        </div>
+</div>
+

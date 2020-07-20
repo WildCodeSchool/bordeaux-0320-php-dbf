@@ -1,0 +1,37 @@
+<h1 class="center-align">Services</h1>
+
+<table class="table highlight">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Service</th>
+        <th>Concession</th>
+        <th>Modifier</th>
+        <th>Supprimer</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for service in services %}
+        <tr id="service-line-{{ service.id }}">
+            <td>{{ service.id }}</td>
+            <td>{{ service.name }}</td>
+            <td> {{ service.concession.name }}</td>
+            <td>
+                <a href="#" class="edit-service-button" data-target="{{ service.id }}"><i class="material-icons">edit</i></a>
+            </td>
+            <td>
+                <a href="#" class="delete-service-button" data-target="{{ service.id }}"><i class="material-icons">delete</i></a>
+            </td>
+        </tr>
+        <tr class="hide editor-line" id="service-line-edit-{{ service.id }}">
+            <td id="service-td-edit-{{ service.id }}" colspan="5"></td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="3">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+

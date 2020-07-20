@@ -4,7 +4,7 @@ framework:
         # is used to compute stable namespaces for cache keys.
         #prefix_seed: your_vendor_name/app_name
 
-        # The app cache caches to the filesystem by default.
+        # The app cache caches to the filesystem by connect.
         # Other options include:
 
         # Redis
@@ -14,6 +14,6 @@ framework:
         # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
         #app: cache.adapter.apcu
 
-        # Namespaced pools use the above "app" backend by default
+        # Namespaced pools use the above "app" backend by connect
         #pools:
             #my.dedicated.cache: ~

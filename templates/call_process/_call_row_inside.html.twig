@@ -1,0 +1,37 @@
+    <div class="row call-list-row">
+        <div class="col s8">
+            <span class="title">{{call.client.civility.name}} {{call.client.name}}</span>
+            <p>
+                <span class="chip grey lighten-3 grey-text text-darken-4">{{call.client.phone}}</span>
+                {% if call.client.phone2 != '' %}
+                    <span class="chip grey lighten-3 grey-text text-darken-4">{{ call.client.phone2 }}</span>
+                {% endif %}
+            </p>
+            <p>
+                <b>{{call.service.concession.town.name}} > {{call.service.concession.name}} > {{call.service.name}}</b><br>
+                {{call.subject.name}} - {{call.comment.name}}<br>
+                <span class="free-comment"> {{call.freeComment}}</span>
+            </p>
+        </div>
+
+        <div class="col s4 left-align ">
+            <div class="call-calendar grey lighten-4">
+                <div class="call-cal-header {% if call.isUrgent %}urgent{% endif %}">
+                    <i class="material-icons ">event_date </i>
+                    <span class="call-cal-date">
+                       {{call.recallDate|formatDate}}
+                    </span>
+                </div>
+                <div class="call-cal-body">
+                    {% if call.isUrgent %}
+                    <span class="red-text">urgent</span>
+                    {% else %}
+                    <span class="grey-text text-darken-4">{{call.recallPeriod.name}} {{call.recallHour|date('H:i')}}</span>
+                    {% endif %}
+                </div>
+                <div class="call-cal-action">
+                    <a class="{% if call.isUrgent %}red{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,57 @@
+<div class="card">
+    <div class="card-content red ">
+        <i class="material-icons left white-text">mode_comment</i>
+        <b>Commentaires d'appels</b>
+    </div>
+    <div class="card-tabs">
+        <ul class="tabs tabs-fixed-width" id="comments-tabs">
+            <li class="tab" id="comments-tab-1"><a href="#comments-list" class="active red-text">Liste</a></li>
+            <li class="tab" id="comments-tab-2"><a href="#comments-add" class="red-text">Ajouter</a></li>
+            <li class="tab" id="comments-tab-3"><a href="#comments-edit" class="red-text">Modifier</a></li>
+        </ul>
+    </div>
+    <div class="card-content grey lighten-4">
+        <div id="comments-list">
+            <div class="input-field ">
+                <label for="comments"></label>
+                <select id="comment-selector">
+                    {% for comment in comments %}
+                        <option value="{{ comment.id }}">{{ comment.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div id="comments-add">
+            <a href="#modal-add-comment" class="btn modal-trigger red lighten-1"><i class="material-icons">add</i></a>
+        </div>
+        <div id="comments-edit">
+            <a href="#modal-edit-comment" class="btn modal-trigger red darken-2"><i class="material-icons">edit</i></a>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE AJOUT commentaires -->
+
+<div id="modal-add-comment" class="modal">
+    <div class="modal-content">
+        <h4 class="center-align">Ajouter un commentaire</h4>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'comment/new.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE EDITION commentaires -->
+
+<div id="modal-edit-comment" class="modal">
+    <div class="modal-content">
+        <h4 class="center-align">Modifier un commentaire</h4>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'comment/index.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col s8">
+            <h3>Editer mon profil</h3>
+        </div>
+    </div>
+    <div class="col s4">
+        {% include 'components/_flashes.html.twig' %}
+    </div>
+    <a class="btn  blue darken-1 right" href="{{ path('pass_edit', { 'id': app.user.id }) }}"> Changer mon mot de passe</a>
+    <div class="form-profile">
+    {{ form_start(form) }}
+    <div class="section">
+    <div class="row mgt15">
+        <div class="input-field col s2 offset-l3 ">
+    {{ form_label(form.civility) }}
+    {{ form_widget(form.civility) }}
+        </div>
+        <div class="input-field col s4 ">
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+        </div>
+    </div>
+    </div>
+    <div class="section">
+    <div class="row">
+            <div class="input-field col s3 offset-l3">
+                {{ form_label(form.firstname) }}
+                {{ form_widget(form.firstname) }}
+            </div>
+                <div class="input-field col s3 ">
+                    {{ form_label(form.lastname) }}
+                    {{ form_widget(form.lastname)  }}
+                    </div>
+    </div>
+        </div>
+        <div class="section">
+            <div class="row">
+                <div class="input-field col s6 offset-l3">
+    {{ form_label(form.phone) }}
+    {{ form_widget(form.phone) }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6 offset-l3">
+        <p class="grey-text text-lighten_2">Je souhaite reçevoir un mail quand un appel m'est destiné</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s6 offset-l3 switch">
+                <label>
+                    Non
+                    {{ form_widget(form.hasAcceptedAlert)  }}
+                    <span class="lever"></span>
+                    Oui
+                </label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="s6 col offset-l7 sauvegarder ">
+                <button class="btn">{{ button_label|default('Sauvegarder') }}</button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+
+    </div>
+</div>
+{% endblock %}

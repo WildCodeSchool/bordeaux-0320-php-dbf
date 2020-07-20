@@ -1,0 +1,16 @@
+<div class="card">
+    <div class="card-content cyan">
+        <i class="material-icons left white-text">settings</i>
+        <b>Divers</b>
+    </div>
+    <div class="card-tabs">
+        <ul class="tabs tabs-fixed-width" id="divers-tabs">
+            <li class="tab" id="divers-tab-1"><a href="#divers-profil" class="active cyan-text" >Mon profil</a></li>
+        </ul>
+    </div>
+    <div class="card-content grey lighten-4">
+        <div id="divers-profil">
+            <a href="{{ path('profile_edit', { 'id': app.user.id }) }}" class="btn cyan darken-2"><i class="material-icons">person</i></a>
+        </div>
+    </div>
+</div>

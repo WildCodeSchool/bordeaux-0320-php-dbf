@@ -1,0 +1,47 @@
+<div class="row">
+    <h4>Traiter un appel</h4>
+</div>
+<div class="row">
+    <div class="col s6">
+        <div class="col s12">
+            <span class="title"><h5>{{call.client.civility.name}} {{call.client.name}}</h5></span>
+            <p>
+                <span class="chip">{{call.client.phone|phoneNumber}}</span><br>
+                {% if call.client.phone2 is defined and call.client.phone2 is not null and call.client.phone2 is not empty %}
+                <span class="chip">{{ call.client.phone2|phoneNumber }}</span>
+                {% endif %}
+            </p>
+            <p>
+                <b> {{ call.recipient.service.concession.town.name }}<br>
+                    {{ call.recipient.service.concession.name }}<br>
+                    {{ call.recipient.service.name }}</b><br>
+                <small>{{call.subject.name}} - {{call.comment.name}}</small><br>
+            </p>
+        </div>
+    </div>
+    <div class="col s6">
+        <div class="row">
+            {% include 'call_process/_form.html.twig' %}
+        </div>
+        <div class="row">
+            {% if call.callProcessings %}
+                {% for process in call.callProcessings|reverse %}
+                    <div class="col s12">
+                        <table class="call-stepper">
+                            <tr class="call-step">
+                                <td>
+                                    <b>
+                                        {{process.createdAt|dateName}}
+                                    </b>
+                                </td>
+                                <td> à {{ process.createdAt|timeFormat }}</td>
+                                <td class="{{ process.stepColors.color }}">{{ process.contactType.name }}</td>
+                                <td>{{ process.comment }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>

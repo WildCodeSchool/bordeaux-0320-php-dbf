@@ -1,0 +1,23 @@
+<div class="row">
+    <h4>Transférer un appel</h4>
+</div>
+<div class="row">
+    <div class="col s6">
+        <div class="col s12">
+            <span class="title"><h5>{{call.client.name}}</h5></span>
+            <p>
+                {{call.client.phone}}<br>
+                {{ call.client.phone2 }}
+            </p>
+            <p>
+                <b>{{ call.recipient.service.concession.town.name }} > {{ call.recipient.service.concession.name }} > {{ call.recipient.service.name }}</b><br>
+                <small>{{call.subject.name}} - {{call.comment.name}}</small><br>
+            </p>
+        </div>
+    </div>
+    <div class="col s6">
+        <div class="row">
+            {% include 'call_process/_form_transfer.html.twig' %}
+        </div>
+    </div>
+</div>

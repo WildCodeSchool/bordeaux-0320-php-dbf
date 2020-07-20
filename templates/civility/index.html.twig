@@ -1,0 +1,36 @@
+{% block body %}
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Civilité</th>
+                <th class="center-align">Modifier</th>
+                <th class="center-align">Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for civility in civilities %}
+            <tr  id="civility-line-{{civility.id}}">
+                <td>{{ civility.id }}</td>
+                <td>{{ civility.name }}</td>
+                <td class="center-align">
+                    <a href="#" class="edit-civility-button" data-target="{{ civility.id }}"><i class="material-icons">edit</i></a>
+                </td>
+                <td class="center-align">
+                    <a href="#" class="delete-civility-button" data-target="{{civility.id}}"><i class="material-icons">delete</i></a>
+                </td>
+            </tr>
+            <tr class="hide editor-line" id="civility-line-edit-{{ civility.id }}">
+                <td id="civility-td-edit-{{ civility.id }}" colspan="5"></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

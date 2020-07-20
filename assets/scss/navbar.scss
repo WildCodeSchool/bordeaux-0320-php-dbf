@@ -1,0 +1,48 @@
+#easy-auto-sidenav {
+    li {
+      position:relative;
+      width: 55px;
+      &:hover {
+        i {
+          color:#000;
+        }
+      }
+      &.active {
+        background: #fff !important;
+        color:$blue-dbf;
+        &::after {
+          display:block;
+          content:' ';
+          position:absolute;
+          right:0;
+          top:50%;
+          margin-top:-10px;
+          width: 0;
+          height: 0;
+          border-top: 10px solid transparent;
+          border-bottom: 10px solid transparent;
+          border-right:10px solid $blue-dbf;
+        }
+        i {
+          color:$blue-dbf;
+        }
+      }
+      i {
+        color:#424242;
+      }
+    }
+  }
+
+nav {
+  .nav-wrapper {
+    ul {
+      li {
+        h5 {
+          padding-top:5px;
+          text-transform: uppercase;
+          margin-left:20px;
+        }
+      }
+    }
+  }
+}

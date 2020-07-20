@@ -1,0 +1,102 @@
+<div class="card">
+    <div class="card-content brown">
+        <i class="material-icons left white-text">location_on</i>
+        <b>Sites</b>
+    </div>
+    <div class="card-tabs">
+        <ul class="tabs tabs-fixed-width" id="locations-tabs">
+            <li class="tab" id="locations-tab-1"><a href="#locations-city" class=" active brown-text" >Plaques</a></li>
+            <li class="tab" id="locations-tab-2"><a href="#locations-concession" class="active brown-text">Concessions</a></li>
+            <li class="tab" id="locations-tab-3"><a href="#locations-service" class="brown-text" >Services</a></li>
+        </ul>
+    </div>
+    <div class="card-content grey lighten-4">
+        <div id="locations-city">
+            <a href="#modal-add-city" class="btn modal-trigger brown lighten-2"><i class="material-icons">add</i></a>
+            <a href="#modal-list-city" class="btn modal-trigger brown darken-2">Liste</a>
+        </div>
+        <div id="locations-concession">
+            <a href="#modal-add-concession" class="btn modal-trigger brown lighten-3"><i class="material-icons">add</i></a>
+            <a href="#modal-list-concession" class="btn modal-trigger brown darken-3">Liste</a>
+        </div>
+        <div id="locations-service">
+            <div>
+                <a href="#modal-add-service" class="btn modal-trigger brown lighten-1"><i class="material-icons">add</i></a>
+                <a href="#modal-list-service" class="btn modal-trigger brown darken-1">Liste</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- MODALE AJOUT service -->
+
+<div id="modal-add-service" class="modal">
+    <div class="modal-content">
+        <h4 class="center-align">Ajouter un service</h4>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'service/new.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE LISTE service -->
+<div id="modal-list-service" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'service/index.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE LISTE concession -->
+<div id="modal-list-concession" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'concession/index.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE AJOUT concession -->
+<div id="modal-add-concession" class="modal">
+    <div class="modal-content">
+        <h4 class="center-align">Ajouter une concession</h4>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'concession/new.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE AJOUT plaques -->
+
+<div id="modal-add-city" class="modal">
+    <div class="modal-content">
+        <h4 class="center-align">Ajouter une plaque</h4>
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'city/new.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE LISTE plaques -->
+<div id="modal-list-city" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s10 offset-s1">
+                {% include 'city/index.html.twig' %}
+            </div>
+        </div>
+    </div>
+</div>

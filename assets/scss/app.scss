@@ -1,9 +1,17 @@
+/* Materialize import CSS */
+@import "~materialize-css/sass/materialize.scss";
 @import "vars";
+@import "~triswitch";
+@import "switch3";
+@import "animations";
+@import "general";
+@import "navbar";
+@import "forms";
+@import "callList";
+@import "userHome";
+@import "admin";
+@import "flashes";
+@import "addCall";
+@import "call_calendar";
+@import "headBoard";
 
-body {
-    background-color: $secondary-color;
-}
-
-a {
-    color: $warm-color;
-}

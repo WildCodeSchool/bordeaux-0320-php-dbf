@@ -4,6 +4,12 @@ includes:
     - vendor/phpstan/phpstan-symfony/extension.neon
 parameters:
     autoload_directories:
-        - %rootDir%/../../../src/Migrations 
+        - %rootDir%/../../../src/Migrations
     excludes_analyse:
         - src/DataFixtures
+    ignoreErrors:
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::findOneBy[A-Z][a-zA-Z]*\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::findBy[A-Z][a-zA-Z]*\(\)#'
+    reportUnmatchedIgnoredErrors: false
+
+

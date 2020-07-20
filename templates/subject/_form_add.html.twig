@@ -1,0 +1,4 @@
+{{ form_start(form_subject, {'action': path('subject_new')})}}
+    {{ form_widget(form_subject) }}
+<button class="btn modal-close right" id="subject-button">{{ button_label|default('Sauvegarder') }}</button>
+{{ form_end(form_subject) }}

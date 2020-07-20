@@ -1,0 +1,29 @@
+<div class="row grey lighten-4">
+    <form method="post" action="{{ path('concession_edit', {'id': concession.id}) }}">
+        {{ form_start(form_concession) }}
+        <div class="input-field col s12 center-align">
+            {{ form_widget(form_concession.name) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_widget(form_concession.address) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_widget(form_concession.postcode) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_widget(form_concession.city) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_widget(form_concession.brand) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_widget(form_concession.phone) }}
+        </div>
+        <div class="input-field col s12">
+            {{ form_widget(form_concession.town) }}
+        </div>
+        <div class="col s12">
+            <button class="btn modal-close light-blue btn-small" >{{ button_label|default('Sauvegarder') }}</button>
+        </div>
+        {{ form_end(form_concession) }}
+</div>

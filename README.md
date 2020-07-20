@@ -36,8 +36,14 @@ If you develop on Windows, you should edit you git configuration to change your 
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+![Img caprover](https://captain.phprover.wilders.dev/icon-512x512.png)
 
+To deploy on Cap Rover, add, at least, two  *"Environmental Variables"* in *"App Configs"*  tab:
+
+* `APP_ENV` with `prod`/`dev` value
+* `DATABASE_URL` with the same DSN you set in your `.env.*` file.
+
+For more informations, check the dedicated file.
 
 ## Built With
 

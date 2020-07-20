@@ -1,0 +1,36 @@
+{% block body %}
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Commentaires</th>
+                <th class="center-align">Modifier</th>
+                <th class="center-align">Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr id="comment-line-{{ comment.id }}">
+                <td>{{ comment.id }}</td>
+                <td>{{ comment.name }}</td>
+                <td class="center-align">
+                    <a href="#" class="edit-comment-button" data-target="{{ comment.id }}" ><i class="material-icons">edit</i></a>
+                </td>
+                <td class="center-align">
+                    <a href="#" class="delete-comment-button" data-target="{{ comment.id }}"><i class="material-icons">delete</i></a>
+                </td>
+            </tr>
+            <tr class="hide editor-line" id="comment-line-edit-{{ comment.id }}">
+                <td id="comment-td-edit-{{ comment.id }}" colspan="5"></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
