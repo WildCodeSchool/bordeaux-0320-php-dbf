@@ -25,7 +25,7 @@ class UserHomeController extends AbstractController
     {
         $appUser = $this->getUser();
         $header = false;
-        if (!is_null($id)) {
+        if (null !== $id) {
             $appUser = $userRepository->findOneById($id);
             $service = $appUser->getService();
             $header = true;

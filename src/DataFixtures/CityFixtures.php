@@ -10,17 +10,18 @@ use Doctrine\Persistence\ObjectManager;
 class CityFixtures extends Fixture
 {
     const CITIES = [
-        'Bordeaux',
-        'Toulouse',
-        'Montpellier',
-        'Cellule Téléphonique',
+        ['Bordeaux', null],
+        ['Toulouse', null],
+        ['Montpellier', null],
+        ['Cellule Téléphonique', 'PHONECITY'],
     ];
     public function load(ObjectManager $manager)
     {
         $key = 0;
         foreach (self::CITIES as $cityName) {
             $city = new City();
-            $city->setName($cityName);
+            $city->setName($cityName[0]);
+            $city->setIdentifier($cityName[1]);
             $manager->persist($city);
             $this->addReference('city_' . $key, $city);
             $key++;
