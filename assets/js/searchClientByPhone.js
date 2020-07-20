@@ -69,7 +69,6 @@ const initVehicleAdders = (dataTotal) => {
 
 const alertForCalls = (data) => {
     if (data.calls) {
-        console.log('calls', data.calls)
         const modalClientPhone = document.getElementById('modal-callclient-phone');
         const modalForPhoneAlert = M.Modal.init(modalClientPhone);
         const tableForCalls = document.getElementById('calls-on-the-way-for-phone');
