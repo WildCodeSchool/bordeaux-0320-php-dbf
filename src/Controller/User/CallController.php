@@ -238,7 +238,8 @@ class CallController extends AbstractController
         $client = $clientRepository->findOneByPhone($phoneNumber);
 
         $data = ['client' => [
-            'client_id' => null]
+            'client_id' => null
+            ]
         ];
 
         if ($client) {
