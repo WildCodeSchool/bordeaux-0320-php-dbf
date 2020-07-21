@@ -18,6 +18,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class ClientController extends AbstractController
 {
+    const CLIENT_INDEX = 'client_index';
     /**
      * @Route("/", name="index", methods={"GET"})
      */
@@ -42,7 +43,7 @@ class ClientController extends AbstractController
             $entityManager->persist($client);
             $entityManager->flush();
 
-            return $this->redirectToRoute('client_index');
+            return $this->redirectToRoute(self::CLIENT_INDEX);
         }
 
         return $this->render('client/new.html.twig', [
@@ -71,7 +72,7 @@ class ClientController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            return $this->redirectToRoute('client_index');
+            return $this->redirectToRoute(self::CLIENT_INDEX);
         }
 
         return $this->render('client/edit.html.twig', [
@@ -91,7 +92,7 @@ class ClientController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('client_index');
+        return $this->redirectToRoute(self::CLIENT_INDEX);
     }
 
     /**
