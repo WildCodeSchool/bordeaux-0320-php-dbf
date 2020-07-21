@@ -29,6 +29,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class ServiceHeadController extends AbstractController
 {
     const SERVICE_HEAD_INDEX = 'service_head_index';
+    const CONCESSION_HEAD    = 'concession_head';
+    const CITY_HEAD          = 'city_head';
     /**
      * @Route("/", name="service_head_index", methods={"GET"})
      * @param ServiceHeadRepository $serviceHeadRepository
@@ -77,8 +79,9 @@ class ServiceHeadController extends AbstractController
         $formConcessionHead = $this->createForm(ConcessionHeadType::class, $concessionHead);
         $formConcessionHead->handleRequest($request);
         if ($formConcessionHead->isSubmitted() && $formConcessionHead->isValid()) {
-            $user = $userRepository->findOneById($request->request->get('concession_head')['user']);
-            $concession = $concessionRepository->findOneById($request->request->get('concession_head')['concession']);
+            $user = $userRepository->findOneById($request->request->get(self::CONCESSION_HEAD)['user']);
+            $concession = $concessionRepository
+                ->findOneById($request->request->get(self::CONCESSION_HEAD)['concession']);
             $services = $concession->getServices();
             for ($i=0; $i<count($services); $i++) {
                 $serviceHead = new ServiceHead();
@@ -96,8 +99,8 @@ class ServiceHeadController extends AbstractController
         $formCityHead = $this->createForm(CityHeadType::class, $cityHead);
         $formCityHead->handleRequest($request);
         if ($formCityHead->isSubmitted() &&  $formCityHead->isValid()) {
-            $city = $cityRepository->findOneById($request->request->get('city_head')['city']);
-            $user = $userRepository->findOneById($request->request->get('city_head')['user']);
+            $city = $cityRepository->findOneById($request->request->get(self::CITY_HEAD)['city']);
+            $user = $userRepository->findOneById($request->request->get(self::CITY_HEAD)['user']);
             $concessions = $city->getConcessions();
             for ($i = 0; $i< count($concessions); $i++) {
                 $concessionHead = new ConcessionHead();
