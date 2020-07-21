@@ -29,8 +29,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class CallController extends AbstractController
 {
-
-
     /**
      * @Route("/", name="call_index", methods={"GET"})
      * @param CallRepository $callRepository
