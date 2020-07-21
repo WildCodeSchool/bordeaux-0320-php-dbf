@@ -4,10 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
     M.Modal.init(mamodal);
 
     const elems = document.querySelectorAll('.collapsible');
-    const instances = M.Collapsible.init(elems);
+    M.Collapsible.init(elems);
 
     const selects = document.querySelectorAll('select');
-    const instancesOfSelects = M.FormSelect.init(selects);
+    M.FormSelect.init(selects);
 
     const sidenav = document.getElementById('sidenav');
     const instanceOfSidenav = M.Sidenav.init(sidenav);
