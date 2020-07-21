@@ -102,7 +102,9 @@ class CallController extends AbstractController
                 $entityManager->flush();
             }
             $call->setService(null);
-            if (strstr($request->request->get('call')['recipient_choice'], 'service-')) {
+            if (isset($request->request->get('call')['recipient_choice']) &&
+                strstr($request->request->get('call')['recipient_choice'], 'service-')
+            ) {
                 $recipient = explode('service-', $request->request->get('call')['recipient_choice']);
                 $serviceId = (int)$recipient[1];
                 $service   = $serviceRepository->findOneById($serviceId);

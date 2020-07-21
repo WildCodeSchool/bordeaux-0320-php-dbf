@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\CityHead;
 use App\Entity\ConcessionHead;
@@ -10,6 +10,7 @@ use App\Repository\CityHeadRepository;
 use App\Repository\CityRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/city/head")
+ * @IsGranted("ROLE_ADMIN")
  */
 class CityHeadController extends AbstractController
 {

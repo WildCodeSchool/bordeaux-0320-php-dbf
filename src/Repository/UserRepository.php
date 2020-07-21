@@ -114,7 +114,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getQuery()
             ->getResult()
             ;
-        shuffle($query);
-        return $query[0];
+        if ($query) {
+            shuffle($query);
+            return $query[0];
+        }
     }
 }
