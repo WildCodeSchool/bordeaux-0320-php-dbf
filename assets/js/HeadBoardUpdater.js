@@ -25,7 +25,7 @@ class headBoardUpdater {
 
 document.addEventListener('DOMContentLoaded', () => {
     const updater = new headBoardUpdater()
-    const interval = setInterval(() => {
+    window.setInterval(() => {
         updater.getHeadBoardNewData();
     }, 15000)
 });

@@ -244,8 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalCallTransferInstance = M.Modal.init(modalCallTransfer, {});
     initTransferButtons(modalCallTransferInstance);
 
-    const checker = setInterval(()=> {
-
+    window.setInterval(()=> {
         getNewCalls(html => {
             if(html) {
                 const listOfCallsZone = document.getElementById('list-calls-to-process')
