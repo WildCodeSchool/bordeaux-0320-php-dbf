@@ -148,7 +148,7 @@ class CallRepository extends ServiceEntityRepository
 
     public function callsToProcessByService(Service $service)
     {
-        $queryService = $this->createQueryBuilder('c')
+        return $this->createQueryBuilder('c')
             ->Where('c.service = :service')
             ->setParameter('service', $service)
             ->innerJoin('c.recallPeriod', 'rp')
@@ -164,7 +164,6 @@ class CallRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-        return $queryService;
     }
 
     public function lastCallToProcessByUser($recipient)
