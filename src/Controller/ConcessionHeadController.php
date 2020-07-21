@@ -27,6 +27,7 @@ class ConcessionHeadController extends AbstractController
      * @param ConcessionHead $concessionHead
      * @param UserRepository $userRepository
      * @param ConcessionRepository $concessionRepository
+     * @param ServiceHeadRepository $serviceHeadRepository
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
@@ -36,33 +37,29 @@ class ConcessionHeadController extends AbstractController
         ConcessionHead $concessionHead,
         UserRepository $userRepository,
         ConcessionRepository $concessionRepository,
+        ConcessionHeadRepository $concessionHeadRepository,
         ServiceHeadRepository $serviceHeadRepository,
         EntityManagerInterface $entityManager
     ): Response {
+
         $form = $this->createForm(ConcessionHeadType::class, $concessionHead);
         $form->handleRequest($request);
-        //concessionA
-        $concessionRegistered = $concessionRepository->findOneBy(['id'=>$id]);
 
+        //concessionA
+        $concessionRegistered = $concessionHeadRepository->findOneBy(['id'=>$id]);
+        $concession = $concessionRegistered->getConcession();
         //Serv A1 A2 A3
-        $servicesRegistered = $concessionRegistered->getServices();
+        $servicesRegistered = $concession->getServices();
+        dd($servicesRegistered);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $userRepository->findOneBy(['id'=> $request->request->get('concession_head')['user']]);
-            /**
-            $serviceHeads=[];
-            foreach ($servicesRegistered as $service) {
-                $serviceHeads[] = $serviceHeadRepository->getServiceHeadsInOneConcession($user, $service);
-            }
-            foreach ($serviceHeads as $serviceHead) {
-                if ($this->isCsrfTokenValid('delete'.$serviceHead[0]->getId(), $request->request->get('_token'))) {
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->remove($serviceHead);
-                    $entityManager->flush();
-                }
-            }
-             * **/
+            /**1suppr A1A2A
+            **/
+
+
+
             //new services
             $concession = $concessionRepository
                 ->findBy(['id'=> $request->request->get('concession_head')['concession']]);
