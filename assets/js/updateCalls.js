@@ -58,6 +58,7 @@ const initButtons = (modal) => {
                     document.getElementById('process-preloader').classList.remove('hide');
                     const data   = new FormData(e.target);
                     const callId = processBtn.dataset.call;
+                    console.log('L61');
                     const url    = `/call/process/${callId}/add`;
                     const params = {
                         body: data,
@@ -136,7 +137,7 @@ const initTransferButtons = (modal) => {
             const callId = transferButtons[i].dataset.call;
             getTransferForm(callId, (html) => {
                 transferModalHtmlZone.innerHTML = html
-                const clientAjaxer = new transferTool(`call/process/${callId}/transfer`, '');
+                const clientAjaxer = new transferTool(`/call/process/${callId}/transfer`, '');
                 initializeSelects()
                 const transferBtn = document.getElementById('transfer-call-btn');
                 const form        = document.getElementById('form-transfer');
@@ -145,6 +146,7 @@ const initTransferButtons = (modal) => {
                     document.getElementById('transfer-preloader').classList.remove('hide');
                     const data   = new FormData(e.target);
                     const callId = transferBtn.dataset.call;
+                    console.log('L149');
                     const url    = `/call/process/${callId}/dotransfer`;
                     const params = {
                         body: data,
@@ -177,7 +179,7 @@ const initTransferButtons = (modal) => {
 }
 
 const getProcessForm = (callId, action) => {
-
+    console.log('L182');
     fetch('/call/process/' + callId, {
         method      : 'GET',
         headers     : {
@@ -192,7 +194,6 @@ const getProcessForm = (callId, action) => {
 }
 
 const getTransferForm = (callId, action) => {
-
     fetch('/call/process/' + callId + '/transfer', {
         method      : 'GET',
         headers     : {
