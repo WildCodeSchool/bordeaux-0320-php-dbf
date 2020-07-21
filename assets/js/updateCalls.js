@@ -83,7 +83,6 @@ const initButtons = (modal) => {
                             changeCallStatus(data.callId, data.colors.class);
                             const target = document.getElementById('call-history-' + data.callId);
                             const callLine = document.getElementById('call-' + data.callId);
-                            const callStatus = callLine.dataset.status;
 
                             const notification = document.getElementById(`client-callback-${data.callId}`);
                             if (notification && !notification.classList.contains('hide')) {
@@ -135,9 +134,10 @@ const initTransferButtons = (modal) => {
             e.preventDefault();
             const callId = transferButtons[i].dataset.call;
             getTransferForm(callId, (html) => {
-                transferModalHtmlZone.innerHTML = html
+                transferModalHtmlZone.innerHTML = html;
                 const clientAjaxer = new transferTool(`/call/process/${callId}/transfer`, '');
-                initializeSelects()
+                clientAjaxer.init();
+                initializeSelects();
                 const transferBtn = document.getElementById('transfer-call-btn');
                 const form        = document.getElementById('form-transfer');
                 form.onsubmit = (e) => {
@@ -206,7 +206,7 @@ const getTransferForm = (callId, action) => {
 
 const initializeSelects = () => {
     const selects = document.querySelectorAll('select');
-    const instancesOfSelects = M.FormSelect.init(selects, {});
+    M.FormSelect.init(selects, {});
 }
 
 const clientCallbacks = () => {
