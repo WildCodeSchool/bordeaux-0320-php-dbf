@@ -58,7 +58,6 @@ const initButtons = (modal) => {
                     document.getElementById('process-preloader').classList.remove('hide');
                     const data   = new FormData(e.target);
                     const callId = processBtn.dataset.call;
-                    console.log('L61');
                     const url    = `/call/process/${callId}/add`;
                     const params = {
                         body: data,
@@ -146,7 +145,6 @@ const initTransferButtons = (modal) => {
                     document.getElementById('transfer-preloader').classList.remove('hide');
                     const data   = new FormData(e.target);
                     const callId = transferBtn.dataset.call;
-                    console.log('L149');
                     const url    = `/call/process/${callId}/dotransfer`;
                     const params = {
                         body: data,
@@ -179,7 +177,6 @@ const initTransferButtons = (modal) => {
 }
 
 const getProcessForm = (callId, action) => {
-    console.log('L182');
     fetch('/call/process/' + callId, {
         method      : 'GET',
         headers     : {
