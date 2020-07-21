@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
             clientAjaxer.sendData(data, () => {
                 M.toast({ html: 'Client ajouté à la base de données' });
                 clientAjaxer.getData((data) => {
-                    autocompletorClients = M.Autocomplete.init(autocompleteClients, {
+                    M.Autocomplete.init(autocompleteClients, {
                         data: JSON.parse(data)
                     });
                 });
