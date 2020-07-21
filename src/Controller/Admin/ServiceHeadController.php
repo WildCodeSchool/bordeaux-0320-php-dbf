@@ -28,6 +28,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ServiceHeadController extends AbstractController
 {
+    const SERVICE_HEAD_INDEX = 'service_head_index';
     /**
      * @Route("/", name="service_head_index", methods={"GET"})
      * @param ServiceHeadRepository $serviceHeadRepository
@@ -69,7 +70,7 @@ class ServiceHeadController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($serviceHead);
             $entityManager->flush();
-            return $this->redirectToRoute('service_head_index');
+            return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
 
         $concessionHead = new ConcessionHead();
@@ -88,7 +89,7 @@ class ServiceHeadController extends AbstractController
             $entityManager->persist($concessionHead);
             $entityManager->flush();
 
-            return $this->redirectToRoute('service_head_index');
+            return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
 
         $cityHead = new CityHead();
@@ -115,7 +116,7 @@ class ServiceHeadController extends AbstractController
             $entityManager->persist($cityHead);
             $entityManager->flush();
 
-            return $this->redirectToRoute('service_head_index');
+            return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
 
 
@@ -143,7 +144,7 @@ class ServiceHeadController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            return $this->redirectToRoute('service_head_index');
+            return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
 
         return $this->render('service_head/edit.html.twig', [
@@ -166,6 +167,6 @@ class ServiceHeadController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('service_head_index');
+        return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
     }
 }
