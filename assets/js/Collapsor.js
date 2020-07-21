@@ -1,7 +1,6 @@
 class Collapsor {
-    constructor() {
-        this.classToCollapse = 'collapsor';
-        this.init();
+    constructor(className) {
+        this.classToCollapse = className;
     }
 
     init() {
@@ -80,5 +79,6 @@ class Collapsor {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const collapsor = new Collapsor();
+    const collapsor = new Collapsor('collapsor');
+    collapsor.init();
 })

@@ -136,7 +136,7 @@ const initTransferButtons = (modal) => {
             const callId = transferButtons[i].dataset.call;
             getTransferForm(callId, (html) => {
                 transferModalHtmlZone.innerHTML = html
-                const clientAjaxer = new transferTool(`call/process/${callId}/transfer`, '');
+                const clientAjaxer = new transferTool(`/call/process/${callId}/transfer`, '');
                 initializeSelects()
                 const transferBtn = document.getElementById('transfer-call-btn');
                 const form        = document.getElementById('form-transfer');
@@ -177,7 +177,6 @@ const initTransferButtons = (modal) => {
 }
 
 const getProcessForm = (callId, action) => {
-
     fetch('/call/process/' + callId, {
         method      : 'GET',
         headers     : {
@@ -192,7 +191,6 @@ const getProcessForm = (callId, action) => {
 }
 
 const getTransferForm = (callId, action) => {
-
     fetch('/call/process/' + callId + '/transfer', {
         method      : 'GET',
         headers     : {
@@ -243,8 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalCallTransferInstance = M.Modal.init(modalCallTransfer, {});
     initTransferButtons(modalCallTransferInstance);
 
-    const checker = setInterval(()=> {
-
+    window.setInterval(()=> {
         getNewCalls(html => {
             if(html) {
                 const listOfCallsZone = document.getElementById('list-calls-to-process')
