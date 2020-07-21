@@ -21,7 +21,7 @@ class CallOnTheWayDataMaker
                 'client' => [
                     'client_id'       => $client->getId(),
                     'client_name'     => $client->getName(),
-                    'client_civility' => $client->getCivility()->getName(),
+                    'client_civility' => $client->getCivility()->getId(),
                     'client_phone'    => $client->getPhone(),
                     'client_phone2'   => $client->getPhone2(),
                     'client_email'    => $client->getEmail(),
