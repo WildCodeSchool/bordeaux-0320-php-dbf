@@ -49,7 +49,6 @@ class CallIncomingSendMail implements EventSubscriberInterface
                 ->to($recipient->getEmail())
                 ->subject($subject)
                 ->html($this->templating->render('call/mail/notification.html.twig', ['call' => $call]));
-
             if ($call->getIsUrgent() || $recipient->getHasAcceptedAlert()) {
                 $this->mailer->send($email);
             }
