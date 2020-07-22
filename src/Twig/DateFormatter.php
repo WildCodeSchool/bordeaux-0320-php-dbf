@@ -10,6 +10,8 @@ use \DateInterval;
 
 class DateFormatter extends AbstractExtension
 {
+    const DATE_FORMAT = 'd-m-Y';
+
     public function getFilters()
     {
         return [
@@ -28,13 +30,13 @@ class DateFormatter extends AbstractExtension
 
         $dateName  = 'le ' . $dateTime->format('d/m/Y');
 
-        if ($dateTime->format('d-m-Y') === $yesterday->format('d-m-Y')) {
+        if ($dateTime->format(self::DATE_FORMAT) === $yesterday->format(self::DATE_FORMAT)) {
             $dateName = 'hier';
         }
-        if ($dateTime->format('d-m-Y') === $today->format('d-m-Y')) {
+        if ($dateTime->format(self::DATE_FORMAT) === $today->format(self::DATE_FORMAT)) {
             $dateName = 'aujourd\'hui';
         }
-        if ($dateTime->format('d-m-Y') === $tomorrow->format('d-m-Y')) {
+        if ($dateTime->format(self::DATE_FORMAT) === $tomorrow->format(self::DATE_FORMAT)) {
             $dateName = 'demain';
         }
         return $dateName;

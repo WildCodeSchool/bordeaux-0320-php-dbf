@@ -131,7 +131,6 @@ class City
     {
         if ($this->subjects->contains($subject)) {
             $this->subjects->removeElement($subject);
-            // set the owning side to null (unless already changed)
             if ($subject->getCity() === $this) {
                 $subject->setCity(null);
             }
@@ -162,7 +161,6 @@ class City
     {
         if ($this->rightByLocations->contains($rightByLocation)) {
             $this->rightByLocations->removeElement($rightByLocation);
-            // set the owning side to null (unless already changed)
             if ($rightByLocation->getCity() === $this) {
                 $rightByLocation->setCity(null);
             }
@@ -193,7 +191,6 @@ class City
     {
         if ($this->cityHeads->contains($cityHead)) {
             $this->cityHeads->removeElement($cityHead);
-            // set the owning side to null (unless already changed)
             if ($cityHead->getCity() === $this) {
                 $cityHead->setCity(null);
             }
@@ -204,7 +201,7 @@ class City
 
     public function isPhoneCity(): bool
     {
-        return ($this->getIdentifier() === self::PHONE_CITY) ? true : false;
+        return $this->getIdentifier() === self::PHONE_CITY;
     }
 
     public function getIdentifier(): ?string
