@@ -56,11 +56,10 @@ class ServiceHeadRepository extends ServiceEntityRepository
         $query->execute();
     }
 
-    public function getServiceHeadsInOneConcession(User $user, Service $service)
+    public function getServiceHeadInOneService(User $user)
     {
         $query = $this->createQueryBuilder('sh')
             ->Where('sh.user = :u')->setParameter('u', $user)
-            ->andWhere('sh.service = :s')->setParameter('s', $service)
             ->getQuery()
             ->getResult();
 

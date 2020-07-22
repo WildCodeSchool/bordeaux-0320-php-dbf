@@ -52,17 +52,25 @@ class ConcessionHeadController extends AbstractController
         $concession = $concessionRegistered->getConcession();
         //Serv A1 A2 A3
         $servicesRegistered = $concession->getServices();
-        dd($servicesRegistered);
-
+        $headsId= [];
+        foreach ($servicesRegistered as $service) {
+            $headsId [] = $service->getId();
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $userRepository->findOneBy(['id'=> $request->request->get('concession_head')['user']]);
-            /**1suppr A1A2A
+            /**1suppsr A1A2A
             **/
 
 
+            $userServiceHeads = $serviceHeadRepository->findByUser($user);
+            for ($i= 0; $i< count($userServiceHeads); $i++) {
+                if (in_array($userServiceHeads[$i]->getService()->getId(), $headsId)) {
+                    $entityManager->remove($userServiceHeads[$i]);
+                }
+            }
 
-            //new services
+            // 2 new services
             $concession = $concessionRepository
                 ->findBy(['id'=> $request->request->get('concession_head')['concession']]);
             $services = $concession[0]->getServices();
