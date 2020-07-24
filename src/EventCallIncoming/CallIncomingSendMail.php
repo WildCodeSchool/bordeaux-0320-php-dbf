@@ -37,21 +37,36 @@ class CallIncomingSendMail implements EventSubscriberInterface
             Events::CALL_INCOMING => 'callIncoming',
         ];
     }
+
     public function callIncoming(GenericEvent $event): void
     {
-        /** @var Call $call*/
-        $call= $event->getSubject();
+        /** @var Call $call */
+        $call = $event->getSubject();
         $recipient = $call->getRecipient();
+        $collaborators = $call->getService()->getUsers();
+        $subject = "Un appel ajouté";
+
         if (!is_null($recipient)) {
-            $subject = "Un appel ajouté";
             $email = (new Email())
                 ->from($this->sender)
                 ->to($recipient->getEmail())
                 ->subject($subject)
                 ->html($this->templating->render('call/mail/notification.html.twig', ['call' => $call]));
-
             if ($call->getIsUrgent() || $recipient->getHasAcceptedAlert()) {
                 $this->mailer->send($email);
+            }
+        } else {
+            foreach ($collaborators as $collaborator) {
+                if ($collaborator->getCanBeRecipient()) {
+                    $email = (new Email())
+                        ->from($this->sender)
+                        ->to($collaborator->getEmail())
+                        ->subject($subject)
+                        ->html($this->templating->render('call/mail/notification.html.twig', ['call' => $call]));
+                    if ($call->getIsUrgent() || $collaborator->getHasAcceptedAlert()) {
+                        $this->mailer->send($email);
+                    }
+                }
             }
         }
     }

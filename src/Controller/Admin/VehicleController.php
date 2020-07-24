@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class VehicleController extends AbstractController
 {
+    const VEHICLE_INDEX = 'vehicle_index';
     /**
      * @Route("/", name="vehicle_index", methods={"GET"})
      * @param VehicleRepository $vehicleRepository
@@ -49,7 +50,7 @@ class VehicleController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Vous avez bien ajouté un véhicule');
 
-            return $this->redirectToRoute('vehicle_index');
+            return $this->redirectToRoute(self::VEHICLE_INDEX);
         }
 
         return $this->render('vehicle/new.html.twig', [
@@ -84,7 +85,7 @@ class VehicleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('vehicle_index');
+            return $this->redirectToRoute(self::VEHICLE_INDEX);
         }
 
         return $this->render('vehicle/edit.html.twig', [
@@ -104,6 +105,6 @@ class VehicleController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('vehicle_index');
+        return $this->redirectToRoute(self::VEHICLE_INDEX);
     }
 }

@@ -29,8 +29,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class CallController extends AbstractController
 {
-
-
     /**
      * @Route("/", name="call_index", methods={"GET"})
      * @param CallRepository $callRepository
@@ -238,7 +236,8 @@ class CallController extends AbstractController
         $client = $clientRepository->findOneByPhone($phoneNumber);
 
         $data = ['client' => [
-            'client_id' => null]
+            'client_id' => null
+            ]
         ];
 
         if ($client) {

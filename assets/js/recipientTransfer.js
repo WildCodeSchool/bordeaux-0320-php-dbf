@@ -1,7 +1,6 @@
 export class transferTool {
     constructor(url) {
         this.urlBase     = url
-        this.init()
     }
 
     init(data = null) {
