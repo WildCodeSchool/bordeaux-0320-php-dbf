@@ -43,10 +43,9 @@ class CallIncomingSendMail implements EventSubscriberInterface
         /** @var Call $call */
         $call = $event->getSubject();
         $recipient = $call->getRecipient();
-        $collaborators = $call->getService()->getUsers();
         $subject = "Un appel ajouté";
 
-        if (!is_null($recipient)) {
+        if (null !== $recipient) {
             $email = (new Email())
                 ->from($this->sender)
                 ->to($recipient->getEmail())
@@ -56,6 +55,7 @@ class CallIncomingSendMail implements EventSubscriberInterface
                 $this->mailer->send($email);
             }
         } else {
+            $collaborators = $call->getService()->getUsers();
             foreach ($collaborators as $collaborator) {
                 if ($collaborator->getCanBeRecipient()) {
                     $email = (new Email())
