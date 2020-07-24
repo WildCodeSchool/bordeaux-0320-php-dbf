@@ -26,7 +26,7 @@ class ServiceHeadRepository extends ServiceEntityRepository
 
     public function getHeadServiceCalls(User $user)
     {
-        $query = $this->createQueryBuilder('sh')
+        return $this->createQueryBuilder('sh')
             ->Where('sh.user = :u')
             ->setParameter('u', $user->getId())
             ->join(Service::class, 'se', Join::WITH, 'se.id = sh.service')
@@ -40,7 +40,6 @@ class ServiceHeadRepository extends ServiceEntityRepository
             ->addOrderBy('concession', 'ASC')
             ->addOrderBy('service', 'ASC')
             ->getQuery()->getResult();
-        return $query;
     }
 
     public function deleteResponsabilities($user, $concession)

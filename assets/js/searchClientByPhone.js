@@ -20,8 +20,8 @@ const hydrateForm = (data) => {
             if (document.getElementById('call_' + key)) {
                 document.getElementById('call_' + key).value = value
                 if (key === 'client_civility') {
-                    selectValueInSelect(document.getElementById('call_' + key), value)
                     M.FormSelect.init(document.getElementById('call_' + key), {})
+                    selectValueInSelect(document.getElementById('call_' + key), value)
                 }
             }
         }

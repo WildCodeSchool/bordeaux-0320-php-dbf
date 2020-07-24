@@ -28,6 +28,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserController extends AbstractController
 {
+    const SUCCESS = 'success';
+    const USER_INDEX = 'user_index';
 
     /**
      * @Route("/", name="user_index", methods={"GET"})
@@ -69,9 +71,9 @@ class UserController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            $this->addFlash('success', 'Un compte a  été créé !');
+            $this->addFlash(self::SUCCESS, 'Un compte a  été créé !');
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute(self::USER_INDEX);
         }
 
         return $this->render('user/new.html.twig', [
@@ -112,8 +114,8 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('success', 'Utilisateur modifié ');
-            return $this->redirectToRoute('user_index');
+            $this->addFlash(self::SUCCESS, 'Utilisateur modifié ');
+            return $this->redirectToRoute(self::USER_INDEX);
         }
 
         return $this->render('user/edit.html.twig', [
@@ -136,10 +138,10 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
-            $this->addFlash('success', 'Utilisateur supprimé');
+            $this->addFlash(self::SUCCESS, 'Utilisateur supprimé');
         }
 
-        return $this->redirectToRoute('user_index');
+        return $this->redirectToRoute(self::USER_INDEX);
     }
 
     /**

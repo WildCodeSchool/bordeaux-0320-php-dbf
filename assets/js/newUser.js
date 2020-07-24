@@ -1,7 +1,6 @@
 export class ServiceAjaxTool {
     constructor(url) {
         this.urlToAdd = url;
-        this.init();
     }
     getPhoneCityId(callback) {
         fetch('/phoneCity/getId')
@@ -140,4 +139,5 @@ export class ServiceAjaxTool {
 
 document.addEventListener('DOMContentLoaded', () => {
     const serviceAjaxer = new ServiceAjaxTool('/user/new', '');
+    serviceAjaxer.init();
 });

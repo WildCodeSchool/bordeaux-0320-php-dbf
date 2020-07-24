@@ -2,7 +2,6 @@ class recipientsAjaxTool {
     constructor(url) {
         this.urlToAdd     = url
         this.urlToRandom = '/phoneCity/random';
-        this.init()
     }
 
     getPhoneCityId(callback) {
@@ -212,6 +211,6 @@ class recipientsAjaxTool {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    const clientAjaxer         = new recipientsAjaxTool('/call/add', '');
-
+    const clientAjaxer = new recipientsAjaxTool('/call/add', '');
+    clientAjaxer.init();
 });

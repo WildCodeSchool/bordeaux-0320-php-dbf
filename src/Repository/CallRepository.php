@@ -148,7 +148,7 @@ class CallRepository extends ServiceEntityRepository
 
     public function callsToProcessByService(Service $service)
     {
-        $queryService = $this->createQueryBuilder('c')
+        return $this->createQueryBuilder('c')
             ->Where('c.service = :service')
             ->setParameter('service', $service)
             ->innerJoin('c.recallPeriod', 'rp')
@@ -164,7 +164,6 @@ class CallRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-        return $queryService;
     }
 
     public function lastCallToProcessByUser($recipient)
@@ -340,33 +339,4 @@ class CallRepository extends ServiceEntityRepository
         }
         return $query;
     }
-
-
-
-    /**
-
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-
-    /*
-    public function findOneBySomeField($value): ?Call
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
