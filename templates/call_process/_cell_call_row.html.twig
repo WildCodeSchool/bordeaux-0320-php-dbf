@@ -97,7 +97,7 @@
                     <span class="title">
                         {{call.client.civility.name}} {{call.client.name}}
                         {% if call.client.email != '' %}
-                            <span class="mgl30"><i class="material-icons tooltipped grey-text text-darken-3 tiny" data-position="top" data-tooltip="{{call.client.email}}">mail</i></span>
+                            <span class="mgl30"><i class="material-icons tooltipped grey-text text-darken-3 tiny copy-tooltip" data-position="top" data-email="{{call.client.email}}" data-tooltip="{{call.client.email}} / cliquer l'icone pour copier">mail</i></span>
                         {% endif %}
                     </span>
                </div>
