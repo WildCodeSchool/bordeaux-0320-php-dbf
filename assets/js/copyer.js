@@ -1,6 +1,6 @@
 setClipboard = (value) => {
     let tempInput = document.createElement("input");
-    tempInput.style = "position: absolute; left: -4000px; top: -4000px";
+    tempInput.style = "position: absolute; left: 0px; top: 0px; height:0; width:0;";
     tempInput.value = value;
     document.body.appendChild(tempInput);
     tempInput.select();
