@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class City
 {
+    const PHONE_CITY = 'PHONECITY';
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -45,6 +47,11 @@ class City
      * @ORM\OneToMany(targetEntity=CityHead::class, mappedBy="city")
      */
     private $cityHeads;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $identifier;
 
     public function __construct()
     {
@@ -124,7 +131,6 @@ class City
     {
         if ($this->subjects->contains($subject)) {
             $this->subjects->removeElement($subject);
-            // set the owning side to null (unless already changed)
             if ($subject->getCity() === $this) {
                 $subject->setCity(null);
             }
@@ -155,7 +161,6 @@ class City
     {
         if ($this->rightByLocations->contains($rightByLocation)) {
             $this->rightByLocations->removeElement($rightByLocation);
-            // set the owning side to null (unless already changed)
             if ($rightByLocation->getCity() === $this) {
                 $rightByLocation->setCity(null);
             }
@@ -186,7 +191,6 @@ class City
     {
         if ($this->cityHeads->contains($cityHead)) {
             $this->cityHeads->removeElement($cityHead);
-            // set the owning side to null (unless already changed)
             if ($cityHead->getCity() === $this) {
                 $cityHead->setCity(null);
             }
@@ -197,6 +201,18 @@ class City
 
     public function isPhoneCity(): bool
     {
-        return ($this->getName() === 'Cellule Téléphonique') ? true : false;
+        return $this->getIdentifier() === self::PHONE_CITY;
+    }
+
+    public function getIdentifier(): ?string
+    {
+        return $this->identifier;
+    }
+
+    public function setIdentifier(?string $identifier): self
+    {
+        $this->identifier = $identifier;
+
+        return $this;
     }
 }

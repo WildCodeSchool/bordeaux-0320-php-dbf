@@ -56,6 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
     deletorAction(deleteConcessionButtons, '/concession/delete/', 'concession', 'concession')
 
     const deleteServiceButtons = document.getElementsByClassName('delete-service-button');
-    deletorAction(deleteServiceButtons[i], '/service/delete/', 'service', 'service')
+    deletorAction(deleteServiceButtons, '/service/delete/', 'service', 'service')
 
 }) //end of document eventListener

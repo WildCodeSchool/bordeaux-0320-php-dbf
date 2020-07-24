@@ -6,8 +6,8 @@
         <th>Id</th>
         <th>Service</th>
         <th>Concession</th>
-        <th>Modifier</th>
-        <th>Supprimer</th>
+        <th class="center-align">Modifier</th>
+        <th class="center-align">Supprimer</th>
     </tr>
     </thead>
     <tbody>
@@ -16,10 +16,10 @@
             <td>{{ service.id }}</td>
             <td>{{ service.name }}</td>
             <td> {{ service.concession.name }}</td>
-            <td>
+            <td class="center-align">
                 <a href="#" class="edit-service-button" data-target="{{ service.id }}"><i class="material-icons">edit</i></a>
             </td>
-            <td>
+            <td class="center-align">
                 <a href="#" class="delete-service-button" data-target="{{ service.id }}"><i class="material-icons">delete</i></a>
             </td>
         </tr>
@@ -28,7 +28,7 @@
         </tr>
     {% else %}
         <tr>
-            <td colspan="3">no records found</td>
+            <td colspan="3">Aucun enregistrement trouvé</td>
         </tr>
     {% endfor %}
     </tbody>

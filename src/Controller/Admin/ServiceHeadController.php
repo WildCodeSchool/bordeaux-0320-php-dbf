@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\City;
 use App\Entity\CityHead;
@@ -16,6 +16,7 @@ use App\Repository\ConcessionRepository;
 use App\Repository\ServiceHeadRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,9 +24,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/head")
+ * @IsGranted("ROLE_ADMIN")
  */
 class ServiceHeadController extends AbstractController
 {
+    const SERVICE_HEAD_INDEX = 'service_head_index';
+    const CONCESSION_HEAD    = 'concession_head';
+    const CITY_HEAD          = 'city_head';
     /**
      * @Route("/", name="service_head_index", methods={"GET"})
      * @param ServiceHeadRepository $serviceHeadRepository
@@ -67,15 +72,16 @@ class ServiceHeadController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($serviceHead);
             $entityManager->flush();
-            return $this->redirectToRoute('service_head_index');
+            return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
 
         $concessionHead = new ConcessionHead();
         $formConcessionHead = $this->createForm(ConcessionHeadType::class, $concessionHead);
         $formConcessionHead->handleRequest($request);
         if ($formConcessionHead->isSubmitted() && $formConcessionHead->isValid()) {
-            $user = $userRepository->findOneById($request->request->get('concession_head')['user']);
-            $concession = $concessionRepository->findOneById($request->request->get('concession_head')['concession']);
+            $user = $userRepository->findOneById($request->request->get(self::CONCESSION_HEAD)['user']);
+            $concession = $concessionRepository
+                ->findOneById($request->request->get(self::CONCESSION_HEAD)['concession']);
             $services = $concession->getServices();
             for ($i=0; $i<count($services); $i++) {
                 $serviceHead = new ServiceHead();
@@ -86,15 +92,15 @@ class ServiceHeadController extends AbstractController
             $entityManager->persist($concessionHead);
             $entityManager->flush();
 
-            return $this->redirectToRoute('service_head_index');
+            return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
 
         $cityHead = new CityHead();
         $formCityHead = $this->createForm(CityHeadType::class, $cityHead);
         $formCityHead->handleRequest($request);
         if ($formCityHead->isSubmitted() &&  $formCityHead->isValid()) {
-            $city = $cityRepository->findOneById($request->request->get('city_head')['city']);
-            $user = $userRepository->findOneById($request->request->get('city_head')['user']);
+            $city = $cityRepository->findOneById($request->request->get(self::CITY_HEAD)['city']);
+            $user = $userRepository->findOneById($request->request->get(self::CITY_HEAD)['user']);
             $concessions = $city->getConcessions();
             for ($i = 0; $i< count($concessions); $i++) {
                 $concessionHead = new ConcessionHead();
@@ -113,7 +119,7 @@ class ServiceHeadController extends AbstractController
             $entityManager->persist($cityHead);
             $entityManager->flush();
 
-            return $this->redirectToRoute('service_head_index');
+            return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
 
 
@@ -141,7 +147,7 @@ class ServiceHeadController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            return $this->redirectToRoute('service_head_index');
+            return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
 
         return $this->render('service_head/edit.html.twig', [
@@ -164,6 +170,6 @@ class ServiceHeadController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('service_head_index');
+        return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
     }
 }

@@ -43,7 +43,6 @@ class CallProcessing
      */
     private $referedCall;
 
-    private $stepColors;
 
     public function getId(): ?int
     {

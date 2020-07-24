@@ -1,5 +1,3 @@
-import { transferTool } from './recipientTransfer';
-
 const hideUsersList = () => {
     const list = document.getElementsByClassName('list-dest');
     for (let i = 0; i < list.length; i++) {
@@ -84,5 +82,4 @@ document.addEventListener('DOMContentLoaded', () => {
             transferCall(e.target.dataset.call, e.target.dataset.for)
         })
     }
-
 })

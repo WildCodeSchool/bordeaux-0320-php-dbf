@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Form\HeadType;
@@ -21,21 +21,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 /**
  * @Route("/user")
  * @IsGranted("ROLE_ADMIN")
+
  */
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/random", name="user_random", methods={"GET"})
-     */
-    public function randomCellUser(UserRepository $userRepository)
-    {
-        $response = new JsonResponse();
-        $response->setStatusCode(JsonResponse::HTTP_OK);
-        $response->setData([
-            'recipientId' => $userRepository->getRandomUser()->getId()
-        ]);
-        return $response;
-    }
+    const SUCCESS = 'success';
+    const USER_INDEX = 'user_index';
 
     /**
      * @Route("/", name="user_index", methods={"GET"})
@@ -77,9 +68,9 @@ class UserController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            $this->addFlash('success', 'Un compte a  été créé !');
+            $this->addFlash(self::SUCCESS, 'Un compte a  été créé !');
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute(self::USER_INDEX);
         }
 
         return $this->render('user/new.html.twig', [
@@ -120,8 +111,8 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-            $this->addFlash('success', 'Utilisateur modifié ');
-            return $this->redirectToRoute('user_index');
+            $this->addFlash(self::SUCCESS, 'Utilisateur modifié ');
+            return $this->redirectToRoute(self::USER_INDEX);
         }
 
         return $this->render('user/edit.html.twig', [
@@ -142,11 +133,13 @@ class UserController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
-            $this->addFlash('success', 'Utilisateur supprimé');
+            $this->addFlash(self::SUCCESS, 'Utilisateur supprimé');
         }
 
-        return $this->redirectToRoute('user_index');
+        return $this->redirectToRoute(self::USER_INDEX);
     }
+
+
 
     /**
      * @Route("/list", name="user_list", methods={"POST"})
@@ -158,7 +151,7 @@ class UserController extends AbstractController
         $users = $userRepository->findAllOrderBy('lastname', 'ASC');
         $dataList = [];
         foreach ($users as $user) {
-            $dataList[$user->getFirstname(). ' ' . $user->getLastname()]  = null;
+            $dataList[$user->getFirstname(). ' ' . $user->getLastname() . ' (' . $user->getId() . ')']  = null;
         }
         return new JsonResponse($dataList);
     }

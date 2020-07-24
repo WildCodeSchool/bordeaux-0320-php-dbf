@@ -36,7 +36,6 @@ class PhoneFormatter extends AbstractExtension
         if (!preg_match('/(0[0-9]{9})/', $phoneNumber)) {
             $phoneNumber = '0' . $phoneNumber;
         }
-        $phoneNumber = wordwrap($phoneNumber, 2, ' ', true);
-        return $phoneNumber;
+        return wordwrap($phoneNumber, 2, ' ', true);
     }
 }
