@@ -34,6 +34,7 @@ require('./deleteCall');
 require('./Collapsor');
 require('./resetVehicule');
 require('./userHighlighting');
+require('./copyer');
 
 
 
