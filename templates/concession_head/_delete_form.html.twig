@@ -1,8 +1,8 @@
-<form method="post" action="{{ path('concession_head_delete', {'id': concession_head.id}) }}" id="del-{{concession_head.id}}">
+<form method="post" action="{{ path('concession_head_delete', {'id': concession_head.id}) }}" id="delConcession-{{concession_head.id}}">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ concession_head.id) }}">
     <span>
-        <a class="btn mgt15 light-blue darken-1 head-deletor" data-target="del-{{concession_head.id}}">
+        <a class="btn mgt15 light-blue darken-1 head-deletor" data-target="delConcession-{{concession_head.id}}">
             <i class="material-icons">delete</i>
         </a>
     </span>

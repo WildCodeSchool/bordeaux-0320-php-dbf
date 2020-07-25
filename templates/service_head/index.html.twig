@@ -84,11 +84,11 @@
                                 <td>{{ city_head.user.firstname ~ ' '  ~ city_head.user.lastname}}</td>
                                 <td>{{ city_head.city.name }}</td>
                                 <td>
-                                    <form method="post" action="{{ path('city_head_delete', {'id': city_head.id}) }}" id="del-{{city_head.id}}">
+                                    <form method="post" action="{{ path('city_head_delete', {'id': city_head.id}) }}" id="delCity-{{city_head.id}}">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ city_head.id) }}">
                                         <span>
-                                            <a class="btn mgt15 light-blue darken-1 head-deletor" data-target="del-{{city_head.id}}">
+                                            <a class="btn mgt15 light-blue darken-1 head-deletor" data-target="delCity-{{city_head.id}}">
                                                 <i class="material-icons">delete</i>
                                             </a>
                                         </span>
