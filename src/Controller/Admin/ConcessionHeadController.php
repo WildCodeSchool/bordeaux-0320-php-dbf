@@ -45,7 +45,6 @@ class ConcessionHeadController extends AbstractController
 
         $serviceHeadsInConcession = $serviceHeadRepository->getAllServiceHeadsInConcession($user, (int)$id);
 
-
         if ($this->isCsrfTokenValid('delete'.$concessionHead->getId(), $request->request->get('_token'))) {
             $entityManager->remove($concessionHead);
             foreach ($serviceHeadsInConcession as $serviceHead) {
@@ -54,6 +53,7 @@ class ConcessionHeadController extends AbstractController
                 }
             }
             $entityManager->flush();
+            $this->addFlash('success', 'Responsable de Concession supprimé');
         }
 
         return $this->redirectToRoute('service_head_index');

@@ -3,24 +3,26 @@
 {% block title %}Ajouter une responsabilité{% endblock %}
 
 {% block body %}
+
     <div class="container">
-        <h1>Ajouter un responsable</h1>
-        <a href="{{ path('service_head_index') }}" class="btn light-blue ">Retour à la liste</a>
+        <h1><i class="medium left material-icons">add_circle_outline</i> Ajouter un responsable</h1>
+        <a href="{{ path('service_head_index') }}" class="btn light-blue mgt30">Retour à la liste</a>
+        {% include 'components/_flashes.html.twig' %}
         <ul class="collapsible mgt30">
             <li>
-                <div class="collapsible-header"><h5 class="cyan-text text-darken-3"><i class="material-icons">settings</i>Service</h5></div>
+                <div class="collapsible-header"><h5 class="light-blue-text text-darken-4"><i class="material-icons">settings</i>Service</h5></div>
                 <div class="collapsible-body">
                     {{ include('service_head/_form.html.twig') }}
                 </div>
             </li>
             <li>
-                <div class="collapsible-header"><h5 class="cyan-text"><i class="material-icons">home</i>Concession</h5></div>
+                <div class="collapsible-header"><h5 class="light-blue-text text-darken-4"><i class="material-icons">home</i>Concession</h5></div>
                 <div class="collapsible-body">
                     {{ include('concession_head/_form.html.twig') }}
                 </div>
             </li>
             <li>
-                <div class="collapsible-header"><h5><i class="material-icons">location_city</i>Plaque</h5></div>
+                <div class="collapsible-header"><h5 class="light-blue-text text-darken-4"><i class="material-icons">location_city</i>Plaque</h5></div>
                 <div class="collapsible-body">
                     {{ include('city_head/_form.html.twig') }}
                 </div>

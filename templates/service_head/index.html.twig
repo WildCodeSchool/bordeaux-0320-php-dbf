@@ -4,8 +4,10 @@
 
 {% block body %}
     <div class="container">
-    <h1>Responsables</h1>
-        <a href="{{ path('service_head_new') }}" class="btn light-blue ">Ajouter</a>
+    <h1><i class="medium left material-icons">clear_all</i> Responsables</h1>
+        <a href="{{ path('service_head_new') }}" class="btn light-blue darken-4 mgt30">Ajouter</a>
+        {% include 'components/_flashes.html.twig' %}
+
         <ul class="collapsible mgt30">
             <li>
                 <div class="collapsible-header"><h5 class="cyan-text text-darken-3"><i class="material-icons">settings</i>Service</h5></div>
