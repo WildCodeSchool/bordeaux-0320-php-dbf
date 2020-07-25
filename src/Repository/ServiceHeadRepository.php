@@ -43,28 +43,6 @@ class ServiceHeadRepository extends ServiceEntityRepository
             ->getQuery()->getResult();
     }
 
-    public function deleteResponsabilities($user, $concession)
-    {
-        $query = $this->createQueryBuilder('sh')
-            ->where('sh.user = :u')->setParameter('u', $user)
-            ->join(Service::class, 'se', Join::WITH, 'se.id = sh.service')
-            ->andWhere('se.concession = :c')->setParameter('c', $concession)
-            ->join(Concession::class, 'co', Join::WITH, 'co.id = se.concession')
-            ->getQuery()->getResult();
-        dd($query);
-
-        $query->execute();
-    }
-
-    public function getServiceHeadInOneService(User $user)
-    {
-        $query = $this->createQueryBuilder('sh')
-            ->Where('sh.user = :u')->setParameter('u', $user)
-            ->getQuery()
-            ->getResult();
-
-        return $query;
-    }
 
     public function getAllServiceHeadsInConcession($user, $concessionHead)
     {
