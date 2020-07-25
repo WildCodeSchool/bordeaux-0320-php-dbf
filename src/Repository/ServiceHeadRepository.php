@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\ConcessionHead;
 use App\Entity\ServiceHead;
 use App\Entity\User;
 use App\Entity\Service;
@@ -39,6 +40,18 @@ class ServiceHeadRepository extends ServiceEntityRepository
             ->addOrderBy('city', 'ASC')
             ->addOrderBy('concession', 'ASC')
             ->addOrderBy('service', 'ASC')
+            ->getQuery()->getResult();
+    }
+
+
+    public function getAllServiceHeadsInConcession($user, $concessionHead)
+    {
+        return $this->createQueryBuilder('sh')
+            ->join(Service::class, 'se', Join::WITH, 'se.id = sh.service')
+            ->join(Concession::class, 'co', Join::WITH, 'se.concession = co.id')
+            ->join(ConcessionHead::class, 'ch', Join::WITH, 'ch.concession = co.id')
+            ->where('ch.user = :user')->setParameter('user', $user)
+            ->andWhere('ch.id = :concessionHeadId')->setParameter('concessionHeadId', $concessionHead)
             ->getQuery()->getResult();
     }
 }

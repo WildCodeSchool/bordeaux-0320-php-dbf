@@ -4,8 +4,10 @@
 
 {% block body %}
     <div class="container">
-    <h1>Responsables</h1>
-        <a href="{{ path('service_head_new') }}" class="btn light-blue ">Ajouter</a>
+    <h1 ><i class="medium left material-icons">clear_all</i> Responsables</h1>
+        <a href="{{ path('service_head_new') }}" class="btn light-blue darken-4 mgt30">Ajouter</a>
+        {% include 'components/_flashes.html.twig' %}
+
         <ul class="collapsible mgt30">
             <li>
                 <div class="collapsible-header"><h5 class="cyan-text text-darken-3"><i class="material-icons">settings</i>Service</h5></div>
@@ -24,7 +26,6 @@
                                 <td>{{ service_head.user.firstname ~ ' '  ~ service_head.user.lastname}}</td>
                                 <td>{{  service_head.service.concession.town.name ~ ' > ' ~ service_head.service.concession.name ~ ' > ' ~service_head.service.name  }}</td>
                                 <td>
-                                    <a href="{{ path('service_head_edit', {'id': service_head.id}) }}" class="btn mgt15 light-blue darken-1"><i class="material-icons">edit</i></a>
                                     {{ include('service_head/_delete_form.html.twig') }}
                                 </td>
                             </tr>
@@ -54,7 +55,6 @@
                                 <td>{{ concession_head.user.firstname ~ ' '  ~ concession_head.user.lastname}}</td>
                                 <td>{{ concession_head.concession.town.name ~ ' > ' ~ concession_head.concession.name}}</td>
                                 <td>
-                                    <a href="{{ path('concession_head_edit', {'id': concession_head.id}) }}" class="btn mgt15 light-blue darken-1"><i class="material-icons">edit</i></a>
                                     {{ include('concession_head/_delete_form.html.twig') }}
                                 </td>
                             </tr>
@@ -84,11 +84,14 @@
                                 <td>{{ city_head.user.firstname ~ ' '  ~ city_head.user.lastname}}</td>
                                 <td>{{ city_head.city.name }}</td>
                                 <td>
-                                    <a href="{{ path('city_head_edit', {'id': city_head.id}) }}" class="btn mgt15 light-blue darken-1"><i class="material-icons">edit</i></a>
-                                    <form method="post" action="{{ path('city_head_delete', {'id': city_head.id}) }}" onsubmit="return confirm('Êtes vous sûr de vouloir supprimer ?');">
+                                    <form method="post" action="{{ path('city_head_delete', {'id': city_head.id}) }}" id="del-{{city_head.id}}">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ city_head.id) }}">
-                                        <button class="btn mgt15 light-blue darken-1"><i class="material-icons">delete</i></button>
+                                        <span>
+                                            <a class="btn mgt15 light-blue darken-1 head-deletor" data-target="del-{{city_head.id}}">
+                                                <i class="material-icons">delete</i>
+                                            </a>
+                                        </span>
                                     </form>
 
                                 </td>

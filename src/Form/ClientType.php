@@ -27,6 +27,7 @@ class ClientType extends AbstractType
             ])
             ->add('name', TextType::class, [
                 'label'=>'Nom ou Raison sociale ',
+                'required' => 'true'
             ])
             ->add('phone', TextType::class, [
                 'label'=>'Téléphone',
