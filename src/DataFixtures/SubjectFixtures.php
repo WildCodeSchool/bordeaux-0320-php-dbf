@@ -6,7 +6,6 @@ namespace App\DataFixtures;
 use App\Entity\Subject;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use App\DataFixtures\CityFixtures;
 use Doctrine\Persistence\ObjectManager;
 
 class SubjectFixtures extends Fixture implements DependentFixtureInterface

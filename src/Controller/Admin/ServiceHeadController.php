@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\City;
 use App\Entity\CityHead;
 use App\Entity\ConcessionHead;
 use App\Entity\ServiceHead;
