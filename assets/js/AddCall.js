@@ -1,4 +1,5 @@
 import { Switch3 } from 'triswitch';
+import {CallFormValidator} from './CallFormValidator';
 
 document.addEventListener('DOMContentLoaded', () => {
     if(document.getElementById('switcher_add_call')) {
@@ -23,7 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(addCallBtn) {
         addCallBtn.addEventListener('click', () => {
-            addCallLoader.classList.remove('hide')
+            const validator = new CallFormValidator()
+            validator.checkFields()
+            if(validator.finalCheck()) {
+                addCallLoader.classList.remove('hide')
+            }
         })
     }
 
