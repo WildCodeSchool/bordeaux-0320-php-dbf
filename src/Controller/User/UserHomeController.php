@@ -5,14 +5,12 @@ namespace App\Controller\User;
 
 use App\Repository\CallRepository;
 use App\Repository\UserRepository;
-use App\Service\CallOnTheWayDataMaker;
 use App\Service\ClientCallbacks;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use function Composer\Autoload\includeFile;
 
 class UserHomeController extends AbstractController
 {

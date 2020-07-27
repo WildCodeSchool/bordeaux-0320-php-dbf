@@ -127,8 +127,10 @@ class UserController extends AbstractController
      * @param User $user
      * @return Response
      */
-    public function delete(Request $request, User $user): Response
-    {
+    public function delete(
+        Request $request,
+        User $user
+    ): Response {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
@@ -138,8 +140,6 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute(self::USER_INDEX);
     }
-
-
 
     /**
      * @Route("/list", name="user_list", methods={"POST"})

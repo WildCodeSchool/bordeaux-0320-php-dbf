@@ -3,7 +3,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Civility;
 use App\Entity\Client;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

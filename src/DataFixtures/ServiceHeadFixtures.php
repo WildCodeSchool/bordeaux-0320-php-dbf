@@ -3,7 +3,6 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Service;
 use App\Entity\ServiceHead;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;

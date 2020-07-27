@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\City;
 use App\Entity\CityHead;
 use App\Entity\ConcessionHead;
 use App\Entity\ServiceHead;
@@ -72,6 +71,8 @@ class ServiceHeadController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($serviceHead);
             $entityManager->flush();
+            $this->addFlash('success', 'Responsabilité ajoutée');
+
             return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
 
@@ -91,7 +92,7 @@ class ServiceHeadController extends AbstractController
             }
             $entityManager->persist($concessionHead);
             $entityManager->flush();
-
+            $this->addFlash('success', 'Responsabilité ajoutée');
             return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
 
@@ -118,6 +119,7 @@ class ServiceHeadController extends AbstractController
             }
             $entityManager->persist($cityHead);
             $entityManager->flush();
+            $this->addFlash('success', 'Responsabilité ajoutée');
 
             return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
@@ -134,29 +136,6 @@ class ServiceHeadController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="service_head_edit", methods={"GET","POST"})
-     * @param Request $request
-     * @param ServiceHead $serviceHead
-     * @param EntityManagerInterface $entityManager
-     * @return Response
-     */
-    public function edit(Request $request, ServiceHead $serviceHead, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(ServiceHeadType::class, $serviceHead);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-            return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
-        }
-
-        return $this->render('service_head/edit.html.twig', [
-            'service_head' => $serviceHead,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
      * @Route("/{id}", name="service_head_delete", methods={"DELETE"})
      * @param Request $request
      * @param ServiceHead $serviceHead
@@ -168,6 +147,7 @@ class ServiceHeadController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($serviceHead);
             $entityManager->flush();
+            $this->addFlash('success', 'Responsable de Service supprimé');
         }
 
         return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
