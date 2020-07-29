@@ -17,6 +17,36 @@
 3. Run `yarn install`
 4. Run `yarn encore prod`
 
+### Working
+
+1. Run `symfony server:start` to launch your local php web server
+2. Run `yarn run dev --watch` to launch your local server for assets
+
+### Testing
+
+1. Run `./bin/phpcs` to launch PHP code sniffer
+2. Run `./bin/phpstan analyse src --level max` to launch PHPStan
+3. Run `./bin/phpmd src text phpmd.xml` to launch PHP Mess Detector
+3. Run `./bin/eslint assets/js` to launch ESLint JS linter
+3. Run `./bin/sass-lint -c sass-linter.yml` to launch Sass-lint SASS/CSS linter
+
+### Windows Users
+
+If you develop on Windows, you should edit you git configuration to change your end of line rules with this command :
+
+`git config --global core.autocrlf true`
+
+## Deployment
+
+![Img caprover](https://captain.phprover.wilders.dev/icon-512x512.png)
+
+To deploy on Cap Rover, add, at least, two  *"Environmental Variables"* in *"App Configs"*  tab:
+
+* `APP_ENV` with `prod`/`dev` value
+* `DATABASE_URL` with the same DSN you set in your `.env.*` file.
+
+For more informations, check the dedicated file.
+
 ## Built With
 
 * [Symfony](https://github.com/symfony/symfony)
@@ -37,11 +67,11 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Authors
 
-Wild Code School trainers team
-Elisa Bourg
-Caroline Fourcade
-Amélie Guérin
-François Vaillant
+Wild Code School trainers team  
+Elisa Bourg  
+Caroline Fourcade  
+Amélie Guérin  
+François Vaillant  
 
 ## License
 
