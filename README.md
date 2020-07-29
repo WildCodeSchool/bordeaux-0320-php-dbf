@@ -1,8 +1,9 @@
-# Project 3 - Starter Kit - Symfony 4.4.*
+# Easy Auto - Symfony 4.4.*
 
 ![Wild Code School](https://wildcodeschool.fr/wp-content/uploads/2019/01/logo_pink_176x60.png)
 
-## Getting Started for Projects
+### SonarQube valiation
+[![Quality Gate Status](https://sonarqube.phprover.wilders.dev/api/project_badges/measure?project=DBF&metric=alert_status)](https://sonarqube.phprover.wilders.dev/dashboard?id=DBF)
 
 ### Prerequisites
 
@@ -14,30 +15,7 @@
 1. Clone this project
 2. Run `composer install`
 3. Run `yarn install`
-
-### Working
-
-1. Run `symfony server:start` to launch your local php web server
-2. Run `yarn run dev --watch` to launch your local server for assets
-
-### Testing
-
-1. Run `./bin/phpcs` to launch PHP code sniffer
-2. Run `./bin/phpstan analyse src --level max` to launch PHPStan
-3. Run `./bin/phpmd src text phpmd.xml` to launch PHP Mess Detector
-3. Run `./bin/eslint assets/js` to launch ESLint JS linter
-3. Run `./bin/sass-lint -c sass-linter.yml` to launch Sass-lint SASS/CSS linter
-
-### Windows Users
-
-If you develop on Windows, you should edit you git configuration to change your end of line rules with this command :
-
-`git config --global core.autocrlf true`
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
+4. Run `yarn encore prod`
 
 ## Built With
 
@@ -55,11 +33,15 @@ Add additional notes about how to deploy this on a live system
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
-
+* V1.0
 
 ## Authors
 
 Wild Code School trainers team
+Elisa Bourg
+Caroline Fourcade
+Amélie Guérin
+François Vaillant
 
 ## License
 
