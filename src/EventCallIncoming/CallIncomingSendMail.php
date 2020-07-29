@@ -4,14 +4,15 @@
 namespace App\EventCallIncoming;
 
 use App\Entity\Call;
-use App\Entity\User;
 use App\Events;
-use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+
+
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\Mailer;
+
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Exception\LogicException;

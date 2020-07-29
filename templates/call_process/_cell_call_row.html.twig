@@ -175,7 +175,9 @@
                     </span>
                 </div>
                 <div class="call-cal-action">
+                    {% if call.recipient is not null %}
                     <a class="{% if call.isUrgent %}urgent{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
+               {% endif %}
                 </div>
             </div>
         </div>
