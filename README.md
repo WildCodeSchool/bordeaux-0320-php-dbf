@@ -2,7 +2,7 @@
 
 ![Wild Code School](https://wildcodeschool.fr/wp-content/uploads/2019/01/logo_pink_176x60.png)
 
-### SonarQube valiation
+### SonarQube validation
 [![Quality Gate Status](https://sonarqube.phprover.wilders.dev/api/project_badges/measure?project=DBF&metric=alert_status)](https://sonarqube.phprover.wilders.dev/dashboard?id=DBF)
 
 ### Prerequisites
