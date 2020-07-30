@@ -1,10 +1,12 @@
 export class CallFormValidator {
 
-    constructor() {
+    constructor(phoneCityId) {
         this.phoneField = document.getElementById('call_client_phone');
         this.nameField = document.getElementById('call_client_name');
         this.immatField = document.getElementById('call_vehicle_immatriculation');
         this.recipientField = null;
+        this.cityField = document.getElementById('call_city');
+        this.phoneCityId = phoneCityId;
     }
 
     allAreInPage() {
@@ -12,13 +14,26 @@ export class CallFormValidator {
     }
 
     allAreFilled() {
-        return (this.phoneField.value != ''
+        let evaluation = 0;
+        if (this.phoneField.value != ''
             && this.nameField.value != ''
-            && this.immatField.value != ''
-            && this.recipientField.value != '')
+            && this.immatField.value != '') {
+            evaluation++;
+            if (this.recipientField.value === '' && this.cityField.value === this.phoneCityId) {
+                evaluation++;
+            }
+            if (this.recipientField.value === '' && this.cityField.value != this.phoneCityId) {
+                evaluation--;
+            }
+            if (this.recipientField.value != '' && this.cityField.value != this.phoneCityId) {
+                evaluation++;
+            }
+        }
+        return (evaluation > 1);
     }
 
     checkFields() {
+        console.log(this.phoneCityId, this.cityField.value);
         this.recipientField = document.getElementById('call_recipient_choice');
 
         if (this.phoneField.value == '') {
@@ -30,7 +45,7 @@ export class CallFormValidator {
         if (this.nameField.value == '') {
             M.toast({html : 'Merci de remplir la plaque d\'immatriculation. Si aucune, saisir "NC"', classes : 'red'})
         }
-        if (!this.recipientField || (this.recipientField && this.recipientField.value === '')) {
+        if (!this.recipientField || (this.recipientField && this.recipientField.value === '' && this.cityField.value != this.phoneCityId)) {
             M.toast({html : 'choisir le destinataire de l\'appel', classes : 'red'})
         }
     }

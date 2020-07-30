@@ -24,12 +24,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(addCallBtn) {
         addCallBtn.addEventListener('click', () => {
-            const validator = new CallFormValidator()
-            validator.checkFields()
-            if(validator.finalCheck()) {
-                addCallLoader.classList.remove('hide')
+            const getPhoneCityId = (callback) => {
+                fetch('/phoneCity/getId')
+                    .then(response=>{
+                        return response.json()
+                    })
+                    .then(json=> {
+                        callback(json.phoneCityId);
+                    });
             }
+            getPhoneCityId((phoneCityId) => {
+                const validator = new CallFormValidator(phoneCityId)
+                validator.checkFields()
+                if(validator.finalCheck()) {
+                    addCallLoader.classList.remove('hide')
+                }
+            })
         })
     }
-
 });

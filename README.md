@@ -67,11 +67,11 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 ## Authors
 
-Wild Code School trainers team
-Elisa Bourg
-Caroline Fourcade
-Amélie Guérin
-François Vaillant
+Wild Code School trainers team  
+Elisa Bourg  
+Caroline Fourcade  
+Amélie Guérin  
+François Vaillant  
 
 ## License
 
