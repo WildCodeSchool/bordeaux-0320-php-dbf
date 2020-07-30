@@ -6,9 +6,9 @@ use App\Data\SearchData;
 use App\Form\SearchType;
 use App\Repository\CallRepository;
 use App\Service\ExportDataToCsv;
+use App\Service\OnlyCallKeeper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,16 +30,19 @@ class SearchController extends AbstractController
         SearchData $searchData,
         Request $request,
         CallRepository $callRepository,
-        ExportDataToCsv $exportDataToCsv
+        ExportDataToCsv $exportDataToCsv,
+        OnlyCallKeeper $onlyCallKeeper
     ): Response {
         $searchedCalls = [];
         $dataReadyForExport='';
         $form = $this->createForm(SearchType::class, $searchData);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $searchedCalls = $callRepository->findSearch($searchData);
+            $searchedCalls = $onlyCallKeeper::keepCalls($callRepository->findSearch($searchData));
+
             $dataReadyForExport = json_encode($exportDataToCsv->dataMakerBeforeExport($searchedCalls));
         }
+
 
         return $this->render('search/index.html.twig', [
             'form'=> $form->createView(),

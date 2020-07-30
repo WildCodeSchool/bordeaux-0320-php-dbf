@@ -1,8 +1,9 @@
-# Project 3 - Starter Kit - Symfony 4.4.*
+# Easy Auto - Symfony 4.4.*
 
 ![Wild Code School](https://wildcodeschool.fr/wp-content/uploads/2019/01/logo_pink_176x60.png)
 
-## Getting Started for Projects
+### SonarQube validation
+[![Quality Gate Status](https://sonarqube.phprover.wilders.dev/api/project_badges/measure?project=DBF&metric=alert_status)](https://sonarqube.phprover.wilders.dev/dashboard?id=DBF)
 
 ### Prerequisites
 
@@ -14,6 +15,7 @@
 1. Clone this project
 2. Run `composer install`
 3. Run `yarn install`
+4. Run `yarn encore prod`
 
 ### Working
 
@@ -61,11 +63,15 @@ For more informations, check the dedicated file.
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
 ## Versioning
-
+* V1.0
 
 ## Authors
 
-Wild Code School trainers team
+Wild Code School trainers team  
+Elisa Bourg  
+Caroline Fourcade  
+Amélie Guérin  
+François Vaillant  
 
 ## License
 

@@ -110,12 +110,12 @@ class User implements UserInterface
     private $serviceHeads;
 
     /**
-     * @ORM\OneToMany(targetEntity=ConcessionHead::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=ConcessionHead::class, mappedBy="user", orphanRemoval=true)
      */
     private $concessionHeads;
 
     /**
-     * @ORM\OneToMany(targetEntity=CityHead::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=CityHead::class, mappedBy="user", orphanRemoval=true)
      */
     private $cityHeads;
 

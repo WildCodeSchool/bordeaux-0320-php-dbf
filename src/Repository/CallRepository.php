@@ -4,9 +4,12 @@ namespace App\Repository;
 
 use App\Data\SearchData;
 use App\Entity\Call;
+use App\Entity\City;
+use App\Entity\Concession;
 use App\Entity\Service;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use \DateTime;
 use \DateInterval;
@@ -259,6 +262,18 @@ class CallRepository extends ServiceEntityRepository
             ->leftJoin('c.callProcessings', 'cp')->addSelect('cp')
             ->leftJoin('c.callTransfers', 'ct')->addSelect('ct')
             ->where('c.recipient IS NOT NULL')
+            ->join(User::class, 'u', Join::WITH, 'u.id = c.recipient')
+            ->join(Service::class, 'serv', Join::WITH, 'u.service = serv.id')
+            ->addSelect('serv')
+            ->join(
+                Concession::class,
+                'concession',
+                Join::WITH,
+                'serv.concession= concession.id'
+            )
+            ->addSelect('concession')
+            ->join(City::class, 'city', Join::WITH, 'concession.town = city.id')
+            ->addSelect('city')
         ;
 
         $this->addSearchParametersToQuery($searchData, $query);

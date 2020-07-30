@@ -2,7 +2,6 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Comment;
 use App\Entity\Subject;
 use App\Form\SubjectType;
 use App\Repository\SubjectRepository;

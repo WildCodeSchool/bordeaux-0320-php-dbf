@@ -5,12 +5,12 @@ namespace App\DataFixtures;
 
 use App\Entity\Civility;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class CivilityFixtures extends Fixture
 {
     const CIVILITY = [
-        'Mr',
+        'M.',
         'Mme',
         'Ste'
     ];
@@ -18,7 +18,7 @@ class CivilityFixtures extends Fixture
     /**
      * @inheritDoc
      */
-    public function load(\Doctrine\Persistence\ObjectManager $manager)
+    public function load(ObjectManager $manager)
     {
         foreach (self::CIVILITY as $key => $civility) {
             $civil = new Civility();

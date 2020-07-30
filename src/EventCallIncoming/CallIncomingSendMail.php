@@ -4,14 +4,18 @@
 namespace App\EventCallIncoming;
 
 use App\Entity\Call;
-use App\Entity\User;
 use App\Events;
-use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+
+
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\Mailer;
+
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Exception\LogicException;
 use Twig\Environment;
 
 class CallIncomingSendMail implements EventSubscriberInterface
@@ -23,12 +27,14 @@ class CallIncomingSendMail implements EventSubscriberInterface
     private $mailer;
     private $sender;
     private $templating;
+    private $session;
 
-    public function __construct(MailerInterface $mailer, $sender, Environment $twig)
+    public function __construct(MailerInterface $mailer, $sender, Environment $twig, SessionInterface $session)
     {
         $this->mailer = $mailer;
         $this->sender = $sender;
         $this->templating = $twig;
+        $this->session = $session;
     }
 
     public static function getSubscribedEvents()
@@ -43,19 +49,23 @@ class CallIncomingSendMail implements EventSubscriberInterface
         /** @var Call $call */
         $call = $event->getSubject();
         $recipient = $call->getRecipient();
-        $collaborators = $call->getService()->getUsers();
         $subject = "Un appel ajouté";
 
-        if (!is_null($recipient)) {
+        if (null !== $recipient) {
             $email = (new Email())
                 ->from($this->sender)
                 ->to($recipient->getEmail())
                 ->subject($subject)
                 ->html($this->templating->render('call/mail/notification.html.twig', ['call' => $call]));
             if ($call->getIsUrgent() || $recipient->getHasAcceptedAlert()) {
-                $this->mailer->send($email);
+                try {
+                    $this->mailer->send($email);
+                } catch (\Exception $e) {
+                    $this->session->getFlashBag()->add('error', "Erreur lors de l'envoi du mail");
+                }
             }
         } else {
+            $collaborators = $call->getService()->getUsers();
             foreach ($collaborators as $collaborator) {
                 if ($collaborator->getCanBeRecipient()) {
                     $email = (new Email())
@@ -64,7 +74,11 @@ class CallIncomingSendMail implements EventSubscriberInterface
                         ->subject($subject)
                         ->html($this->templating->render('call/mail/notification.html.twig', ['call' => $call]));
                     if ($call->getIsUrgent() || $collaborator->getHasAcceptedAlert()) {
-                        $this->mailer->send($email);
+                        try {
+                            $this->mailer->send($email);
+                        } catch (\Exception $e) {
+                            $this->session->getFlashBag()->add('error', "Erreur lors de l'envoi du mail");
+                        }
                     }
                 }
             }
