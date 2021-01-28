@@ -18,7 +18,7 @@ class ServiceHeadFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager)
     {
         $userAdmin = $this->getReference('adminUser');
-        $collaborator = $this->getReference('collaboratorUser');
+        $collaborator = $this->getReference('adminUser2');
 
         for ($i = 1; $i < 4; $i++) {
             $serviceHead = new ServiceHead();

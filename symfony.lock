@@ -183,21 +183,6 @@
     "phpmd/phpmd": {
         "version": "2.6.1"
     },
-    "phpro/grumphp": {
-        "version": "v0.15.2"
-    },
-    "phpstan/phpdoc-parser": {
-        "version": "0.3.3"
-    },
-    "phpstan/phpstan": {
-        "version": "0.11.6"
-    },
-    "phpstan/phpstan-doctrine": {
-        "version": "0.11.5"
-    },
-    "phpstan/phpstan-symfony": {
-        "version": "0.11.6"
-    },
     "psr/cache": {
         "version": "1.0.1"
     },
