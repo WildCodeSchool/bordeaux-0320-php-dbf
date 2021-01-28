@@ -1,21 +1,21 @@
 <?php
 
 
-namespace App\Controller;
+namespace App\Controller\User;
 
 use App\Repository\CallRepository;
 use App\Repository\UserRepository;
-use App\Service\CallOnTheWayDataMaker;
 use App\Service\ClientCallbacks;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use function Composer\Autoload\includeFile;
 
 class UserHomeController extends AbstractController
 {
+    const LAST_CALL_ID = 'lastCallId';
+    const SESSION      = 'session';
 
     /**
      * @Route("/welcome/{id}", name="user_home")
@@ -25,7 +25,7 @@ class UserHomeController extends AbstractController
     {
         $appUser = $this->getUser();
         $header = false;
-        if (!is_null($id)) {
+        if (null !== $id) {
             $appUser = $userRepository->findOneById($id);
             $service = $appUser->getService();
             $header = true;
@@ -43,9 +43,9 @@ class UserHomeController extends AbstractController
         $totalInProcess = count($callRepository->callsInProcessByUser($appUser));
 
         $lastCall = $callRepository->lastCallToProcessByUser($appUser);
-        $this->get('session')->set('lastCallId', 0);
+        $this->get(self::SESSION)->set(self::LAST_CALL_ID, 0);
         if ($lastCall) {
-            $this->get('session')->set('lastCallId', $lastCall->getId());
+            $this->get(self::SESSION)->set(self::LAST_CALL_ID, $lastCall->getId());
         }
 
         return $this->render('cell_home.html.twig', [
@@ -82,9 +82,9 @@ class UserHomeController extends AbstractController
         $totalInProcess = count($callRepository->callsInProcessByUser($appUser));
 
         $lastCall = $callRepository->lastCallToProcessByUser($appUser);
-        $this->get('session')->set('lastCallId', null);
+        $this->get(self::SESSION)->set(self::LAST_CALL_ID, null);
         if ($lastCall) {
-            $this->get('session')->set('lastCallId', $lastCall->getId());
+            $this->get(self::SESSION)->set(self::LAST_CALL_ID, $lastCall->getId());
         }
 
         return $this->render('cell_home.html.twig', [
@@ -104,10 +104,10 @@ class UserHomeController extends AbstractController
     public function newCall(CallRepository $callRepository, UserRepository $userRepository)
     {
         $appUser = $this->getUser();
-        $lastId = $this->get('session')->get('lastCallId');
+        $lastId = $this->get(self::SESSION)->get(self::LAST_CALL_ID);
         $newCalls = $callRepository->getNewCallsForUser($appUser, $lastId);
         if (!empty($newCalls)) {
-            $this->get('session')->set('lastCallId', $newCalls[array_key_last($newCalls)]->getId());
+            $this->get(self::SESSION)->set(self::LAST_CALL_ID, $newCalls[array_key_last($newCalls)]->getId());
             $response = $this->render('call_process/_new_calls.html.twig', [
                 'calls' => $newCalls,
             ]);

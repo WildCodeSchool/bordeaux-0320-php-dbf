@@ -29,8 +29,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class CallController extends AbstractController
 {
-
-
     /**
      * @Route("/", name="call_index", methods={"GET"})
      * @param CallRepository $callRepository
@@ -102,7 +100,9 @@ class CallController extends AbstractController
                 $entityManager->flush();
             }
             $call->setService(null);
-            if (strstr($request->request->get('call')['recipient_choice'], 'service-')) {
+            if (isset($request->request->get('call')['recipient_choice']) &&
+                strstr($request->request->get('call')['recipient_choice'], 'service-')
+            ) {
                 $recipient = explode('service-', $request->request->get('call')['recipient_choice']);
                 $serviceId = (int)$recipient[1];
                 $service   = $serviceRepository->findOneById($serviceId);
@@ -236,7 +236,8 @@ class CallController extends AbstractController
         $client = $clientRepository->findOneByPhone($phoneNumber);
 
         $data = ['client' => [
-            'client_id' => null]
+            'client_id' => null
+            ]
         ];
 
         if ($client) {

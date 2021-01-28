@@ -1,3 +1,13 @@
+.time-select {
+  .select-wrapper {
+    svg {
+      width:20px;
+      height: 20px;
+      margin-right:-5px;
+    }
+  }
+}
+
 i {
   &.small-more {
     font-size:1.5rem;
@@ -102,7 +112,6 @@ ul {
       padding-top: 15px;
     }
   }
-;
 }
 
 .mgt15 {
@@ -115,6 +124,10 @@ ul {
 
 .mgl30 {
   margin-left: 30px;
+}
+
+.mgl12 {
+  margin-left: 12px;
 }
 
 label:not(.active) {
@@ -132,6 +145,7 @@ label.active {
   margin-top:3px;
   background:#fff;
   padding:0 5px;
+  z-index:2;
 }
 
 input:not([type]), input[type="text"]:not(.browser-default), input[type="password"]:not(.browser-default), input[type="email"]:not(.browser-default), input[type="url"]:not(.browser-default), input[type="time"]:not(.browser-default), input[type="date"]:not(.browser-default), input[type="datetime"]:not(.browser-default), input[type="datetime-local"]:not(.browser-default), input[type="tel"]:not(.browser-default), input[type="number"]:not(.browser-default), input[type="search"]:not(.browser-default), textarea.materialize-textarea {
@@ -225,3 +239,9 @@ a.btn-rounded {
     }
   }
 }
+
+
+.alert.alert-danger-login {
+   margin-bottom: 15px;
+ }
+

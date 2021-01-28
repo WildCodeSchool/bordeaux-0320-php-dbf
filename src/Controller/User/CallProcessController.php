@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\User;
 
 use App\Entity\CallProcessing;
 use App\Entity\CallTransfer;
@@ -25,6 +25,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/call/process")
+ * @IsGranted("ROLE_COLLABORATOR")
  */
 class CallProcessController extends AbstractController
 {
@@ -80,6 +81,7 @@ class CallProcessController extends AbstractController
 
         if ($callStepChecker->isCallToBeEnded($request)) {
             $call->setIsProcessEnded(true);
+            $call->setClientCallback(0);
         }
         $entityManager->persist($call);
 
@@ -183,7 +185,6 @@ class CallProcessController extends AbstractController
 
     /**
      * @Route("/{callId}/transferto/{userId}", name="call_transfer_to", methods={"GET"})
-     * @IsGranted("ROLE_USER")
      * @param int $callId
      * @param int $userId
      * @param CallRepository $callRepository
@@ -220,7 +221,6 @@ class CallProcessController extends AbstractController
 
     /**
      * @Route("/{callId}/callback", name="client_callback", methods={"GET"})
-     * @IsGranted("ROLE_USER")
      * @param int $callId
      * @param CallRepository $callRepository
      * @param EntityManagerInterface $entityManager

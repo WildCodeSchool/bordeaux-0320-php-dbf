@@ -24,6 +24,11 @@ class HeadBoardData
     private $userRepository;
     private $serviceHeadRepository;
 
+    const IN_PROCESS     = 'in_process';
+    const TO_PROCESS     = 'to_process';
+    const IN_PROCESS_KEY = '-in-process';
+    const TO_PROCESS_KEY = '-to-process';
+
     public function __construct(
         CallRepository $callRepository,
         CityRepository $cityRepository,
@@ -87,26 +92,30 @@ class HeadBoardData
             $collaborators = $service->getUsers();
 
             $result[$datum['city']]['slug'] = $slugify->slugify($datum['city']);
-            $result[$datum['city']]['in_process'] = (!isset($result[$datum['city']]['in_process']))
-                ? 0 : $result[$datum['city']]['in_process'];
-            $result[$datum['city']]['to_process'] = (!isset($result[$datum['city']]['to_process']))
-                ? 0 : $result[$datum['city']]['to_process'];
+            $result[$datum['city']][self::IN_PROCESS] = (!isset($result[$datum['city']][self::IN_PROCESS]))
+                ? 0 : $result[$datum['city']][self::IN_PROCESS];
+            $result[$datum['city']][self::TO_PROCESS] = (!isset($result[$datum['city']][self::TO_PROCESS]))
+                ? 0 : $result[$datum['city']][self::TO_PROCESS];
 
             $result[$datum['city']]['concessions'][$datum['concession']]['slug']
                 = $slugify->slugify($datum['concession']);
 
-            $result[$datum['city']]['concessions'][$datum['concession']]['in_process'] = (!isset($result[$datum['city']]
-                ['concessions'][$datum['concession']]['in_process'])) ? 0 : $result[$datum['city']]['concessions']
-                [$datum['concession']]['in_process'];
+            $result[$datum['city']]['concessions'][$datum['concession']][self::IN_PROCESS] =
+                (!isset($result[$datum['city']]
+                ['concessions'][$datum['concession']][self::IN_PROCESS])) ?
+                    0 : $result[$datum['city']]['concessions']
+                [$datum['concession']][self::IN_PROCESS];
 
-            $result[$datum['city']]['concessions'][$datum['concession']]['to_process'] = (!isset($result[$datum['city']]
-                ['concessions'][$datum['concession']]['to_process'])) ? 0 : $result[$datum['city']]['concessions']
-                [$datum['concession']]['to_process'];
+            $result[$datum['city']]['concessions'][$datum['concession']][self::TO_PROCESS] =
+                (!isset($result[$datum['city']]
+                ['concessions'][$datum['concession']][self::TO_PROCESS])) ?
+                    0 : $result[$datum['city']]['concessions']
+                [$datum['concession']][self::TO_PROCESS];
 
 
             $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName] = [
-                'to_process'    => 0,
-                'in_process'    => 0,
+                self::TO_PROCESS    => 0,
+                self::IN_PROCESS    => 0,
                 'collaborators' => [],
                 'slug'          => $slugify->slugify($serviceName),
             ];
@@ -118,25 +127,29 @@ class HeadBoardData
                         'user_id'    => $collaborator->getId(),
                         'slug'       => $slugify->slugify($collaboratorName),
                         'user_name'  => $collaboratorName,
-                        'to_process' => count($this->callRepository->callsToProcessByUser($collaborator)),
-                        'in_process' => count($this->callRepository->callsInProcessByUser($collaborator)),
+                        self::TO_PROCESS => count($this->callRepository->callsToProcessByUser($collaborator)),
+                        self::IN_PROCESS => count($this->callRepository->callsInProcessByUser($collaborator)),
                     ];
-                $result[$datum['city']]['to_process'] += $result[$datum['city']]['concessions'][$datum['concession']]
-                ['services'][$serviceName]['collaborators'][$collaboratorName]['to_process'];
-                $result[$datum['city']]['in_process'] += $result[$datum['city']]['concessions'][$datum['concession']]
-                ['services'][$serviceName]['collaborators'][$collaboratorName]['in_process'];
-                $result[$datum['city']]['concessions'][$datum['concession']]['to_process'] += $result[$datum['city']]
-                ['concessions'][$datum['concession']]['services'][$serviceName]['collaborators']
-                [$collaboratorName]['to_process'];
-                $result[$datum['city']]['concessions'][$datum['concession']]['in_process'] += $result[$datum['city']]
-                ['concessions'][$datum['concession']]['services'][$serviceName]['collaborators']
-                [$collaboratorName]['in_process'];
-                $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName]['to_process'] +=
+                $result[$datum['city']][self::TO_PROCESS] +=
+                    $result[$datum['city']]['concessions'][$datum['concession']]
+                ['services'][$serviceName]['collaborators'][$collaboratorName][self::TO_PROCESS];
+                $result[$datum['city']][self::IN_PROCESS] +=
+                    $result[$datum['city']]['concessions'][$datum['concession']]
+                ['services'][$serviceName]['collaborators'][$collaboratorName][self::IN_PROCESS];
+                $result[$datum['city']]['concessions'][$datum['concession']][self::TO_PROCESS] +=
                     $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName]
-                    ['collaborators'][$collaboratorName]['to_process'];
-                $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName]['in_process'] +=
+                    ['collaborators'][$collaboratorName][self::TO_PROCESS];
+                $result[$datum['city']]['concessions'][$datum['concession']][self::IN_PROCESS] +=
                     $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName]
-                    ['collaborators'][$collaboratorName]['in_process'];
+                    ['collaborators'][$collaboratorName][self::IN_PROCESS];
+                $result[$datum['city']]['concessions'][$datum['concession']]
+                ['services'][$serviceName][self::TO_PROCESS] +=
+                    $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName]
+                    ['collaborators'][$collaboratorName][self::TO_PROCESS];
+                $result[$datum['city']]['concessions'][$datum['concession']]
+                ['services'][$serviceName][self::IN_PROCESS] +=
+                    $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName]
+                    ['collaborators'][$collaboratorName][self::IN_PROCESS];
             }
         }
         return $result;
@@ -155,50 +168,56 @@ class HeadBoardData
 
             $citySlug = $slugify->slugify($datum['city']);
 
-            $result[$citySlug . '-in-process'] = (!isset($result[$citySlug. '-in-process']))
-                ? 0 : $result[$citySlug . '-in-process'];
-            $result[$citySlug . '-to-process'] = (!isset($result[$citySlug. '-to-process']))
-                ? 0 : $result[$citySlug . '-to-process'];
+            $result[$citySlug . self::IN_PROCESS_KEY] = (!isset($result[$citySlug. self::IN_PROCESS_KEY]))
+                ? 0 : $result[$citySlug . self::IN_PROCESS_KEY];
+            $result[$citySlug . self::TO_PROCESS_KEY] = (!isset($result[$citySlug. self::TO_PROCESS_KEY]))
+                ? 0 : $result[$citySlug . self::TO_PROCESS_KEY];
 
             $concessionSlug    = $slugify->slugify($datum['concession']);
 
-            $result[$citySlug . '-' . $concessionSlug . '-in-process'] =
-                (!isset($result[$citySlug . '-' . $concessionSlug . '-in-process'])) ?
-                    0 : $result[$citySlug . '-' . $concessionSlug . '-in-process'];
+            $result[$citySlug . '-' . $concessionSlug . self::IN_PROCESS_KEY] =
+                (!isset($result[$citySlug . '-' . $concessionSlug . self::IN_PROCESS_KEY])) ?
+                    0 : $result[$citySlug . '-' . $concessionSlug . self::IN_PROCESS_KEY];
 
-            $result[$citySlug . '-' . $concessionSlug . '-to-process'] =
-                (!isset($result[$citySlug . '-' . $concessionSlug . '-to-process'])) ?
-                    0 : $result[$citySlug . '-' . $concessionSlug . '-to-process'];
+            $result[$citySlug . '-' . $concessionSlug . self::TO_PROCESS_KEY] =
+                (!isset($result[$citySlug . '-' . $concessionSlug . self::TO_PROCESS_KEY])) ?
+                    0 : $result[$citySlug . '-' . $concessionSlug . self::TO_PROCESS_KEY];
 
             $serviceSlug = $slugify->slugify($serviceName);
 
-            $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .'-to-process'] =
-                (!isset($result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .'-to-process'])) ?
-                    0 : $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .'-to-process'];
-            $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .'-in-process'] =
-                (!isset($result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .'-in-process'])) ?
-                    0 : $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .'-in-process'];
+            $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .self::TO_PROCESS_KEY] =
+                (!isset($result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .self::TO_PROCESS_KEY])) ?
+                    0 : $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .self::TO_PROCESS_KEY];
+            $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .self::IN_PROCESS_KEY] =
+                (!isset($result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .self::IN_PROCESS_KEY])) ?
+                    0 : $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .self::IN_PROCESS_KEY];
 
             foreach ($collaborators as $collaborator) {
                 $collSlug =
                     $slugify->slugify($collaborator->getFirstname() . ' ' . $collaborator->getLastname());
-                $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . '-to-process'] =
-                    count($this->callRepository->callsToProcessByUser($collaborator));
-                $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . '-in-process'] =
-                    count($this->callRepository->callsInProcessByUser($collaborator));
+                $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . self::TO_PROCESS_KEY]
+                    = count($this->callRepository->callsToProcessByUser($collaborator));
+                $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . self::IN_PROCESS_KEY]
+                    = count($this->callRepository->callsInProcessByUser($collaborator));
 
-                $result[$citySlug . '-to-process'] +=
-                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . '-to-process'];
-                $result[$citySlug . '-in-process'] +=
-                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . '-in-process'];
-                $result[$citySlug . '-' . $concessionSlug . '-to-process'] +=
-                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . '-to-process'];
-                $result[$citySlug . '-' . $concessionSlug . '-in-process'] +=
-                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . '-in-process'];
-                $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .  '-to-process'] +=
-                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . '-to-process'];
-                $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .  '-in-process'] +=
-                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . '-in-process'];
+                $result[$citySlug . self::TO_PROCESS_KEY] +=
+                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug
+                    . self::TO_PROCESS_KEY];
+                $result[$citySlug . self::IN_PROCESS_KEY] +=
+                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug
+                    . self::IN_PROCESS_KEY];
+                $result[$citySlug . '-' . $concessionSlug . self::TO_PROCESS_KEY] +=
+                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug
+                    . self::TO_PROCESS_KEY];
+                $result[$citySlug . '-' . $concessionSlug . self::IN_PROCESS_KEY] +=
+                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug
+                    . self::IN_PROCESS_KEY];
+                $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .  self::TO_PROCESS_KEY] +=
+                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug
+                    . self::TO_PROCESS_KEY];
+                $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .  self::IN_PROCESS_KEY] +=
+                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug
+                    . self::IN_PROCESS_KEY];
             }
         }
 

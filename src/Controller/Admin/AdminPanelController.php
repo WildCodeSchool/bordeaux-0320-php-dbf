@@ -4,10 +4,8 @@ namespace App\Controller\Admin;
 
 use App\Entity\Civility;
 use App\Entity\Client;
-use App\Entity\Comment;
 use App\Entity\Concession;
 use App\Entity\Service;
-use App\Entity\Subject;
 use App\Form\CityType;
 use App\Form\CivilityType;
 use App\Form\ClientType;
@@ -22,11 +20,9 @@ use App\Repository\SubjectRepository;
 use App\Repository\VehicleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\DependencyInjection\Variable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use \DateTime;
 
 /**
  * @Route("/admin", name="admin")

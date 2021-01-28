@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\ConcessionHead;
 use App\Entity\ServiceHead;
 use App\Entity\User;
 use App\Entity\Service;
@@ -26,7 +27,7 @@ class ServiceHeadRepository extends ServiceEntityRepository
 
     public function getHeadServiceCalls(User $user)
     {
-        $query = $this->createQueryBuilder('sh')
+        return $this->createQueryBuilder('sh')
             ->Where('sh.user = :u')
             ->setParameter('u', $user->getId())
             ->join(Service::class, 'se', Join::WITH, 'se.id = sh.service')
@@ -40,72 +41,17 @@ class ServiceHeadRepository extends ServiceEntityRepository
             ->addOrderBy('concession', 'ASC')
             ->addOrderBy('service', 'ASC')
             ->getQuery()->getResult();
-        return $query;
-
-            /*
-        $connection = $this->getEntityManager()->getConnection();
-        $sql = 'SELECT
-                ci.name city,
-                co.name concession,
-                sh.service_id,
-                se.name service
-                FROM service_head sh
-                JOIN service se
-                ON se.id = sh.service_id
-                JOIN concession co
-                ON co.id = se.concession_id
-                JOIN city ci
-                ON ci.id = co.town_id
-                WHERE sh.user_id = :u
-                ORDER BY ci.name, co.name, se.name';
-        $stmt = $connection->prepare($sql);
-        $stmt->bindValue('u', $user->getId());
-        $stmt->execute();
-        return $stmt->fetchAll();
-            */
     }
 
 
-/*
-    public function getInProcessCalls ($service)
+    public function getAllServiceHeadsInConcession($user, $concessionHead)
     {
-        return $this->createQueryBuilder('call c')
-            ->select('count(c.id)')
-            ->andWhere('c.service = :service')
-            ->setParameter('service', $service)
-            ->andWhere('c.isProcessEnded IS NULL')
-            ->andWhere('c.isProcessed IS NOT NULL')
-            ->getQuery()
-            ->getOneOrNullResult()
-            ;
+        return $this->createQueryBuilder('sh')
+            ->join(Service::class, 'se', Join::WITH, 'se.id = sh.service')
+            ->join(Concession::class, 'co', Join::WITH, 'se.concession = co.id')
+            ->join(ConcessionHead::class, 'ch', Join::WITH, 'ch.concession = co.id')
+            ->where('ch.user = :user')->setParameter('user', $user)
+            ->andWhere('ch.id = :concessionHeadId')->setParameter('concessionHeadId', $concessionHead)
+            ->getQuery()->getResult();
     }
-*/
-    // /**
-    //  * @return ServiceHead[] Returns an array of ServiceHead objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?ServiceHead
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

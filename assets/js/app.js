@@ -17,6 +17,7 @@ require('./materialize.js');
 require('./base.js');
 require('./CallsCounter');
 require('./switchHasCome');
+require('./CallFormValidator');
 require('./AddCall');
 require('./admin.js');
 require('./clientFormAdmin');
@@ -32,6 +33,10 @@ require('./newUser');
 require('./userAdmin');
 require('./deleteCall');
 require('./Collapsor');
+require('./resetVehicule');
+require('./userHighlighting');
+require('./copyer');
+require('./headDeletor');
 
 
 

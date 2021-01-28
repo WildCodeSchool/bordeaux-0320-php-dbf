@@ -5,8 +5,6 @@ namespace App\Entity;
 use \DateTime;
 use App\Repository\CallTransferRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Exception;
 
 /**

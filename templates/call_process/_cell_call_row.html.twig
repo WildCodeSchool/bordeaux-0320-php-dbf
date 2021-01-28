@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col s4">
                     <small>
-                    crée
+                    créé
                     <span class="bolder">
                             {{call.createdAt|dateName}} à {{ call.createdAt|timeFormat}}
                     </span>
@@ -97,7 +97,7 @@
                     <span class="title">
                         {{call.client.civility.name}} {{call.client.name}}
                         {% if call.client.email != '' %}
-                            <span class="mgl30"><i class="material-icons tooltipped grey-text text-darken-3 tiny" data-position="top" data-tooltip="{{call.client.email}}">mail</i></span>
+                            <span class="mgl30"><i class="material-icons tooltipped grey-text text-darken-3 tiny copy-tooltip" data-position="top" data-email="{{call.client.email}}" data-tooltip="{{call.client.email}} / cliquer l'icone pour copier">mail</i></span>
                         {% endif %}
                     </span>
                </div>
@@ -135,9 +135,9 @@
                 </div>
                 <div class="col s3 right-align">
                     <i class="material-icons small left">directions_car</i> <span class="immat left">{{ call.vehicle.immatriculation }}</span>
-                    {% if call.vehicle.hasCome == 1 %}
+                    {% if call.vehicle.hasCome is constant('App\\Entity\\Vehicle::TRISWITCH_YES_VALUE') %}
                         <i class="material-icons left light-green-text tooltipped small-more" data-tooltip="Déja venu à l'atelier" data-position="top">build</i>
-                    {% elseif call.vehicle.hasCome == 2 %}
+                    {% elseif call.vehicle.hasCome is constant('App\\Entity\\Vehicle::TRISWITCH_NO_VALUE') %}
                         <i class="material-icons left red-text tooltipped small-more" data-tooltip="Jamais venu à l'atelier" data-position="top">build</i>
                     {% endif %}
                     {% if call.vehicle.chassis %}
@@ -175,7 +175,9 @@
                     </span>
                 </div>
                 <div class="call-cal-action">
+                    {% if call.recipient is not null %}
                     <a class="{% if call.isUrgent %}urgent{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
+               {% endif %}
                 </div>
             </div>
         </div>

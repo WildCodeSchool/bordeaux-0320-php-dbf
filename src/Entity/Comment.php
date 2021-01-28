@@ -92,7 +92,6 @@ class Comment
     {
         if ($this->calls->contains($call)) {
             $this->calls->removeElement($call);
-            // set the owning side to null (unless already changed)
             if ($call->getComment() === $this) {
                 $call->setComment(null);
             }

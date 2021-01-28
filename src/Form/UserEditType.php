@@ -39,10 +39,6 @@ class UserEditType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $post = file_get_contents('php://input');
-        if ($post) {
-            $data = json_decode($post);
-        }
         $builder
             ->add('email', EmailType::class)
             ->add('firstname', TextType::class)

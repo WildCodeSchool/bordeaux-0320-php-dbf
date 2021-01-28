@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\User;
 
 use App\Repository\CallRepository;
 use App\Repository\ServiceHeadRepository;
 use App\Repository\UserRepository;
 use App\Service\HeadBoardData;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,11 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * Class HeadBoardController
  * @package App\Controller
+ * @IsGranted("ROLE_USER")
  */
 class HeadBoardController extends AbstractController
 {
     /**
      * @Route("/head/board", name="head_board")
+     * @param ServiceHeadRepository $serviceHeadRepository
+     * @param UserRepository $userRepository
+     * @param HeadBoardData $headBoardData
+     * @param CallRepository $callRepository
+     * @return Response
      */
     public function index(
         ServiceHeadRepository $serviceHeadRepository,

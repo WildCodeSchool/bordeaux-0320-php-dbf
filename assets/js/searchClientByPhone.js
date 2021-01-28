@@ -15,12 +15,14 @@ const sendData = (phone, action) => {
 }
 
 const hydrateForm = (data) => {
-    for (var [key, value] of Object.entries(data)){
-        if (document.getElementById('call_' + key)) {
-            document.getElementById('call_' + key).value = value
-            if (key === 'client_civility') {
-                selectValueInSelect(document.getElementById('call_' + key), value)
-                M.FormSelect.init(document.getElementById('call_' + key), {})
+    if (data) {
+        for (var [key, value] of Object.entries(data)) {
+            if (document.getElementById('call_' + key)) {
+                document.getElementById('call_' + key).value = value
+                if (key === 'client_civility') {
+                    M.FormSelect.init(document.getElementById('call_' + key), {})
+                    selectValueInSelect(document.getElementById('call_' + key), value)
+                }
             }
         }
     }
@@ -42,9 +44,11 @@ const hydrateVehicle = (data) => {
     document.getElementById('switcher_add_call').innerHTML = '';
     const switchValues = [2,0,1]
     const switchInitVal = parseInt(data.vehicle_hasCome)
-    const switcherAddCallVehicle = new Switch3(['non', '?', 'oui'], switchValues, 'switcher_add_call', switchInitVal,
-        '', 'call_vehicle_hasCome');
-    switcherAddCallVehicle.init();
+    if (document.getElementById('switcher_add_call')) {
+        const switcherAddCallVehicle = new Switch3(['non', '?', 'oui'], switchValues, 'switcher_add_call', switchInitVal,
+            '', 'call_vehicle_hasCome');
+        switcherAddCallVehicle.init();
+    }
 }
 
 const initVehicleAdders = (dataTotal) => {
@@ -100,45 +104,48 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalVehicles = document.getElementById('modal-callclient-vehicles');
     const tableForVehicles = document.getElementById('client-vehicles-table');
     const modalForVehicles = M.Modal.init(modalVehicles);
+    if(phoneNumberField) {
+        phoneNumberField.addEventListener('change', (e) => {
+            const phoneNumber = phoneNumberField.value;
+            sendData(phoneNumber, (data) => {
+                data = JSON.parse(data);
+                data = data[0];
+                if (data.client) {
+                    hydrateForm(data.client)
+                    const reattribute = document.getElementById('reattribute');
+                    reattribute.dataset.client = data.client.client_id
 
-    phoneNumberField.addEventListener('change', (e) => {
-        const phoneNumber = phoneNumberField.value;
-        sendData(phoneNumber, (data) => {
-            data = JSON.parse(data);
-            data = data[0];
-            if (data.client) {
-                hydrateForm(data.client)
-                const reattribute = document.getElementById('reattribute');
-                reattribute.dataset.client = data.client.client_id
+                    if (data.client.client_id) {
+                        reattribute.classList.remove('hide');
+                    }
 
-                if (data.client.client_id) {
-                    reattribute.classList.remove('hide');
+                    if (data.client.vehicles.length <= 1) {
+                        hydrateForm(data.client.vehicles[0])
+                        if(data.calls) {
+                            alertForCalls(data.calls)
+                        }
+                    } else {
+                        tableForVehicles.innerHTML = '';
+                        data.client.vehicles.forEach((vehicle) => {
+                            let html = '<tr>' +
+                                '<td>' + vehicle.vehicle_immatriculation + '</td>' +
+                                '<td>' + vehicle.vehicle_chassis + '</td>' +
+                                '<td><a class="btn light-blue valid-vehicle modal-close" data-immatriculation="' + vehicle.vehicle_immatriculation + '"' +
+                                ' data-chassis="' + vehicle.vehicle_chassis + '" data-id="' + vehicle.vehicle_id + '" data-hascome="' + vehicle.vehicle_hasCome + '">valider</a></td>' +
+                                '<td><a class="#"><i class="material-icons red-text">delete</i></a></td>' +
+                                '</tr>'
+                            tableForVehicles.innerHTML = tableForVehicles.innerHTML + html
+                            initVehicleAdders(data);
+                        })
+                        modalForVehicles.open()
+                    }
+                }
+                if (data.client.vehicles.length === 1) {
+                    alertForCalls(data)
                 }
 
-                if (data.client.vehicles.length <= 1) {
-                    hydrateForm(data.client.vehicles[0])
-                    alertForCalls(data.calls)
-                } else {
-                    tableForVehicles.innerHTML ='';
-                    data.client.vehicles.forEach((vehicle) => {
-                        let html = '<tr>' +
-                            '<td>' + vehicle.vehicle_immatriculation + '</td>' +
-                            '<td>' + vehicle.vehicle_chassis + '</td>' +
-                            '<td><a class="btn light-blue valid-vehicle modal-close" data-immatriculation="' + vehicle.vehicle_immatriculation + '"' +
-                            ' data-chassis="' + vehicle.vehicle_chassis + '" data-id="'+ vehicle.vehicle_id +'" data-hascome="'+ vehicle.vehicle_hasCome +'">valider</a></td>' +
-                            '<td><a class="#"><i class="material-icons red-text">delete</i></a></td>' +
-                            '</tr>'
-                        tableForVehicles.innerHTML = tableForVehicles.innerHTML + html
-                        initVehicleAdders(data);
-                    })
-                    modalForVehicles.open()
-                }
-            }
-            if (data.client.vehicles.length === 1) {
-                alertForCalls(data)
-            }
-
+            });
         });
-    });
+    }
 })
 

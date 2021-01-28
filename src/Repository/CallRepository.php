@@ -4,9 +4,12 @@ namespace App\Repository;
 
 use App\Data\SearchData;
 use App\Entity\Call;
+use App\Entity\City;
+use App\Entity\Concession;
 use App\Entity\Service;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use \DateTime;
 use \DateInterval;
@@ -60,12 +63,12 @@ class CallRepository extends ServiceEntityRepository
     {
         $date = new DateTime('now');
         $dateLimit = $date->sub(new DateInterval('P7D'));
-
         return $this->createQueryBuilder('c')
             ->Where('c.client = :client')
             ->setParameter('client', $clientId)
             ->andWhere('c.createdAt >= :limitDate')
             ->setParameter('limitDate', $dateLimit)
+            ->andWhere('c.isProcessEnded IS NULL')
             ->orderBy('c.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
@@ -125,7 +128,6 @@ class CallRepository extends ServiceEntityRepository
 
     public function callsToProcessByUser($recipient)
     {
-        $service = $recipient->getService();
         $queryRecipient = $this->createQueryBuilder('c')
             ->Where('c.recipient = :recipient')
             ->setParameter('recipient', $recipient)
@@ -149,7 +151,7 @@ class CallRepository extends ServiceEntityRepository
 
     public function callsToProcessByService(Service $service)
     {
-        $queryService = $this->createQueryBuilder('c')
+        return $this->createQueryBuilder('c')
             ->Where('c.service = :service')
             ->setParameter('service', $service)
             ->innerJoin('c.recallPeriod', 'rp')
@@ -165,7 +167,6 @@ class CallRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
         ;
-        return $queryService;
     }
 
     public function lastCallToProcessByUser($recipient)
@@ -261,6 +262,18 @@ class CallRepository extends ServiceEntityRepository
             ->leftJoin('c.callProcessings', 'cp')->addSelect('cp')
             ->leftJoin('c.callTransfers', 'ct')->addSelect('ct')
             ->where('c.recipient IS NOT NULL')
+            ->join(User::class, 'u', Join::WITH, 'u.id = c.recipient')
+            ->join(Service::class, 'serv', Join::WITH, 'u.service = serv.id')
+            ->addSelect('serv')
+            ->join(
+                Concession::class,
+                'concession',
+                Join::WITH,
+                'serv.concession= concession.id'
+            )
+            ->addSelect('concession')
+            ->join(City::class, 'city', Join::WITH, 'concession.town = city.id')
+            ->addSelect('city')
         ;
 
         $this->addSearchParametersToQuery($searchData, $query);
@@ -341,33 +354,4 @@ class CallRepository extends ServiceEntityRepository
         }
         return $query;
     }
-
-
-
-    /**
-
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-            ;
-    }
-
-
-    /*
-    public function findOneBySomeField($value): ?Call
-    {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

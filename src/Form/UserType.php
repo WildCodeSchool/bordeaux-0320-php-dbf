@@ -73,7 +73,6 @@ class UserType extends AbstractType
             ->add('canBeRecipient');
 
         if (isset($data->City)) {
-            $city = $this->cityRepository->findOneById($data->City);
                 $builder->
                 add('concession', ChoiceType::class, [
                 'choices' => $this->getConcessions($data->City),

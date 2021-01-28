@@ -1,7 +1,6 @@
 export class ServiceAjaxTool {
     constructor(url) {
         this.urlToAdd = url;
-        this.init();
     }
     getPhoneCityId(callback) {
         fetch('/phoneCity/getId')
@@ -54,20 +53,21 @@ export class ServiceAjaxTool {
         }
 
         this.initializeSelects();
-
-        this.citySelector.addEventListener('change', () => {
-            this.concessionZone.innerHTML = this.addLoader();
-            const postdata = {
-                City: this.citySelector.value,
-            };
+        if (this.citySelector) {
+            this.citySelector.addEventListener('change', () => {
+                this.concessionZone.innerHTML = this.addLoader();
+                const postdata = {
+                    City: this.citySelector.value,
+                };
                 this.sendData(postdata, (data) => {
                     this.concessionZone.innerHTML = `<small class="grey-text label-for-select">Concession</small><br>${this.getHtmlElement(data, 'user_concession')}`;
                     this.serviceZone.innerHTML = '';
                     this.init(postdata);
                 });
 
-            this.initializeSelects();
-        });
+                this.initializeSelects();
+            });
+        }
 
         if (this.concessionSelector) {
             this.concessionSelector.addEventListener('change', () => {
@@ -123,9 +123,11 @@ export class ServiceAjaxTool {
 
 
     selectValueInSelect(selector, selectorValue) {
-        if (selector.querySelector(`option[value="${selectorValue}"]`)) {
-            selector.querySelector(`option[value="${selectorValue}"]`)
-                .setAttribute('selected', 'selected');
+        if (selector) {
+            if (selector.querySelector(`option[value="${selectorValue}"]`)) {
+                selector.querySelector(`option[value="${selectorValue}"]`)
+                    .setAttribute('selected', 'selected');
+            }
         }
     }
 
@@ -137,4 +139,5 @@ export class ServiceAjaxTool {
 
 document.addEventListener('DOMContentLoaded', () => {
     const serviceAjaxer = new ServiceAjaxTool('/user/new', '');
+    serviceAjaxer.init();
 });
