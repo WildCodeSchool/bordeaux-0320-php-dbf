@@ -14,6 +14,9 @@ class OriginChecker
     public static function isValidOrigin($data)
     {
         list($hash, $referer) = explode(':::', $data);
+        if (!$referer || null === $referer) {
+            return false;
+        }
         $refererParams = parse_url($referer);
         if (password_verify(self::FIRST_KEY . $refererParams['host'] . self::SECOND_KEY, $hash)) {
             return true;
