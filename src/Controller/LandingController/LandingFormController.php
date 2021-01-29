@@ -54,7 +54,7 @@ class LandingFormController extends AbstractController
         }
 
         if ($landingForm->isSubmitted() && $landingForm->isValid()) {
-            dd($request);
+            dd($request->server->get('HTTP_REFERER'));
 
             $this->addFlash('landing_success', $this->makeSuccessMessage($landingForm));
             return $this->redirectToRoute('landing_form', [
