@@ -90,6 +90,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            console.log(document.referrer)
             document.getElementById('landing_ipfield').value = document.getElementById('landing_ipfield').value + ':::' + window.location.href
         })
     </script>
