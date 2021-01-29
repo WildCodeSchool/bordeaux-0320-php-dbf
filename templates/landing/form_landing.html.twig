@@ -70,6 +70,11 @@
                 <div class="col s12 m3">
                     <button class="btn cyan" id="submit_landing_form">{{ button_label|default('envoyer') }}</button>
                 </div>
+                <div class="col s12 m9 hide" id="landing_loader">
+                    <div class="progress grey lighten-3">
+                        <div class="indeterminate cyan"></div>
+                    </div>
+                </div>
                 {{ form_end(form) }}
 
                 <div class="col s12 m9">
@@ -89,6 +94,9 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('submit_landing_form').addEventListener('click', () => {
+                document.getElementById('landing_loader').classList.remove('hide')
+            })
             document.getElementById('landing_ipfield').value = document.getElementById('landing_ipfield').value + ':::' + document.referrer
         })
     </script>
