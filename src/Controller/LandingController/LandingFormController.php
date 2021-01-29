@@ -57,11 +57,14 @@ class LandingFormController extends AbstractController
             ]);
         }
 
+        $domain = "dbf-autos.fr";
+        $ip = gethostbyname($domain);
+
         return $this->render('landing/form_landing.html.twig', [
             'form' => $landingForm->createView(),
             'errors' => $errors,
             'brand' => $brand,
-            'ipRemote'    => $this->getIp()
+            'ipRemote'    => $ip
         ]);
     }
 
