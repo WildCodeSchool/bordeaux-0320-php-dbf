@@ -18,19 +18,34 @@
                 </div>
                 <div class="col s10">
                     {{ form_label(form.name) }}
-                    {{ form_widget(form.name) }}
+                    {{ form_widget(form.name, {'attr': {'class': (errors.name is defined) ? 'red-text' }}) }}
+                    {% if errors.name is defined %}
+                        <span class="textAlert red-text">{{ errors.name }}</span>
+                    {% endif %}
                 </div>
                 <div class="col s12 m8">
                     {{ form_label(form.phone) }}
-                    {{ form_widget(form.phone) }}
+                    {{ form_widget(form.phone, {'attr': {'class': (errors.phone is defined) ? 'red-text' }}) }}
+                    {% if errors.phone is defined %}
+                        <span class="textAlert red-text">{{ errors.phone }}</span>
+                    {% endif %}
                 </div>
                 <div class="col s12 m4">
                     {{ form_label(form.immatriculation) }}
-                    {{ form_widget(form.immatriculation) }}
+                    {{ form_widget(form.immatriculation, {'attr': {'class': (errors.immat is defined) ? 'red-text' }}) }}
+                    {% if errors.immat is defined %}
+                        <span class="textAlert red-text">{{ errors.immat }}</span>
+                    {% endif %}
                 </div>
                 <div class="col s8">
                     {{ form_label(form.callDate) }}
-                    {{ form_widget(form.callDate) }}
+                    {{ form_widget(form.callDate, {'attr': {'class': (errors.day is defined or errors.date is defined) ? 'red-text' }}) }}
+                    {% if errors.day is defined %}
+                        <span class="textAlert red-text">{{ errors.day }}</span>
+                    {% endif %}
+                    {% if errors.date is defined %}
+                        <span class="textAlert red-text">{{ errors.date }}</span>
+                    {% endif %}
                 </div>
                 <div class="col s2">
                     {{ form_label(form.callHour) }}

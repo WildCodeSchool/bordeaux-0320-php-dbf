@@ -11,3 +11,11 @@
     background: #f44336;
   }
 }
+
+span {
+  &.textAlert {
+    font-size: 0.8rem;
+    margin-top: -10px;
+    display: block;
+  }
+}

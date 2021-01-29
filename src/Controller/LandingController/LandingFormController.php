@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @Route("/landing")
@@ -20,36 +21,37 @@ class LandingFormController extends AbstractController
      */
     public function index(Request $request, $brand = 'audi'): Response
     {
-
         $call = new Call();
         $landingForm = $this->createForm(LandingType::class, $call, [
             'brand' => $brand
         ]);
 
         $landingForm->handleRequest($request);
+        $errors = [];
 
         if($landingForm->get('phone')->getData() && !$this->isValidPhone($landingForm->get('phone')->getData())) {
             $landingForm->addError(new FormError('phoneError'));
-            $this->addFlash('landing_error', 'Le numéro de téléphone est invalide');
+            $errors['phone'] = 'Le numéro de téléphone est invalide';
         }
 
         if($landingForm->get('name')->getData() && !$this->isValidName($landingForm->get('name')->getData())) {
             $landingForm->addError(new FormError('nameError'));
-            $this->addFlash('landing_error', 'Le nom ne doit comporter que des lettres');
+            $errors['name'] = 'Le nom ne doit comporter que des lettres';
         }
 
         if($landingForm->get('immatriculation')->getData() && !$this->isValidImmat($landingForm->get('immatriculation')->getData())) {
             $landingForm->addError(new FormError('immatError'));
-            $this->addFlash('landing_error', 'Votre immatriculation n\'est pas conforme : AA-555-BB');
+            $errors['immat'] = 'Votre immatriculation n\'est pas conforme : AA-555-BB';
         }
 
-        if($landingForm->get('callDate')->getData() && !$this->isValidDate($landingForm->get('callDate')->getData())) {
-            $landingForm->addError(new FormError('dateError'));
-            $this->addFlash('landing_error', 'Désolé, les rappels ne peuvent pas avoir lieu le week-end');
+        if ($landingForm->get('callDate')->getData()){
+            if (!$this->isValidDay($landingForm->get('callDate')->getData())) {
+                $landingForm->addError(new FormError('dateError'));
+                $errors['day'] = 'Désolé, les rappels ne peuvent pas avoir lieu le week-end';
+            }
         }
 
         if ($landingForm->isSubmitted() && $landingForm->isValid()) {
-
             $this->addFlash('landing_success', $this->makeSuccessMessage($landingForm));
             return $this->redirectToRoute('landing_form', [
             ]);
@@ -57,14 +59,15 @@ class LandingFormController extends AbstractController
 
         return $this->render('landing/form_landing.html.twig', [
             'form' => $landingForm->createView(),
-            'brand' => $brand
+            'errors' => $errors,
+            'brand' => $brand,
         ]);
     }
 
 
     private function isValidName($name)
     {
-        return preg_match("#[a-zA-Z]# ", $name);
+        return ctype_alpha($name);
     }
 
      private function isValidImmat($name)
@@ -72,10 +75,18 @@ class LandingFormController extends AbstractController
         return preg_match("#[A-Za-z]{2,3}[-][0-9]{3}[-][A-Za-z]{2,3}# ", $name);
     }
 
-    private function isValidDate(\DateTime $date)
+    private function isValidDay(\DateTime $date)
     {
         $day = $date->format('N');
         return $day < 6;
+    }
+
+    private function isValidDate(\DateTime $date, $time)
+    {
+        $date = new \DateTime($date->format('Y-m-d') . 'T' . $time);
+        $today = new \DateTime('now');
+        $today->add(new \DateInterval('PT3H'));
+        return $date > $today;
     }
 
     private function isValidPhone($phone)

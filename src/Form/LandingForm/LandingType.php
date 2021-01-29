@@ -67,17 +67,22 @@ class LandingType extends AbstractType
                 'widget' => 'single_text',
                 'data' => new DateTime(),
                 'mapped'  => false,
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'min' => date('Y-m-d')
+                ]
             ])
             ->add('callHour', ChoiceType::class, [
                 'label' => 'vers',
                 'required' => true,
+                'empty_data' => 14,
                 'mapped'  => false,
                 'choices' => $this->makeHours()
             ])
             ->add('callMinutes', ChoiceType::class, [
                 'label' => ' ',
                 'required' => true,
+                'empty_data' => 0,
                 'mapped'  => false,
                 'choices' => $this->makeMinutes()
             ])
