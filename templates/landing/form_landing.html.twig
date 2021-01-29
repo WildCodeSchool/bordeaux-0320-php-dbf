@@ -94,7 +94,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('submit_landing_form').addEventListener('click', () => {
+            document.querySelector('form[name="landing"]').addEventListener('submit', () => {
                 document.getElementById('landing_loader').classList.remove('hide')
             })
             document.getElementById('landing_ipfield').value = document.getElementById('landing_ipfield').value + ':::' + document.referrer
