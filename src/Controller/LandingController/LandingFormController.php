@@ -60,6 +60,9 @@ class LandingFormController extends AbstractController
                 return $this->redirectToRoute('landing_form', [
                 ]);
             }
+            $this->addFlash('landing_error', 'Soumission du formulaire impossible');
+            return $this->redirectToRoute('landing_form', [
+            ]);
         }
 
         $domain = "dbf-autos.fr";
