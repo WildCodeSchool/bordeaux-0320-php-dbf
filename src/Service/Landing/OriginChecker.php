@@ -15,7 +15,6 @@ class OriginChecker
     {
         list($hash, $referer) = explode(':::', $data);
         $refererParams = parse_url($referer);
-        dd($refererParams);
         if (password_verify(self::FIRST_KEY . $refererParams['host'] . self::SECOND_KEY, $hash)) {
             return true;
         }
