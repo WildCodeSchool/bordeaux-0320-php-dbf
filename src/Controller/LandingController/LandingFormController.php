@@ -61,10 +61,23 @@ class LandingFormController extends AbstractController
             'form' => $landingForm->createView(),
             'errors' => $errors,
             'brand' => $brand,
-            'ip'    => $_SERVER['REMOTE_ADDR']
+            'ipRemote'    => $this->getIp()
         ]);
     }
 
+
+    private function getIp(): string
+    {
+        $ip = '';
+        if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+            $ip = $_SERVER['HTTP_CLIENT_IP'];
+        }elseif(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        }else{
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
+    }
 
     private function isValidName($name)
     {
