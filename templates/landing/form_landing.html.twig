@@ -91,7 +91,9 @@
     </div>
 
     <script type="text/javascript">
-        document.getElementById('landing_ipfield').value = document.refeffer
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('landing_ipfield').value = document.refeffer
+        })
     </script>
 
 {% endblock %}
