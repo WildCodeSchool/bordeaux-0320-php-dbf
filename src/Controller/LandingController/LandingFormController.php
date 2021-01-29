@@ -61,7 +61,7 @@ class LandingFormController extends AbstractController
             'form' => $landingForm->createView(),
             'errors' => $errors,
             'brand' => $brand,
-            'ipRemote'    => $this->getIp()
+            'ipRemote'    => $_SERVER
         ]);
     }
 
