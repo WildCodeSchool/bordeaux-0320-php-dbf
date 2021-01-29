@@ -21,7 +21,6 @@ class LandingFormController extends AbstractController
      */
     public function index(Request $request, $brand = 'audi'): Response
     {
-
         $call = new Call();
         $landingForm = $this->createForm(LandingType::class, $call, [
             'brand' => $brand
@@ -55,7 +54,8 @@ class LandingFormController extends AbstractController
         }
 
         if ($landingForm->isSubmitted() && $landingForm->isValid()) {
-            dd($landingForm->get('ipfield')->getData());
+            dd($request);
+
             $this->addFlash('landing_success', $this->makeSuccessMessage($landingForm));
             return $this->redirectToRoute('landing_form', [
             ]);

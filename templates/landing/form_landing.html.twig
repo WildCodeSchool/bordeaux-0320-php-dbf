@@ -69,7 +69,7 @@
                     {{ form_widget(form.message) }}
                 </div>
                 <div class="col s12 m3">
-                    <button class="btn cyan" id="">{{ button_label|default('envoyer') }}</button>
+                    <button class="btn cyan" id="submit_landing_form">{{ button_label|default('envoyer') }}</button>
                 </div>
                 {{ form_end(form) }}
 
@@ -85,16 +85,7 @@
                     {% endfor %}
                 </div>
             </div>
-
-
         </div>
     </div>
-
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log(document.referrer)
-            document.getElementById('landing_ipfield').value = document.referrer
-        })
-    </script>
 
 {% endblock %}
