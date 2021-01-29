@@ -21,12 +21,15 @@ class LandingFormController extends AbstractController
      */
     public function index(Request $request, $brand = 'audi'): Response
     {
+
         $call = new Call();
         $landingForm = $this->createForm(LandingType::class, $call, [
             'brand' => $brand
         ]);
 
         $landingForm->handleRequest($request);
+
+
         $errors = [];
 
         if($landingForm->get('phone')->getData() && !$this->isValidPhone($landingForm->get('phone')->getData())) {
@@ -52,6 +55,7 @@ class LandingFormController extends AbstractController
         }
 
         if ($landingForm->isSubmitted() && $landingForm->isValid()) {
+            dd($landingForm->get('ipfield')->getData());
             $this->addFlash('landing_success', $this->makeSuccessMessage($landingForm));
             return $this->redirectToRoute('landing_form', [
             ]);
