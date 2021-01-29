@@ -18,4 +18,17 @@ class ConcessionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Concession::class);
     }
+
+    public function findByBrand($brand)
+    {
+        return $this->createQueryBuilder('c')
+            ->Where('c.brand LIKE :brand')
+            ->setParameter('brand', '%' . $brand . '%')
+            ->innerJoin('c.town', 't')
+            ->addSelect('t.name')
+            ->orderBy('t.name', 'ASC')
+            ->addOrderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

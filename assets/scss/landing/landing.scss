@@ -1,0 +1,13 @@
+.landing_flash {
+  min-height: 36px !important;
+  line-height: 36px !important;
+  border-radius:4px;
+
+  &.landing_success {
+    background:#00bcd4;
+  }
+
+  &.landing_error {
+    background: #f44336;
+  }
+}
