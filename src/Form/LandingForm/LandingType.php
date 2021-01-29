@@ -85,7 +85,7 @@ class LandingType extends AbstractType
                 'label' => 'Lieu souhaité',
                 'required' => true,
                 'mapped'  => false,
-                'choices' => $this->getConcessions(' Audi')
+                'choices' => $this->getConcessions($options['brand'])
             ])
             ->add('askFor', ChoiceType::class, [
                 'label' => 'motif',
@@ -143,6 +143,7 @@ class LandingType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Call::class,
+            'brand'    => null,
         ]);
     }
 }

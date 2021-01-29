@@ -22,7 +22,9 @@ class LandingFormController extends AbstractController
     {
 
         $call = new Call();
-        $landingForm = $this->createForm(LandingType::class, $call);
+        $landingForm = $this->createForm(LandingType::class, $call, [
+            'brand' => $brand
+        ]);
 
         $landingForm->handleRequest($request);
 
