@@ -5,6 +5,7 @@ namespace App\Form\LandingForm;
 use App\Entity\Call;
 use App\Entity\Civility;
 use App\Repository\ConcessionRepository;
+use App\Service\Landing\OriginChecker;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -107,8 +108,9 @@ class LandingType extends AbstractType
                 ]
             ])
             ->add('ipfield', HiddenType::class, [
-                'required' => false,
+                'required' => true,
                 'mapped' => false,
+                'data' => OriginChecker::encryptReferer()
             ])
         ;
     }

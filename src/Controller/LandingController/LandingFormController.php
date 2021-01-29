@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\Date;
+use App\Service\Landing\OriginChecker;
 
 /**
  * @Route("/landing")
@@ -54,11 +55,11 @@ class LandingFormController extends AbstractController
         }
 
         if ($landingForm->isSubmitted() && $landingForm->isValid()) {
-            dd($request->server->get('HTTP_REFERER'));
-
-            $this->addFlash('landing_success', $this->makeSuccessMessage($landingForm));
-            return $this->redirectToRoute('landing_form', [
-            ]);
+            if(OriginChecker::isValidOrigin($landingForm->get('ipfield')->getData())) {
+                $this->addFlash('landing_success', $this->makeSuccessMessage($landingForm));
+                return $this->redirectToRoute('landing_form', [
+                ]);
+            }
         }
 
         $domain = "dbf-autos.fr";
@@ -71,7 +72,6 @@ class LandingFormController extends AbstractController
             'ipRemote'    => $ip
         ]);
     }
-
 
     private function getIp(): string
     {
