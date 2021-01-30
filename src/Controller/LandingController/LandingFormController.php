@@ -55,14 +55,10 @@ class LandingFormController extends AbstractController
         }
 
         if ($landingForm->isSubmitted() && $landingForm->isValid()) {
-            if(OriginChecker::isValidOrigin($landingForm->get('ipfield')->getData())) {
                 $this->addFlash('landing_success', $this->makeSuccessMessage($landingForm));
                 return $this->redirectToRoute('landing_form', [
                 ]);
-            }
-            $this->addFlash('landing_error', 'Soumission du formulaire impossible');
-            return $this->redirectToRoute('landing_form', [
-            ]);
+
         }
 
         $domain = "dbf-autos.fr";
