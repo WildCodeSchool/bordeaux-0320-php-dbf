@@ -3,7 +3,7 @@
 namespace App\Controller\LandingController;
 
 use App\Entity\Call;
-use App\Form\LandingForm\LandingType;
+use App\Form\LandingForm\DbfType;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,9 +13,9 @@ use Symfony\Component\Validator\Constraints\Date;
 use App\Service\Landing\OriginChecker;
 
 /**
- * @Route("/landing")
+ * @Route("/dbf")
  */
-class LandingFormController extends AbstractController
+class DbfFormController extends AbstractController
 {
     /**
      * @Route("/form/{brand}", name="landing_form", methods={"GET", "POST"})
@@ -23,7 +23,7 @@ class LandingFormController extends AbstractController
     public function index(Request $request, $brand = 'audi'): Response
     {
         $call = new Call();
-        $landingForm = $this->createForm(LandingType::class, $call, [
+        $landingForm = $this->createForm(DbfType::class, $call, [
             'brand' => $brand
         ]);
 
@@ -40,11 +40,6 @@ class LandingFormController extends AbstractController
         if($landingForm->get('name')->getData() && !$this->isValidName($landingForm->get('name')->getData())) {
             $landingForm->addError(new FormError('nameError'));
             $errors['name'] = 'Le nom ne doit comporter que des lettres';
-        }
-
-        if($landingForm->get('immatriculation')->getData() && !$this->isValidImmat($landingForm->get('immatriculation')->getData())) {
-            $landingForm->addError(new FormError('immatError'));
-            $errors['immat'] = 'Votre immatriculation n\'est pas conforme : AA-555-BB';
         }
 
         if ($landingForm->get('callDate')->getData()){
@@ -64,7 +59,7 @@ class LandingFormController extends AbstractController
         $domain = "dbf-autos.fr";
         $ip = gethostbyname($domain);
 
-        return $this->render('landing/form_landing.html.twig', [
+        return $this->render('landing/dbf_form.html.twig', [
             'form' => $landingForm->createView(),
             'errors' => $errors,
             'brand' => $brand,

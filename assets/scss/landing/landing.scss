@@ -1,21 +1,52 @@
-.landing_flash {
-  min-height: 36px !important;
-  line-height: 36px !important;
-  border-radius:4px;
+.landingform-page {
+  font-size:1.2rem;
 
-  &.landing_success {
-    background:#00bcd4;
+  i {
+    margin-top:7px;
   }
 
-  &.landing_error {
-    background: #f44336;
+  ::placeholder {
+    color: $grey;
+    font-size: 1.2rem;
   }
-}
 
-span {
-  &.textAlert {
-    font-size: 0.8rem;
-    margin-top: -10px;
-    display: block;
+  .mgb20 {
+    margin-bottom: 20px;
+  }
+
+  label {
+    font-size: 1.2rem;
+    background: #01579b !important;
+    color:#fff;
+  }
+  input {
+    &.upper {
+      text-transform:uppercase;
+      &::placeholder {
+        text-transform: none;
+      }
+    }
+  }
+
+  .landing_flash {
+    min-height: 36px !important;
+    line-height: 36px !important;
+    border-radius: 4px;
+
+    &.landing_success {
+      background: #00bcd4;
+    }
+
+    &.landing_error {
+      background: #f44336;
+    }
+  }
+
+  span {
+    &.textAlert {
+      font-size: 1rem;
+      margin-top: -10px;
+      display: block;
+    }
   }
 }

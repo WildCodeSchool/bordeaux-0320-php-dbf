@@ -18,7 +18,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use \DateTime;
 
-class LandingType extends AbstractType
+class DbfType extends AbstractType
 {
 
     private $concessionRepository;
@@ -42,31 +42,35 @@ class LandingType extends AbstractType
                 'mapped'  => false
             ])
             ->add('name', TextType::class, [
-                'label' => 'Votre nom',
-                'required' => true,
-                'mapped'  => false
-            ])
-            ->add('phone', TelType::class, [
-                'label' => 'Votre téléphone',
+                'label' => ' ',
                 'required' => true,
                 'mapped'  => false,
                 'attr' => [
-                    'placeholder' => '0000000000',
+                    'placeholder' => 'Votre nom',
+                    'class' => 'upper'
+                ]
+            ])
+            ->add('phone', TelType::class, [
+                'label' => ' ',
+                'required' => true,
+                'mapped'  => false,
+                'attr' => [
+                    'placeholder' => 'Téléphone',
                     'maxlength' => 10
                 ]
             ])
             ->add('immatriculation', TextType::class, [
-                'label' => 'Immatriculation du véhicule',
+                'label' => ' ',
                 'required' => true,
                 'mapped'  => false,
                 'attr' => [
-                    'placeholder' => 'AA-555-BB'
+                    'placeholder' => 'Immatriculation'
                 ]
             ])
             ->add('callDate', DateType::class, [
-                'label' => 'Souhaite être rappelé le',
+                'label' => 'Le ',
                 'widget' => 'single_text',
-                'data' => new DateTime(),
+                'data' => $this->getBaseDate(),
                 'mapped'  => false,
                 'required' => true,
                 'attr' => [
@@ -76,7 +80,7 @@ class LandingType extends AbstractType
             ->add('callHour', ChoiceType::class, [
                 'label' => 'vers',
                 'required' => true,
-                'empty_data' => 14,
+                'data' => $this->chooseHour(),
                 'mapped'  => false,
                 'choices' => $this->makeHours()
             ])
@@ -88,13 +92,13 @@ class LandingType extends AbstractType
                 'choices' => $this->makeMinutes()
             ])
             ->add('place', ChoiceType::class, [
-                'label' => 'Lieu souhaité',
+                'label' => 'Ville et concession souhaités',
                 'required' => true,
                 'mapped'  => false,
                 'choices' => $this->getConcessions($options['brand'])
             ])
             ->add('askFor', ChoiceType::class, [
-                'label' => 'motif',
+                'label' => 'Type d\'intervention',
                 'required' => true,
                 'mapped'  => false,
                 'choices' => $this->getDemands()
@@ -104,15 +108,27 @@ class LandingType extends AbstractType
                 'required' => false,
                 'mapped'  => false,
                 'attr' => [
-                    'class' => "materialize-textarea"
+                    'class' => "materialize-textarea",
+                    'placeholder' => 'Laissez nous un message'
                 ]
             ])
-            ->add('ipfield', HiddenType::class, [
-                'required' => true,
-                'mapped' => false,
-                'data' => OriginChecker::encryptReferer()
-            ])
         ;
+    }
+
+    private function chooseHour()
+    {
+        $hour = date('H');
+        return $hour + 1;
+    }
+
+    private function getBaseDate()
+    {
+        $date = new \DateTime('now');
+        $day = $date->format('N');
+        if($day < 6) {
+            return $date;
+        }
+        return $date->modify('next monday');
     }
 
     private function getDemands()
