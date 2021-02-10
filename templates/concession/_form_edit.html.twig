@@ -22,8 +22,16 @@
         <div class="input-field col s12">
             {{ form_widget(form_concession.town) }}
         </div>
+        <div class="input-field col s12">
+            <div class="col s12">
+                <label> Choisir l'atelier carosserie le plus proche si cette concession n'en a pas (optionnel)</label>
+            </div>
+            <div class="col s12 mgt15">
+                {{ form_widget(form_concession.nearestCarBodyWorkshop) }}
+            </div>
+        </div>
         <div class="col s12">
-            <button class="btn modal-close light-blue btn-small" >{{ button_label|default('Sauvegarder') }}</button>
+            <button class="btn modal-close light-blue btn-small">{{ button_label|default('Sauvegarder') }}</button>
         </div>
         {{ form_end(form_concession) }}
 </div>

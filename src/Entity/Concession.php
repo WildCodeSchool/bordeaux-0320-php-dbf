@@ -78,6 +78,11 @@ class Concession
      */
     private $concessionHeads;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Service::class)
+     */
+    private $nearestCarBodyWorkshop;
+
     public function __construct()
     {
         $this->services = new ArrayCollection();
@@ -263,6 +268,18 @@ class Concession
                 $concessionHead->setConcession(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNearestCarBodyWorkshop(): ?Service
+    {
+        return $this->nearestCarBodyWorkshop;
+    }
+
+    public function setNearestCarBodyWorkshop(?Service $nearestCarBodyWorkshop): self
+    {
+        $this->nearestCarBodyWorkshop = $nearestCarBodyWorkshop;
 
         return $this;
     }

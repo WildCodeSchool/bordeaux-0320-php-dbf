@@ -18,4 +18,14 @@ class ServiceRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Service::class);
     }
+
+    public function getCarBodyWorkshops()
+    {
+        return $this->createQueryBuilder('s')
+            ->Where('s.isCarBodyWorkshop is not NULL')
+            ->andWhere('s.isCarBodyWorkshop = :val')
+            ->setParameter('val', 1)
+            ->getQuery()
+            ->getResult();
+    }
 }
