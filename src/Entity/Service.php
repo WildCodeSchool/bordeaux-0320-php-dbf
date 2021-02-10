@@ -53,6 +53,11 @@ class Service
      */
     private $serviceHeads;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $brand = 'Audi';
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
@@ -233,5 +238,18 @@ class Service
             }
         }
         return false;
+    }
+
+    public function getBrand(): ?string
+    {
+        return $this->brand;
+    }
+
+    public function setBrand(?string $brand): self
+    {
+
+        $this->brand = $brand;
+
+        return $this;
     }
 }
