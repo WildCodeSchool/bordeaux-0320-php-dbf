@@ -29,18 +29,14 @@ class CallIncomingSendMail implements EventSubscriberInterface
     private $sender;
     private $templating;
     private $session;
-    /**
-     * @var ContainerInterface
-     */
-    private ContainerInterface $container;
 
-    public function __construct(MailerInterface $mailer, $sender, Environment $twig, SessionInterface $session, ContainerInterface $container)
+
+    public function __construct(MailerInterface $mailer, $sender, Environment $twig, SessionInterface $session)
     {
         $this->mailer = $mailer;
         $this->sender = $sender;
         $this->templating = $twig;
         $this->session = $session;
-        $this->container = $container;
     }
 
     public static function getSubscribedEvents()
