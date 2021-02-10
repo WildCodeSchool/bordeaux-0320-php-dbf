@@ -37,7 +37,9 @@ class SearchType extends AbstractType
             ->add('author', EntityType::class, [
                 'class' => User::class,
                 'required' => false,
-                'choice_label'=>'lastname',
+                'choice_label'=> function ($user) {
+                    return $user->getFirstName() . ' ' . $user->getLastName();
+                },
                 'by_reference'=>false,
                 'label'=> 'Créateur'
             ])
