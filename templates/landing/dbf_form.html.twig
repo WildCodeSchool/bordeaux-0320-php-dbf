@@ -11,6 +11,17 @@
                 <div class="col s12 mgb20">
                     <h4 class="grey-text">Demander un rendez-vous pour un véhicule de marque {{ brand | upper }}</h4>
                 </div>
+                <div class="col s12">
+                    {% for type, messages in app.session.flashbag.all() %}
+                        {% if type == 'landing_success' or type == 'landing_error' %}
+                            {% for message in messages %}
+                                <div class="col s12 landing_flash {{ type }}">
+                                    <span class="white-text flash-{{ type }}">{{ message | raw }}</span>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
                 {{ form_start(form) }}
                 <div class="col s1">
                     <i class="material-icons">person</i>
@@ -107,18 +118,6 @@
                     </div>
                 </div>
                 {{ form_end(form) }}
-
-                <div class="col s11 m8">
-                    {% for type, messages in app.session.flashbag.all() %}
-                        {% if type == 'landing_success' or type == 'landing_error' %}
-                            {% for message in messages %}
-                                <div class="col s12 landing_flash {{ type }}">
-                                    <span class="white-text flash-{{ type }}">{{ message | raw }}</span>
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
             </div>
         </div>
     </div>

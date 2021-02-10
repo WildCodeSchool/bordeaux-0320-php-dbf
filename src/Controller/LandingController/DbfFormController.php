@@ -75,7 +75,6 @@ class DbfFormController extends Retardator
                 return $this->redirectToRoute('landing_form', [
                     'brand' => $brand
                 ]);
-
         }
 
         $domain = "dbf-autos.fr";
