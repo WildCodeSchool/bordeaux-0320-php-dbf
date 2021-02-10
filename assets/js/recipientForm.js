@@ -135,6 +135,7 @@ class recipientsAjaxTool {
                 }
                 this.selectValueInSelect(this.serviceField, this.serviceSelector.value)
                 this.serviceField.value = this.serviceSelector.value
+                this.recipientSelector  = document.getElementById(this.recipientSelectorId);
             })
         }
 
@@ -142,6 +143,8 @@ class recipientsAjaxTool {
             this.recipientSelector.addEventListener('change', () => {
                 this.selectValueInSelect(this.recipientField, this.recipientSelector.value)
                 this.recipientField.value = this.recipientSelector.value;
+                console.log(this.recipientField)
+
             })
         }
     }

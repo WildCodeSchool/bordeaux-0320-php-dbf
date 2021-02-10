@@ -8,6 +8,7 @@ use App\Entity\RecallPeriod;
 use App\Entity\Service;
 use App\Entity\Subject;
 use App\Entity\User;
+use App\Form\Transformers\ServiceTransformer;
 use App\Repository\CityRepository;
 use App\Repository\ConcessionRepository;
 use App\Repository\ServiceRepository;
@@ -39,18 +40,21 @@ class CallType extends AbstractType
         ConcessionRepository $concessionRepository,
         ServiceRepository $serviceRepository,
         UserRepository $userRepository,
-        Security $security
+        Security $security,
+        ServiceTransformer $serviceTransformer
     ) {
         $this->cityRepository       = $cityRepository;
         $this->concessionRepository = $concessionRepository;
         $this->serviceRepository    = $serviceRepository;
         $this->userRepository       = $userRepository;
         $this->security             = $security;
+        $this->transformer          = $serviceTransformer;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $post = file_get_contents('php://input');
+        $data = null;
         if ($post) {
             $data = json_decode($post);
         }
@@ -70,10 +74,7 @@ class CallType extends AbstractType
                 'mapped' => false,
                 'data' => $user->getService()->getConcession()->getId(),
             ])
-            ->add('service_choice', ChoiceType::class, [
-                'choices' => $this->getServices($user->getService()->getConcession()->getId()),
-                'mapped'  => false
-            ])
+
 
             ->add('service', EntityType::class, [
                 'class'         => Service::class,
@@ -95,10 +96,19 @@ class CallType extends AbstractType
             }
         }
         if (isset($data->Concession)) {
+            $concessionId = $data->Concession;
             $builder->
             add('service_choice', ChoiceType::class, [
-                'choices' => $this->getServices($data->Concession),
-                'mapped'  => false
+                'choices' => $this->getServices($concessionId),
+                'mapped'  => false,
+                'required' => false,
+            ]);
+        }
+        if (!isset($data->Concession)) {
+            $builder->add('service_choice', ChoiceType::class, [
+                'choices' => $this->getServices($user->getService()->getConcession()->getId()),
+                'mapped'  => false,
+                'required' => false,
             ]);
         }
         if (isset($data->Service)) {
@@ -163,11 +173,7 @@ class CallType extends AbstractType
                 'by_reference' => false,
             ])
         ;
-        /**
-        $builder->get('client')->addEventListener(
-        For
-        )
-         * **/
+        $builder->get('service_choice')->resetViewTransformers();
     }
 
     public function getAllCities()

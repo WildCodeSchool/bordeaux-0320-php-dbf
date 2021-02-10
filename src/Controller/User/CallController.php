@@ -77,7 +77,10 @@ class CallController extends AbstractController
         $form          = $this->createForm(CallType::class, $call);
 
         $form->handleRequest($request);
+
+        //dd($form->isValid());
         if ($form->isSubmitted() && $form->isValid()) {
+
             $call->setAuthor($author);
             $call->setIsUrgent(false);
             if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {

@@ -96,14 +96,14 @@
                     <button class="btn light-blue darken-4"
                             id="submit_landing_form">{{ button_label|default('envoyer') }}</button>
                 </div>
-                <div class="col s12 m9 hide" id="landing_loader">
+                <div class="col s11 m8 hide mgt15" id="landing_loader">
                     <div class="progress grey lighten-3">
                         <div class="indeterminate cyan"></div>
                     </div>
                 </div>
                 {{ form_end(form) }}
 
-                <div class="col s12 m9">
+                <div class="col s11 m8">
                     {% for type, messages in app.session.flashbag.all() %}
                         {% if type == 'landing_success' or type == 'landing_error' %}
                             {% for message in messages %}

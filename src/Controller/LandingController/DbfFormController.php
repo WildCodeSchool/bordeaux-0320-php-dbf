@@ -4,6 +4,7 @@ namespace App\Controller\LandingController;
 
 use App\Entity\Call;
 use App\Form\LandingForm\DbfType;
+use App\Service\Landing\Retardator;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +16,7 @@ use App\Service\Landing\OriginChecker;
 /**
  * @Route("/dbf")
  */
-class DbfFormController extends AbstractController
+class DbfFormController extends Retardator
 {
     /**
      * @Route("/form/{brand}", name="landing_form", methods={"GET", "POST"})
@@ -51,8 +52,7 @@ class DbfFormController extends AbstractController
 
         if ($landingForm->isSubmitted() && $landingForm->isValid()) {
                 $this->addFlash('landing_success', $this->makeSuccessMessage($landingForm));
-                return $this->redirectToRoute('landing_form', [
-                ]);
+                return $this->redirectToRoutewithDelay('landing_form', 10);
 
         }
 
