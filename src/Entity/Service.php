@@ -58,6 +58,16 @@ class Service
      */
     private $brand = 'Audi';
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isCarBodyWorkshop;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isDirection;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
@@ -249,6 +259,30 @@ class Service
     {
 
         $this->brand = $brand;
+
+        return $this;
+    }
+
+    public function getIsCarBodyWorkshop(): ?bool
+    {
+        return $this->isCarBodyWorkshop;
+    }
+
+    public function setIsCarBodyWorkshop(?bool $isCarBodyWorkshop): self
+    {
+        $this->isCarBodyWorkshop = $isCarBodyWorkshop;
+
+        return $this;
+    }
+
+    public function getIsDirection(): ?bool
+    {
+        return $this->isDirection;
+    }
+
+    public function setIsDirection(?bool $isDirection): self
+    {
+        $this->isDirection = $isDirection;
 
         return $this;
     }

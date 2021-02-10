@@ -1,17 +1,33 @@
 <div class="row grey lighten-4">
     <form method="post" action="{{ path('service_edit', {'id': service.id}) }}">
         {{ form_start(form_service) }}
-        <div class="input-field col s12 center-align">
-            {{ form_widget(form_service.name) }}
+        <div class="row">
+            <div class="input-field col s12 center-align">
+                {{ form_widget(form_service.name) }}
+            </div>
+            <div class="input-field col s12 center-align">
+                {{ form_widget(form_service.brand) }}
+            </div>
+            <div class="input-field col s12">
+                {{ form_widget(form_service.concession) }}
+            </div>
+            <div class="col s6">
+                <label>
+                    {{ form_widget(form_service.isCarBodyWorkshop) }}
+                    <span>Service carosserie ?</span>
+                </label>
+            </div>
+            <div class="col s6">
+                <label>
+                    {{ form_widget(form_service.isDirection) }}
+                    <span>Service direction ?</span>
+                </label>
+            </div>
         </div>
-        <div class="input-field col s12 center-align">
-            {{ form_widget(form_service.brand) }}
-        </div>
-        <div class="input-field col s12">
-            {{ form_widget(form_service.concession) }}
-        </div>
-        <div class="col s12">
-            <button class="btn modal-close light-blue btn-small" >{{ button_label|default('Sauvegarder') }}</button>
+        <div class="row">
+            <div class="col s12">
+                <button class="btn modal-close light-blue btn-small">{{ button_label|default('Sauvegarder') }}</button>
+            </div>
         </div>
         {{ form_end(form_service) }}
 </div>

@@ -1,4 +1,31 @@
-{{ form_start(form_service, {'action': path('service_new')})}}
-    {{ form_widget(form_service) }}
-<button class="btn modal-close right" id="service-button">{{ button_label|default('Sauvegarder') }}</button>
+{{ form_start(form_service, {'action': path('service_new')}) }}
+<div class="row">
+    <label for="">Nom du service</label>
+        {{ form_widget(form_service.name) }}
+</div>
+<div class="row">
+    <label>Marque</label>
+    {{ form_widget(form_service.brand) }}
+</div>
+<div class="row">
+    <label for="">concession</label>
+    {{ form_widget(form_service.concession) }}
+</div>
+<div class="row">
+    <div class="col s6">
+        <label>
+            {{ form_widget(form_service.isCarBodyWorkshop) }}
+            <span>Service Carosserie ?</span>
+        </label>
+    </div>
+    <div class="col s6">
+        <label>
+            {{ form_widget(form_service.isDirection) }}
+            <span>Service direction ?</span>
+        </label>
+    </div>
+</div>
+<div class="row">
+    <button class="btn modal-close right" id="service-button">{{ button_label|default('Sauvegarder') }}</button>
+</div>
 {{ form_end(form_service) }}
