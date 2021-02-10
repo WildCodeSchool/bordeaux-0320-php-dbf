@@ -18,18 +18,20 @@
                                 <div class="col s12 landing_flash {{ type }}">
                                     <span class="white-text flash-{{ type }}">{{ message | raw }}</span>
                                 </div>
+                                <a class="btn light-blue mgt15" href="{{ path('landing_form_brand') }}">Faire une nouvelle demande</a>
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
                 </div>
+                {% if success == 0 %}
                 {{ form_start(form) }}
-                <div class="col s1">
+                <div class="col s1 mgt15">
                     <i class="material-icons">person</i>
                 </div>
-                <div class="col s2">
+                <div class="col s2 mgt15">
                     {{ form_widget(form.civility) }}
                 </div>
-                <div class="col s9">
+                <div class="col s9 mgt15">
                     {{ form_widget(form.name, {'attr': {'class': (errors.name is defined) ? 'red-text upper' : 'upper' }}) }}
                     {% if errors.name is defined %}
                         <span class="textAlert red-text">{{ errors.name }}</span>
@@ -118,6 +120,7 @@
                     </div>
                 </div>
                 {{ form_end(form) }}
+                {% endif %}
             </div>
         </div>
     </div>

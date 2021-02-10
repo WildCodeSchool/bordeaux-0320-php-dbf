@@ -43,6 +43,7 @@ class DbfFormController extends Retardator
      */
     public function index(Request $request, $brand): Response
     {
+        $success = 0;
         $call = new Call();
         $landingForm = $this->createForm(DbfType::class, $call, [
             'brand' => $brand
@@ -71,19 +72,21 @@ class DbfFormController extends Retardator
         }
 
         if ($landingForm->isSubmitted() && $landingForm->isValid()) {
+            $success = 1;
                 $this->addFlash('landing_success', $this->makeSuccessMessage($landingForm));
-                return $this->redirectToRoute('landing_form', [
-                    'brand' => $brand
-                ]);
+            return $this->render('landing/dbf_form.html.twig', [
+                'form' => $landingForm->createView(),
+                'errors' => $errors,
+                'brand' => $brand,
+                'success' => $success
+            ]);
         }
 
-        $domain = "dbf-autos.fr";
-        $ip = gethostbyname($domain);
         return $this->render('landing/dbf_form.html.twig', [
             'form' => $landingForm->createView(),
             'errors' => $errors,
             'brand' => $brand,
-            'ipRemote'    => $ip,
+            'success' => $success
         ]);
     }
 
