@@ -24,8 +24,21 @@ class ConcessionRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->Where('c.brand LIKE :brand')
             ->setParameter('brand', '%' . $brand . '%')
+            ->andWhere('t.identifier is NULL')
             ->innerJoin('c.town', 't')
-            ->addSelect('t.name')
+            ->addSelect('t.name as cityName')->addSelect('t.identifier')
+            ->orderBy('t.name', 'ASC')
+            ->addOrderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+    public function findAllConcessions()
+    {
+        return $this->createQueryBuilder('c')
+            ->where('t.identifier is NULL')
+            ->innerJoin('c.town', 't')
+            ->addSelect('t.name as cityName')
+            ->addSelect('t.identifier')
             ->orderBy('t.name', 'ASC')
             ->addOrderBy('c.name', 'ASC')
             ->getQuery()

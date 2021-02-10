@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}demander un rendez-vous{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+{% block body %}
+    <div class="container landingform-page">
+        <div class="row">
+            <div class="col s12 l6 offset-l3">
+                <div class="col s12 mgb20">
+                    <h4 class="grey-text">Demander un rendez-vous pour un véhicule</h4>
+                </div>
+                {{ form_start(form) }}
+
+                    <div class="col s1 mgt15 ">
+                        <span><i class="material-icons">directions_car</i></span>
+                    </div>
+                    <div class="col s11 mgt15 ">
+                        {{ form_widget(form.brand) }}
+                    </div>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

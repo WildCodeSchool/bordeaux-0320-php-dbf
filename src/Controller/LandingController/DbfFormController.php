@@ -3,6 +3,7 @@
 namespace App\Controller\LandingController;
 
 use App\Entity\Call;
+use App\Form\LandingForm\DbfBrandType;
 use App\Form\LandingForm\DbfType;
 use App\Service\Landing\Retardator;
 use Symfony\Component\Form\FormError;
@@ -19,9 +20,28 @@ use App\Service\Landing\OriginChecker;
 class DbfFormController extends Retardator
 {
     /**
-     * @Route("/form/{brand}", name="landing_form", methods={"GET", "POST"})
+     * @Route("/form/", name="landing_form_brand", methods={"GET"})
+     * @param Request $request
+     * @param null $brand
+     * @return Response
      */
-    public function index(Request $request, $brand = 'audi'): Response
+    public function choice(): Response
+    {
+        $landingForm = $this->createForm(DbfBrandType::class);
+
+        return $this->render('landing/dbf_form_brand.html.twig', [
+            'form' => $landingForm->createView(),
+        ]);
+
+    }
+
+    /**
+     * @Route("/form/{brand}", name="landing_form", methods={"GET", "POST"})
+     * @param Request $request
+     * @param null $brand
+     * @return Response
+     */
+    public function index(Request $request, $brand): Response
     {
         $call = new Call();
         $landingForm = $this->createForm(DbfType::class, $call, [
@@ -52,18 +72,19 @@ class DbfFormController extends Retardator
 
         if ($landingForm->isSubmitted() && $landingForm->isValid()) {
                 $this->addFlash('landing_success', $this->makeSuccessMessage($landingForm));
-                return $this->redirectToRoutewithDelay('landing_form', 10);
+                return $this->redirectToRoute('landing_form', [
+                    'brand' => $brand
+                ]);
 
         }
 
         $domain = "dbf-autos.fr";
         $ip = gethostbyname($domain);
-
         return $this->render('landing/dbf_form.html.twig', [
             'form' => $landingForm->createView(),
             'errors' => $errors,
             'brand' => $brand,
-            'ipRemote'    => $ip
+            'ipRemote'    => $ip,
         ]);
     }
 

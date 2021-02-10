@@ -30,89 +30,90 @@ class DbfType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $builder
-            ->add('civility', EntityType::class, [
-                'class' => Civility::class,
-                'label'=>' ',
-                'choice_label' => function (Civility $civility) {
-                    return $civility->getName();
-                },
-                'multiple' => false,
-                'required' => true,
-                'mapped'  => false
-            ])
-            ->add('name', TextType::class, [
-                'label' => ' ',
-                'required' => true,
-                'mapped'  => false,
-                'attr' => [
-                    'placeholder' => 'Votre nom',
-                    'class' => 'upper'
-                ]
-            ])
-            ->add('phone', TelType::class, [
-                'label' => ' ',
-                'required' => true,
-                'mapped'  => false,
-                'attr' => [
-                    'placeholder' => 'Téléphone',
-                    'maxlength' => 10
-                ]
-            ])
-            ->add('immatriculation', TextType::class, [
-                'label' => ' ',
-                'required' => true,
-                'mapped'  => false,
-                'attr' => [
-                    'placeholder' => 'Immatriculation'
-                ]
-            ])
-            ->add('callDate', DateType::class, [
-                'label' => 'Le ',
-                'widget' => 'single_text',
-                'data' => $this->getBaseDate(),
-                'mapped'  => false,
-                'required' => true,
-                'attr' => [
-                    'min' => date('Y-m-d')
-                ]
-            ])
-            ->add('callHour', ChoiceType::class, [
-                'label' => 'vers',
-                'required' => true,
-                'data' => $this->chooseHour(),
-                'mapped'  => false,
-                'choices' => $this->makeHours()
-            ])
-            ->add('callMinutes', ChoiceType::class, [
-                'label' => ' ',
-                'required' => true,
-                'empty_data' => 0,
-                'mapped'  => false,
-                'choices' => $this->makeMinutes()
-            ])
-            ->add('place', ChoiceType::class, [
-                'label' => 'Ville et concession souhaités',
-                'required' => true,
-                'mapped'  => false,
-                'choices' => $this->getConcessions($options['brand'])
-            ])
-            ->add('askFor', ChoiceType::class, [
-                'label' => 'Type d\'intervention',
-                'required' => true,
-                'mapped'  => false,
-                'choices' => $this->getDemands()
-            ])
-            ->add('message', TextareaType::class, [
-                'label' => 'Laisser un message complémentaire',
-                'required' => false,
-                'mapped'  => false,
-                'attr' => [
-                    'class' => "materialize-textarea",
-                    'placeholder' => 'Laissez nous un message'
-                ]
-            ])
-        ;
+                ->add('civility', EntityType::class, [
+                    'class' => Civility::class,
+                    'label' => ' ',
+                    'choice_label' => function (Civility $civility) {
+                        return $civility->getName();
+                    },
+                    'multiple' => false,
+                    'required' => true,
+                    'mapped' => false
+                ])
+                ->add('name', TextType::class, [
+                    'label' => ' ',
+                    'required' => true,
+                    'mapped' => false,
+                    'attr' => [
+                        'placeholder' => 'Votre nom',
+                        'class' => 'upper'
+                    ]
+                ])
+                ->add('phone', TelType::class, [
+                    'label' => ' ',
+                    'required' => true,
+                    'mapped' => false,
+                    'attr' => [
+                        'placeholder' => 'Téléphone',
+                        'maxlength' => 10
+                    ]
+                ])
+                ->add('immatriculation', TextType::class, [
+                    'label' => ' ',
+                    'required' => true,
+                    'mapped' => false,
+                    'attr' => [
+                        'placeholder' => 'Immatriculation'
+                    ]
+                ])
+                ->add('callDate', DateType::class, [
+                    'label' => 'Le ',
+                    'widget' => 'single_text',
+                    'data' => $this->getBaseDate(),
+                    'mapped' => false,
+                    'required' => true,
+                    'attr' => [
+                        'min' => date('Y-m-d')
+                    ]
+                ])
+                ->add('callHour', ChoiceType::class, [
+                    'label' => 'vers',
+                    'required' => true,
+                    'data' => $this->chooseHour(),
+                    'mapped' => false,
+                    'choices' => $this->makeHours()
+                ])
+                ->add('callMinutes', ChoiceType::class, [
+                    'label' => ' ',
+                    'required' => true,
+                    'empty_data' => 0,
+                    'mapped' => false,
+                    'choices' => $this->makeMinutes()
+                ])
+                ->add('place', ChoiceType::class, [
+                    'label' => 'Ville et concession souhaités',
+                    'required' => true,
+                    'mapped' => false,
+                    'choices' => $this->getConcessions($options['brand'])
+                ])
+                ->add('askFor', ChoiceType::class, [
+                    'label' => 'Type d\'intervention',
+                    'required' => true,
+                    'mapped' => false,
+                    'choices' => $this->getDemands()
+                ])
+                ->add('message', TextareaType::class, [
+                    'label' => 'Laisser un message complémentaire',
+                    'required' => false,
+                    'mapped' => false,
+                    'attr' => [
+                        'class' => "materialize-textarea",
+                        'placeholder' => 'Laissez nous un message'
+                    ]
+                ]);
+
     }
 
     private function chooseHour()
@@ -141,11 +142,15 @@ class DbfType extends AbstractType
     }
 
     private function getConcessions($brand) {
+        $concessions = $this->concessionRepository->findAllConcessions();
 
-        $concessions = $this->concessionRepository->findByBrand($brand);
+        if ($brand) {
+            $brand = ucfirst($brand);
+            $concessions = $this->concessionRepository->findByBrand($brand);
+        }
         $choices = [];
         foreach ($concessions as $concession) {
-            $choices[$concession['name'] . ' - ' . $concession[0]->getName()] = $concession[0];
+            $choices[$concession['cityName'] . ' - ' . $concession[0]->getName()] = $concession[0];
         }
         return $choices;
     }
