@@ -5,6 +5,7 @@ namespace App\EventCallIncoming;
 
 use App\Entity\Call;
 use App\Events;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -28,13 +29,18 @@ class CallIncomingSendMail implements EventSubscriberInterface
     private $sender;
     private $templating;
     private $session;
+    /**
+     * @var ContainerInterface
+     */
+    private ContainerInterface $container;
 
-    public function __construct(MailerInterface $mailer, $sender, Environment $twig, SessionInterface $session)
+    public function __construct(MailerInterface $mailer, $sender, Environment $twig, SessionInterface $session, ContainerInterface $container)
     {
         $this->mailer = $mailer;
         $this->sender = $sender;
         $this->templating = $twig;
         $this->session = $session;
+        $this->container = $container;
     }
 
     public static function getSubscribedEvents()
@@ -51,33 +57,35 @@ class CallIncomingSendMail implements EventSubscriberInterface
         $recipient = $call->getRecipient();
         $subject = "Un appel ajouté";
 
-        if (null !== $recipient) {
-            $email = (new Email())
-                ->from($this->sender)
-                ->to($recipient->getEmail())
-                ->subject($subject)
-                ->html($this->templating->render('call/mail/notification.html.twig', ['call' => $call]));
-            if ($call->getIsUrgent() || $recipient->getHasAcceptedAlert()) {
-                try {
-                    $this->mailer->send($email);
-                } catch (\Exception $e) {
-                    $this->session->getFlashBag()->add('error', "Erreur lors de l'envoi du mail");
+        if('true' === $_SERVER['SEND_EMAILS']) {
+            if (null !== $recipient) {
+                $email = (new Email())
+                    ->from($this->sender)
+                    ->to($recipient->getEmail())
+                    ->subject($subject)
+                    ->html($this->templating->render('call/mail/notification.html.twig', ['call' => $call]));
+                if ($call->getIsUrgent() || $recipient->getHasAcceptedAlert()) {
+                    try {
+                        $this->mailer->send($email);
+                    } catch (\Exception $e) {
+                        $this->session->getFlashBag()->add('error', "Erreur lors de l'envoi du mail");
+                    }
                 }
-            }
-        } else {
-            $collaborators = $call->getService()->getUsers();
-            foreach ($collaborators as $collaborator) {
-                if ($collaborator->getCanBeRecipient()) {
-                    $email = (new Email())
-                        ->from($this->sender)
-                        ->to($collaborator->getEmail())
-                        ->subject($subject)
-                        ->html($this->templating->render('call/mail/notification.html.twig', ['call' => $call]));
-                    if ($call->getIsUrgent() || $collaborator->getHasAcceptedAlert()) {
-                        try {
-                            $this->mailer->send($email);
-                        } catch (\Exception $e) {
-                            $this->session->getFlashBag()->add('error', "Erreur lors de l'envoi du mail");
+            } else {
+                $collaborators = $call->getService()->getUsers();
+                foreach ($collaborators as $collaborator) {
+                    if ($collaborator->getCanBeRecipient()) {
+                        $email = (new Email())
+                            ->from($this->sender)
+                            ->to($collaborator->getEmail())
+                            ->subject($subject)
+                            ->html($this->templating->render('call/mail/notification.html.twig', ['call' => $call]));
+                        if ($call->getIsUrgent() || $collaborator->getHasAcceptedAlert()) {
+                            try {
+                                $this->mailer->send($email);
+                            } catch (\Exception $e) {
+                                $this->session->getFlashBag()->add('error', "Erreur lors de l'envoi du mail");
+                            }
                         }
                     }
                 }
