@@ -217,17 +217,18 @@ class DbfFormIncoming implements EventSubscriberInterface
             }
             // Si on a trouvé un atelier carosserie et qu'il correspond à la marque
             if ($workshop && ucfirst($brand) === $workshop->getBrand()) {
-                dd('ok');
                 $call->setService($workshop);
                 $call->setRecipient(null);
-            } else { // Sinon on envoie à la cellule en changeant le message
+            }
+            // Sinon on envoie à la cellule en changeant le message
+            if (!$workshop || ucfirst($brand) !== $workshop->getBrand()) {
                 $message = $call->getFreeComment();
                 $message = 'DEMANDE DE RDV CARROSSERIE MAIS AUCUN ATELIER N\'A ÉTÉ TROUVÉ POUR ' . $place->getName() . ' ET LA MARQUE ' . $brand . '<br>' . $message;
                 $call->setFreeComment($message);
                 $recipient = $this->userRepository->getRandomUser();
                 $call->setRecipient($recipient);
             }
-
+            dd($call);
         }
 
         // PERSIST AND FLUSH
