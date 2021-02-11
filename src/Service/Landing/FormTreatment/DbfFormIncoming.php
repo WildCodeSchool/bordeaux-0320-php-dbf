@@ -204,7 +204,7 @@ class DbfFormIncoming implements EventSubscriberInterface
         $callAskFor = $event->getSubject()->get('askFor')->getData();
         if ('CARROSSERIE - INTERNET' === $callAskFor) {
             // On cherche l'atelier carosserie de la concession pour la marque du client
-            $workshop = $this->serviceRepository->getConcessionCarBodyWorkshops($place, $brand);
+            $workshop = $this->serviceRepository->getConcessionCarBodyWorkshops($place, ucfirst($brand));
 
             // S'il n'y en a pas
             if (!$workshop) {
@@ -212,7 +212,8 @@ class DbfFormIncoming implements EventSubscriberInterface
                 $workshop = $this->serviceRepository->getNearestCarBodyWorkshop($place);
             }
             // Si on a trouvé un atelier carosserie et qu'il correspond à la marque
-            if ($workshop && $brand === $workshop->getBrand()) {
+            dd($brand, $workshop->getBrand(), $brand === $workshop->getBrand());
+            if ($workshop && ucfirst($brand) === $workshop->getBrand()) {
                 $call->setService($workshop);
             } else { // Sinon on envoie à la cellule en changeant le message
                 $message = $call->getFreeComment();
