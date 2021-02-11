@@ -33,12 +33,16 @@
     color:#fff;
   }
   input {
+    background-color: rgba(255,255,255, 0.7) !important;
     &.upper {
       text-transform:uppercase;
       &::placeholder {
         text-transform: none;
       }
     }
+  }
+  textarea {
+    background-color: rgba(255,255,255, 0.7) !important;
   }
 
   .landing_flash {

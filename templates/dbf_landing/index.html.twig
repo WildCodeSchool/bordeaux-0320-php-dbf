@@ -123,14 +123,14 @@
             </div>
         </div>
     </div>
+    <script src="https://www.google.com/recaptcha/api.js?render=6Lc0aM0UAAAAAMKcGBOywn10S3TwOaDWbbPJwcYY"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const origin = window.parent.location
-            console.log(origin)
-            if (!document.getElementById('dbf_origin').value || document.getElementById('dbf_origin').value == '') {
-                document.getElementById('dbf_origin').setAttribute('value', origin.href)
-            }
-        })
-
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6Lc0aM0UAAAAAMKcGBOywn10S3TwOaDWbbPJwcYY', {
+                action: 'homepage'
+            }).then(function(token) {
+                document.getElementById("token").value = token;
+            });
+        });
     </script>
 {% endblock %}
