@@ -212,7 +212,7 @@ class DbfFormIncoming implements EventSubscriberInterface
                 $workshop = $this->serviceRepository->getNearestCarBodyWorkshop($place);
             }
             // Si on a trouvé un atelier carosserie et qu'il correspond à la marque
-            dd($brand, $workshop->getBrand(), $brand === $workshop->getBrand());
+            dd($brand, $workshop->getBrand(), ucfirst($brand) === $workshop->getBrand());
             if ($workshop && ucfirst($brand) === $workshop->getBrand()) {
                 $call->setService($workshop);
             } else { // Sinon on envoie à la cellule en changeant le message
