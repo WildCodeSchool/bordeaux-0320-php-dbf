@@ -149,6 +149,11 @@ class Call
     private $clientCallback = 0;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $origin;
+
+    /**
      * @return mixed
      */
     public function getCityTransfer()
@@ -531,6 +536,18 @@ class Call
     public function setClientCallback(int $clientCallback = 0): self
     {
         $this->clientCallback = $clientCallback;
+
+        return $this;
+    }
+
+    public function getOrigin(): ?string
+    {
+        return $this->origin;
+    }
+
+    public function setOrigin(?string $origin): self
+    {
+        $this->origin = $origin;
 
         return $this;
     }
