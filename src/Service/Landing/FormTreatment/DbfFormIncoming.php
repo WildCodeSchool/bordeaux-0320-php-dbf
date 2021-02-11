@@ -202,7 +202,7 @@ class DbfFormIncoming implements EventSubscriberInterface
 
         //RECIPIENTS
         $callAskFor = $comment->getName();
-        if ('CAROSSERIE - INTERNET' === $callAskFor) {
+        if ('CARROSSERIE - INTERNET' === $callAskFor) {
             // On cherche l'atelier carosserie de la concession pour la marque du client
             $workshop = $this->serviceRepository->getConcessionCarBodyWorkshops($place, $brand);
             dd($workshop);
