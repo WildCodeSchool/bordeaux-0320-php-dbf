@@ -228,7 +228,6 @@ class DbfFormIncoming implements EventSubscriberInterface
                 $recipient = $this->userRepository->getRandomUser();
                 $call->setRecipient($recipient);
             }
-            dd($call);
         }
 
         // PERSIST AND FLUSH
