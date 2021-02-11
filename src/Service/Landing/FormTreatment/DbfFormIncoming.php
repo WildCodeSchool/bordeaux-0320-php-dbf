@@ -221,7 +221,7 @@ class DbfFormIncoming implements EventSubscriberInterface
                 $call->setRecipient(null);
             }
             // Sinon on envoie à la cellule en changeant le message
-            if (!$workshop || ucfirst($brand) !== $workshop->getBrand()) {
+            else {
                 $message = $call->getFreeComment();
                 $message = 'DEMANDE DE RDV CARROSSERIE MAIS AUCUN ATELIER N\'A ÉTÉ TROUVÉ POUR ' . $place->getName() . ' ET LA MARQUE ' . $brand . '<br>' . $message;
                 $call->setFreeComment($message);
@@ -229,7 +229,6 @@ class DbfFormIncoming implements EventSubscriberInterface
                 $call->setRecipient($recipient);
             }
         }
-
         // PERSIST AND FLUSH
         $this->entityManager->persist($call);
         $this->entityManager->flush();
