@@ -6,11 +6,11 @@
 {% endblock %}
 {% block body %}
     <div class="container landingform-page">
-        <div class="row">
-            <div class="col s12 l6 offset-l3">
-                <div class="col s12 mgb20">
-                    <h4 class="grey-text">Rendez-vous atelier</h4>
-                </div>
+        <div class="row grey lighten-4">
+            <div class="row header-landing">
+                <h4 class="white-text">Rendez-vous atelier</h4>
+            </div>
+            <div class="col s12 l8 offset-l2">
                 <div class="col s12">
                     {% for type, messages in app.session.flashbag.all() %}
                         {% if type == 'landing_success' or type == 'landing_error' %}
@@ -24,6 +24,7 @@
                     {% endfor %}
                 </div>
                 {% if success == 0 %}
+                <div class="row">
                     {{ form_start(form) }}
                     <div class="col s1 mgt15">
                         <i class="material-icons">person</i>
@@ -85,8 +86,6 @@
                         {{ form_widget(form.callMinutes) }}
                     </div>
 
-
-
                     <div class="col s1 mgt30 {% if brand is null %}hide{% endif %}">
                         <span><i class="material-icons">location_on</i></span>
                     </div>
@@ -113,7 +112,14 @@
                         </div>
                     </div>
                     {{ form_end(form) }}
+                </div>
                 {% endif %}
+
+                <div class="row">
+                    <p class="smalltext grey-text text-darken-3 col s11 offset-l1">
+                        Conformément à la loi « informatique et libertés » du 6 janvier 1978 modifiée en 2018, vous bénéficiez d'un droit d'accès et de rectification aux informations qui vous concernent, que vous pouvez exercer en vous adressant à dpo@dbf-autos.fr
+                    </p>
+                </div>
             </div>
         </div>
     </div>

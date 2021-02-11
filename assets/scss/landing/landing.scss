@@ -1,6 +1,19 @@
 .landingform-page {
   font-size:1.2rem;
+  .landing-container {
+    padding:50px;
+  }
 
+  .header-landing {
+    height:200px;
+    background: url('../../images/landingbg.jpg') no-repeat center center;
+    background-size:cover;
+      h4 {
+        line-height: 200px;
+        font-size: 3rem;
+        padding-left:20px;
+      }
+  }
   i {
     margin-top:7px;
   }
