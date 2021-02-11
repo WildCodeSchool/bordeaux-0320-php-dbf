@@ -201,7 +201,7 @@ class DbfFormIncoming implements EventSubscriberInterface
         $call->setFreeComment($textMessage);
 
         //RECIPIENTS
-        $callAskFor = $comment->getName();
+        $callAskFor = $event->getSubject()->get('askFor')->getData();
         if ('CARROSSERIE - INTERNET' === $callAskFor) {
             // On cherche l'atelier carosserie de la concession pour la marque du client
             $workshop = $this->serviceRepository->getConcessionCarBodyWorkshops($place, $brand);
@@ -216,7 +216,7 @@ class DbfFormIncoming implements EventSubscriberInterface
                 $call->setService($workshop);
             } else { // Sinon on envoie à la cellule en changeant le message
                 $message = $call->getFreeComment();
-                $message = 'DEMANDE DE CAROSSERIE MAIS AUCUN ATELIER N\'A ÉTÉ TROUVÉ POUR ' . $place->getName() . ' ET LA MARQUE ' . $brand . '<br>' . $message;
+                $message = 'DEMANDE DE RDV CARROSSERIE MAIS AUCUN ATELIER N\'A ÉTÉ TROUVÉ POUR ' . $place->getName() . ' ET LA MARQUE ' . $brand . '<br>' . $message;
                 $call->setFreeComment($message);
                 $recipient = $this->userRepository->getRandomUser();
                 $call->setRecipient($recipient);
