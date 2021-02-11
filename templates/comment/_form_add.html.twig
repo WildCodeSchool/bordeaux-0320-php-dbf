@@ -1,4 +1,8 @@
 {{ form_start(form_comment, {'action': path('comment_new')})}}
+        <label>
+               {{ form_widget(form_comment.isHidden) }}
+                <span>Commentaire masqué</span>
+        </label>
         {{ form_widget(form_comment) }}
 <button class="btn modal-close right" id="comment-button">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form_comment) }}

@@ -35,6 +35,7 @@ class Vehicle
 
     /**
      * @ORM\Column(type="integer", nullable=false)
+     * 0 : ne sais pas, 1: oui, 2 : non
      */
     private $hasCome;
 

@@ -1,4 +1,10 @@
 {{ form_start(form_subject, {'action': path('subject_new')})}}
+    <p>
+        <label>
+            {{ form_widget(form_subject.isHidden) }}
+            <span>Motif masqué</span>
+        </label>
+    </p>
     {{ form_widget(form_subject) }}
 <button class="btn modal-close right" id="subject-button">{{ button_label|default('Sauvegarder') }}</button>
 {{ form_end(form_subject) }}

@@ -36,6 +36,11 @@ class Comment
      */
     private $calls;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isHidden;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
@@ -96,6 +101,18 @@ class Comment
                 $call->setComment(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsHidden(): ?bool
+    {
+        return $this->isHidden;
+    }
+
+    public function setIsHidden(?bool $isHidden): self
+    {
+        $this->isHidden = $isHidden;
 
         return $this;
     }

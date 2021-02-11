@@ -18,4 +18,12 @@ class CommentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Comment::class);
     }
+
+    public function getAllNotHidden()
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.isHidden IS NULL')
+            ->orWhere('c.isHidden = :option')
+            ->setParameter('option', 0);
+    }
 }

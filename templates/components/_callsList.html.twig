@@ -14,8 +14,12 @@
                         <span class="bolder">
                             {{call.createdAt|dateName}} à {{ call.createdAt|timeFormat}}
                     </span>
-                        {% if call.recipient %}
-                            par <span class="bolder">{{call.recipient.service.concession.town.name}}</span>
+                        {% if call.author %}
+                            {% if call.author.firstname == 'INTERNET' %}
+                                par <span class="bolder">{{call.author.firstName}}</span>
+                            {% else %}
+                                par <span class="bolder">{{call.author.service.concession.town.name}} - {{call.author.service.concession.name}}</span>
+                            {% endif %}
                         {% endif %}
                     </small>
                     {% if call.callTransfers is not empty %}
@@ -92,7 +96,7 @@
                     <span class="chip ">{{call.client.phone|phoneNumber}}</span>
                 </div>
                 <div class="col s8">
-                    <em>{{ call.freeComment }}</em>
+                    <em>{{ call.freeComment | raw }}</em>
                 </div>
             </div>
 

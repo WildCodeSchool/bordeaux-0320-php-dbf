@@ -10,8 +10,10 @@ use App\Entity\Subject;
 use App\Entity\User;
 use App\Form\Transformers\ServiceTransformer;
 use App\Repository\CityRepository;
+use App\Repository\CommentRepository;
 use App\Repository\ConcessionRepository;
 use App\Repository\ServiceRepository;
+use App\Repository\SubjectRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use http\Client\Request;
@@ -148,12 +150,19 @@ class CallType extends AbstractType
                 'choice_label' => 'name',
                 'by_reference' => false,
                 'label' => 'Motif',
+                'query_builder' => function(SubjectRepository $repo) {
+                    return $repo->getAllNotHidden();
+                }
             ])
             ->add('comment', EntityType::class, [
                 'class' => Comment::class,
                 'choice_label' => 'name',
                 'by_reference' => false,
-                'label' => 'Type'
+                'label' => 'Type',
+                'query_builder' => function(CommentRepository $repo) {
+                    return $repo->getAllNotHidden();
+                }
+
             ])
             ->add('recallDate', DateType::class, [
                 'label'=>'date de rappel',

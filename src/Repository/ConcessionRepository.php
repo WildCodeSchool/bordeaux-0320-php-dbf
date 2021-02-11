@@ -44,4 +44,5 @@ class ConcessionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 }

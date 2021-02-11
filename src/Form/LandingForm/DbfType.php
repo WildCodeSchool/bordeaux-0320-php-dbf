@@ -112,7 +112,18 @@ class DbfType extends AbstractType
                         'class' => "materialize-textarea",
                         'placeholder' => 'Laissez nous un message'
                     ]
-                ]);
+                ])
+                ->add('brand', HiddenType::class, [
+                    'data' => $options['brand'],
+                    'mapped' => false,
+                    'required' => false,
+                ])
+            ->add('origin', HiddenType::class, [
+                'mapped' => false,
+                'required' => false,
+            ])
+        ;
+
 
     }
 
@@ -135,9 +146,9 @@ class DbfType extends AbstractType
     private function getDemands()
     {
         return [
-            'Entretien' => 'entretien',
-            'Mécanique' => 'mecanique',
-            'Carosserie' => 'carosserie',
+            'Entretien' => 'ENTRETIEN - INTERNET',
+            'Mécanique' => 'MECANIQUE - INTERNET',
+            'Carrosserie' => 'CARROSSERIE - INTERNET',
         ];
     }
 

@@ -4,6 +4,12 @@
     <div class="input-field col s8">
     {{ form_widget(form_comment.name) }}
     </div>
+    <div class="input-field col s8">
+        <label>
+            {{ form_widget(form_comment.isHidden) }}
+            <span>Commentaire masqué</span>
+        </label>
+    </div>
     <div class="col s4">
 <button class="btn modal-close light-blue btn-small" id="comment-button">{{ button_label|default('Sauvegarder') }}</button>
     </div>
