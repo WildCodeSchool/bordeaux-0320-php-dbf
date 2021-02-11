@@ -202,6 +202,10 @@ class DbfFormIncoming implements EventSubscriberInterface
 
         //RECIPIENTS
         $callAskFor = $event->getSubject()->get('askFor')->getData();
+
+        $recipient = $this->userRepository->getRandomUser();
+        $call->setRecipient($recipient);
+
         if ('CARROSSERIE - INTERNET' === $callAskFor) {
             // On cherche l'atelier carosserie de la concession pour la marque du client
             $workshop = $this->serviceRepository->getConcessionCarBodyWorkshops($place, ucfirst($brand));
@@ -213,7 +217,9 @@ class DbfFormIncoming implements EventSubscriberInterface
             }
             // Si on a trouvé un atelier carosserie et qu'il correspond à la marque
             if ($workshop && ucfirst($brand) === $workshop->getBrand()) {
+                dd('ok');
                 $call->setService($workshop);
+                $call->setRecipient(null);
             } else { // Sinon on envoie à la cellule en changeant le message
                 $message = $call->getFreeComment();
                 $message = 'DEMANDE DE RDV CARROSSERIE MAIS AUCUN ATELIER N\'A ÉTÉ TROUVÉ POUR ' . $place->getName() . ' ET LA MARQUE ' . $brand . '<br>' . $message;
@@ -222,9 +228,6 @@ class DbfFormIncoming implements EventSubscriberInterface
                 $call->setRecipient($recipient);
             }
 
-        } else {
-            $recipient = $this->userRepository->getRandomUser();
-            $call->setRecipient($recipient);
         }
 
         // PERSIST AND FLUSH
