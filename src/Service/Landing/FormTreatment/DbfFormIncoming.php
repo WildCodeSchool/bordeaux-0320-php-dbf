@@ -205,7 +205,7 @@ class DbfFormIncoming implements EventSubscriberInterface
         if ('CARROSSERIE - INTERNET' === $callAskFor) {
             // On cherche l'atelier carosserie de la concession pour la marque du client
             $workshop = $this->serviceRepository->getConcessionCarBodyWorkshops($place, $brand);
-            dd($workshop);
+
             // S'il n'y en a pas
             if (!$workshop) {
                 // On cherche l'atelier carosserie le plus proche de la concession choisie
