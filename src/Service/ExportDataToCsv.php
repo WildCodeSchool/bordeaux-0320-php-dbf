@@ -50,6 +50,7 @@ class ExportDataToCsv
             'Dernier Destinataire',
             'Statut',
             'RDV',
+            'origine',
         ];
         foreach ($data as $field) {
 
@@ -66,6 +67,7 @@ class ExportDataToCsv
                     $field->getRecipient()->getFullName(),
                     CallTreatmentDataMaker::getLastTreatment($field),
                     ($field->getIsAppointmentTaken()) ? 'oui' : 'non',
+                    $field->getOrigin() ?? '',
                 ];
 
         }

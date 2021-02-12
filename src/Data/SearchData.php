@@ -77,6 +77,7 @@ class SearchData
     private $dateFrom;
     private $dateTo;
 
+
     /**
      * @return mixed
      */
@@ -108,4 +109,7 @@ class SearchData
     {
         $this->dateTo = $dateTo;
     }
+
+
+
 }

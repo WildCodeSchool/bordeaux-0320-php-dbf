@@ -19,10 +19,17 @@ use App\Repository\SubjectRepository;
 use App\Repository\UserRepository;
 use App\Repository\VehicleRepository;
 use App\Service\Landing\EntityVerificators\ClientVerificator;
+use App\Service\Landing\FormTreatment\Tools\ClientMaker;
+use App\Service\Landing\FormTreatment\Tools\CommentMaker;
+use App\Service\Landing\FormTreatment\Tools\RecallTimeMaker;
+use App\Service\Landing\FormTreatment\Tools\SubjectMaker;
+use App\Service\Landing\FormTreatment\Tools\VehicleMaker;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use App\Service\Landing\FormTreatment\Tools\InternetUserCreator;
+
 
 class LandingFormIncoming implements EventSubscriberInterface
 {
@@ -121,22 +128,18 @@ class LandingFormIncoming implements EventSubscriberInterface
         $call->setRecallDate($event->getSubject()->get('callDate')->getData());
 
         // Heure de rappel souhaitée
-        $hour = $event->getSubject()->get('callHour')->getData() < 10 ? '0' . $event->getSubject()->get('callHour')->getData() : $event->getSubject()->get('callHour')->getData();
-        $minutes = $event->getSubject()->get('callMinutes')->getData() < 10 ? '0' . $event->getSubject()->get('callMinutes')->getData() : $event->getSubject()->get('callMinutes')->getData();
-        $time = $hour . ':' . $minutes . ':00';
+        $time = RecallTimeMaker::makeTime($event);
         $call->setRecallHour(new \DateTime('2000-01-01T' . $time));
 
         // CLIENT
-        $clientName = $event->getSubject()->get('name')->getData();
+        $clientName        = $event->getSubject()->get('name')->getData();
         $clientPhoneNumber = $event->getSubject()->get('phone')->getData();
-        $client = $this->clientVerificator->checkClient($clientName, $clientPhoneNumber);
+        $client            = $this->clientVerificator->checkClient($clientName, $clientPhoneNumber);
         if ($client) {
             $call->setClient($client);
         } else {
-            $client = new Client();
-            $client->setName($clientName);
-            $client->setPhone($clientPhoneNumber);
-            $client->setCivility($event->getSubject()->get('civility')->getData());
+            $client = ClientMaker::make($clientName, $clientPhoneNumber, $event->getSubject()->get('civility')->getData());
+
             $this->entityManager->persist($client);
             $this->entityManager->flush();
             $call->setClient($client);
@@ -147,10 +150,8 @@ class LandingFormIncoming implements EventSubscriberInterface
         if ($vehicle) {
             $call->setVehicle($vehicle);
         } else {
-            $vehicle = new Vehicle();
-            $vehicle->setClient($client);
-            $vehicle->setImmatriculation($event->getSubject()->get('immatriculation')->getData());
-            $vehicle->setHasCome(0);
+            $vehicle = VehicleMaker::make($client, $event->getSubject()->get('immatriculation')->getData());
+
             $this->entityManager->persist($vehicle);
             $this->entityManager->flush();
             $call->setVehicle($vehicle);
@@ -159,14 +160,12 @@ class LandingFormIncoming implements EventSubscriberInterface
         //SUBJECT
         $place = $event->getSubject()->get('place')->getData();
         $demand = 'Atelier';
-        
+
         $subject = $this->subjectRepository->findOneByName('Rendez-vous ' . $demand . ' ' . $place->getName());
         if (!$subject) {
-            $subject = new Subject();
-            $subject->setName('Rendez-vous ' . $demand . ' ' . $place->getName())
-                ->setIsForAppWorkshop(1)
-                ->setIsHidden(1)
-                ->setCity($this->cityRepository->findOneByIdentifier('PHONECITY'));
+            $name = 'Rendez-vous ' . $demand . ' ' . $place->getName();
+            $subject = SubjectMaker::make($name, 1, 1, $this->cityRepository->findOneByIdentifier('PHONECITY'));
+
             $this->entityManager->persist($subject);
             $this->entityManager->flush();
         }
@@ -175,9 +174,8 @@ class LandingFormIncoming implements EventSubscriberInterface
         //COMMENT
         $comment = $this->commentRepository->findOneByName($event->getSubject()->get('reason')->getData());
         if (!$comment) {
-            $comment = new Comment();
-            $comment->setName(ucfirst($event->getSubject()->get('reason')->getData()))
-                ->setIsHidden(0);
+            $comment = CommentMaker::make(ucfirst($event->getSubject()->get('reason')->getData()), 0);
+
             $this->entityManager->persist($comment);
             $this->entityManager->flush();
         }

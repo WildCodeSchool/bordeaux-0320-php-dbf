@@ -20,10 +20,16 @@ use App\Repository\SubjectRepository;
 use App\Repository\UserRepository;
 use App\Repository\VehicleRepository;
 use App\Service\Landing\EntityVerificators\ClientVerificator;
+use App\Service\Landing\FormTreatment\Tools\ClientMaker;
+use App\Service\Landing\FormTreatment\Tools\CommentMaker;
+use App\Service\Landing\FormTreatment\Tools\RecallTimeMaker;
+use App\Service\Landing\FormTreatment\Tools\SubjectMaker;
+use App\Service\Landing\FormTreatment\Tools\VehicleMaker;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use App\Service\Landing\FormTreatment\Tools\InternetUserCreator;
 
 class DbfFormIncoming implements EventSubscriberInterface
 {
@@ -53,6 +59,8 @@ class DbfFormIncoming implements EventSubscriberInterface
 
     private $recallPeriodRepository;
 
+    private $userCreator;
+
     public function __construct(
         ClientVerificator $clientVerificator,
         EntityManagerInterface $entityManager,
@@ -64,7 +72,8 @@ class DbfFormIncoming implements EventSubscriberInterface
         CivilityRepository $civilityRepository,
         ServiceRepository $serviceRepository,
         EventDispatcherInterface $eventDispatcher,
-        RecallPeriodRepository $recallPeriodRepository
+        RecallPeriodRepository $recallPeriodRepository,
+        InternetUserCreator $userCreator
     ) {
         $this->clientVerificator      = $clientVerificator;
         $this->entityManager          = $entityManager;
@@ -77,6 +86,7 @@ class DbfFormIncoming implements EventSubscriberInterface
         $this->serviceRepository      = $serviceRepository;
         $this->dispatcher             = $eventDispatcher;
         $this->recallPeriodRepository = $recallPeriodRepository;
+        $this->userCreator            = $userCreator;
     }
 
     /**
@@ -94,6 +104,7 @@ class DbfFormIncoming implements EventSubscriberInterface
         $call = new Call();
 
         $call->setIsUrgent(0);
+
         $recallPeriod = $this->recallPeriodRepository->findOneByIdentifier('autourde');
         $call->setRecallPeriod($recallPeriod);
 
@@ -106,18 +117,7 @@ class DbfFormIncoming implements EventSubscriberInterface
             'lastname' => 'DBF AUTOS'
         ]);
         if (!$author) {
-            $author = new User();
-            $author->setFirstname('INTERNET')
-                ->setLastname('DBF AUTOS')
-                ->setEmail('easyauto@dbf-autos.fr')
-                ->setCanBeRecipient(0)
-                ->setPassword('1234')
-                ->setRoles(['ROLE_COLLABORATOR'])
-                ->setCivility($this->civilityRepository->findOneByName('M.'))
-                ->setPhone('0808080808')
-                ->setHasAcceptedAlert(0)
-                ->setService($this->serviceRepository->findOneByName('Cellule téléphonique'))
-            ;
+            $author = $this->userCreator->create();
             $this->entityManager->persist($author);
             $this->entityManager->flush();
         }
@@ -127,22 +127,18 @@ class DbfFormIncoming implements EventSubscriberInterface
         $call->setRecallDate($event->getSubject()->get('callDate')->getData());
 
         // Heure de rappel souhaitée
-        $hour = $event->getSubject()->get('callHour')->getData() < 10 ? '0' . $event->getSubject()->get('callHour')->getData() : $event->getSubject()->get('callHour')->getData();
-        $minutes = $event->getSubject()->get('callMinutes')->getData() < 10 ? '0' . $event->getSubject()->get('callMinutes')->getData() : $event->getSubject()->get('callMinutes')->getData();
-        $time = $hour . ':' . $minutes . ':00';
+        $time = RecallTimeMaker::makeTime($event);
         $call->setRecallHour(new \DateTime('2000-01-01T' . $time));
 
         // CLIENT
-        $clientName = $event->getSubject()->get('name')->getData();
+        $clientName        = $event->getSubject()->get('name')->getData();
         $clientPhoneNumber = $event->getSubject()->get('phone')->getData();
-        $client = $this->clientVerificator->checkClient($clientName, $clientPhoneNumber);
+        $client            = $this->clientVerificator->checkClient($clientName, $clientPhoneNumber);
         if ($client) {
             $call->setClient($client);
         } else {
-            $client = new Client();
-            $client->setName($clientName);
-            $client->setPhone($clientPhoneNumber);
-            $client->setCivility($event->getSubject()->get('civility')->getData());
+            $client = ClientMaker::make($clientName, $clientPhoneNumber, $event->getSubject()->get('civility')->getData());
+
             $this->entityManager->persist($client);
             $this->entityManager->flush();
             $call->setClient($client);
@@ -153,17 +149,15 @@ class DbfFormIncoming implements EventSubscriberInterface
         if ($vehicle) {
             $call->setVehicle($vehicle);
         } else {
-            $vehicle = new Vehicle();
-            $vehicle->setClient($client);
-            $vehicle->setImmatriculation($event->getSubject()->get('immatriculation')->getData());
-            $vehicle->setHasCome(0);
+            $vehicle = VehicleMaker::make($client, $event->getSubject()->get('immatriculation')->getData());
+
             $this->entityManager->persist($vehicle);
             $this->entityManager->flush();
             $call->setVehicle($vehicle);
         }
 // SUBJECTS AND COMMENTS
         //SUBJECT
-        $place = $event->getSubject()->get('place')->getData();
+        $place  = $event->getSubject()->get('place')->getData();
         $askFor = $event->getSubject()->get('askFor')->getData();
         $demand = 'Atelier';
 
@@ -172,11 +166,9 @@ class DbfFormIncoming implements EventSubscriberInterface
         }
         $subject = $this->subjectRepository->findOneByName('Rendez-vous ' . $demand . ' ' . $place->getName());
         if (!$subject) {
-            $subject = new Subject();
-            $subject->setName('Rendez-vous ' . $demand . ' ' . $place->getName())
-                ->setIsForAppWorkshop(1)
-                ->setIsHidden(1)
-                ->setCity($this->cityRepository->findOneByIdentifier('PHONECITY'));
+            $name = 'Rendez-vous ' . $demand . ' ' . $place->getName();
+            $subject = SubjectMaker::make($name, 1, 1, $this->cityRepository->findOneByIdentifier('PHONECITY'));
+
             $this->entityManager->persist($subject);
             $this->entityManager->flush();
         }
@@ -185,10 +177,8 @@ class DbfFormIncoming implements EventSubscriberInterface
         //COMMENT
         $comment = $this->commentRepository->findOneByName('INTERNET');
         if (!$comment) {
-            $comment = new Comment();
-            $comment->setName('INTERNET')
-                ->setIsHidden(1)
-                ->setIdentifier('INTERNET');
+            $comment = CommentMaker::make('INTERNET', 1, 'INTERNET');
+
             $this->entityManager->persist($comment);
             $this->entityManager->flush();
         }

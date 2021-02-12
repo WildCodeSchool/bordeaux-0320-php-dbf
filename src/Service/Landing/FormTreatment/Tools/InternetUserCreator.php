@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Service\Landing\FormTreatment;
+namespace App\Service\Landing\FormTreatment\Tools;
 
 
 use App\Entity\User;

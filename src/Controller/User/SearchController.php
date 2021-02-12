@@ -39,10 +39,8 @@ class SearchController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $searchedCalls = $onlyCallKeeper::keepCalls($callRepository->findSearch($searchData));
-
             $dataReadyForExport = json_encode($exportDataToCsv->dataMakerBeforeExport($searchedCalls));
         }
-
 
         return $this->render('search/index.html.twig', [
             'form'=> $form->createView(),
@@ -53,22 +51,19 @@ class SearchController extends AbstractController
 
     /**
      * @IsGranted("ROLE_ADMIN")
-     * @Route("/export/{exportedCalls}", name="export_to_csv")
+     * @Route("/export/{exportedCalls}", name="export_to_csv", requirements={"exportedCalls"=".+"})
      * @param ExportDataToCsv $exportDataToCsv
-     * @param null $exportedCalls
+     * @param string $exportedCalls
      * @return Response
      */
-    public function exportToCSV(ExportDataToCsv $exportDataToCsv, $exportedCalls = null)
+    public function exportToCSV(ExportDataToCsv $exportDataToCsv, string $exportedCalls = null)
     {
 
         $searchedCalls = json_decode($exportedCalls, true);
-
         if (is_null($searchedCalls)) {
             $this->addFlash('error', 'Faites d\'abord une recherche');
-            $response = $this->redirectToRoute('search');
-        } else {
-            $response = $exportDataToCsv->exportDataToCsv($searchedCalls, 'export_' . $this->getUser()->getId());
+            return $this->redirectToRoute('search');
         }
-        return $response;
+        return $exportDataToCsv->exportDataToCsv($searchedCalls, 'export_' . $this->getUser()->getId());
     }
 }
