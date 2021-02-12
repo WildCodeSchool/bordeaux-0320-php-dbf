@@ -7,6 +7,7 @@ use App\Events;
 use App\Form\LandingForm\DbfType;
 use App\Form\LandingForm\LandingType;
 use App\Repository\CityRepository;
+use App\Service\Landing\Redirector;
 use App\Service\Landing\Validator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -20,7 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 class DbfLandingController extends AbstractController
 {
     /**
-     * @Route("/dbf/landing/{brand}/{city}/{reason}", name="dbf_landing")
+     * @Route("/dbf/landing/{brand}/{city}/{reason}/{referer}", name="dbf_landing")
      * @param string $brand
      * @param string $city
      * @param string $reason
@@ -34,22 +35,27 @@ class DbfLandingController extends AbstractController
         string $brand,
         string $city,
         string $reason,
+        string $referer = null,
         CityRepository $cityRepository,
         Request $request,
         Validator $validator,
         EventDispatcherInterface $eventDispatcher
     ) {
+
         $city = $cityRepository->findOneByName($city);
 
         if('PHONECITY' === $city->getIdentifier()) {
             return new RedirectResponse('http://dbf-autos.fr');
         }
 
+
+
         $call = new Call();
         $landingForm = $this->createForm(LandingType::class, $call, [
             'brand'  => $brand,
             'city'   => $city,
-            'reason' => $reason
+            'reason' => $reason,
+            'referer' => $referer
         ]);
 
         $landingForm->handleRequest($request);

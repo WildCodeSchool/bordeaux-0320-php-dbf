@@ -115,13 +115,13 @@ class LandingType extends AbstractType
                 ->add('origin', HiddenType::class, [
                     'mapped' => false,
                     'required' => false,
-                    'data' => $_SERVER['HTTP_REFERER'] ?? null
+                    'data' => $options['referer'] ?? $_SERVER['HTTP_REFERER'] ?? null
                 ])
-            ->add('reason', HiddenType::class, [
-                'mapped' => false,
-                'required' => false,
-                'data' => $options['reason']
-            ])
+                ->add('reason', HiddenType::class, [
+                    'mapped' => false,
+                    'required' => false,
+                    'data' => $options['reason']
+                ])
         ;
 
 
@@ -187,6 +187,7 @@ class LandingType extends AbstractType
             'brand'    => null,
             'city'     => null,
             'reason'   => null,
+            'referer'  => null,
         ]);
     }
 }

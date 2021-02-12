@@ -31,7 +31,7 @@ class Validator
 
     public function isValidName($name)
     {
-        return ctype_alpha($name);
+        return ctype_alpha(str_replace(' ', '', $name));
     }
 
     public function isValidImmat($name)
