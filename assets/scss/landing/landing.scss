@@ -6,8 +6,7 @@
 
   .header-landing {
     height:200px;
-    background: url('../../images/landingbg.jpg') no-repeat center center;
-    background-size:cover;
+    background:linear-gradient(to bottom right, #01579b 25%, #2196f3);
       h4 {
         line-height: 200px;
         font-size: 3rem;
@@ -51,7 +50,7 @@
     border-radius: 4px;
 
     &.landing_success {
-      background: #00bcd4;
+      background: #01579b;
     }
 
     &.landing_error {

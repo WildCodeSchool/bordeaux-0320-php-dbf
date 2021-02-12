@@ -64,8 +64,13 @@ class Validator
         $m = $form->get('callMinutes')->getData() > 0 ? $form->get('callMinutes')->getData() : '';
         $message = '<span class="bolder">Merci ' . $form->get('civility')->getData()->getName() . ' ' . $form->get('name')->getData() . '</span><br>';
         $message .= 'Nous ferons notre possible pour vous rappeler le ' . $form->get('callDate')->getData()->format('d-m-Y') . ' aux alentours de ' .
-            $form->get('callHour')->getData() . 'h' . $m . ' au ' . $form->get('phone')->getData();
+            $form->get('callHour')->getData() . 'h' . $m . ' au ' . $this->formatPhone($form->get('phone')->getData());
         return $message;
+    }
+
+    private function formatPhone($phoneNumber)
+    {
+        return wordwrap($phoneNumber,2," ",1);
     }
 
 }

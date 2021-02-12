@@ -8,17 +8,19 @@
     <div class="container landingform-page">
         <div class="row grey lighten-4">
             <div class="row header-landing">
-                <h4 class="white-text">Rendez-vous atelier</h4>
+                <h4 class="white-text">Rendez-vous atelier
+                </h4>
+
             </div>
             <div class="col s12 l8 offset-l2">
-                <div class="col s12">
+                <div class="col s12 m11 offset-m1">
                     {% for type, messages in app.session.flashbag.all() %}
                         {% if type == 'landing_success' or type == 'landing_error' %}
                             {% for message in messages %}
-                                <div class="col s12 landing_flash {{ type }}">
+                                <div class="col s12 landing_flash {{ type }} mgt30">
                                     <span class="white-text flash-{{ type }}">{{ message | raw }}</span>
                                 </div>
-                                <a class="btn light-blue mgt15" href="{{ path('dbf_landing', {'brand':brand, 'city': city.name, 'reason':reason}) }}">Faire une nouvelle demande</a>
+                                <a class="btn light-blue mgt30 mgb20" href="{{ path('dbf_landing', {'brand':brand, 'city': city.name, 'reason':reason}) }}">Faire une nouvelle demande</a>
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
@@ -103,7 +105,7 @@
 
                     <div class="col s1 mgt30"></div>
                     <div class="col s11 m3 mgt15">
-                        <button class="btn light-blue darken-4 {% if brand is null %}hide{% endif %}"
+                        <button class="btn btn-large light-blue darken-4 {% if brand is null %}hide{% endif %}"
                                 id="submit_landing_form">{{ button_label|default('envoyer') }}</button>
                     </div>
                     <div class="col s11 m8 hide mgt15" id="landing_loader">
