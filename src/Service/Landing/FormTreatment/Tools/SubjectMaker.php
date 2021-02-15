@@ -5,6 +5,7 @@ namespace App\Service\Landing\FormTreatment\Tools;
 
 
 use App\Entity\Subject;
+use App\Entity\City;
 
 class SubjectMaker
 {

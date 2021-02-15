@@ -196,6 +196,9 @@ class DbfFormIncoming implements EventSubscriberInterface
         $recipient = $this->userRepository->getRandomUser();
         $call->setRecipient($recipient);
 
+        //ORIGIN
+        $call->setOrigin($event->getSubject()->get('origin')->getData());
+
         if ('CARROSSERIE - INTERNET' === $callAskFor) {
             // On cherche l'atelier carosserie de la concession pour la marque du client
             $workshop = $this->serviceRepository->getConcessionCarBodyWorkshops($place, ucfirst($brand));
@@ -205,7 +208,7 @@ class DbfFormIncoming implements EventSubscriberInterface
                 // On cherche l'atelier carosserie le plus proche de la concession choisie
                 $workshop = $this->serviceRepository->getNearestCarBodyWorkshop($place);
             }
-            // Si on a trouvé un atelier carosserie et qu'il correspond à la marque
+            // Si on a trouvé un atelier carrosserie et qu'il correspond à la marque
             if ($workshop && ucfirst($brand) === $workshop->getBrand()) {
                 $call->setService($workshop);
                 $call->setRecipient(null);

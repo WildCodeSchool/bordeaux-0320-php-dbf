@@ -118,10 +118,11 @@ class DbfType extends AbstractType
                     'mapped' => false,
                     'required' => false,
                 ])
-            ->add('origin', HiddenType::class, [
-                'mapped' => false,
-                'required' => false,
-            ])
+                ->add('origin', HiddenType::class, [
+                    'mapped' => false,
+                    'required' => false,
+                    'data' => $options['referer'] ?? null
+                ])
         ;
 
 
@@ -187,6 +188,7 @@ class DbfType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Call::class,
             'brand'    => null,
+            'referer'  => null,
         ]);
     }
 }

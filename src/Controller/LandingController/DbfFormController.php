@@ -24,14 +24,16 @@ use App\Service\Landing\OriginChecker;
 class DbfFormController extends Retardator
 {
     /**
-     * @Route("/form/", name="landing_form_brand", methods={"GET"})
+     * @Route("/form/{referer}", name="landing_form_brand", methods={"GET"})
      * @param Request $request
      * @param null $brand
      * @return Response
      */
-    public function choice(): Response
+    public function choice(string $referer = null): Response
     {
-        $landingForm = $this->createForm(DbfBrandType::class);
+        $landingForm = $this->createForm(DbfBrandType::class, null, [
+            'referer' => $referer
+        ]);
 
         return $this->render('landing/dbf_form_brand.html.twig', [
             'form' => $landingForm->createView(),
@@ -40,19 +42,25 @@ class DbfFormController extends Retardator
     }
 
     /**
-     * @Route("/form/{brand}", name="landing_form", methods={"GET", "POST"})
+     * @Route("/form/{brand}/{referer}", name="landing_form", methods={"GET", "POST"})
      * @param Request $request
      * @param Validator $validator
      * @param EventDispatcherInterface $eventDispatcher
      * @param null $brand
      * @return Response
      */
-    public function index(Request $request, Validator $validator, EventDispatcherInterface $eventDispatcher, $brand): Response
-    {
+    public function index(
+        Request $request,
+        Validator $validator,
+        EventDispatcherInterface $eventDispatcher,
+        string $brand,
+        string $referer = null
+    ): Response {
         $success = 0;
         $call = new Call();
         $landingForm = $this->createForm(DbfType::class, $call, [
-            'brand' => $brand
+            'brand' => $brand,
+            'referer' => $referer
         ]);
 
         $landingForm->handleRequest($request);

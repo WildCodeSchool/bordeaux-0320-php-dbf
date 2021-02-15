@@ -30,8 +30,8 @@ class DbfBrandType extends AbstractType
                 'mapped' => false,
                 'choices' => [
                     'choisir la marque de votre véhicule' => '',
-                    'Audi' => '/dbf/form/audi',
-                    'Volkswagen' => '/dbf/form/volkswagen'
+                    'Audi' => '/dbf/form/audi/' . $options['referer'],
+                    'Volkswagen' => '/dbf/form/volkswagen/' . $options['referer'],
                 ],
                 'attr' => [
                     'onChange' => 'document.location.href=this.value;'
@@ -43,7 +43,7 @@ class DbfBrandType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-
+            'referer' => null
         ]);
     }
 }
