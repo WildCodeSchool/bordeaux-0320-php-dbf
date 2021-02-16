@@ -7,6 +7,7 @@ use App\Events;
 use App\Form\LandingForm\DbfType;
 use App\Form\LandingForm\LandingType;
 use App\Repository\CityRepository;
+use App\Service\Landing\FormErrors;
 use App\Service\Landing\Redirector;
 use App\Service\Landing\Validator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -62,24 +63,7 @@ class DbfLandingController extends AbstractController
 
         $success = 0;
 
-        $errors = [];
-
-        if($landingForm->get('phone')->getData() && !$validator->isValidPhone($landingForm->get('phone')->getData())) {
-            $landingForm->addError(new FormError('phoneError'));
-            $errors['phone'] = 'Le numéro de téléphone est invalide';
-        }
-
-        if($landingForm->get('name')->getData() && !$validator->isValidName($landingForm->get('name')->getData())) {
-            $landingForm->addError(new FormError('nameError'));
-            $errors['name'] = 'Le nom ne doit comporter que des lettres';
-        }
-
-        if ($landingForm->get('callDate')->getData()){
-            if (!$validator->isValidDay($landingForm->get('callDate')->getData())) {
-                $landingForm->addError(new FormError('dateError'));
-                $errors['day'] = 'Désolé, les rappels ne peuvent pas avoir lieu le week-end';
-            }
-        }
+       $errors = FormErrors::getErrors($landingForm, $validator);
 
         if ($landingForm->isSubmitted() && $landingForm->isValid()) {
             $success = 1;

@@ -105,12 +105,12 @@
 
                     <div class="col s1 mgt30"></div>
                     <div class="col s11 m3 mgt15">
-                        <button class="btn btn-large light-blue darken-4 {% if brand is null %}hide{% endif %}"
+                        <button class="btn btn-large green  {% if brand is null %}hide{% endif %}"
                                 id="submit_landing_form">{{ button_label|default('envoyer') }}</button>
                     </div>
                     <div class="col s11 m8 hide mgt15" id="landing_loader">
                         <div class="progress grey lighten-3">
-                            <div class="indeterminate cyan"></div>
+                            <div class="indeterminate green "></div>
                         </div>
                     </div>
                     {{ form_end(form) }}
@@ -118,8 +118,11 @@
                 {% endif %}
 
                 <div class="row">
-                    <p class="smalltext grey-text text-darken-3 col s11 offset-l1">
-                        Conformément à la loi « informatique et libertés » du 6 janvier 1978 modifiée en 2018, vous bénéficiez d'un droit d'accès et de rectification aux informations qui vous concernent, que vous pouvez exercer en vous adressant à dpo@dbf-autos.fr
+                    <p class="verysmalltext grey-text text-darken-3 col s11 offset-l1">
+                        Les informations communiquées par ce formulaire sont utilisées afin de traiter votre demande.
+                        DBF Automobiles traite les données recueillies uniquement pour répondre à votre demande.
+                        Pour en savoir plus sur la gestion de vos données personnelles et pour exercer vos droits,
+                        reportez-vous à la notice en cliquant <a href="https://www.dbf-autos.fr/notice-des-formulaires-de-rendez-vous-atelier/">ici</a>.
                     </p>
                 </div>
             </div>

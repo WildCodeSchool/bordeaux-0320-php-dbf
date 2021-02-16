@@ -29,6 +29,17 @@ class ServiceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function getServicesToContact($concession)
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $sql = "SELECT * FROM service WHERE (is_direction IS NULL or is_direction = 0) and concession_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue(1, $concession->getId());
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
     public function getConcessionCarBodyWorkshops($concession, $brand)
     {
         return $this->createQueryBuilder('s')

@@ -1,0 +1,24 @@
+{% extends 'base_emails.html.twig' %}
+
+{% block body %}
+
+    <div class="row container mgt30" style="display:flex; flex-direction:row; align-content: center; justify-content: center; align-items: center; width:100%; height: 100%;">
+        <div class="col s8 offset-s2 white" style="background: #fff; width:60%; text-align: center; font-size:14px; display: flex; flex-direction: column; justify-content: center;">
+            <div class="row grey lighten-3 center-align" style="width:100%; text-align: center; background:#CCC; padding:8px 0;">
+                <strong>Message automatique de Easy Auto</strong>
+            </div>
+            <div class="row center-align mgt15" style="margin-top:15px; width:100%; text-align: center;">
+                <p class="flow-text red-text" style="font-size:17px; color:#c62828; font-weight: bold;">
+                    1 message en attente sur easy auto
+                </p>
+            </div>
+            <div class="row mgt15" style="margin-top:15px; width:100%; text-align: center;">
+                Bonjour, vous avez 1 nouvel appel à traiter de la part de<br><br>
+                <strong>{{ call.client.civility.name }} {{ call.client.name }} - {{ call.client.phone | phoneNumber }}</strong>
+            </div>
+            <div class="row pdb15 mgt15" style="margin-top:35px; width:100%; text-align: center; padding-bottom:30px;">
+                Veuillez vous connecter sur <a href="https://easy-auto.fr" style="background:#0d47a1; color:#FFF; border-radius:5px; margin: 0 5px 0 5px; text-decoration: none; padding:7px 10px; font-weight:bold;">easy-auto</a> pour consulter ce message
+            </div>
+        </div>
+    </div>
+{% endblock %}

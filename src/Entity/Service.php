@@ -68,12 +68,18 @@ class Service
      */
     private $isDirection;
 
+    /**
+     * @ORM\OneToMany(targetEntity=DbfContact::class, mappedBy="service")
+     */
+    private $dbfContacts;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
         $this->rightByLocations = new ArrayCollection();
         $this->users = new ArrayCollection();
         $this->serviceHeads = new ArrayCollection();
+        $this->dbfContacts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -283,6 +289,37 @@ class Service
     public function setIsDirection(?bool $isDirection): self
     {
         $this->isDirection = $isDirection;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|DbfContact[]
+     */
+    public function getDbfContacts(): Collection
+    {
+        return $this->dbfContacts;
+    }
+
+    public function addDbfContact(DbfContact $dbfContact): self
+    {
+        if (!$this->dbfContacts->contains($dbfContact)) {
+            $this->dbfContacts[] = $dbfContact;
+            $dbfContact->setService($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDbfContact(DbfContact $dbfContact): self
+    {
+        if ($this->dbfContacts->contains($dbfContact)) {
+            $this->dbfContacts->removeElement($dbfContact);
+            // set the owning side to null (unless already changed)
+            if ($dbfContact->getService() === $this) {
+                $dbfContact->setService(null);
+            }
+        }
 
         return $this;
     }

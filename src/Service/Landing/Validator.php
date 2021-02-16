@@ -68,6 +68,15 @@ class Validator
         return $message;
     }
 
+    public function makeContactSuccessMessage($form)
+    {
+        $m = $form->get('minute')->getData() > 0 ? $form->get('minute')->getData() : '';
+        $message = '<span class="bolder">Merci ' . $form->get('civility')->getData()->getName() . ' ' . $form->get('name')->getData() . '</span><br>';
+        $message .= 'Nous ferons notre possible pour vous rappeler le ' . $form->get('date')->getData()->format('d-m-Y') . ' aux alentours de ' .
+            $form->get('hour')->getData() . 'h' . $m . ' au ' . $this->formatPhone($form->get('phone')->getData());
+        return $message;
+    }
+
     private function formatPhone($phoneNumber)
     {
         return wordwrap($phoneNumber,2," ",1);

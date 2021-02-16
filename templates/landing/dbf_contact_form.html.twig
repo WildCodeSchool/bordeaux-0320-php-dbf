@@ -5,26 +5,26 @@
 {% block navbar %}
 {% endblock %}
 {% block body %}
-    <div class="container landingform-page">
+    <div class="container contactform-page">
         <div class="row">
             <div class="col s12 l6 offset-l3">
                 <div class="col s12 mgb20">
-                    <h4 class="grey-text">Demander un rendez-vous pour un véhicule de marque {{ brand | upper }}</h4>
+                    <h4 class="grey-text">Nous contacter</h4>
                 </div>
+                <span class="alert-form red white-text hide" id="form-alert">Merci de renseigner tous les champs avant de choisir un destinataire</span>
                 <div class="col s12">
                     {% for type, messages in app.session.flashbag.all() %}
                         {% if type == 'landing_success' or type == 'landing_error' %}
                             {% for message in messages %}
-                                <div class="col s12 landing_flash {{ type }}">
+                                <div class="col s11 offset-s1 landing_flash {{ type }} {% if type == 'landing_success' %}blue{% else %}red{% endif %}">
                                     <span class="white-text flash-{{ type }}">{{ message | raw }}</span>
                                 </div>
-                                <a class="btn light-blue mgt15" href="{{ path('landing_form_brand') }}">Faire une nouvelle demande</a>
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
                 </div>
                 {% if success == 0 %}
-                {{ form_start(form) }}
+                {{ form_start(form, {attr:{'id': 'contact_form_id'}}) }}
                 <div class="col s1 mgt15">
                     <i class="material-icons">person</i>
                 </div>
@@ -50,24 +50,20 @@
                     <i class="material-icons">directions_car</i>
                 </div>
                 <div class="col s11 m3 mgt30">
-                    {{ form_widget(form.immatriculation, {'attr': {'class': (errors.immat is defined) ? 'red-text upper' : 'upper' }}) }}
+                    {{ form_widget(form.immat, {'attr': {'class': (errors.immat is defined) ? 'red-text upper' : 'upper' }}) }}
                     {% if errors.immat is defined %}
                         <span class="textAlert red-text">{{ errors.immat }}</span>
                     {% endif %}
                 </div>
-                <div class="row">
-                    <div class="col s1 mgt30">
 
-                    </div>
-                    <div class="col s11 mgt30">
+                    <div class="col s11 offset-s1 mgt15">
                         Quand pouvons nous vous appeler ?
                     </div>
-                </div>
                 <div class="col s1 mgt15">
                     <i class="material-icons">event_date</i>
                 </div>
                 <div class="col s6 mgt15">
-                    {{ form_widget(form.callDate, {'attr': {'class': (errors.day is defined or errors.date is defined) ? 'red-text' }}) }}
+                    {{ form_widget(form.date, {'attr': {'class': (errors.day is defined or errors.date is defined) ? 'red-text' }}) }}
                     {% if errors.day is defined %}
                         <span class="textAlert red-text">{{ errors.day }}</span>
                     {% endif %}
@@ -79,39 +75,42 @@
                     <i class="material-icons">access_time</i>
                 </div>
                 <div class="col s2 mgt15">
-                    {{ form_widget(form.callHour) }}
+                    {{ form_widget(form.hour) }}
                 </div>
                 <div class="col s2 mgt15">
-                    {{ form_widget(form.callMinutes) }}
+                    {{ form_widget(form.minute) }}
                 </div>
 
+                    <div class="col s11 offset-s1 mgt30">
+                        Choisissez votre destinataire
+                    </div>
 
-
-                <div class="col s1 mgt30 {% if brand is null %}hide{% endif %}">
+                <div class="col s1 mgt15 ">
                     <span><i class="material-icons">location_on</i></span>
                 </div>
-                <div class="col s11 mgt30 {% if brand is null %}hide{% endif %}">
+                <div class="col s11 mgt15 " id="concessions">
                     {{ form_widget(form.place) }}
                 </div>
-
-                <div class="col s1 mgt30 {% if brand is null %}hide{% endif %}">
-                    <span><i class="material-icons">build</i></span>
-                </div>
-                <div class="col s11 mgt30 {% if brand is null %}hide{% endif %}">
-                    {{ form_widget(form.askFor) }}
-                </div>
-
-
-                <div class="col s1 mgt30 {% if brand is null %}hide{% endif %}">
+                {% if form.service is defined %}
+                    <div class="col s1 mgt30 ">
+                        <span><i class="material-icons"></i></span>
+                    </div>
+                    <div class="col s11 mgt30 ">
+                        {{ form_widget(form.service) }}
+                    </div>
+                {% endif %}
+                {% if form.message is defined %}
+                    <div class="col s1 mgt30 ">
                     <span><i class="material-icons">message</i></span><bR>
                 </div>
-                <div class="col s11 mgt30 {% if brand is null %}hide{% endif %}">
+                <div class="col s11 mgt30 ">
                     {{ form_widget(form.message) }}
                 </div>
+                    {% endif %}
 
                 <div class="col s1 mgt30"></div>
                 <div class="col s11 m3 mgt15">
-                    <button class="btn btn-large green {% if brand is null %}hide{% endif %}"
+                    <button class="btn btn-large green "
                             id="submit_landing_form">{{ button_label|default('envoyer') }}</button>
                 </div>
                 <div class="col s11 m8 hide mgt15" id="landing_loader">

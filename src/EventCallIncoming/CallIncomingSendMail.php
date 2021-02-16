@@ -5,6 +5,7 @@ namespace App\EventCallIncoming;
 
 use App\Entity\Call;
 use App\Events;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -55,11 +56,15 @@ class CallIncomingSendMail implements EventSubscriberInterface
 
         if('true' === $_SERVER['SEND_EMAILS']) {
             if (null !== $recipient) {
-                $email = (new Email())
+                $email = (new TemplatedEmail())
                     ->from($this->sender)
                     ->to($recipient->getEmail())
                     ->subject($subject)
-                    ->html($this->templating->render('call/mail/notification.html.twig', ['call' => $call]));
+                    ->htmlTemplate('call/mail/template_mail.html.twig')
+                    ->context([
+                        'call' => $call,
+                    ]);
+
                 if ($call->getIsUrgent() || $recipient->getHasAcceptedAlert()) {
                     try {
                         $this->mailer->send($email);
@@ -71,11 +76,14 @@ class CallIncomingSendMail implements EventSubscriberInterface
                 $collaborators = $call->getService()->getUsers();
                 foreach ($collaborators as $collaborator) {
                     if ($collaborator->getCanBeRecipient()) {
-                        $email = (new Email())
+                        $email = (new TemplatedEmail())
                             ->from($this->sender)
                             ->to($collaborator->getEmail())
                             ->subject($subject)
-                            ->html($this->templating->render('call/mail/notification.html.twig', ['call' => $call]));
+                            ->htmlTemplate('call/mail/template_mail.html.twig')
+                            ->context([
+                                'call' => $call,
+                            ]);
                         if ($call->getIsUrgent() || $collaborator->getHasAcceptedAlert()) {
                             try {
                                 $this->mailer->send($email);

@@ -14,6 +14,7 @@ use App\Entity\Service;
 use App\Entity\Subject;
 use App\Entity\User;
 use App\Entity\Vehicle;
+use App\Repository\UserRepository;
 use DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -29,20 +30,28 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SearchType extends AbstractType
 {
 
+    /**
+     * @var UserRepository
+     */
+    private UserRepository $userRepository;
+
+    public function __construct(UserRepository $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('phone', TextType::class, [
+        $builder
+            ->add('phone', TextType::class, [
             'label' => 'Téléphone',
-            'required' => false])
-            ->add('author', EntityType::class, [
-                'class' => User::class,
+            'required' => false
+            ])
+            ->add('author', ChoiceType::class, [
                 'required' => false,
-                'choice_label'=> function ($user) {
-                    return $user->getFirstName() . ' ' . $user->getLastName();
-                },
+               'choices' => $this->getAuthors(),
                 'by_reference'=>false,
-                'label'=> 'Créateur'
+                'label'=> 'Auteur'
             ])
             ->add('isUrgent', CheckboxType::class, [
                 'label'=>'Urgent',
@@ -148,6 +157,18 @@ class SearchType extends AbstractType
             ])
 
         ;
+    }
+
+    public function getAuthors()
+    {
+        $authors = $this->userRepository->findBy([], [
+            'lastname' => 'ASC'
+        ]);
+        $choices = [];
+        foreach ($authors as $author) {
+            $choices[strtoupper($author->getLastname()) . ' ' . ucfirst(strtolower($author->getFirstname()))] = $author;
+        }
+        return $choices;
     }
     public function configureOptions(OptionsResolver $resolver)
     {

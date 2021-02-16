@@ -14,4 +14,11 @@ class RecallTimeMaker
         return $hour . ':' . $minutes . ':00';
     }
 
+    public static function makeContactTime($event): string
+    {
+        $hour = $event->getSubject()->get('hour')->getData() < 10 ? '0' . $event->getSubject()->get('hour')->getData() : $event->getSubject()->get('hour')->getData();
+        $minutes = $event->getSubject()->get('minute')->getData() < 10 ? '0' . $event->getSubject()->get('minute')->getData() : $event->getSubject()->get('minute')->getData();
+        return $hour . ':' . $minutes . ':00';
+    }
+
 }
