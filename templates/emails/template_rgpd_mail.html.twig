@@ -1,0 +1,70 @@
+{% extends 'base_emails.html.twig' %}
+
+{% block body %}
+
+    <div class="row container mgt30" style="display:flex; flex-direction:row; align-content: center; justify-content: center; align-items: center; width:100%; height: 100%;">
+        <div class="col s8 offset-s2 white" style="background: #fff; width:60%; text-align: center; font-size:14px; display: flex; flex-direction: column; justify-content: center;">
+            <div class="row grey lighten-3 center-align" style="width:100%; text-align: center; background:#CCC; padding:8px 0;">
+                <strong>Message automatique de Easy Auto</strong>
+            </div>
+            <div class="row center-align mgt15" style="margin-top:15px; width:100%; text-align: center;">
+                <p class="flow-text red-text" style="font-size:17px; color:#c62828; font-weight: bold;">
+                    BILAN DE L'EXECUTION DE LA COMMANDE<bR>
+                    DE NETTOYAGE RGPD DE EASY AUTO
+                </p>
+            </div>
+            <div class="row mgt15" style="margin-top:15px; width:100%; text-align: center;">
+                <table style="margin-left:2%; width:95%;">
+                    <tr style="line-height: 30px; height: 30px;border-bottom:1px solid #ccc; background:#ccc">
+                        <td colspan="2">
+                            Commande executé le {{ dateexec | date('d-m-Y') }} à {{ dateexec | date('H:i') }}
+                        </td>
+                    </tr>
+                    <tr style="line-height: 30px; height: 30px;border-bottom:1px solid #ccc;">
+                        <td>
+                            Date de référence
+                        </td>
+                        <td style="font-size:16px; font-weight: bold;">
+                            {{ refdate | date('d-m-Y') }}
+                        </td>
+                    </tr>
+                    <tr style="line-height: 30px; height: 30px;border-bottom:1px solid #ccc; background:#eee;">
+                        <td>
+                            Anciens appels supprimés
+                        </td>
+                        <td style="font-size:16px; font-weight: bold;">
+                            {{ data.calls }}
+                        </td>
+                    </tr>
+                    <tr style="line-height: 30px; height: 30px;border-bottom:1px solid #ccc;">
+                        <td>
+                            Transferts supprimés
+                        </td>
+                        <td style="font-size:16px; font-weight: bold;">
+                            {{ data.transfers }}
+                        </td>
+                    </tr>
+                    <tr style="line-height: 30px; height: 30px;border-bottom:1px solid #ccc; background:#eee;">
+                        <td>
+                            Véhicules supprimés
+                        </td>
+                        <td style="font-size:16px; font-weight: bold;">
+                            {{ data.vehicles }}
+                        </td>
+                    </tr>
+                    <tr style="line-height: 30px; height: 30px;">
+                        <td>
+                            Clients supprimés
+                        </td>
+                        <td style="font-size:16px; font-weight: bold;">
+                            {{ data.clients }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="row pdb15 mgt15" style="margin-top:35px; width:100%; text-align: center; padding-bottom:30px;">
+                <a href="https://easy-auto.fr" style="background:#0d47a1; color:#FFF; border-radius:5px; margin: 0 5px 0 5px; text-decoration: none; padding:7px 10px; font-weight:bold;">easy-auto</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
