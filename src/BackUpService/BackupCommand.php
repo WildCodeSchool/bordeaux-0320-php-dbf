@@ -40,6 +40,7 @@ class BackupCommand extends Command
         if (is_file($this->folder . '/backup-' . $h . '.sql.gz')) {
             unlink($this->folder . '/backup-' . $h . '.sql.gz');
         }
+
         $arguments = [
             'database' => 'development',
             'destinations' => ['local'],
