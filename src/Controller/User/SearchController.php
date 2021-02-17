@@ -24,6 +24,7 @@ class SearchController extends AbstractController
      * @param Request $request
      * @param CallRepository $callRepository
      * @param ExportDataToCsv $exportDataToCsv
+     * @param OnlyCallKeeper $onlyCallKeeper
      * @return Response
      */
     public function index(
@@ -35,8 +36,11 @@ class SearchController extends AbstractController
     ): Response {
         $searchedCalls = [];
         $dataReadyForExport='';
-        $form = $this->createForm(SearchType::class, $searchData);
+
+        $form = $this->createForm(SearchType::class);
+
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $searchedCalls = $onlyCallKeeper::keepCalls($callRepository->findSearch($searchData));
             $dataReadyForExport = json_encode($exportDataToCsv->dataMakerBeforeExport($searchedCalls));

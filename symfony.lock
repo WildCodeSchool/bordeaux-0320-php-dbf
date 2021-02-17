@@ -1,4 +1,19 @@
 {
+    "backup-manager/backup-manager": {
+        "version": "3.0.1"
+    },
+    "backup-manager/symfony": {
+        "version": "2.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.1",
+            "ref": "ae7e2e6cebb46c0adede771d3d9b8c540879920c"
+        },
+        "files": [
+            "config/packages/bm_backup_manager.yaml"
+        ]
+    },
     "cocur/slugify": {
         "version": "v4.0.0"
     },
@@ -47,9 +62,6 @@
             "src/Repository/.gitignore"
         ]
     },
-    "doctrine/doctrine-cache-bundle": {
-        "version": "1.3.5"
-    },
     "doctrine/doctrine-fixtures-bundle": {
         "version": "3.0",
         "recipe": {
@@ -96,14 +108,11 @@
     "doctrine/persistence": {
         "version": "1.1.1"
     },
-    "doctrine/reflection": {
-        "version": "v1.0.0"
+    "doctrine/sql-formatter": {
+        "version": "1.1.1"
     },
     "egulias/email-validator": {
         "version": "2.1.11"
-    },
-    "fig/link-util": {
-        "version": "1.0.0"
     },
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.3"
@@ -120,9 +129,6 @@
     "guzzlehttp/psr7": {
         "version": "1.7.0"
     },
-    "jdorn/sql-formatter": {
-        "version": "v1.2.17"
-    },
     "kunalvarma05/dropbox-php-sdk": {
         "version": "v0.2.1"
     },
@@ -135,11 +141,20 @@
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
     },
+    "league/flysystem": {
+        "version": "1.1.3"
+    },
+    "league/mime-type-detection": {
+        "version": "1.7.0"
+    },
     "monolog/monolog": {
         "version": "1.24.0"
     },
     "nikic/php-parser": {
         "version": "v4.2.1"
+    },
+    "nyholm/dsn": {
+        "version": "2.0.0"
     },
     "ocramius/proxy-manager": {
         "version": "2.1.1"
@@ -166,6 +181,9 @@
         "version": "1.0.1"
     },
     "psr/container": {
+        "version": "1.0.0"
+    },
+    "psr/event-dispatcher": {
         "version": "1.0.0"
     },
     "psr/http-message": {
@@ -227,9 +245,6 @@
         "version": "v1.1.0"
     },
     "symfony/css-selector": {
-        "version": "v4.2.8"
-    },
-    "symfony/debug": {
         "version": "v4.2.8"
     },
     "symfony/debug-bundle": {
@@ -323,9 +338,6 @@
     "symfony/http-kernel": {
         "version": "v4.2.8"
     },
-    "symfony/inflector": {
-        "version": "v4.2.8"
-    },
     "symfony/intl": {
         "version": "v4.2.8"
     },
@@ -391,6 +403,9 @@
             "phpunit.xml.dist",
             "tests/.gitignore"
         ]
+    },
+    "symfony/polyfill-intl-grapheme": {
+        "version": "v1.22.1"
     },
     "symfony/polyfill-intl-icu": {
         "version": "v1.11.0"
@@ -478,6 +493,9 @@
     },
     "symfony/stopwatch": {
         "version": "v4.2.8"
+    },
+    "symfony/string": {
+        "version": "v5.2.3"
     },
     "symfony/test-pack": {
         "version": "v1.0.5"

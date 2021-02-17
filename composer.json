@@ -5,6 +5,7 @@
         "php": "^7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "backup-manager/symfony": "^3.2",
         "cocur/slugify": "^4.0",
         "kunalvarma05/dropbox-php-sdk": "^0.2.1",
         "phpmd/phpmd": "^2.6",
@@ -38,7 +39,7 @@
         "symfony/phpunit-bridge": "^5.2",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "^1.0",
-        "symfony/web-server-bundle": "5.2.*"
+        "symfony/web-server-bundle": "4.4.*"
     },
     "config": {
         "preferred-install": {

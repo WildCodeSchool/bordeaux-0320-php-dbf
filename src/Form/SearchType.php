@@ -161,6 +161,8 @@ class SearchType extends AbstractType
 
     public function getAuthors()
     {
+
+
         $authors = $this->userRepository->findBy([], [
             'lastname' => 'ASC'
         ]);
@@ -172,6 +174,7 @@ class SearchType extends AbstractType
     }
     public function configureOptions(OptionsResolver $resolver)
     {
+
         $resolver->setDefaults([
             'data_class'=> SearchData::class,
             'method'=> 'POST',

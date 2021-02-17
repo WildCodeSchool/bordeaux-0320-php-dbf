@@ -49,7 +49,7 @@ class BackupCommand extends Command
 
         $input = new ArrayInput($arguments);
         $returnCode = $command->run($input, $output);
-        /*
+
         try {
             $this->dropboxService->removeFile('', 'backup-' . $h . '.sql.gz');
         } catch (Exception $e) {
@@ -58,7 +58,8 @@ class BackupCommand extends Command
             $this->dropboxService->sendFile($this->folder . '/backup-' . $h . '.sql.gz');
             unlink($this->folder . '/backup-' . $h . '.sql.gz');
         }
-        */
+
+        return Command::SUCCESS;
     }
 
 }
