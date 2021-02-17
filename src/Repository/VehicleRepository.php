@@ -18,4 +18,15 @@ class VehicleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Vehicle::class);
     }
+
+    public function getOldVehicles()
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $query = 'select * from vehicle where id not in (select vehicle_id from `call`)';
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
 }

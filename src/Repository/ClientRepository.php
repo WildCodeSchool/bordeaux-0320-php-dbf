@@ -48,4 +48,14 @@ class ClientRepository extends ServiceEntityRepository
             ->getQuery()
             ->execute();
     }
+
+    public function getOldClients()
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+        $query = 'select * from client where id not in (select client_id from `call`)';
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }

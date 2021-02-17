@@ -354,4 +354,15 @@ class CallRepository extends ServiceEntityRepository
         }
         return $query;
     }
+
+    public function removeOldCalls($beforeDate)
+    {
+        return $this->createQueryBuilder('c')
+            ->delete()
+            ->where('c.createdAt < :before')
+            ->setParameter('before', $beforeDate)
+            ->getQuery()
+            ->getResult();
+
+    }
 }

@@ -123,6 +123,15 @@
     "gitonomy/gitlib": {
         "version": "v1.0.4"
     },
+    "guzzlehttp/guzzle": {
+        "version": "6.5.5"
+    },
+    "guzzlehttp/promises": {
+        "version": "1.4.0"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.7.0"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
@@ -131,6 +140,9 @@
     },
     "justinrainbow/json-schema": {
         "version": "5.2.8"
+    },
+    "kunalvarma05/dropbox-php-sdk": {
+        "version": "v0.2.1"
     },
     "monolog/monolog": {
         "version": "1.24.0"
@@ -189,6 +201,9 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/link": {
         "version": "1.0.0"
     },
@@ -197,6 +212,9 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "seld/jsonlint": {
         "version": "1.7.1"
@@ -601,6 +619,9 @@
     },
     "symfony/yaml": {
         "version": "v4.2.8"
+    },
+    "tightenco/collect": {
+        "version": "v5.8.38"
     },
     "twig/extra-bundle": {
         "version": "v3.0.4"

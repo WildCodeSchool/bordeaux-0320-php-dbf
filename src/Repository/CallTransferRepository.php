@@ -18,4 +18,15 @@ class CallTransferRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, CallTransfer::class);
     }
+
+    public function removeOldCalls($beforeDate)
+    {
+        return $this->createQueryBuilder('c')
+            ->delete()
+            ->where('c.createdAt < :before')
+            ->setParameter('before', $beforeDate)
+            ->getQuery()
+            ->getResult();
+
+    }
 }
