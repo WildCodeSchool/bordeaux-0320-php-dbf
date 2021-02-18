@@ -91,6 +91,8 @@ class RgpdCommand extends Command
             }
             $this->manager->flush();
             $io->writeln(count($clients) . ' clients supprimés');
+
+        return self::SUCCESS;
     }
 
 }
