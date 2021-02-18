@@ -50,14 +50,15 @@ class RgpdCommand extends Command
         CallRepository $callRepository,
         CallTransferRepository $callTransferRepository,
         VehicleRepository $vehicleRepository,
-        ClientRepository $clientRepository
+        ClientRepository $clientRepository,
+        MailerInterface $mailer
     ) {
         $this->manager = $entityManager;
         $this->callRepository = $callRepository;
         $this->callTransferRepository = $callTransferRepository;
         $this->vehicleRepository = $vehicleRepository;
         $this->clientRepository = $clientRepository;
-        //$this->mailer = $mailer;
+        $this->mailer = $mailer;
         parent::__construct();
     }
 
@@ -120,7 +121,7 @@ class RgpdCommand extends Command
                 'data' => $results,
                 'ref'  => $date
             ]);
-        //$this->mailer->send($email);
+        $this->mailer->send($email);
 
         return self::SUCCESS;
     }
