@@ -4,6 +4,7 @@
 namespace App\Command;
 
 
+use App\Command\Service\RgpdCommandMailer;
 use App\Repository\CallRepository;
 use App\Repository\CallTransferRepository;
 use App\Repository\ClientRepository;
@@ -41,9 +42,10 @@ class RgpdCommand extends Command
      */
     private ClientRepository $clientRepository;
     /**
-     * @var MailerInterface
+     * @var RgpdCommandMailer
      */
-    private MailerInterface $mailer;
+    private RgpdCommandMailer $mailer;
+
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -51,7 +53,7 @@ class RgpdCommand extends Command
         CallTransferRepository $callTransferRepository,
         VehicleRepository $vehicleRepository,
         ClientRepository $clientRepository,
-        MailerInterface $mailer
+        RgpdCommandMailer $mailer
     ) {
         $this->manager = $entityManager;
         $this->callRepository = $callRepository;
@@ -111,17 +113,7 @@ class RgpdCommand extends Command
             $io->writeln($nbClients . ' clients supprimés');
             $results['clients'] = $nbClients;
 
-        $email = (new TemplatedEmail())
-            ->from($_SERVER['MAILER_FROM_ADDRESS'])
-            ->to($_SERVER['REPORT_DESTINATARY'])
-            ->subject('Rapport de maintenance RGPD de la base Easy Auto')
-            ->htmlTemplate('emails/template_rgpd.html.twig')
-            ->context([
-                'date' => $today,
-                'data' => $results,
-                'ref'  => $date
-            ]);
-        $this->mailer->send($email);
+        $this->mailer->send($results, $date);
 
         return self::SUCCESS;
     }
