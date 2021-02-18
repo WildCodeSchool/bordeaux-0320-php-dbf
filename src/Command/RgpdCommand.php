@@ -54,13 +54,13 @@ class RgpdCommand extends Command
         ClientRepository $clientRepository,
         MailerInterface $mailer
     ) {
-        parent::__construct();
         $this->manager = $entityManager;
         $this->callRepository = $callRepository;
         $this->callTransferRepository = $callTransferRepository;
         $this->vehicleRepository = $vehicleRepository;
         $this->clientRepository = $clientRepository;
         $this->mailer = $mailer;
+        parent::__construct();
     }
 
     protected function configure()
