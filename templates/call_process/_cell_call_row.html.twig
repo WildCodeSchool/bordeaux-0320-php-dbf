@@ -15,7 +15,11 @@
                             {{call.createdAt|dateName}} à {{ call.createdAt|timeFormat}}
                     </span>
                         {% if call.author %}
-                         par <span class="bolder">{{call.author.service.concession.name}} - {{call.author.service.name}}</span>
+                            {% if call.author.firstname == 'INTERNET' %}
+                                par <span class="bolder">{{call.author.firstName}}</span>
+                            {% else %}
+                            par <span class="bolder">{{call.author.service.concession.name}} - {{call.author.service.name}}</span>
+                            {% endif %}
                         {% endif %}
                     </small>
                     {% if call.callTransfers is not empty %}
