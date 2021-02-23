@@ -5,6 +5,7 @@
 /public/bundles/
 /var/
 /vendor/
+/backup
 .idea
 /.idea
 .DS_store
