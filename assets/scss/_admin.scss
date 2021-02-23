@@ -1,10 +1,30 @@
+.admin-dashboard {
+  h1 {
+    font-family: Roboto;
+    font-width: 300;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+  }
+}
 
 .admin-card .card-tabs ul.tabs li.tab a.active {
   color:#000 !important;
 }
 
+.card {
+  border-radius:10px 10px 0 0;
+  .card-content {
+    border-radius:10px 10px 0 0;
+    b {
+      color:#FFF;
+      text-transform:uppercase;
+    }
+  }
+}
+
 .card-tabs {
   ul.tabs {
+    height:65px;
     li.tab {
       a.active {
         background:none;
