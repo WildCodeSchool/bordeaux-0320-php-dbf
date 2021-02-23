@@ -59,8 +59,8 @@
                     <div class="col s1 mgt30">
 
                     </div>
-                    <div class="col s11 mgt30">
-                        Quand pouvons nous vous appeler ?
+                    <div class="col s11 mgt30 blue-text text-darken-4">
+                        <b>Quand pouvons nous vous appeler ?</b>
                     </div>
                 </div>
                 <div class="col s1 mgt15">
@@ -86,13 +86,29 @@
                 </div>
 
 
+                    <div class="row">
+                        <div class="col s1 mgt30">
 
+                        </div>
+                        <div class="col s11 mgt30 blue-text text-darken-4">
+                            <b>Quelle concession souhaitez vous joindre ?</b>
+                        </div>
+                    </div>
                 <div class="col s1 mgt30 {% if brand is null %}hide{% endif %}">
                     <span><i class="material-icons">location_on</i></span>
                 </div>
                 <div class="col s11 mgt30 {% if brand is null %}hide{% endif %}">
                     {{ form_widget(form.place) }}
                 </div>
+
+                    <div class="row">
+                        <div class="col s1 mgt30">
+
+                        </div>
+                        <div class="col s11 mgt30 blue-text text-darken-4">
+                            <b>Préciser le service que vous souhaitez contacter</b>
+                        </div>
+                    </div>
 
                 <div class="col s1 mgt30 {% if brand is null %}hide{% endif %}">
                     <span><i class="material-icons">build</i></span>
