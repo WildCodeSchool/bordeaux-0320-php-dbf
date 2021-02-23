@@ -37,11 +37,11 @@ class SearchController extends AbstractController
         $searchedCalls = [];
         $dataReadyForExport='';
 
-        $form = $this->createForm(SearchType::class);
+        $form = $this->createForm(SearchType::class, $searchData);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $searchedCalls = $onlyCallKeeper::keepCalls($callRepository->findSearch($form->getData()));
+            $searchedCalls = $onlyCallKeeper::keepCalls($callRepository->findSearch($searchData));
             $dataReadyForExport = json_encode($exportDataToCsv->dataMakerBeforeExport($searchedCalls));
         }
 
