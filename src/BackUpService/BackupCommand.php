@@ -14,7 +14,7 @@ use \DateTime;
 
 class BackupCommand extends Command
 {
-    private $folder;
+    private string $folder;
     private $dropboxService;
 
     public function __construct(string $name = null, KernelInterface $kernel, DropBoxService $dropboxService)
@@ -48,8 +48,8 @@ class BackupCommand extends Command
             '--filename'  => 'backup-' . $h . '.sql',
         ];
 
-        $input = new ArrayInput($arguments);
-        $returnCode = $command->run($input, $output);
+        $in = new ArrayInput($arguments);
+        $returnCode = $command->run($in, $output);
 /*
         try {
             $this->dropboxService->removeFile('', 'backup-' . $h . '.sql.gz');

@@ -93,9 +93,10 @@
                 </div>
                 {% if form.service is defined %}
                     <div class="col s1 mgt30 ">
-                        <span><i class="material-icons"></i></span>
+                        <span><i class="material-icons blue-text">mail</i></span>
                     </div>
                     <div class="col s11 mgt30 ">
+                        <b class="blue-text">Précisez le service que vous souhaitez contacter</b>
                         {{ form_widget(form.service) }}
                     </div>
                 {% endif %}
