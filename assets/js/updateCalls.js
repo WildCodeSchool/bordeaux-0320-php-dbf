@@ -11,6 +11,7 @@ const getNewCalls = (action) => {
                return response.text();
             }
         }).then(html => {
+            console.log(document.location.href.split('/'))
             action(html)
         })
 }

@@ -9,8 +9,6 @@ class headBoardUpdater {
         })
         .then(json => {
             for (var [key, value] of Object.entries(json)){
-                console.log(json, value)
-
                 if(document.getElementById(key)) {
                     document.getElementById(key).innerHTML = value
                     if (value != 0) {
