@@ -2,23 +2,52 @@
 
 {% block body %}
 
-    <div class="row container mgt30" style="display:flex; align-content: center; justify-content: center; align-items: center; width:100%; height: 100%;">
-        <div class="col s8 offset-s2 white" style="background: #fff; width:60%; text-align: center; font-size:14px; display: flex; flex-direction: column; justify-content: center;">
-            <div class="row grey lighten-3 center-align" style="width:100%; text-align: center; background:#CCC; padding:8px 0;">
-                <strong>Message automatique de Easy Auto</strong>
-            </div>
-            <div class="row center-align mgt15" style="margin-top:15px; width:100%; text-align: center;">
-                <p class="flow-text red-text" style="font-size:17px; color:#c62828; font-weight: bold;">
-                    1 message en attente sur Easy Auto
-                </p>
-            </div>
-            <div class="row mgt15" style="margin-top:15px; width:100%; text-align: center;">
-                Bonjour, vous avez 1 nouvel appel à traiter de la part de<br><br>
-                <strong>{{ call.client.civility.name }} {{ call.client.name | upper }}</strong>
-            </div>
-            <div class="row pdb15 mgt15" style="margin-top:35px; width:100%; text-align: center; padding-bottom:30px;">
-                Veuillez vous connecter sur <a href="https://easy-auto.fr" style="background:#0d47a1; color:#FFF; border-radius:5px; margin: 0 5px 0 5px; text-decoration: none; padding:7px 10px; font-weight:bold;">Easy-Auto</a> pour consulter ce message
-            </div>
-        </div>
-    </div>
+    <table width="80%" cellspacing="0" cellpadding="0" border="0"
+           align="center">
+        <tbody>
+        <tr align="center">
+            <td valign="middle" height="40" bgcolor="#cccccc"
+                align="center" color="#000000"><font size="+1"><b>Message automatique de
+                        Easy Auto</b></font><font size="+2"><b><br>
+                    </b></font></td>
+        </tr>
+        <tr align="center">
+            <td valign="middle" height="100" bgcolor="#ffffff"
+                align="center"><b><font size="+2" color="#ba1f36">1 message
+                        en attente sur Easy Auto<br>
+                    </font></b></td>
+        </tr>
+        <tr align="center">
+            <td valign="middle" height="70" bgcolor="#ffffff"
+                align="center" color="#000000"><font size="+1">Bonjour, vous avez 1 nouvel
+                    appel à  traiter de la part de</font><b><br>
+                    <br>
+                    <font size="+2">{{ call.client.civility.name }} {{ call.client.name | upper }}</font><br>
+                </b></td>
+        </tr>
+        <tr>
+            <td style="line-height: 30px;" valign="middle" height="80"
+                bgcolor="#ffffff" align="center">
+                <div align="center" color="#000000"><b>Veuillez vous connecter sur</b></div>
+                <div align="center"><b> <a href="https://easy-auto.fr"
+                                           moz-do-not-send="true" style="padding-top: 8px;
+                  padding-bottom: 8px; background-color: rgb(13, 71,
+                  161); background-position-x: 0%;
+                  background-position-y: 0%; background-repeat: repeat;
+                  background-attachment: scroll; background-image: none;
+                  background-size: auto; background-origin: padding-box;
+                  background-clip: border-box; font-weight: bold; color:
+                  rgb(255, 255, 255); padding-left: 10px; padding-right:
+                  10px; margin-left: 5px; margin-right: 5px;
+                  border-top-left-radius: 4px; border-top-right-radius:
+                  4px; border-bottom-right-radius: 4px;
+                  border-bottom-left-radius: 4px;">Easy-Auto</a><br>
+                    </b></div>
+                <div align="center" color="#000000"><b>pour consulter ce message</b><br>
+                </div>
+                <b><br>
+                </b></td>
+        </tr>
+        </tbody>
+    </table>
 {% endblock %}
