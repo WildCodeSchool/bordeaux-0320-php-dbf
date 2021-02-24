@@ -1,0 +1,15 @@
+.organization {
+  .flex {
+    display:flex;
+    justify-content: space-between;
+    align-content: stretch;
+    align-items: flex-start;
+    &.flex-column {
+      flex-direction: column;
+    }
+    &.flex-row {
+      flex-direction: row;
+    }
+  }
+
+}
