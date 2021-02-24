@@ -3,15 +3,19 @@ import {CallsCounter} from './CallsCounter';
 
 const counter = new CallsCounter();
 
+let url = '/newcallsforuser';
+if (document.getElementById('supervisedUser')) {
+    url = url + '/' + document.getElementById('supervisedUser').value
+}
+
 const getNewCalls = (action) => {
-        fetch('/newcallsforuser', {
+        fetch(url, {
         })
         .then(function (response) {
             if (response.status === 200) {
                return response.text();
             }
         }).then(html => {
-            console.log(document.location.href.split('/'))
             action(html)
         })
 }

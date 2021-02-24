@@ -3,6 +3,7 @@
 
 namespace App\Controller\User;
 
+use App\Entity\User;
 use App\Repository\CallRepository;
 use App\Repository\CityHeadRepository;
 use App\Repository\ConcessionHeadRepository;
@@ -158,12 +159,16 @@ class UserHomeController extends AbstractController
 
 
     /**
-     * @Route("/newcallsforuser", name="user_new_call")
+     * @Route("/newcallsforuser/{user}", name="user_new_call")
      * @IsGranted("ROLE_USER")
+     * @param CallRepository $callRepository
+     * @param UserRepository $userRepository
+     * @param User|null $user
+     * @return JsonResponse|Response
      */
-    public function newCall(CallRepository $callRepository, UserRepository $userRepository)
+    public function newCall(CallRepository $callRepository, UserRepository $userRepository, ?User $user = null)
     {
-        $appUser = $this->getUser();
+        $appUser = ($user) ? $user : $this->getUser();
         $lastId = $this->get(self::SESSION)->get(self::LAST_CALL_ID);
         $newCalls = $callRepository->getNewCallsForUser($appUser, $lastId);
         if (!empty($newCalls)) {

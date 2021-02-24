@@ -32,6 +32,7 @@
         </div>
         {% if user != connectedUser %}
             <span class="chip red white-text">MODE SUPERVISION</span>
+            <input id="supervisedUser" value="{{ user.id }}" type="hidden">
         {% endif %}
         {%  if user == connectedUser or isHead == true %}
         <div class="row">
