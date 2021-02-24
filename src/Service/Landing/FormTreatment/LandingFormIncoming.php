@@ -199,10 +199,10 @@ class LandingFormIncoming implements EventSubscriberInterface
         $this->entityManager->flush();
 
         // SEND EMAIL
-        /*
+
         $event = new GenericEvent($call);
         $this->dispatcher->dispatch($event, Events::CALL_INCOMING);
-        */
+
     }
 
 
