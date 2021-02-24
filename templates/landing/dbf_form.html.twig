@@ -18,7 +18,7 @@
                                 <div class="col s12 landing_flash {{ type }}">
                                     <span class="white-text flash-{{ type }}">{{ message | raw }}</span>
                                 </div>
-                                <a class="btn light-blue mgt15" href="{{ path('landing_form_brand') }}">Faire une nouvelle demande</a>
+                                <a class="btn light-blue mgt15" href="/dbf/form/{{ brand }}/{{ referer }}">Faire une nouvelle demande</a>
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="col s1 mgt15">
-                    <i class="material-icons">event_date</i>
+
                 </div>
                 <div class="col s6 mgt15">
                     {{ form_widget(form.callDate, {'attr': {'class': (errors.day is defined or errors.date is defined) ? 'red-text' }}) }}
@@ -94,10 +94,10 @@
                             <b>Quelle concession souhaitez vous joindre ?</b>
                         </div>
                     </div>
-                <div class="col s1 mgt30 {% if brand is null %}hide{% endif %}">
+                <div class="col s1 mgt15 {% if brand is null %}hide{% endif %}">
                     <span><i class="material-icons">location_on</i></span>
                 </div>
-                <div class="col s11 mgt30 {% if brand is null %}hide{% endif %}">
+                <div class="col s11 mgt15 {% if brand is null %}hide{% endif %}">
                     {{ form_widget(form.place) }}
                 </div>
 
@@ -110,10 +110,10 @@
                         </div>
                     </div>
 
-                <div class="col s1 mgt30 {% if brand is null %}hide{% endif %}">
+                <div class="col s1 mgt15 {% if brand is null %}hide{% endif %}">
                     <span><i class="material-icons">build</i></span>
                 </div>
-                <div class="col s11 mgt30 {% if brand is null %}hide{% endif %}">
+                <div class="col s11 mgt15 {% if brand is null %}hide{% endif %}">
                     {{ form_widget(form.askFor) }}
                 </div>
 

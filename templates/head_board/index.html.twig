@@ -86,9 +86,15 @@
                                         <i class="material-icons left tiny">settings</i>
                                         <span class="bolder service-name">{{ serviceName }}</span>
                                     </td>
-                                    <td class="col s2"><span
+                                    <td class="col s2">
+                                        <span
                                                 class="chip cyan lighten-3 black-text service-name counter  {% if service.to_process == 0 %} hide {% endif %}"
-                                                id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-to-process">{{ service.to_process }}</span>
+                                                id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-to-process">{{ service.to_process }}
+                                        </span>
+                                        <span
+                                                class="chip deep-orange white-text service-name counter to-take {% if service.to_take == 0 %} hide {% endif %}"
+                                                id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-to-take">{{ service.to_take }}
+                                        </span>
                                     </td>
 
                                     <td class="col s2"><span
@@ -97,6 +103,7 @@
                                     </td>
                                 </tr>
                                 {% for userName, user in service.collaborators %}
+                                    {% if user.canBeRecipient %}
                                     <tr class="row hide user-line {{ service.slug }}"
                                         data-concession="{{ concession.slug }}"
                                         data-parent="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}"
@@ -123,6 +130,7 @@
                                         </td>
 
                                     </tr>
+                                    {% endif %}
                                 {% endfor %}
                             {% endfor %}
                         {% endfor %}

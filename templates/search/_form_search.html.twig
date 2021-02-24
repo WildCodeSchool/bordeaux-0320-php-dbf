@@ -139,9 +139,9 @@
     </li>
 </ul>
 
-<div class="row center-align ">
-    <button class="btn light-blue" id="searchBtn">{{ button_label|default('Rechercher') }}</button>
-    <img src="{{ asset('build/loader.gif') }}" width="20px" download=""class="hide" alt="loader" id="loaderSearch">
+<div class="row center-align">
+    <button class="btn btn-large light-blue" id="searchBtn"><i class="material-icons left">search</i> {{ button_label|default('Rechercher') }}</button>
+    <img src="{{ asset('build/loader.gif') }}" width="20px" download="" class="hide" alt="loader" id="loaderSearch">
 </div>
 {{ form_end(form) }}
 

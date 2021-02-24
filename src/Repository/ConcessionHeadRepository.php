@@ -8,6 +8,7 @@ use App\Entity\Concession;
 use App\Entity\ConcessionHead;
 use App\Entity\Service;
 use App\Entity\ServiceHead;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
@@ -33,5 +34,25 @@ class ConcessionHeadRepository extends ServiceEntityRepository
             ->where('cih.user = :user')->setParameter('user', $user)
             ->andWhere('cih.id = :cityHeadId')->setParameter('cityHeadId', $cityHeadId)
             ->getQuery()->getResult();
+    }
+
+    public function findAllOrderByName() {
+        return $this->createQueryBuilder('ch')
+            ->innerJoin('ch.user', 'u')
+            ->orderBy('u.lastname', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function isConcessionHead(User $user, Concession $concession)
+    {
+        $result = $this->createQueryBuilder('ch')
+            ->where('ch.user = :user')
+            ->setParameter('user', $user->getId())
+            ->andWhere('ch.concession = :concession')
+            ->setParameter('concession', $concession->getId())
+            ->getQuery()
+            ->getResult();
+        return ($result) ? true : false;
     }
 }

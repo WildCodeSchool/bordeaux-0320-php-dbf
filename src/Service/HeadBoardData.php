@@ -26,8 +26,10 @@ class HeadBoardData
 
     const IN_PROCESS     = 'in_process';
     const TO_PROCESS     = 'to_process';
+    const TO_TAKE        = 'to_take';
     const IN_PROCESS_KEY = '-in-process';
     const TO_PROCESS_KEY = '-to-process';
+    const TO_TAKE_KEY    = '-to-take';
 
     public function __construct(
         CallRepository $callRepository,
@@ -88,37 +90,37 @@ class HeadBoardData
         foreach ($data as $datum) {
             $serviceId     = (int)$datum['service_id'];
             $service       = $this->serviceRepository->findOneById($serviceId);
+            $concession    = $service->getConcession();
+            $city          = $concession->getTown();
             $serviceName   = $service->getName();
             $collaborators = $service->getUsers();
 
             $result[$datum['city']]['slug'] = $slugify->slugify($datum['city']);
-            $result[$datum['city']][self::IN_PROCESS] = (!isset($result[$datum['city']][self::IN_PROCESS]))
-                ? 0 : $result[$datum['city']][self::IN_PROCESS];
-            $result[$datum['city']][self::TO_PROCESS] = (!isset($result[$datum['city']][self::TO_PROCESS]))
-                ? 0 : $result[$datum['city']][self::TO_PROCESS];
+
+            $result[$datum['city']][self::IN_PROCESS] =
+                $this->callRepository->countCallsInCity($city, 'in process');
+
+            $result[$datum['city']][self::TO_PROCESS] =
+                $this->callRepository->countCallsInCity($city, 'to process');
+
 
             $result[$datum['city']]['concessions'][$datum['concession']]['slug']
                 = $slugify->slugify($datum['concession']);
 
             $result[$datum['city']]['concessions'][$datum['concession']][self::IN_PROCESS] =
-                (!isset($result[$datum['city']]
-                ['concessions'][$datum['concession']][self::IN_PROCESS])) ?
-                    0 : $result[$datum['city']]['concessions']
-                [$datum['concession']][self::IN_PROCESS];
+                $this->callRepository->countCallsInConcession($concession, 'in process');
 
             $result[$datum['city']]['concessions'][$datum['concession']][self::TO_PROCESS] =
-                (!isset($result[$datum['city']]
-                ['concessions'][$datum['concession']][self::TO_PROCESS])) ?
-                    0 : $result[$datum['city']]['concessions']
-                [$datum['concession']][self::TO_PROCESS];
-
+                $this->callRepository->countCallsInConcession($concession, 'to process');
 
             $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName] = [
-                self::TO_PROCESS    => 0,
-                self::IN_PROCESS    => 0,
+                self::TO_PROCESS    => $this->callRepository->countCallsInService($service, 'to process'),
+                self::IN_PROCESS    => $this->callRepository->countCallsInService($service, 'in process'),
+                self::TO_TAKE       => $this->callRepository->countCallstoTake($service),
                 'collaborators' => [],
                 'slug'          => $slugify->slugify($serviceName),
             ];
+
             foreach ($collaborators as $collaborator) {
                 $collaboratorName = $collaborator->getFirstname() . ' ' . $collaborator->getLastname();
                 $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName]['collaborators']
@@ -127,29 +129,11 @@ class HeadBoardData
                         'user_id'    => $collaborator->getId(),
                         'slug'       => $slugify->slugify($collaboratorName),
                         'user_name'  => $collaboratorName,
+                        'canBeRecipient' => $collaborator->getCanBeRecipient(),
                         self::TO_PROCESS => count($this->callRepository->callsToProcessByUser($collaborator)),
                         self::IN_PROCESS => count($this->callRepository->callsInProcessByUser($collaborator)),
                     ];
-                $result[$datum['city']][self::TO_PROCESS] +=
-                    $result[$datum['city']]['concessions'][$datum['concession']]
-                ['services'][$serviceName]['collaborators'][$collaboratorName][self::TO_PROCESS];
-                $result[$datum['city']][self::IN_PROCESS] +=
-                    $result[$datum['city']]['concessions'][$datum['concession']]
-                ['services'][$serviceName]['collaborators'][$collaboratorName][self::IN_PROCESS];
-                $result[$datum['city']]['concessions'][$datum['concession']][self::TO_PROCESS] +=
-                    $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName]
-                    ['collaborators'][$collaboratorName][self::TO_PROCESS];
-                $result[$datum['city']]['concessions'][$datum['concession']][self::IN_PROCESS] +=
-                    $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName]
-                    ['collaborators'][$collaboratorName][self::IN_PROCESS];
-                $result[$datum['city']]['concessions'][$datum['concession']]
-                ['services'][$serviceName][self::TO_PROCESS] +=
-                    $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName]
-                    ['collaborators'][$collaboratorName][self::TO_PROCESS];
-                $result[$datum['city']]['concessions'][$datum['concession']]
-                ['services'][$serviceName][self::IN_PROCESS] +=
-                    $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName]
-                    ['collaborators'][$collaboratorName][self::IN_PROCESS];
+
             }
         }
         return $result;
@@ -163,34 +147,40 @@ class HeadBoardData
         foreach ($data as $datum) {
             $serviceId     = (int)$datum['service_id'];
             $service       = $this->serviceRepository->findOneById($serviceId);
+            $concession = $service->getConcession();
+            $city = $concession->getTown();
             $serviceName   = $service->getName();
             $collaborators = $service->getUsers();
 
             $citySlug = $slugify->slugify($datum['city']);
 
-            $result[$citySlug . self::IN_PROCESS_KEY] = (!isset($result[$citySlug. self::IN_PROCESS_KEY]))
-                ? 0 : $result[$citySlug . self::IN_PROCESS_KEY];
-            $result[$citySlug . self::TO_PROCESS_KEY] = (!isset($result[$citySlug. self::TO_PROCESS_KEY]))
-                ? 0 : $result[$citySlug . self::TO_PROCESS_KEY];
-
             $concessionSlug    = $slugify->slugify($datum['concession']);
-
-            $result[$citySlug . '-' . $concessionSlug . self::IN_PROCESS_KEY] =
-                (!isset($result[$citySlug . '-' . $concessionSlug . self::IN_PROCESS_KEY])) ?
-                    0 : $result[$citySlug . '-' . $concessionSlug . self::IN_PROCESS_KEY];
-
-            $result[$citySlug . '-' . $concessionSlug . self::TO_PROCESS_KEY] =
-                (!isset($result[$citySlug . '-' . $concessionSlug . self::TO_PROCESS_KEY])) ?
-                    0 : $result[$citySlug . '-' . $concessionSlug . self::TO_PROCESS_KEY];
 
             $serviceSlug = $slugify->slugify($serviceName);
 
-            $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .self::TO_PROCESS_KEY] =
-                (!isset($result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .self::TO_PROCESS_KEY])) ?
-                    0 : $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .self::TO_PROCESS_KEY];
-            $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .self::IN_PROCESS_KEY] =
-                (!isset($result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .self::IN_PROCESS_KEY])) ?
-                    0 : $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .self::IN_PROCESS_KEY];
+            //Ville
+            $result[$citySlug . self::TO_PROCESS_KEY] =
+                $this->callRepository->countCallsInCity($city, 'to process');
+
+            $result[$citySlug . self::IN_PROCESS_KEY] =
+                $this->callRepository->countCallsInCity($city, 'in process');
+
+            //Concession
+            $result[$citySlug . '-' . $concessionSlug . self::TO_PROCESS_KEY] =
+                $this->callRepository->countCallsInConcession($concession, 'to process');
+
+            $result[$citySlug . '-' . $concessionSlug . self::IN_PROCESS_KEY] =
+                $this->callRepository->countCallsInConcession($concession, 'in process');
+
+            //Service
+            $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .  self::TO_PROCESS_KEY] =
+                $this->callRepository->countCallsInService($service, 'to process');
+
+            $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .  self::IN_PROCESS_KEY] =
+                $this->callRepository->countCallsInService($service, 'in process');
+
+            $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .  self::TO_TAKE_KEY] =
+                $this->callRepository->countCallstoTake($service);
 
             foreach ($collaborators as $collaborator) {
                 $collSlug =
@@ -199,28 +189,8 @@ class HeadBoardData
                     = count($this->callRepository->callsToProcessByUser($collaborator));
                 $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug . self::IN_PROCESS_KEY]
                     = count($this->callRepository->callsInProcessByUser($collaborator));
-
-                $result[$citySlug . self::TO_PROCESS_KEY] +=
-                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug
-                    . self::TO_PROCESS_KEY];
-                $result[$citySlug . self::IN_PROCESS_KEY] +=
-                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug
-                    . self::IN_PROCESS_KEY];
-                $result[$citySlug . '-' . $concessionSlug . self::TO_PROCESS_KEY] +=
-                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug
-                    . self::TO_PROCESS_KEY];
-                $result[$citySlug . '-' . $concessionSlug . self::IN_PROCESS_KEY] +=
-                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug
-                    . self::IN_PROCESS_KEY];
-                $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .  self::TO_PROCESS_KEY] +=
-                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug
-                    . self::TO_PROCESS_KEY];
-                $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug .  self::IN_PROCESS_KEY] +=
-                    $result[$citySlug . '-' . $concessionSlug . '-' . $serviceSlug . '-' . $collSlug
-                    . self::IN_PROCESS_KEY];
             }
         }
-
         return $result;
     }
 }

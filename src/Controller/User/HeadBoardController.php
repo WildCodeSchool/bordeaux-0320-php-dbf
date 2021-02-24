@@ -39,7 +39,6 @@ class HeadBoardController extends AbstractController
         $totalToProcess = count($callRepository->callsToProcessByUser($user));
         $totalInProcess = count($callRepository->callsInProcessByUser($user));
         $callsAddedByUser = count($callRepository->getCallsAddedByUserToday($user));
-
         return $this->render('head_board/index.html.twig', [
             'cities' => $dataForServices,
             'calls_in_process' => $totalInProcess,
@@ -58,7 +57,9 @@ class HeadBoardController extends AbstractController
         $user = $this->getUser();
         $res = $serviceHeadRepository->getHeadServiceCalls($user);
         $data = $headBoardData->makeDataForHeadUpdater($res);
+
         $response = new JsonResponse();
+
         $response->setStatusCode(Response::HTTP_OK);
         if (is_null($data)) {
             $response->setStatusCode(Response::HTTP_NO_CONTENT);

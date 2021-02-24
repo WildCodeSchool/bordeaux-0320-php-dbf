@@ -68,6 +68,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->join('u.service', 's')
             ->join('s.concession', 'conc')
             ->join('conc.town', 'c')
+            ->orderBy('u.lastname', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -119,5 +120,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             shuffle($query);
             return $query[0];
         }
+    }
+
+    public function createAlphabeticalQueryBuilder()
+    {
+        return $this->createQueryBuilder('u')
+            ->orderBy('u.lastname', 'ASC');
     }
 }

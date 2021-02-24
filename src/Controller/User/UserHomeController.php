@@ -4,6 +4,10 @@
 namespace App\Controller\User;
 
 use App\Repository\CallRepository;
+use App\Repository\CityHeadRepository;
+use App\Repository\ConcessionHeadRepository;
+use App\Repository\ServiceHeadRepository;
+use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
 use App\Service\ClientCallbacks;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -20,10 +24,28 @@ class UserHomeController extends AbstractController
     /**
      * @Route("/welcome/{id}", name="user_home")
      * @IsGranted("ROLE_USER")
+     * @param ServiceRepository $serviceRepository
+     * @param ServiceHeadRepository $serviceHeadRepository
+     * @param ConcessionHeadRepository $concessionHeadRepository
+     * @param CityHeadRepository $cityHeadRepository
+     * @param CallRepository $callRepository
+     * @param UserRepository $userRepository
+     * @param null $id
+     * @return Response
      */
-    public function homeCell(CallRepository $callRepository, UserRepository $userRepository, $id = null): Response
-    {
+    public function homeCell(
+        ServiceRepository $serviceRepository,
+        ServiceHeadRepository $serviceHeadRepository,
+        ConcessionHeadRepository $concessionHeadRepository,
+        CityHeadRepository $cityHeadRepository,
+        CallRepository $callRepository, UserRepository
+        $userRepository,
+        $id = null
+    ): Response {
+
         $appUser = $this->getUser();
+        $service = $appUser->getService();
+
         $header = false;
         if (null !== $id) {
             $appUser = $userRepository->findOneById($id);
@@ -44,29 +66,54 @@ class UserHomeController extends AbstractController
 
         $lastCall = $callRepository->lastCallToProcessByUser($appUser);
         $this->get(self::SESSION)->set(self::LAST_CALL_ID, 0);
+
         if ($lastCall) {
             $this->get(self::SESSION)->set(self::LAST_CALL_ID, $lastCall->getId());
         }
 
+        $isHead = false;
+        $connectedUser = $this->getUser();
+        if(
+            $serviceHeadRepository->isServiceHead($connectedUser, $service) ||
+            $concessionHeadRepository->isConcessionHead($connectedUser, $service->getConcession()) ||
+            $cityHeadRepository->isCityHead($connectedUser, $service->getCOncession()->getTown())
+        ) {
+            $isHead = true;
+        }
+
         return $this->render('cell_home.html.twig', [
+            'connectedUser' => $connectedUser,
             'user' => $appUser,
             'calls' => $callsToProcess,
             'to_process' => $totalToProcess,
             'in_process' => $totalInProcess,
             'header' => $header,
+            'isHead' => $isHead
         ]);
     }
 
     /**
      * @Route("/processing/{id}", name="user_calls_in_process")
      * @IsGranted("ROLE_USER")
+     * @param CallRepository $callRepository
+     * @param UserRepository $userRepository
+     * @param ServiceHeadRepository $serviceHeadRepository
+     * @param ConcessionHeadRepository $concessionHeadRepository
+     * @param CityHeadRepository $cityHeadRepository
+     * @param null $id
+     * @return Response
      */
     public function homeProcessingCalls(
         CallRepository $callRepository,
         UserRepository $userRepository,
+        ServiceHeadRepository $serviceHeadRepository,
+        ConcessionHeadRepository $concessionHeadRepository,
+        CityHeadRepository $cityHeadRepository,
         $id = null
     ): Response {
         $appUser = $this->getUser();
+        $service = $appUser->getService();
+
         $header = false;
         if (!is_null($id)) {
             $appUser = $userRepository->findOneById($id);
@@ -87,12 +134,25 @@ class UserHomeController extends AbstractController
             $this->get(self::SESSION)->set(self::LAST_CALL_ID, $lastCall->getId());
         }
 
+        $isHead = false;
+        $connectedUser = $this->getUser();
+        if(
+            $serviceHeadRepository->isServiceHead($connectedUser, $service) ||
+            $concessionHeadRepository->isConcessionHead($connectedUser, $service->getConcession()) ||
+            $cityHeadRepository->isCityHead($connectedUser, $service->getCOncession()->getTown())
+        ) {
+            $isHead = true;
+        }
+
+        $connectedUser = $this->getUser();
         return $this->render('cell_home.html.twig', [
             'user' => $appUser,
+            'connectedUser' => $connectedUser,
             'calls' => $callsToProcess,
             'to_process' => $totalToProcess,
             'in_process' => $totalInProcess,
             'header' => $header,
+            'isHead' => $isHead
         ]);
     }
 

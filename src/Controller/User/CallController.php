@@ -3,6 +3,7 @@
 namespace App\Controller\User;
 
 use App\Entity\Call;
+use App\Entity\User;
 use App\Events;
 use App\Service\CallTreatmentDataMaker;
 use App\Entity\RecallPeriod;
@@ -145,16 +146,20 @@ class CallController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/take", name="take_call", methods={"GET"})
+     * @Route("/{id}/take/{user}", name="take_call", methods={"GET"})
      * @param Call $call
      * @param EntityManagerInterface $entityManager
+     * @param User|null $user
      * @return Response
      */
-    public function takeCall(Call $call, EntityManagerInterface $entityManager)
+    public function takeCall(Call $call, EntityManagerInterface $entityManager, ?User $user = null)
     {
         if (is_null($call->getRecipient())) {
             $call->setService(null);
             $call->setRecipient($this->getUser());
+            if (null !== $user) {
+                $call->setRecipient($user);
+            }
             $entityManager->flush();
             return $this->redirect(
                 $this->generateUrl('user_home') . '#call-' . $call->getId()

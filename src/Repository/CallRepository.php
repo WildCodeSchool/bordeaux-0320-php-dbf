@@ -53,6 +53,11 @@ class CallRepository extends ServiceEntityRepository
         'concession'=>'serv',
     ];
 
+    const PROCESSES = [
+        'to process' => 'IS NULL',
+        'in process' => 'IS NOT NULL'
+    ];
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Call::class);
@@ -365,4 +370,75 @@ class CallRepository extends ServiceEntityRepository
             ->getResult();
 
     }
+
+    public function countCallsInService(Service $service, string $processCondition)
+    {
+        $result = $this->createQueryBuilder('c')
+            ->select('count(c.id) as total')
+            ->Where('c.recipient IS NOT NULL')
+            ->innerJoin('c.recipient', 'r')
+            ->innerJoin('r.service', 's')
+            ->andWhere('s.id = :sid')
+            ->setParameter('sid', $service->getId())
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed ' . self::PROCESSES[$processCondition])
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+        return $result['total'];
+    }
+
+    public function countCallstoTake(Service $service)
+    {
+        $result = $this->createQueryBuilder('c')
+            ->select('count(c.id) as total')
+            ->Where('c.recipient IS NULL')
+            ->andWhere('c.service = :sid')
+            ->setParameter('sid', $service->getId())
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed IS NULL')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+        return $result['total'];
+    }
+
+    public function countCallsInConcession(Concession $concession, string $processCondition)
+    {
+        $result = $this->createQueryBuilder('c')
+            ->select('count(c.id) as total')
+            ->Where('c.recipient IS NOT NULL')
+            ->innerJoin('c.recipient', 'r')
+            ->innerJoin('r.service', 's')
+            ->innerJoin('s.concession', 'co')
+            ->andWhere('co.id = :coid')
+            ->setParameter('coid', $concession->getId())
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed ' . self::PROCESSES[$processCondition])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+        return $result['total'];
+    }
+
+    public function countCallsInCity(City $city, string $processCondition)
+    {
+        $result = $this->createQueryBuilder('c')
+            ->select('count(c.id) as total')
+            ->Where('c.recipient IS NOT NULL')
+            ->innerJoin('c.recipient', 'r')
+            ->innerJoin('r.service', 's')
+            ->innerJoin('s.concession', 'co')
+            ->innerJoin('co.town', 't')
+            ->andWhere('t.id = :tid')
+            ->setParameter('tid', $city->getId())
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed ' . self::PROCESSES[$processCondition])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+        return $result['total'];
+    }
+
+
 }

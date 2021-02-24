@@ -60,7 +60,7 @@
                         <b>Quand pouvons nous vous appeler ?</b>
                     </div>
                 <div class="col s1 mgt15">
-                    <i class="material-icons">event_date</i>
+
                 </div>
                 <div class="col s6 mgt15">
                     {{ form_widget(form.date, {'attr': {'class': (errors.day is defined or errors.date is defined) ? 'red-text' }}) }}
@@ -92,11 +92,15 @@
                     {{ form_widget(form.place) }}
                 </div>
                 {% if form.service is defined %}
-                    <div class="col s1 mgt30 ">
-                        <span><i class="material-icons blue-text text-darken-4">mail</i></span>
+                        <div class="col s1 mgt15 ">
+                        </div>
+                        <div class="col s11 mgt15 ">
+                            <b class="blue-text text-darken-4">Précisez le service que vous souhaitez contacter</b>
+                        </div>
+                    <div class="col s1 mgt15">
+
                     </div>
-                    <div class="col s11 mgt30 ">
-                        <b class="blue-text text-darken-4">Précisez le service que vous souhaitez contacter</b>
+                    <div class="col s11 mgt15">
                         {{ form_widget(form.service) }}
                     </div>
                 {% endif %}

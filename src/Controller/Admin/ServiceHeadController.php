@@ -30,6 +30,7 @@ class ServiceHeadController extends AbstractController
     const SERVICE_HEAD_INDEX = 'service_head_index';
     const CONCESSION_HEAD    = 'concession_head';
     const CITY_HEAD          = 'city_head';
+    const SERVICE_HEAD_NEW   = 'service_head_new';
     /**
      * @Route("/", name="service_head_index", methods={"GET"})
      * @param ServiceHeadRepository $serviceHeadRepository
@@ -43,9 +44,9 @@ class ServiceHeadController extends AbstractController
         CityHeadRepository $cityHeadRepository
     ): Response {
         return $this->render('service_head/index.html.twig', [
-            'service_heads' => $serviceHeadRepository->findAll(),
-            'concession_heads'=> $concessionHeadRepository->findAll(),
-            'city_heads'=> $cityHeadRepository->findAll()
+            'service_heads' => $serviceHeadRepository->findAllOrderByName(),
+            'concession_heads'=> $concessionHeadRepository->findAllOrderByName(),
+            'city_heads'=> $cityHeadRepository->findAllOrderByName()
         ]);
     }
 
@@ -65,6 +66,7 @@ class ServiceHeadController extends AbstractController
         ConcessionRepository $concessionRepository,
         UserRepository $userRepository
     ): Response {
+
         $serviceHead = new ServiceHead();
         $form = $this->createForm(ServiceHeadType::class, $serviceHead);
         $form->handleRequest($request);
@@ -73,14 +75,14 @@ class ServiceHeadController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'Responsabilité ajoutée');
 
-            return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
+            return $this->redirectToRoute(self::SERVICE_HEAD_NEW);
         }
 
         $concessionHead = new ConcessionHead();
         $formConcessionHead = $this->createForm(ConcessionHeadType::class, $concessionHead);
         $formConcessionHead->handleRequest($request);
         if ($formConcessionHead->isSubmitted() && $formConcessionHead->isValid()) {
-            $user = $userRepository->findOneById($request->request->get(self::CONCESSION_HEAD)['user']);
+            $user = $userRepository->findOneById((int)$request->request->get(self::CONCESSION_HEAD)['user']);
             $concession = $concessionRepository
                 ->findOneById($request->request->get(self::CONCESSION_HEAD)['concession']);
             $services = $concession->getServices();

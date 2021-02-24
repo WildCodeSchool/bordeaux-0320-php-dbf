@@ -66,7 +66,7 @@
                             </div>
                         </div>
                         <div class="col s1 mgt15">
-                            <i class="material-icons">event_date</i>
+
                         </div>
                         <div class="col s6 mgt15">
                             {{ form_widget(form.callDate, {'attr': {'class': (errors.day is defined or errors.date is defined) ? 'red-text' }}) }}
@@ -92,10 +92,10 @@
                             </div>
                         </div>
 
-                        <div class="col s1 mgt30 {% if brand is null %}hide{% endif %}">
+                        <div class="col s1 mgt15 {% if brand is null %}hide{% endif %}">
                             <span><i class="material-icons">location_on</i></span>
                         </div>
-                        <div class="col s11 mgt30 {% if brand is null %}hide{% endif %}">
+                        <div class="col s11 mgt15 {% if brand is null %}hide{% endif %}">
                             {{ form_widget(form.place) }}
                         </div>
 

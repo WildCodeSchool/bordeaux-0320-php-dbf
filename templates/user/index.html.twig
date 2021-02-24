@@ -24,7 +24,7 @@
         <tbody>
         {% for user in users %}
             <tr id={{ user.id }}>
-                <td>{{ user.firstname ~ ' ' ~ user.lastname }}</td>
+                <td>{{ user.lastName | upper ~ ' ' ~ user.firstName }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone ? user.phone|phoneNumber : '' }}</td>
                 <td>{{ user.service ? user.service.concession.town.name ~ ' > ' ~ user.service.concession.name ~ ' > '~user.service.name : ''  }}</td>

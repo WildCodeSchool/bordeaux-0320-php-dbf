@@ -27,7 +27,7 @@ class ServiceHeadRepository extends ServiceEntityRepository
 
     public function getHeadServiceCalls(User $user)
     {
-        return $this->createQueryBuilder('sh')
+        $result = $this->createQueryBuilder('sh')
             ->Where('sh.user = :u')
             ->setParameter('u', $user->getId())
             ->join(Service::class, 'se', Join::WITH, 'se.id = sh.service')
@@ -41,6 +41,8 @@ class ServiceHeadRepository extends ServiceEntityRepository
             ->addOrderBy('concession', 'ASC')
             ->addOrderBy('service', 'ASC')
             ->getQuery()->getResult();
+
+        return $result;
     }
 
 
@@ -53,5 +55,26 @@ class ServiceHeadRepository extends ServiceEntityRepository
             ->where('ch.user = :user')->setParameter('user', $user)
             ->andWhere('ch.id = :concessionHeadId')->setParameter('concessionHeadId', $concessionHead)
             ->getQuery()->getResult();
+    }
+
+    public function findAllOrderByName()
+    {
+        return $this->createQueryBuilder('sh')
+            ->innerJoin('sh.user', 'u')
+            ->orderBy('u.lastname', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function isServiceHead(User $user, Service $service)
+    {
+        $result = $this->createQueryBuilder('sh')
+            ->where('sh.user = :user')
+            ->setParameter('user', $user->getId())
+            ->andWhere('sh.service = :service')
+            ->setParameter('service', $service->getId())
+            ->getQuery()
+            ->getResult();
+        return ($result) ? true : false;
     }
 }

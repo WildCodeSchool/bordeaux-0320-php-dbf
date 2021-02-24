@@ -44,7 +44,6 @@ class SearchController extends AbstractController
             $searchedCalls = $onlyCallKeeper::keepCalls($callRepository->findSearch($form->getData()));
             $dataReadyForExport = json_encode($exportDataToCsv->dataMakerBeforeExport($searchedCalls));
         }
-
         return $this->render('search/index.html.twig', [
             'form'=> $form->createView(),
             'calls'=> $searchedCalls,
@@ -61,7 +60,6 @@ class SearchController extends AbstractController
      */
     public function exportToCSV(ExportDataToCsv $exportDataToCsv, string $exportedCalls = null)
     {
-
         $searchedCalls = json_decode($exportedCalls, true);
         if (is_null($searchedCalls)) {
             $this->addFlash('error', 'Faites d\'abord une recherche');

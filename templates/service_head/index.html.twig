@@ -23,7 +23,7 @@
                         <tbody>
                         {% for service_head in service_heads %}
                             <tr>
-                                <td>{{ service_head.user.firstname ~ ' '  ~ service_head.user.lastname}}</td>
+                                <td>{{ service_head.user.lastname | upper ~ ' '  ~ service_head.user.firstname}}</td>
                                 <td>{{  service_head.service.concession.town.name ~ ' > ' ~ service_head.service.concession.name ~ ' > ' ~service_head.service.name  }}</td>
                                 <td>
                                     {{ include('service_head/_delete_form.html.twig') }}
@@ -52,7 +52,7 @@
                         <tbody>
                         {% for concession_head in concession_heads %}
                             <tr>
-                                <td>{{ concession_head.user.firstname ~ ' '  ~ concession_head.user.lastname}}</td>
+                                <td>{{ concession_head.user.lastname | upper ~ ' '  ~ concession_head.user.firstname}}</td>
                                 <td>{{ concession_head.concession.town.name ~ ' > ' ~ concession_head.concession.name}}</td>
                                 <td>
                                     {{ include('concession_head/_delete_form.html.twig') }}
@@ -81,7 +81,7 @@
                         <tbody>
                         {% for city_head in city_heads %}
                             <tr>
-                                <td>{{ city_head.user.firstname ~ ' '  ~ city_head.user.lastname}}</td>
+                                <td>{{ city_head.user.lastname | upper ~ ' '  ~ city_head.user.firstname }}</td>
                                 <td>{{ city_head.city.name }}</td>
                                 <td>
                                     <form method="post" action="{{ path('city_head_delete', {'id': city_head.id}) }}" id="delCity-{{city_head.id}}">

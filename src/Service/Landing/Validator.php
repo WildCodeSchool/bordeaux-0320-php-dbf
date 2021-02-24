@@ -31,7 +31,7 @@ class Validator
 
     public function isValidName($name)
     {
-        return ctype_alpha(str_replace(' ', '', $name));
+        return preg_match('/[A-Za-zéèàù -\'ôûâ]/', $name);
     }
 
     public function isValidImmat($name)
