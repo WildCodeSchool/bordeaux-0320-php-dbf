@@ -43,7 +43,8 @@ class DbfBrandType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'referer' => null
+            'referer' => null,
+            'csrf_protection' => false,
         ]);
     }
 }

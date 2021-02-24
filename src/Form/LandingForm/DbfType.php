@@ -189,6 +189,8 @@ class DbfType extends AbstractType
             'data_class' => Call::class,
             'brand'    => null,
             'referer'  => null,
+            'csrf_protection' => false,
+
         ]);
     }
 }

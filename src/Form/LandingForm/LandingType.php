@@ -188,6 +188,7 @@ class LandingType extends AbstractType
             'city'     => null,
             'reason'   => null,
             'referer'  => null,
+            'csrf_protection' => false,
         ]);
     }
 }

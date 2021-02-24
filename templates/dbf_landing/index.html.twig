@@ -88,7 +88,7 @@
                         </div>
                         <div class="row">
                             <div class="col s11 mgt30 offset-s1 blue-text text-darken-4">
-                                <b>Précisez un destinataire si besoin ?</b>
+                                <b>Précisez la concession ?</b>
                             </div>
                         </div>
 
@@ -108,8 +108,8 @@
                         </div>
 
                         <div class="col s1 mgt30"></div>
-                        <div class="col s11 m3 mgt15">
-                            <button class="btn btn-large green  {% if brand is null %}hide{% endif %}"
+                        <div class="col s11 mgt15">
+                            <button class="btn btn-large green  {% if brand is null %}hide{% endif %}" style="width: 100%;"
                                     id="submit_landing_form">{{ button_label|default('envoyer') }}</button>
                         </div>
                         <div class="col s11 m8 hide mgt15" id="landing_loader">

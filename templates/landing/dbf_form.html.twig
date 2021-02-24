@@ -126,8 +126,8 @@
                 </div>
 
                 <div class="col s1 mgt30"></div>
-                <div class="col s11 m3 mgt15">
-                    <button class="btn btn-large green {% if brand is null %}hide{% endif %}"
+                <div class="col s11 mgt15">
+                    <button class="btn btn-large green {% if brand is null %}hide{% endif %}" style="width:100%;"
                             id="submit_landing_form">{{ button_label|default('envoyer') }}</button>
                 </div>
                 <div class="col s11 m8 hide mgt15" id="landing_loader">
