@@ -172,7 +172,7 @@ class CallType extends AbstractType
             ->add('recallHour', TimeType::class, [
                 'widget'=>'choice',
                 'label'=>'heure de rappel',
-                'hours'=>[8,9,10,11,12,13,14,15,16,17,18,19,20],
+                'hours'=>[8,9,10,11,12,13,14,15,16,17],
                 'minutes'=>[0,15,30,45],
                 'data'=> new DateTime('Europe/Paris')
             ])
