@@ -31,7 +31,7 @@
             {% include 'components/_flashes.html.twig' %}
         </div>
         {% if user != connectedUser %}
-            <span class="chip red white-text">MODE SUPERVISION</span>
+            <span class="chip red white-text">MODE SUPERVISION <i class="material-icons close">share</i></span>
             <input id="supervisedUser" value="{{ user.id }}" type="hidden">
         {% endif %}
         {%  if user == connectedUser or isHead == true %}
