@@ -110,7 +110,7 @@
                                         >
                                             <td class="col s8 subrow" colspan="3">
                                                 <i class="material-icons left tiny">person</i>
-                                                <span class="user-name">{{ userName }}</span>
+                                                <span class="user-name"><a href="{{ path('user_home', {'id' : user.user_id}) }}">{{ userName }}</a></span>
                                             </td>
                                             <td class="col s2">
                                                 <a href="{{ path('user_home', {'id' : user.user_id}) }}">

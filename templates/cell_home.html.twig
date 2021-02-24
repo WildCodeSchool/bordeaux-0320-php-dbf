@@ -8,7 +8,7 @@
             <div class="col s12">
                 <div class="row mgt30">
                     <div class="col s4 offset-s2 center-align">
-                        <a href="{{ path('user_home') }}"
+                        <a href="{% if user != connectedUser %} {{ path('user_home', {'id' : user.id}) }}  {% else %} {{ path('user_home') }} {% endif %}"
                            class="chip {% if app.request.get('_route') == 'user_home' %}cyan{% else %} grey{% endif %} white-text">
                             <span class="btn-floating btn-small black white-text"
                                   id="nb-calls-to-process">{{ to_process }}</span>
@@ -16,7 +16,7 @@
                         </a>
                     </div>
                     <div class="col s4 center-align">
-                        <a href="{{ path('user_calls_in_process') }}"
+                        <a href="{% if user != connectedUser %} {{ path('user_calls_in_process', {'id' : user.id}) }} {% else %} {{ path('user_calls_in_process') }} {% endif %}"
                            class="chip {% if app.request.get('_route') == 'user_calls_in_process' %}cyan {% else %}grey {% endif %}  white-text">
                             <span class="btn-floating btn-small black white-text"
                                   id="nb-calls-in-process">{{ in_process }}</span>
@@ -30,7 +30,9 @@
         <div class="row">
             {% include 'components/_flashes.html.twig' %}
         </div>
-
+        {% if user != connectedUser %}
+            <span class="chip red white-text">MODE SUPERVISION</span>
+        {% endif %}
         {%  if user == connectedUser or isHead == true %}
         <div class="row">
             <div class="col s12 mgt30">
