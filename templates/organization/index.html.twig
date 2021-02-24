@@ -3,18 +3,38 @@
 {% block title %}Hello OrganizationController!{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="organization">
+    <div class="row container">
+        <h1>Organigramme</h1>
+    </div>
+    {% for city in cities %}
+        <div class="row container  flex flex-column">
+            <div class="col s12 center-align city blue">
+                {{ city.name }}
+            </div>
+            <div class="col s12 flex flex-row concessions center-align">
+                {% for concession in city.concessions %}
+                    <div class="concession text-center flex flex-column green center-align">
+                        <h4>{{ concession.name }}</h4>
+                        <div class="services flex flex-row red">
+                            {% for service in concession.services %}
+                                <div class="service flex flex-column center-align">
+                                    <h5>{{ service.name }}</h5>
+                                    <div class="collaborators flex flex-column">
+                                        {% for collaborator in service.users %}
+                                            <span class="collaborator center-align">
+                                                {{ collaborator.fullName }}
+                                            </span><br>
+                                        {% endfor %}
+                                    </div>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/Users/francois/PhpstormProjects/bordeaux-0320-php-dbf/src/Controller/OrganizationController.php'|file_link(0) }}">src/Controller/OrganizationController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/Users/francois/PhpstormProjects/bordeaux-0320-php-dbf/templates/organization/index.html.twig'|file_link(0) }}">templates/organization/index.html.twig</a></code></li>
-    </ul>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
 </div>
 {% endblock %}
