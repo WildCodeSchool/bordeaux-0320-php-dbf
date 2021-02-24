@@ -203,6 +203,7 @@ class DbfContactType extends AbstractType
             'referer'  => null,
             'concession' => null,
             'allow_extra_fields' => true,
+            'csrf_protection' => false,
         ]);
     }
 }

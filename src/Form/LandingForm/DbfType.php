@@ -162,7 +162,7 @@ class DbfType extends AbstractType
         }
         $choices = [];
         foreach ($concessions as $concession) {
-            $choices[$concession['cityName'] . ' - ' . $concession[0]->getName()] = $concession[0];
+            $choices[ucfirst($brand) . ' - ' . $concession['cityName'] . ' - ' . $concession[0]->getName()] = $concession[0];
         }
         return $choices;
     }

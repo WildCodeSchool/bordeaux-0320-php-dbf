@@ -159,7 +159,7 @@ class LandingType extends AbstractType
         ]);
         $choices = [];
         foreach ($concessions as $concession) {
-            $choices[$brand . ' DBF - ' . $city->getName() . ' ' . $concession->getName()] = $concession;
+            $choices[ucfirst($brand) . ' DBF - ' . $city->getName() . ' ' . $concession->getName()] = $concession;
         }
         return $choices;
     }
