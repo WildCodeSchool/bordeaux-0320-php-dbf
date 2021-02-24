@@ -9,14 +9,14 @@
     </div>
     {% for city in cities %}
         <div class="row container  flex flex-column">
-            <div class="col s12 center-align city">
+            <div class="col s12 center-align city blue">
                 {{ city.name }}
             </div>
             <div class="col s12 flex flex-row concessions center-align">
                 {% for concession in city.concessions %}
-                    <div class="concession text-center flex flex-column">
+                    <div class="concession text-center flex flex-column green center-align">
                         <h4>{{ concession.name }}</h4>
-                        <div class="services flex flex-row">
+                        <div class="services flex flex-row red">
                             {% for service in concession.services %}
                                 <div class="service flex flex-column center-align">
                                     <h5>{{ service.name }}</h5>

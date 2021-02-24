@@ -16,7 +16,7 @@
                     {% for type, messages in app.session.flashbag.all() %}
                         {% if type == 'landing_success' or type == 'landing_error' %}
                             {% for message in messages %}
-                                <div class="col s11 offset-s1 landing_flash {{ type }} {% if type == 'landing_success' %}blue{% else %}red{% endif %}">
+                                <div class="col s11 offset-s1 landing_flash {{ type }} {% if type == 'landing_success' %}blue darken-4{% else %}red{% endif %}">
                                     <span class="white-text flash-{{ type }}">{{ message | raw }}</span>
                                 </div>
                             {% endfor %}

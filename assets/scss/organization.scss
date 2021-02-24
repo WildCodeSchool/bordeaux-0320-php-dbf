@@ -3,7 +3,7 @@
     display:flex;
     justify-content: space-between;
     align-content: stretch;
-    align-items: flex-start;
+    align-items: stretch;
     &.flex-column {
       flex-direction: column;
     }
