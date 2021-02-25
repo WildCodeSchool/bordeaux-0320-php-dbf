@@ -9,3 +9,13 @@ bm_backup_manager:
         local:
             type: Local
             root: './backup'
+        ftp:
+            type: Ftp
+            host: '%env(FTP_HOST)%'
+            username: '%env(FTP_USER)%'
+            password: '%env(FTP_PASSWORD)%'
+            root: '%env(FTP_FOLDER)%'
+            port: 21
+            passive: true
+            ssl: false
+            timeout: 30

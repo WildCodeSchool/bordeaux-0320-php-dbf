@@ -43,23 +43,14 @@ class BackupCommand extends Command
 
         $arguments = [
             'database' => 'development',
-            'destinations' => ['local'],
+            'destinations' => ['local', 'ftp'],
             '-c'     => 'gzip',
             '--filename'  => 'backup-' . $h . '.sql',
         ];
 
         $in = new ArrayInput($arguments);
         $returnCode = $command->run($in, $output);
-/*
-        try {
-            $this->dropboxService->removeFile('', 'backup-' . $h . '.sql.gz');
-        } catch (Exception $e) {
 
-        } finally {
-            $this->dropboxService->sendFile($this->folder . '/backup-' . $h . '.sql.gz');
-            unlink($this->folder . '/backup-' . $h . '.sql.gz');
-        }
-*/
         return Command::SUCCESS;
     }
 
