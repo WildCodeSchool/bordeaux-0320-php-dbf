@@ -2,6 +2,11 @@
 
 {% block title %}demander un rendez-vous{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    {{ encore_entry_link_tags('forms') }}
+{% endblock %}
+
 {% block navbar %}
 {% endblock %}
 {% block body %}
