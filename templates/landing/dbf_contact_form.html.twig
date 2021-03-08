@@ -143,8 +143,8 @@
     document.addEventListener('DOMContentLoaded', () => {
         const origin = window.parent.location
         console.log(origin)
-        if (!document.getElementById('dbf_origin').value || document.getElementById('dbf_origin').value == '') {
-            document.getElementById('dbf_origin').setAttribute('value', origin.href)
+        if (!document.getElementById('dbf_contact_origin').value || document.getElementById('dbf_contact_origin').value == '') {
+            document.getElementById('dbf_contact_origin').setAttribute('value', origin.href)
         }
     })
 
