@@ -59,7 +59,6 @@ class UserHomeController extends AbstractController
             }
         }
 
-
         $callsToProcess = $callRepository->callsToProcessByUser($appUser);
         $callsToProcessForUserInService = $callRepository->callsToProcessByService($appUser->getService());
         $callsToProcess = array_merge($callsToProcessForUserInService, $callsToProcess);
@@ -87,6 +86,7 @@ class UserHomeController extends AbstractController
         ) {
             $isHead = true;
         }
+
 
         return $this->render('cell_home.html.twig', [
             'connectedUser' => $connectedUser,
