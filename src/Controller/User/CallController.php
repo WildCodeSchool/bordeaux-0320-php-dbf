@@ -156,7 +156,7 @@ class CallController extends AbstractController
      */
     public function takeCall(Call $call, TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager, ?User $user = null)
     {
-
+        dd($user);
         if (null === $user) {
             $user = $this->getUser();
         }
