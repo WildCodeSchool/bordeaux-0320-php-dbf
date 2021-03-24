@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 /**
  * @Route("/call")
@@ -148,14 +149,15 @@ class CallController extends AbstractController
     /**
      * @Route("/{id}/take/{user}", name="take_call", methods={"GET"})
      * @param Call $call
+     * @param TokenStorageInterface $tokenStorage
      * @param EntityManagerInterface $entityManager
      * @param User|null $user
      * @return Response
      */
-    public function takeCall(Call $call, EntityManagerInterface $entityManager, ?User $user = null)
+    public function takeCall(Call $call, TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager, ?User $user = null)
     {
         if (null === $user) {
-            $user = $this->getUser();
+            $user = $tokenStorage->getToken()->getUser();
         }
         if (is_null($call->getRecipient())) {
             $call->setService(null);
