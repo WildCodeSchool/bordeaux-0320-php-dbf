@@ -174,6 +174,28 @@ class CallRepository extends ServiceEntityRepository
         ;
     }
 
+    public function newCallsToProcessByService(Service $service, $lastCallId)
+    {
+        return $this->createQueryBuilder('c')
+            ->Where('c.service = :service')
+            ->setParameter('service', $service)
+            ->andWhere('c.id > :lastCall')
+            ->setParameter('lastCall', $lastCallId)
+            ->innerJoin('c.recallPeriod', 'rp')
+            ->addSelect('rp')
+            ->innerJoin('c.subject', 's')
+            ->addSelect('s')
+            ->innerJoin('c.comment', 'co')
+            ->addSelect('co')
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed IS NULL')
+            ->orderBy('c.isUrgent', 'DESC')
+            ->addOrderBy('c.recallDate, c.recallHour', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function lastCallToProcessByUser($recipient)
     {
         return $this->createQueryBuilder('c')
@@ -187,6 +209,21 @@ class CallRepository extends ServiceEntityRepository
             ->addSelect('s')
             ->innerJoin('c.comment', 'co')
             ->addSelect('co')
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed IS NULL')
+            ->orderBy('c.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function lastCallToProcessByService($service)
+    {
+        return $this->createQueryBuilder('c')
+            ->Where('c.recipient IS NULL')
+            ->andWhere('c.service = :service')
+            ->setParameter('service', $service)
             ->andWhere('c.isProcessEnded IS NULL')
             ->andWhere('c.isProcessed IS NULL')
             ->orderBy('c.id', 'DESC')

@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 class UserHomeController extends AbstractController
 {
     const LAST_CALL_ID = 'lastCallId';
+    const LAST_CALL_TO_PROCESS_ID = 'lastCallToProcessId';
     const SESSION      = 'session';
 
     /**
@@ -67,9 +68,14 @@ class UserHomeController extends AbstractController
 
         $lastCall = $callRepository->lastCallToProcessByUser($appUser);
         $this->get(self::SESSION)->set(self::LAST_CALL_ID, 0);
+        $lastCallToProcess = $callRepository->lastCallToProcessByService($appUser->getService());
+        $this->get(self::SESSION)->set(self::LAST_CALL_TO_PROCESS_ID, 0);
 
         if ($lastCall) {
             $this->get(self::SESSION)->set(self::LAST_CALL_ID, $lastCall->getId());
+        }
+        if ($lastCallToProcess) {
+            $this->get(self::SESSION)->set(self::LAST_CALL_TO_PROCESS_ID, $lastCallToProcess->getId());
         }
 
         $isHead = false;
@@ -170,11 +176,20 @@ class UserHomeController extends AbstractController
     {
         $appUser = ($user) ? $user : $this->getUser();
         $lastId = $this->get(self::SESSION)->get(self::LAST_CALL_ID);
+        $lastIdToProcess = $this->get(self::SESSION)->get(self::LAST_CALL_TO_PROCESS_ID);
+
         $newCalls = $callRepository->getNewCallsForUser($appUser, $lastId);
-        if (!empty($newCalls)) {
-            $this->get(self::SESSION)->set(self::LAST_CALL_ID, $newCalls[array_key_last($newCalls)]->getId());
+        $newCallsToTake = $callRepository->newCallsToProcessByService($appUser->getService(), $lastIdToProcess);
+        $totalCalls = array_merge($newCalls, $newCallsToTake);
+        if (!empty($totalCalls)) {
+            if(!empty($newCalls)) {
+                $this->get(self::SESSION)->set(self::LAST_CALL_ID, $newCalls[array_key_last($newCalls)]->getId());
+            }
+            if(!empty($newCallsToTake)) {
+                $this->get(self::SESSION)->set(self::LAST_CALL_TO_PROCESS_ID, $newCallsToTake[array_key_last($newCallsToTake)]->getId());
+            }
             $response = $this->render('call_process/_new_calls.html.twig', [
-                'calls' => $newCalls,
+                'calls' => $totalCalls,
             ]);
         } else {
             $response = new JsonResponse(null, JsonResponse::HTTP_NO_CONTENT);

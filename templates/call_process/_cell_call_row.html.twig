@@ -79,11 +79,15 @@
                             {% endif %}
                     </span>
                     {% else %}
-                        {% if user.canBeRecipient %}
-                            <a href="{{ path('take_call', {'id' : call.id}) }}" class="btn cyan white-text">Prendre en charge</a>
-                            {%  if isHead == true and user != connectedUser%}
-                                <a href="{{ path('take_call', {'id' : call.id, 'user' : user.id}) }}" class="btn orange white-text">Attribuer à {{ user.firstname | slice(0,1) | upper }}. {{ user.lastname | upper }}</a>
+                        {% if user is defined %}
+                            {% if user.canBeRecipient %}
+                                <a href="{{ path('take_call', {'id' : call.id}) }}" class="btn cyan white-text">Prendre en charge</a>
+                                {%  if isHead == true and user != connectedUser%}
+                                    <a href="{{ path('take_call', {'id' : call.id, 'user' : user.id}) }}" class="btn orange white-text">Attribuer à {{ user.firstname | slice(0,1) | upper }}. {{ user.lastname | upper }}</a>
+                                {% endif %}
                             {% endif %}
+                        {% else %}
+                            <a href="{{ path('take_call', {'id' : call.id}) }}" class="btn cyan white-text">Prendre en charge</a>
                         {% endif %}
                         <span class="place-name">
                         <i class="material-icons tiny">home</i>
