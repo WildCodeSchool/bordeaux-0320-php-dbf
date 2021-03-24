@@ -160,7 +160,6 @@ class CallController extends AbstractController
         if (null === $user) {
             $user = $security->getUser();
         }
-        dd($user);
 
         if (is_null($call->getRecipient())) {
             $call->setService(null);
