@@ -23,6 +23,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 /**
@@ -154,11 +155,11 @@ class CallController extends AbstractController
      * @param User|null $user
      * @return Response
      */
-    public function takeCall(Call $call, TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager, ?User $user = null)
+    public function takeCall(Call $call, Security $security, EntityManagerInterface $entityManager, ?User $user = null)
     {
         dd($user);
         if (null === $user) {
-            $user = $this->getUser();
+            $user = $security->getUser();
         }
         dd($user);
 
