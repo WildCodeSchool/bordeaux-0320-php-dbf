@@ -86,8 +86,6 @@ class UserHomeController extends AbstractController
         ) {
             $isHead = true;
         }
-
-
         return $this->render('cell_home.html.twig', [
             'connectedUser' => $connectedUser,
             'user' => $appUser,
