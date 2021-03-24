@@ -158,13 +158,13 @@ class CallController extends AbstractController
     {
         if (null === $user) {
             $user = $tokenStorage->getToken()->getUser();
+            dd($user);
         }
         if (is_null($call->getRecipient())) {
             $call->setService(null);
             $call->setRecipient($user);
             $entityManager->flush();
             $this->addFlash('success', 'Appel pris en charge');
-            dd($call);
             return $this->redirect(
                 $this->generateUrl('user_home') . '#call-' . $call->getId()
             );
