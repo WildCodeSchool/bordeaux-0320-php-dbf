@@ -249,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.setInterval(()=> {
         getNewCalls(html => {
             if(html) {
+                M.toast({html: 'Vous avez un nouvel appel à traiter', classes: 'cyan', displayLength:7000})
                 const listOfCallsZone = document.getElementById('list-calls-to-process')
                 counter.updateTotalCallToProcess();
                 //TODO Insert row at the good place not a the end

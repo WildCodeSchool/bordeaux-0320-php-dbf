@@ -180,6 +180,7 @@ class UserHomeController extends AbstractController
         $newCallsToTake = $callRepository->newCallsToProcessByService($appUser->getService(), $lastIdToProcess);
         $totalCalls = array_merge($newCalls, $newCallsToTake);
         if (!empty($totalCalls)) {
+
             if(!empty($newCalls)) {
                 $this->get(self::SESSION)->set(self::LAST_CALL_ID, $newCalls[array_key_last($newCalls)]->getId());
             }
