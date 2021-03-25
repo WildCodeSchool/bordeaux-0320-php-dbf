@@ -74,7 +74,7 @@ class CallRepository extends ServiceEntityRepository
             ->andWhere('c.createdAt >= :limitDate')
             ->setParameter('limitDate', $dateLimit)
             ->andWhere('c.isProcessEnded IS NULL')
-            ->orderBy('c.id', 'ASC')
+            ->orderBy('c.id', 'DESC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
