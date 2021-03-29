@@ -32,9 +32,11 @@
     <div class="container contactform-page">
         <div class="row">
             <div class="col s12 l6 offset-l3">
+                <!--
                 <div class="col s12 mgb20">
                     <h4 class="grey-text">Nous contacter</h4>
                 </div>
+                -->
                 <span class="alert-form red white-text hide" id="form-alert">Merci de renseigner tous les champs avant de choisir un destinataire</span>
                 <div class="col s12">
                     {% for type, messages in app.session.flashbag.all() %}
@@ -140,7 +142,7 @@
                 <div class="col s1 mgt30"></div>
                 <div class="col s11 mgt15">
                     <button class="btn btn-large green " style="width: 100%;"
-                            id="submit_landing_form">{{ button_label|default('envoyer') }}</button>
+                            id="submit_landing_form_contacts">{{ button_label|default('envoyer') }}</button>
                 </div>
                 <div class="col s11 m8 hide mgt15" id="landing_loader">
                     <div class="progress grey lighten-3">
@@ -149,7 +151,7 @@
                 </div>
                 {{ form_end(form) }}
                 {% endif %}
-
+                <!--
                 <div class="row">
                     <p class="verysmalltext grey-text text-darken-3 col s11 offset-l1">
                         Les informations communiquées par ce formulaire sont utilisées afin de traiter votre demande.
@@ -158,6 +160,7 @@
                         reportez-vous à la notice en cliquant <a href="https://www.dbf-autos.fr/notice-des-formulaires-de-rendez-vous-atelier/">ici</a>.
                     </p>
                 </div>
+                -->
             </div>
 
         </div>
