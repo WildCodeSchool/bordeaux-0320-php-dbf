@@ -75,7 +75,7 @@
                         <i class="material-icons tiny">settings</i>
                         {{ call.recipient.service.name }}
                             {% if call.recipient %}
-                                <a class="grey darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
+                                <a class="orange darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Transférer</a>
                             {% endif %}
                     </span>
                     {% else %}
@@ -100,7 +100,7 @@
                         <i class="material-icons tiny">settings</i>
                         {{ call.service.name }}
                             {% if call.recipient %}
-                                <a class="grey darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">transférer</a>
+                                <a class="orange darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Transférer</a>
                             {% endif %}
                     </span>
                     {% endif %}
@@ -192,7 +192,7 @@
                 </div>
                 <div class="call-cal-action">
                     {% if call.recipient is not null %}
-                    <a class="{% if call.isUrgent %}urgent{% else %} grey darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
+                    <a class="{% if call.isUrgent %}urgent{% else %} green darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
                {% endif %}
                 </div>
             </div>
