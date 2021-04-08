@@ -5,6 +5,7 @@
     <tr>
         <th>Id</th>
         <th>Service</th>
+        <th>Marque</th>
         <th>Concession</th>
         <th class="center-align">Modifier</th>
         <th class="center-align">Supprimer</th>
@@ -15,6 +16,7 @@
         <tr id="service-line-{{ service.id }}">
             <td>{{ service.id }}</td>
             <td>{{ service.name }}</td>
+            <td>{{ service.brand }}</td>
             <td> {{ service.concession.name }}</td>
             <td class="center-align">
                 <a href="#" class="edit-service-button" data-target="{{ service.id }}"><i class="material-icons">edit</i></a>

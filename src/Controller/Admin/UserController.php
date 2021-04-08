@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\HeadType;
 use App\Form\UserEditType;
 use App\Form\UserType;
+use App\Repository\CallRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
@@ -125,13 +126,16 @@ class UserController extends AbstractController
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
      * @param Request $request
      * @param User $user
+     * @param CallRepository $callRepository
      * @return Response
      */
     public function delete(
         Request $request,
-        User $user
+        User $user,
+        CallRepository $callRepository
     ): Response {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+            // Todo Dispatch event to change Recipient in call
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
