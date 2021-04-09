@@ -8,10 +8,9 @@
 /backup
 .idea
 /.idea
-.DS_store
-/.DS_store
 .DS_Store
 /.DS_Store
+backup
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
@@ -32,5 +31,3 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
-.DS_Store
-/.DS_Store/
