@@ -233,6 +233,7 @@ class CallRepository extends ServiceEntityRepository
             ;
     }
 
+
     public function callsInProcessByUser($recipient)
     {
         return $this->createQueryBuilder('c')
@@ -475,6 +476,16 @@ class CallRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
         return $result['total'];
+    }
+
+    public function removeCallsForUser($user)
+    {
+        return $this->createQueryBuilder('c')
+            ->delete()
+            ->where('c.recipient = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
     }
 
 

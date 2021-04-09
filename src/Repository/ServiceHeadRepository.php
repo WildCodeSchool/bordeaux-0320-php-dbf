@@ -77,4 +77,14 @@ class ServiceHeadRepository extends ServiceEntityRepository
             ->getResult();
         return ($result) ? true : false;
     }
+
+    public function removeResponsabilitiesForUser($user)
+    {
+        return $this->createQueryBuilder('sh')
+            ->delete()
+            ->where('sh.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
 }

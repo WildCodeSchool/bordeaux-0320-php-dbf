@@ -55,4 +55,14 @@ class ConcessionHeadRepository extends ServiceEntityRepository
             ->getResult();
         return ($result) ? true : false;
     }
+
+    public function removeResponsabilitiesForUser($user)
+    {
+        return $this->createQueryBuilder('ch')
+            ->delete()
+            ->where('ch.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
 }
