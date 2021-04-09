@@ -73,7 +73,7 @@ class ServiceHeadController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($serviceHead);
             $entityManager->flush();
-            $this->addFlash('success', 'Responsabilité ajoutée');
+            $this->addFlash('success', 'Responsabilité de service ajoutée');
 
             return $this->redirectToRoute(self::SERVICE_HEAD_NEW);
         }
@@ -94,7 +94,8 @@ class ServiceHeadController extends AbstractController
             }
             $entityManager->persist($concessionHead);
             $entityManager->flush();
-            $this->addFlash('success', 'Responsabilité ajoutée');
+            $this->addFlash('success', 'Responsabilité de concession ajoutée');
+            $this->addFlash('success', 'Responsabilités des services de la concession ajoutées');
             return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
 
@@ -121,7 +122,9 @@ class ServiceHeadController extends AbstractController
             }
             $entityManager->persist($cityHead);
             $entityManager->flush();
-            $this->addFlash('success', 'Responsabilité ajoutée');
+            $this->addFlash('success', 'Responsabilité de la plaque ajoutée');
+            $this->addFlash('success', 'Responsabilités des concessions la plaque ajoutées');
+            $this->addFlash('success', 'Responsabilités des services des concessions la plaque ajoutées');
 
             return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
         }
