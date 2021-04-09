@@ -61,7 +61,13 @@ class ServiceHeadRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('sh')
             ->innerJoin('sh.user', 'u')
+            ->innerJoin('sh.service', 'se')
+            ->innerJoin('se.concession', 'co')
+            ->innerJoin('co.town', 'ci')
             ->orderBy('u.lastname', 'ASC')
+            ->addOrderBy('ci.name', 'ASC')
+            ->addOrderBy('co.name', 'ASC')
+            ->addOrderBy('se.name', 'ASC')
             ->getQuery()
             ->getResult();
     }

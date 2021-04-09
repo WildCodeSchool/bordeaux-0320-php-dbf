@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Concession;
 use App\Form\ConcessionType;
 use App\Repository\ConcessionRepository;
+use App\Service\HeadManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,7 +32,7 @@ class ConcessionController extends AbstractController
     /**
      * @Route("/new", name="concession_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, HeadManager $headManager): Response
     {
         $concession = new Concession();
         $formConcession= $this->createForm(ConcessionType::class, $concession);
@@ -41,6 +42,9 @@ class ConcessionController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($concession);
             $entityManager->flush();
+
+            $headManager->addConcessionHeads($concession);
+
             $this->addFlash("success", "Vous avez bien ajouté une concession");
         } else {
             $errors['name'] = $formConcession['name']->getErrors();

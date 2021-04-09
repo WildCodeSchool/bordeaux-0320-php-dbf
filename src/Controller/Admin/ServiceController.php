@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Service;
 use App\Form\ServiceType;
 use App\Repository\ServiceRepository;
+use App\Service\HeadManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,9 +34,10 @@ class ServiceController extends AbstractController
     /**
      * @Route("/new", name="service_new", methods={"GET","POST"})
      * @param Request $request
+     * @param HeadManager $headManager
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, HeadManager $headManager): Response
     {
         $service = new Service();
         $formService = $this->createForm(ServiceType::class, $service);
@@ -45,6 +47,9 @@ class ServiceController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($service);
             $entityManager->flush();
+
+            $headManager->addServiceHeads($service);
+
             $this->addFlash('success', 'Vous avez bien ajouté un service');
         } else {
             $errors['name'] = $formService['name']->getErrors();

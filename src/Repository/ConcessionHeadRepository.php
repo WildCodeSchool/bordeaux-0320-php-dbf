@@ -39,7 +39,11 @@ class ConcessionHeadRepository extends ServiceEntityRepository
     public function findAllOrderByName() {
         return $this->createQueryBuilder('ch')
             ->innerJoin('ch.user', 'u')
+            ->innerJoin('ch.concession', 'co')
+            ->innerJoin('co.town', 'ci')
             ->orderBy('u.lastname', 'ASC')
+            ->addOrderBy('ci.name', 'ASC')
+            ->addOrderBy('co.name', 'ASC')
             ->getQuery()
             ->getResult();
     }

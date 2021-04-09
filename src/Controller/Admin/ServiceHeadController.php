@@ -57,6 +57,9 @@ class ServiceHeadController extends AbstractController
      * @param CityRepository $cityRepository
      * @param ConcessionRepository $concessionRepository
      * @param UserRepository $userRepository
+     * @param ServiceHeadRepository $serviceHeadRepository
+     * @param ConcessionHeadRepository $concessionHeadRepository
+     * @param CityHeadRepository $cityHeadRepository
      * @return Response
      */
     public function new(
@@ -64,17 +67,21 @@ class ServiceHeadController extends AbstractController
         EntityManagerInterface $entityManager,
         CityRepository $cityRepository,
         ConcessionRepository $concessionRepository,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        ServiceHeadRepository $serviceHeadRepository,
+        ConcessionHeadRepository $concessionHeadRepository,
+        CityHeadRepository $cityHeadRepository
     ): Response {
 
         $serviceHead = new ServiceHead();
         $form = $this->createForm(ServiceHeadType::class, $serviceHead);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($serviceHead);
-            $entityManager->flush();
-            $this->addFlash('success', 'Responsabilité de service ajoutée');
-
+            if(!$serviceHeadRepository->isServiceHead($serviceHead->getUser(), $serviceHead->getService())) {
+                $entityManager->persist($serviceHead);
+                $entityManager->flush();
+                $this->addFlash('success', 'Responsabilité de service ajoutée');
+            }
             return $this->redirectToRoute(self::SERVICE_HEAD_NEW);
         }
 
@@ -87,13 +94,17 @@ class ServiceHeadController extends AbstractController
                 ->findOneById($request->request->get(self::CONCESSION_HEAD)['concession']);
             $services = $concession->getServices();
             for ($i=0; $i<count($services); $i++) {
-                $serviceHead = new ServiceHead();
-                $serviceHead->setUser($user);
-                $serviceHead->setService($services[$i]);
-                $entityManager->persist($serviceHead);
+                if(!$serviceHeadRepository->isServiceHead($user, $services[$i])) {
+                    $serviceHead = new ServiceHead();
+                    $serviceHead->setUser($user);
+                    $serviceHead->setService($services[$i]);
+                    $entityManager->persist($serviceHead);
+                }
             }
-            $entityManager->persist($concessionHead);
-            $entityManager->flush();
+            if(!$concessionHeadRepository->isConcessionHead($user, $concessionHead->getConcession())) {
+                $entityManager->persist($concessionHead);
+                $entityManager->flush();
+            }
             $this->addFlash('success', 'Responsabilité de concession ajoutée');
             $this->addFlash('success', 'Responsabilités des services de la concession ajoutées');
             return $this->redirectToRoute(self::SERVICE_HEAD_INDEX);
@@ -107,21 +118,27 @@ class ServiceHeadController extends AbstractController
             $user = $userRepository->findOneById($request->request->get(self::CITY_HEAD)['user']);
             $concessions = $city->getConcessions();
             for ($i = 0; $i< count($concessions); $i++) {
-                $concessionHead = new ConcessionHead();
-                $concessionHead->setUser($user);
-                $concessionHead->setConcession($concessions[$i]);
-                $entityManager->persist($concessionHead);
+                if(!$concessionHeadRepository->isConcessionHead($user, $concessions[$i])) {
+                    $concessionHead = new ConcessionHead();
+                    $concessionHead->setUser($user);
+                    $concessionHead->setConcession($concessions[$i]);
+                    $entityManager->persist($concessionHead);
+                }
 
                 $services = $concessions[$i]->getServices();
                 for ($j=0; $j<count($services); $j++) {
-                    $serviceHead = new ServiceHead();
-                    $serviceHead->setUser($user);
-                    $serviceHead->setService($services[$j]);
-                    $entityManager->persist($serviceHead);
+                    if(!$serviceHeadRepository->isServiceHead($user, $services[$j])) {
+                        $serviceHead = new ServiceHead();
+                        $serviceHead->setUser($user);
+                        $serviceHead->setService($services[$j]);
+                        $entityManager->persist($serviceHead);
+                    }
                 }
             }
-            $entityManager->persist($cityHead);
-            $entityManager->flush();
+            if (!$cityHeadRepository->isCityHead($user, $cityHead->getCity())) {
+                $entityManager->persist($cityHead);
+                $entityManager->flush();
+            }
             $this->addFlash('success', 'Responsabilité de la plaque ajoutée');
             $this->addFlash('success', 'Responsabilités des concessions la plaque ajoutées');
             $this->addFlash('success', 'Responsabilités des services des concessions la plaque ajoutées');

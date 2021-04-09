@@ -25,7 +25,9 @@ class CityHeadRepository extends ServiceEntityRepository
     public function findAllOrderByName() {
         return $this->createQueryBuilder('ch')
             ->innerJoin('ch.user', 'u')
+            ->innerJoin('ch.city', 'ci')
             ->orderBy('u.lastname', 'ASC')
+            ->orderBy('ci.name', 'ASC')
             ->getQuery()
             ->getResult();
     }
