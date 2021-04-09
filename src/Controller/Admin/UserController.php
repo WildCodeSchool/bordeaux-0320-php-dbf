@@ -136,7 +136,7 @@ class UserController extends AbstractController
         UserDeletor $userDeletor
     ): Response {
         if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
-            // Todo Dispatch event to change Recipient in call
+
             $userDeletor->processDeleting($user);
 
             $entityManager = $this->getDoctrine()->getManager();
