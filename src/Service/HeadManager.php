@@ -19,20 +19,30 @@ class HeadManager
      * @var EntityManagerInterface
      */
     private EntityManagerInterface $manager;
+    /**
+     * @var ServiceHeadRepository
+     */
+    private ServiceHeadRepository $serviceHeadRepository;
+    /**
+     * @var ConcessionHeadRepository
+     */
+    private ConcessionHeadRepository $concessionHeadRepository;
 
-    public function __construct(EntityManagerInterface $manager)
+    public function __construct(EntityManagerInterface $manager,  ServiceHeadRepository $serviceHeadRepository, ConcessionHeadRepository $concessionHeadRepository)
     {
         $this->manager = $manager;
+        $this->serviceHeadRepository = $serviceHeadRepository;
+        $this->concessionHeadRepository = $concessionHeadRepository;
     }
 
-    public function addServiceHeads(Service $service, ServiceHeadRepository $serviceHeadRepository)
+    public function addServiceHeads(Service $service)
     {
         $concession      = $service->getConcession();
         $concessionHeads = $concession->getConcessionHeads();
 
         foreach ($concessionHeads as $concessionHead)
         {
-            if(!$serviceHeadRepository->isServiceHead($concessionHead->getUser(), $service)) {
+            if(!$this->serviceHeadRepository->isServiceHead($concessionHead->getUser(), $service)) {
                 $serviceHead = new ServiceHead();
                 $serviceHead->setUser($concessionHead->getUser());
                 $serviceHead->setService($service);
@@ -42,14 +52,14 @@ class HeadManager
         $this->manager->flush();
     }
 
-    public function addConcessionHeads(Concession $concession, ConcessionHeadRepository $concessionHeadRepository)
+    public function addConcessionHeads(Concession $concession)
     {
         $city      = $concession->getTown();
         $cityHeads = $city->getCityHeads();
 
         foreach ($cityHeads as $cityHead)
         {
-            if(!$concessionHeadRepository->isConcessionHead($cityHead->getUser(), $concession)) {
+            if(!$this->concessionHeadRepository->isConcessionHead($cityHead->getUser(), $concession)) {
                 $concessionHead = new ConcessionHead();
                 $concessionHead->setUser($cityHead->getUser());
                 $concessionHead->setConcession($concession);

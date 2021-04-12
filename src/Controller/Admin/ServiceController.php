@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Service;
 use App\Form\ServiceType;
+use App\Repository\ServiceHeadRepository;
 use App\Repository\ServiceRepository;
 use App\Service\HeadManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
