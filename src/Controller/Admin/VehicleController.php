@@ -4,9 +4,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\Vehicle;
 use App\Form\VehicleType;
+use App\Repository\CallRepository;
 use App\Repository\VehicleRepository;
+use PHPUnit\Util\Json;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -104,5 +107,31 @@ class VehicleController extends AbstractController
         }
 
         return $this->redirectToRoute(self::VEHICLE_INDEX);
+    }
+
+    /**
+     * @Route("/delete/{id}", name="vehicle_ajax_delete", methods={"POST"})
+     * @param Vehicle $vehicle
+     * @param CallRepository $callRepository
+     * @return Response
+     */
+    public function deleteVehicle(Vehicle $vehicle, CallRepository $callRepository): Response
+    {
+            $response = new JsonResponse();
+            $entityManager = $this->getDoctrine()->getManager();
+            try {
+                $calls = $callRepository->getCallsForVehicle($vehicle);
+                foreach ($calls as $call) {
+                    $entityManager->remove($call);
+                    $entityManager->flush();
+                }
+                $entityManager->remove($vehicle);
+                $entityManager->flush();
+                $response->setStatusCode(Response::HTTP_OK);
+            } catch(\Exception $e) {
+                $response->setStatusCode(Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+
+            return $response;
     }
 }

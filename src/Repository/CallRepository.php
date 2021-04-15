@@ -296,6 +296,16 @@ class CallRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getCallsForVehicle($vehicle)
+    {
+        return $this->createQueryBuilder('c')
+            ->Where('c.vehicle = :vehicle')
+            ->setParameter('vehicle', $vehicle)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     public function findSearch(SearchData $searchData): array
     {

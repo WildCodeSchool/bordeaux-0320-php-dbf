@@ -95,6 +95,31 @@ const alertForCalls = (data) => {
     }
 }
 
+const initVehicleDeletors = () => {
+    const deletors = document.getElementsByClassName('delete-vehicle')
+
+    for (let i = 0; i < deletors.length; i++) {
+        deletors[i].addEventListener('click', (e) => {
+            e.preventDefault()
+            const vehicleId = deletors[i].dataset.vehicle
+
+            fetch('/vehicle/delete/' + vehicleId, {
+                method: 'POST'
+            })
+                .then(response => {
+                    if (response.status === 200) {
+                        document.getElementById('vehicleRow' + vehicleId).remove()
+                        M.toast({html: 'Le véhicule a été supprimé', classes: 'cyan'})
+                        return;
+                    }
+                    M.toast({html: 'Impossible de supprimer ce véhicule', classes: 'red'})
+                    return;
+                })
+            })
+        }
+    }
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const labels = document.getElementsByTagName('label');
     for (let i = 0; i < labels.length; i++) {
@@ -127,16 +152,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     } else {
                         tableForVehicles.innerHTML = '';
                         data.client.vehicles.forEach((vehicle) => {
-                            let html = '<tr>' +
+                            let html = '<tr id="vehicleRow' + vehicle.vehicle_id + '">' +
                                 '<td>' + vehicle.vehicle_immatriculation + '</td>' +
                                 '<td>' + vehicle.vehicle_chassis + '</td>' +
                                 '<td><a class="btn light-blue valid-vehicle modal-close" data-immatriculation="' + vehicle.vehicle_immatriculation + '"' +
                                 ' data-chassis="' + vehicle.vehicle_chassis + '" data-id="' + vehicle.vehicle_id + '" data-hascome="' + vehicle.vehicle_hasCome + '">valider</a></td>' +
-                                '<td><a class="#"><i class="material-icons red-text">delete</i></a></td>' +
+                                '<td><a class="delete-vehicle" data-vehicle="' + vehicle.vehicle_id + '" href="#"><i class="material-icons red-text">delete</i></a></td>' +
                                 '</tr>'
                             tableForVehicles.innerHTML = tableForVehicles.innerHTML + html
                             initVehicleAdders(data);
                         })
+                        initVehicleDeletors();
                         modalForVehicles.open()
                     }
                 }
