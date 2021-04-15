@@ -39,6 +39,11 @@ class UserEditType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $user = $options['data'];
+        $role = 'ROLE_COLLABORATOR';
+        if(in_array('ROLE_ADMIN', $user->getRoles())) {
+            $role = 'ROLE_ADMIN';
+        };
         $builder
             ->add('email', EmailType::class)
             ->add('firstname', TextType::class)
@@ -51,6 +56,7 @@ class UserEditType extends AbstractType
                     'Collaborateur' => 'ROLE_COLLABORATOR',
                     'Administrateur' => 'ROLE_ADMIN',
                 ],
+                'data' => $role,
                 'mapped'=>false
             ])
             ->add('service', EntityType::class, [
