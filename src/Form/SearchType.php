@@ -26,6 +26,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Date;
 
 class SearchType extends AbstractType
 {
@@ -148,6 +149,7 @@ class SearchType extends AbstractType
                 'required'=>false,
                 'label'=>'Date du',
                 'widget' => 'single_text',
+                'data'  => $this->getCurrentMonth()
             ])
             ->add('dateTo', DateType::class, [
                 'required'=>false,
@@ -157,6 +159,13 @@ class SearchType extends AbstractType
             ])
 
         ;
+    }
+
+    private function getCurrentMonth()
+    {
+        $date = new DateTime();
+        $current = $date->format('Y-m');
+        return new DateTime($current . '-01T00:00:00');
     }
 
     public function getAuthors()
