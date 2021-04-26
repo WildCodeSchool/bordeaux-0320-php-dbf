@@ -112,7 +112,11 @@ class UserController extends AbstractController
         $form = $this->createForm(UserEditType::class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $manager = $this->getDoctrine()->getManager();
+            $reqData =$request->request->all();
+            $user->setRoles([$reqData['user_edit']['roles']]);
+            $manager->persist($user);
+            $manager->flush();
             $this->addFlash(self::SUCCESS, 'Utilisateur modifié ');
             return $this->redirectToRoute(self::USER_INDEX);
         }
