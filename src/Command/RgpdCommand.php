@@ -106,7 +106,12 @@ class RgpdCommand extends Command
             $clients = $this->clientRepository->getOldClients();
             foreach ($clients as $client) {
                 $client = $this->clientRepository->findOneById($client['id']);
-                $this->manager->remove($client);
+                $this->deleteVehiculesForClient($client);
+                if($this->callRepository->findBy([
+                        'client' => $client
+                    ]) === null) {
+                    $this->manager->remove($client);
+                }
             }
             $this->manager->flush();
             $nbClients = count($clients);
@@ -116,6 +121,23 @@ class RgpdCommand extends Command
         $this->mailer->send($results, $date);
 
         return self::SUCCESS;
+    }
+
+    private function deleteVehiculesForClient($client)
+    {
+        $vehicles = $this->vehicleRepository->findBy([
+            'client' => $client
+        ]);
+        if ($vehicles) {
+            foreach ($vehicles as $vehicle) {
+                if($this->callRepository->findBy([
+                    'vehicle' => $vehicle
+                ]) === null) {
+                    $this->manager->remove($vehicle);
+                }
+            }
+            $this->manager->flush();
+        }
     }
 
 }
