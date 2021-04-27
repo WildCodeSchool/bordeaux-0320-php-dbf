@@ -154,9 +154,10 @@ class LandingType extends AbstractType
 
     private function getConcessions($brand, $city) {
         $concessions = $this->concessionRepository->findBy([
-            'brand' => $brand,
+            'brand' => [$brand, 'Audi et Volkswagen'],
             'town'  => $city
         ]);
+
         $choices = [];
         foreach ($concessions as $concession) {
             $choices[ucfirst($brand) . ' DBF - ' . $city->getName() . ' ' . $concession->getName()] = $concession;

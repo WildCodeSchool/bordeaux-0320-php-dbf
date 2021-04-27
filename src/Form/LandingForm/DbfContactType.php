@@ -26,10 +26,8 @@ use \DateTime;
 class DbfContactType extends AbstractType
 {
 
-    private $concessionRepository;
-    /**
-     * @var ServiceRepository
-     */
+    private ConcessionRepository $concessionRepository;
+
     private ServiceRepository $serviceRepository;
 
     public function __construct(ConcessionRepository $concessionRepository, ServiceRepository $serviceRepository)
