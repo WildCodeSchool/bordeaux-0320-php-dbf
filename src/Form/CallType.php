@@ -110,9 +110,8 @@ class CallType extends AbstractType
 
         if (isset($data->City)) {
             $city = $this->cityRepository->findOneById($data->City);
-            if($city->getIdentifier() !== 'PHONECITY') {
-                $cityId = $data->City;
-            }
+            $cityId = $data->City;
+
             if (!$city->isPhoneCity()) {
                 $builder->
                 add('concession', ChoiceType::class, [

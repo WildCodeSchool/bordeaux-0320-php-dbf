@@ -21,12 +21,11 @@ class SubjectRepository extends ServiceEntityRepository
 
     public function getAllNotHidden($cityId)
     {
-        return $this->createQueryBuilder('s')
+        $qb = $this->createQueryBuilder('s');
+        return $qb
             ->where('s.city = :city')
             ->setParameter('city', $cityId)
-            ->andWhere('s.isHidden IS NULL')
-            ->orWhere('s.isHidden = :option')
-            ->setParameter('option', 0)
+            ->andWhere('s.isHidden is NULL OR s.isHidden = 0')
             ->getQuery()
             ->getResult();
     }
