@@ -9,6 +9,7 @@ use App\Entity\Service;
 use App\Entity\Subject;
 use App\Entity\User;
 use App\Form\Transformers\ServiceTransformer;
+use App\Form\Transformers\SubjectTransformer;
 use App\Repository\CityRepository;
 use App\Repository\CommentRepository;
 use App\Repository\ConcessionRepository;
@@ -36,6 +37,18 @@ class CallType extends AbstractType
     private $serviceRepository;
     private $userRepository;
     private $security;
+    /**
+     * @var SubjectRepository
+     */
+    private SubjectRepository $subjectRepository;
+    /**
+     * @var ServiceTransformer
+     */
+    private ServiceTransformer $transformer;
+    /**
+     * @var SubjectTransformer
+     */
+    private SubjectTransformer $subjectTransformer;
 
     public function __construct(
         CityRepository $cityRepository,
@@ -43,7 +56,9 @@ class CallType extends AbstractType
         ServiceRepository $serviceRepository,
         UserRepository $userRepository,
         Security $security,
-        ServiceTransformer $serviceTransformer
+        ServiceTransformer $serviceTransformer,
+        SubjectTransformer $subjectTransformer,
+        SubjectRepository $subjectRepository
     ) {
         $this->cityRepository       = $cityRepository;
         $this->concessionRepository = $concessionRepository;
@@ -51,6 +66,8 @@ class CallType extends AbstractType
         $this->userRepository       = $userRepository;
         $this->security             = $security;
         $this->transformer          = $serviceTransformer;
+        $this->subjectTransformer   = $subjectTransformer;
+        $this->subjectRepository    = $subjectRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -61,6 +78,10 @@ class CallType extends AbstractType
             $data = json_decode($post);
         }
         $user = $this->security->getUser();
+
+        $cityId = $user->getService()->getConcession()->getTown()->getId();
+        $userCityId = $cityId;
+
         $builder
             ->add('freeComment', TextType::class, [
                 'label' => 'Commentaire éventuel',
@@ -89,6 +110,9 @@ class CallType extends AbstractType
 
         if (isset($data->City)) {
             $city = $this->cityRepository->findOneById($data->City);
+            if($city->getIdentifier() !== 'PHONECITY') {
+                $cityId = $data->City;
+            }
             if (!$city->isPhoneCity()) {
                 $builder->
                 add('concession', ChoiceType::class, [
@@ -145,14 +169,9 @@ class CallType extends AbstractType
                 'mapped'  => false
             ])
 
-            ->add('subject', EntityType::class, [
-                'class' => Subject::class,
-                'choice_label' => 'name',
-                'by_reference' => false,
+            ->add('subject', ChoiceType::class, [
                 'label' => 'Motif',
-                'query_builder' => function(SubjectRepository $repo) {
-                    return $repo->getAllNotHidden();
-                }
+                'choices' => $this->getSubjects($cityId)
             ])
             ->add('comment', EntityType::class, [
                 'class' => Comment::class,
@@ -183,6 +202,17 @@ class CallType extends AbstractType
             ])
         ;
         $builder->get('service_choice')->resetViewTransformers();
+        $builder->get('subject')->addModelTransformer($this->subjectTransformer);
+    }
+
+    public function getSubjects(int $cityId)
+    {
+        $subjects = $this->subjectRepository->getAllNotHidden($cityId);
+        $choices = [];
+        foreach ($subjects as $subject) {
+            $choices[$subject->getName()] = $subject->getId();
+        }
+        return $choices;
     }
 
     public function getAllCities()

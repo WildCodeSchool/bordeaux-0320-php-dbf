@@ -19,11 +19,15 @@ class SubjectRepository extends ServiceEntityRepository
         parent::__construct($registry, Subject::class);
     }
 
-    public function getAllNotHidden()
+    public function getAllNotHidden($cityId)
     {
         return $this->createQueryBuilder('s')
-            ->where('s.isHidden IS NULL')
+            ->where('s.city = :city')
+            ->setParameter('city', $cityId)
+            ->andWhere('s.isHidden IS NULL')
             ->orWhere('s.isHidden = :option')
-            ->setParameter('option', 0);
+            ->setParameter('option', 0)
+            ->getQuery()
+            ->getResult();
     }
 }

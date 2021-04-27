@@ -33,7 +33,6 @@ export class CallFormValidator {
     }
 
     checkFields() {
-        console.log(this.phoneCityId, this.cityField.value);
         this.recipientField = document.getElementById('call_recipient_choice');
 
         if (this.phoneField.value == '') {

@@ -31,6 +31,7 @@ class recipientsAjaxTool {
         this.serviceSelector      = document.getElementById(this.serviceSelectorId);
         this.recipientSelector    = document.getElementById(this.recipientSelectorId);
         this.concessionZone       = document.getElementById(this.concessionZoneId);
+        this.subjectsZone         = document.getElementById('subjectsZone');
         this.serviceZone          = document.getElementById(this.serviceZoneId);
         this.recipientZone        = document.getElementById(this.recipientZoneId);
         this.serviceField         = document.getElementById(this.serviceFieldId);
@@ -78,6 +79,7 @@ class recipientsAjaxTool {
                     if (this.citySelector.value != this.phoneCityId) {
                         this.sendData(postdata, (data) => {
                             this.concessionZone.innerHTML = '<small class="grey-text">Choisir une concession</small><br>' + this.getHtmlElement(data, 'call_concession');
+                            this.subjectsZone.innerHTML   = this.getHtmlElement(data, 'call_subject')
                             this.serviceZone.innerHTML = "";
                             this.recipientZone.innerHTML = "";
                             this.init(postdata)
@@ -143,7 +145,6 @@ class recipientsAjaxTool {
             this.recipientSelector.addEventListener('change', () => {
                 this.selectValueInSelect(this.recipientField, this.recipientSelector.value)
                 this.recipientField.value = this.recipientSelector.value;
-                console.log(this.recipientField)
 
             })
         }
