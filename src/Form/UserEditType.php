@@ -59,6 +59,11 @@ class UserEditType extends AbstractType
                 'data' => $role,
                 'mapped'=>false
             ])
+            ->add('service', ChoiceType::class, [
+                'label' => 'Service',
+                'choices' => $this->getAllServices()
+            ])
+            /*
             ->add('service', EntityType::class, [
                 'class' => Service::class,
                 'choice_label' => function ($service) {
@@ -66,6 +71,7 @@ class UserEditType extends AbstractType
                 }
 
             ])
+            */
             ->add('canBeRecipient');
     }
 
@@ -75,5 +81,48 @@ class UserEditType extends AbstractType
             'data_class' => User::class,
             'allow_extra_fields' => true,
         ]);
+    }
+
+    public function getAllServices()
+    {
+        $serviceList = [];
+        $services = $this->serviceRepository->findBy([], [
+            'name' => 'ASC'
+        ]);
+        /**
+         * Generate an array like this :
+         * "cityName" => [
+         *      "concession1" => [
+         *          obj Service1,
+         *          obj Service2,
+         *          ...
+         *      ],
+         *      ...
+         * ],
+         * ...
+         *
+         */
+        foreach ($services as $service) {
+            $serviceList[$service->getConcession()->getTown()->getName()][$service->getConcession()->getName()][] = $service;
+        }
+        // Ordering cities
+        ksort($serviceList);
+
+        // Ordering concessions
+        foreach ($serviceList as $city => $concessions) {
+            ksort($serviceList[$city]);
+        }
+
+        // Creating the choices array
+        $servicesChoices = [];
+        foreach ($serviceList as $city => $concessions) {
+            foreach ($concessions as $concession => $services) {
+                foreach ($services as $service) {
+                    $servicesChoices[$service->getConcessionAndCityFromService()] = $service;
+                }
+            }
+        }
+        return $servicesChoices;
+
     }
 }
