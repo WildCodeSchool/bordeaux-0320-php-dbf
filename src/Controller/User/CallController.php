@@ -5,6 +5,7 @@ namespace App\Controller\User;
 use App\Entity\Call;
 use App\Entity\User;
 use App\Events;
+use App\Repository\SubjectRepository;
 use App\Service\CallTreatmentDataMaker;
 use App\Entity\RecallPeriod;
 use App\Form\CallType;
@@ -66,7 +67,8 @@ class CallController extends AbstractController
         CallRepository $callRepository,
         CallTreatmentDataMaker $callTreatmentDataMaker,
         EventDispatcherInterface $eventDispatcher,
-        ServiceRepository $serviceRepository
+        ServiceRepository $serviceRepository,
+        SubjectRepository $subjectRepository
     ): Response {
         $author = $this->getUser();
         $addedCalls = $callRepository->findCallsAddedToday($author);
@@ -78,12 +80,11 @@ class CallController extends AbstractController
 
         $call          = new Call();
         $form          = $this->createForm(CallType::class, $call);
-
         $form->handleRequest($request);
 
-        //dd($form->isValid());
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $subject = $subjectRepository->findOneById($request->request->all()['call']['subject']);
+            $call->setSubject($subject);
             $call->setAuthor($author);
             $call->setIsUrgent(false);
             if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {

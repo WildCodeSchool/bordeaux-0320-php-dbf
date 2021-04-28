@@ -142,12 +142,7 @@ class CallType extends AbstractType
                 'mapped'  => false
             ]);
         }
-        $builder->add('subject', EntityType::class, [
-            'class' => Subject::class,
-            'choice_label' => 'name',
-            'by_reference' => false,
-            'label' => 'Motif',
-        ])
+        $builder
             ->add('comment', EntityType::class, [
                 'class' => Comment::class,
                 'choice_label' => 'name',
@@ -170,6 +165,7 @@ class CallType extends AbstractType
 
             ->add('subject', ChoiceType::class, [
                 'label' => 'Motif',
+                'mapped' => false,
                 'choices' => $this->getSubjects($cityId)
             ])
             ->add('comment', EntityType::class, [
@@ -200,8 +196,9 @@ class CallType extends AbstractType
                 'by_reference' => false,
             ])
         ;
+        $builder->get('subject')->resetViewTransformers();
         $builder->get('service_choice')->resetViewTransformers();
-        $builder->get('subject')->addModelTransformer($this->subjectTransformer);
+        $builder->get('concession')->resetViewTransformers();
     }
 
     public function getSubjects(int $cityId)

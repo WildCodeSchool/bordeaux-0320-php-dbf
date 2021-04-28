@@ -22,37 +22,26 @@ class SubjectTransformer implements DataTransformerInterface
     /**
      * @inheritDoc
      */
-    public function transform($subject)
+    public function transform($subjectId)
     {
-
-        if (null === $subject) {
+        //dd($subjectId);
+        if (null === $subjectId) {
 
             return '';
         }
-        return $subject->getId();
+        return $subjectId;
     }
 
     /**
      * @inheritDoc
      */
-    public function reverseTransform($subjectId)
+    public function reverseTransform($subject)
     {
         // no issue number? It's optional, so that's ok
-        if (!$subjectId) {
+        if (!$subject) {
             return;
         }
-        $subjectId = (int)$subjectId;
-        $subject = $this->subjectRepository->findOneById($subjectId);
 
-        if (null === $subject) {
-            // causes a validation error
-            // this message is not shown to the user
-            // see the invalid_message option
-            throw new TransformationFailedException(sprintf(
-                'Aucun motif ne semble exister pour l\'ID n° "%s"',
-                $subjectId
-            ));
-        }
         return $subject;
     }
 }
