@@ -147,7 +147,7 @@ class HeadBoardData
         foreach ($data as $datum) {
             $serviceId     = (int)$datum['service_id'];
             $service       = $this->serviceRepository->findOneById($serviceId);
-            $concession = $service->getConcession();
+            $concession    = $service->getConcession();
             $city = $concession->getTown();
             $serviceName   = $service->getName();
             $collaborators = $service->getUsers();
