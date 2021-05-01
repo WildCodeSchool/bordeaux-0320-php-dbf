@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Service;
 use App\Form\ServiceType;
+use App\Repository\CallRepository;
 use App\Repository\ServiceHeadRepository;
 use App\Repository\ServiceRepository;
 use App\Service\HeadManager;
@@ -101,10 +102,29 @@ class ServiceController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="delete_service", methods={"DELETE"})
+     * @param Request $request
+     * @param CallRepository $callRepository
+     * @param ServiceRepository $serviceRepository
+     * @param ServiceHeadRepository $serviceHeadRepository
+     * @param Service $service
      * @return JsonResponse
      */
-    public function delete(Request $request, Service $service): JsonResponse
-    {
+    public function delete(
+        Request $request,
+        CallRepository $callRepository,
+        ServiceRepository $serviceRepository,
+        ServiceHeadRepository $serviceHeadRepository,
+        Service $service
+    ): JsonResponse {
+
+            $callRepository->removeCallsForService($service);
+            $serviceHeadRepository->removeAllResponsabilitiesForService($service);
+
+            $users = $service->getUsers();
+            foreach ($users as $user) {
+                $callRepository->removeCallsForUser($user);
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($service);
             $entityManager->flush();

@@ -61,4 +61,14 @@ class ServiceRepository extends ServiceEntityRepository
         }
         return null;
     }
+
+    public function removeAllServicesInConcession($concession)
+    {
+        return $this->createQueryBuilder('s')
+            ->delete()
+            ->where('s.concession = :concession')
+            ->setParameter('concession', $concession)
+            ->getQuery()
+            ->getResult();
+    }
 }

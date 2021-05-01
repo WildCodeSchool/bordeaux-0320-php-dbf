@@ -21,6 +21,7 @@ const deletor = (button, urlPrefix, name, nameFr) => {
             .then((status) => {
                 if (status === 204) {
                     objectContainer.remove();
+                    M.toast({html:'Suppression effectuée', classes:'cyan'});
                     removeValueInSelect(document.getElementById(`${name}-selector`), objectId)
                     initializeSelects();
                 } else {

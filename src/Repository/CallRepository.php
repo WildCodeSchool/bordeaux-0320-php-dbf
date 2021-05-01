@@ -498,5 +498,15 @@ class CallRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function removeCallsForService($service)
+    {
+        return $this->createQueryBuilder('c')
+            ->delete()
+            ->where('c.service = :service')
+            ->setParameter('service', $service)
+            ->getQuery()
+            ->getResult();
+    }
+
 
 }

@@ -93,4 +93,15 @@ class ServiceHeadRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
+    public function removeAllResponsabilitiesForService($service)
+    {
+        return $this->createQueryBuilder('sh')
+            ->delete()
+            ->where('sh.service = :service')
+            ->setParameter('service', $service)
+            ->getQuery()
+            ->getResult();
+    }
 }
