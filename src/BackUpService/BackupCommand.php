@@ -41,21 +41,20 @@ class BackupCommand extends Command
 
         $this->deleteFtpBackup();
         $this->backupManager->makeBackup()->run('development', [new Destination('ftp', 'backup.sql')], 'gzip');
-
         return Command::SUCCESS;
     }
 
     private function deleteFtpBackup()
     {
         $file = $_SERVER['FTP_FOLDER'] . '/backup.sql.gz';
-        $conn_id = ftp_connect($_SERVER['FTP_HOST']);
-        $login_result = ftp_login($conn_id, $_SERVER['FTP_USER'], $_SERVER['FTP_PASSWORD']);
+        $connection = ftp_connect($_SERVER['FTP_HOST']);
+        $login_result = ftp_login($connection, $_SERVER['FTP_USER'], $_SERVER['FTP_PASSWORD']);
 
-        if (ftp_delete($conn_id, $file)) {
-            ftp_close($conn_id);
+        if (ftp_delete($connection, $file)) {
+            ftp_close($connection);
             return "sauvegarde effacée avec succès";
         } else {
-            ftp_close($conn_id);
+            ftp_close($connection);
             return "Impossible d'effacer le fichier";
         }
 
