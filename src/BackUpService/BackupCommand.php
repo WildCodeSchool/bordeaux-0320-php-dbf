@@ -41,6 +41,7 @@ class BackupCommand extends Command
 
         $this->deleteFtpBackup();
         $this->backupManager->makeBackup()->run('development', [new Destination('ftp', 'backup.sql')], 'gzip');
+        $this->backupManager->makeBackup()->run('development', [new Destination('local', 'backup.sql')], 'gzip');
         return Command::SUCCESS;
     }
 
