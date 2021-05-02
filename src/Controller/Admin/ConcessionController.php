@@ -4,11 +4,14 @@ namespace App\Controller\Admin;
 
 use App\Entity\Concession;
 use App\Form\ConcessionType;
+use App\Repository\CallProcessingRepository;
 use App\Repository\CallRepository;
+use App\Repository\CallTransferRepository;
 use App\Repository\ConcessionHeadRepository;
 use App\Repository\ConcessionRepository;
 use App\Repository\ServiceHeadRepository;
 use App\Repository\ServiceRepository;
+use App\Service\Deletors\ConcessionDeletor;
 use App\Service\HeadManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -98,36 +101,15 @@ class ConcessionController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="delete_concession", methods={"DELETE"})
+     * @Route("/delete/{concession}", name="delete_concession", methods={"DELETE"})
      * @return JsonResponse
      */
     public function delete(
-        Request $request,
         Concession $concession,
-        ConcessionHeadRepository $concessionHeadRepository,
-        ServiceHeadRepository $serviceHeadRepository,
-        CallRepository $callRepository,
-        ServiceRepository $serviceRepository
+        ConcessionDeletor $concessionDeletor
     ): JsonResponse {
-        $entityManager = $this->getDoctrine()->getManager();
 
-        //Delete responsabilities
-        $concessionHeadRepository->removeAllResponsabilitiesInConcession($concession);
-
-        $services = $concession->getServices();
-        foreach ($services as $service) {
-            $users = $service->getUsers();
-            foreach ($users as $user) {
-                $callRepository->removeCallsForUser($user);
-            }
-            $callRepository->removeCallsForService($service);
-            $serviceHeadRepository->removeAllResponsabilitiesForService($service);
-        }
-        //Delete services
-        $serviceRepository->removeAllServicesInConcession($concession);
-
-        $entityManager->remove($concession);
-        $entityManager->flush();
+        $concessionDeletor->deleteConcession($concession);
 
         $response = new JsonResponse();
         $status = JsonResponse::HTTP_NO_CONTENT;

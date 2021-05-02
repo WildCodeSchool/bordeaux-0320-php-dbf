@@ -81,7 +81,7 @@
                     {% else %}
                         {% if user is defined %}
                             {% if user.canBeRecipient %}
-                                <a href="{{ path('take_call', {'id' : call.id, 'user' : app.user.id}) }}" class="btn cyan white-text">Prendre en charge 1</a>
+                                <a href="{{ path('take_call', {'id' : call.id, 'user' : app.user.id}) }}" class="btn cyan white-text">Prendre en charge</a>
                                 {%  if isHead == true and user != connectedUser%}
                                     <a href="{{ path('take_call', {'id' : call.id, 'user' : user.id}) }}"
                                        class="btn orange white-text">
@@ -90,7 +90,7 @@
                                 {% endif %}
                             {% endif %}
                         {% else %}
-                            <a href="{{ path('take_call', {'id' : call.id, 'user' : app.user.id }) }}" class="btn cyan white-text">Prendre en charge 2</a>
+                            <a href="{{ path('take_call', {'id' : call.id, 'user' : app.user.id }) }}" class="btn cyan white-text">Prendre en charge</a>
                         {% endif %}
                         <span class="place-name">
                         <i class="material-icons tiny">home</i>

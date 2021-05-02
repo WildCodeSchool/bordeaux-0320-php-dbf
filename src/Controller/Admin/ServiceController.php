@@ -4,9 +4,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\Service;
 use App\Form\ServiceType;
+use App\Repository\CallProcessingRepository;
 use App\Repository\CallRepository;
+use App\Repository\CallTransferRepository;
 use App\Repository\ServiceHeadRepository;
 use App\Repository\ServiceRepository;
+use App\Service\Deletors\ServiceDeletor;
 use App\Service\HeadManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -101,33 +104,20 @@ class ServiceController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="delete_service", methods={"DELETE"})
-     * @param Request $request
-     * @param CallRepository $callRepository
-     * @param ServiceRepository $serviceRepository
-     * @param ServiceHeadRepository $serviceHeadRepository
+     * @Route("/delete/{service}", name="delete_service", methods={"DELETE"})
      * @param Service $service
+     * @param ServiceDeletor $serviceDeletor
      * @return JsonResponse
      */
     public function delete(
-        Request $request,
-        CallRepository $callRepository,
-        ServiceRepository $serviceRepository,
-        ServiceHeadRepository $serviceHeadRepository,
-        Service $service
+        Service $service,
+        ServiceDeletor $serviceDeletor
     ): JsonResponse {
 
-            $callRepository->removeCallsForService($service);
-            $serviceHeadRepository->removeAllResponsabilitiesForService($service);
-
-            $users = $service->getUsers();
-            foreach ($users as $user) {
-                $callRepository->removeCallsForUser($user);
-            }
 
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($service);
-            $entityManager->flush();
+
+            $serviceDeletor->deleteService($service);
 
             $response = new JsonResponse();
             $status = JsonResponse::HTTP_NO_CONTENT;

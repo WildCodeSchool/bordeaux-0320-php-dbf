@@ -29,4 +29,15 @@ class CallProcessingRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+
+    public function findCallProcessingForUser($user)
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.referedCall', 'call')
+            ->where('call.recipient = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

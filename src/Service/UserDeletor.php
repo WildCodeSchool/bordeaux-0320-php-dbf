@@ -119,7 +119,32 @@ class UserDeletor
 
     private function deleteCalls($user): void
     {
+        $this->removeTransfers($user);
+        $this->removeProcesses($user);
         $this->callRepository->removeCallsForUser($user);
+        $this->callRepository->deleteAllProcessesAndTransfersWhereUserIsConcerned($user);
+        $this->callRepository->removeCallsWhereUserIsAuthor($user);
+        $this->callRepository->deleteRelictual();
+    }
+
+    private function removeProcesses($user)
+    {
+        $processes = $this->callProcessingRepository->findCallProcessingForUser($user);
+        foreach ($processes as $process) {
+            $this->manager->remove($process);
+            $this->manager->flush();
+
+        }
+    }
+
+    private function removeTransfers($user)
+    {
+        $transfers = $this->callTransferRepository->getAllTransfersForUser($user);
+        foreach ($transfers as $transfer) {
+            $this->manager->remove($transfer);
+            $this->manager->flush();
+
+        }
     }
 
 

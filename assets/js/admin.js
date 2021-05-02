@@ -42,13 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
     M.Modal.init(modalAddService, {});
 
     const modalListService = document.getElementById('modal-list-service');
-    M.Modal.init(modalListService, {});
+    M.Modal.init(modalListService, {
+        onCloseEnd: () => {
+            document.location.reload();
+        }
+    });
 
     const modalShowVehicles = document.getElementById('modal-show-vehicles');
     M.Modal.init(modalShowVehicles, {});
 
     const modalListConcession = document.getElementById('modal-list-concession');
-    M.Modal.init(modalListConcession, {});
+    M.Modal.init(modalListConcession, {
+        onCloseEnd: () => {
+            document.location.reload();
+        }
+    });
 
     const modalAddConcession = document.getElementById('modal-add-concession');
     M.Modal.init(modalAddConcession, {});

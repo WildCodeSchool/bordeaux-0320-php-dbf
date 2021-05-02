@@ -11,7 +11,7 @@ const deletor = (button, urlPrefix, name, nameFr) => {
     const objectId = button.getAttribute('data-target');
     const objectContainer = document.getElementById(`${name}-line-${objectId}`);
     const route = `${urlPrefix}${objectId}`;
-    if (confirm(`êtes vous sûr de vouloir supprimer le ${nameFr} n° ${objectId}`)) {
+    if (confirm(`êtes vous sûr de vouloir supprimer le ${nameFr} n° ${objectId} ?. Attention, si vous supprimez un service ou une concession, assurez vous d'avoir réaffecté tous leurs utilisateurs. Sinon, ceux ci seront supprimés.`)) {
         fetch(route, {
             method: 'DELETE',
         })

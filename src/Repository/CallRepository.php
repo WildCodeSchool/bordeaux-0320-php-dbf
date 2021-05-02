@@ -498,6 +498,53 @@ class CallRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function removeCallsWhereUserIsAuthor($user)
+    {
+        return $this->createQueryBuilder('c')
+            ->delete()
+            ->where('c.author = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function deleteAllProcessesAndTransfersWhereUserIsConcerned($user)
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+
+        $q1 ='DELETE FROM `call_processing` WHERE refered_call_id in (select id from `call` where author_id=?)';
+        $stmt = $conn->prepare($q1);
+        $stmt->bindValue(1, $user->getId());
+        $stmt->execute();
+
+        $q2 ='DELETE FROM `call_transfer` WHERE refered_call_id in (select id from `call` where author_id=?) or by_whom_id=? or to_whom_id=? or from_whom_id=?';
+        $stmt = $conn->prepare($q2);
+        $stmt->bindValue(1, $user->getId());
+        $stmt->bindValue(2, $user->getId());
+        $stmt->bindValue(3, $user->getId());
+        $stmt->bindValue(4, $user->getId());
+        $stmt->execute();
+    }
+
+    public function deleteRelictual()
+    {
+        $conn = $this->getEntityManager()
+            ->getConnection();
+
+        $q1 = 'DELETE FROM `call_processing` WHERE refered_call_id in (select id FROM `call` where author_id in (select id from user where service_id IS NULL) or author_id not in (select id from user))';
+        $q2 = 'DELETE FROM `call_transfer` WHERE refered_call_id in (select id FROM `call` where author_id in (select id from user where service_id IS NULL)  or author_id not in (select id from user))';
+        $q3 = 'DELETE FROM `call` where author_id in (select id from user where service_id IS NULL) or author_id not in (select id from user)';
+
+        $query = 'select * from vehicle where id not in (select vehicle_id from `call`)';
+        $stmt = $conn->prepare($q1);
+        $stmt->execute();
+        $stmt = $conn->prepare($q2);
+        $stmt->execute();
+        $stmt = $conn->prepare($q3);
+        $stmt->execute();
+    }
+
     public function removeCallsForService($service)
     {
         return $this->createQueryBuilder('c')
