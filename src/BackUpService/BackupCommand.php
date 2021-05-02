@@ -41,6 +41,10 @@ class BackupCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+        if(is_file($this->folder . '/backup.sql.gz')) {
+            unlink($this->folder . '/backup.sql.gz');
+        }
+
         $io->write($this->deleteFtpBackup());
 
         $this->backupManager->makeBackup()->run('development', [new Destination('ftp', 'backup.sql')], 'gzip');
