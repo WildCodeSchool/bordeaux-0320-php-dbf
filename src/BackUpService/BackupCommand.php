@@ -9,6 +9,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\HttpKernel\KernelInterface;
 use \DateTime;
 use BackupManager\Manager;
@@ -38,10 +39,15 @@ class BackupCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
 
-        $this->deleteFtpBackup();
+        $io->write($this->deleteFtpBackup());
+
         $this->backupManager->makeBackup()->run('development', [new Destination('ftp', 'backup.sql')], 'gzip');
+        $io->write('Sauvegarde FTP OK');
         $this->backupManager->makeBackup()->run('development', [new Destination('local', 'backup.sql')], 'gzip');
+        $io->write('Sauvegarde locale OK');
+
         return Command::SUCCESS;
     }
 
