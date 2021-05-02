@@ -16,6 +16,7 @@ use App\Form\SubjectType;
 use App\Repository\CityRepository;
 use App\Repository\CivilityRepository;
 use App\Repository\CommentRepository;
+use App\Repository\ResetRepository;
 use App\Repository\SubjectRepository;
 use App\Repository\VehicleRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -104,5 +105,39 @@ class AdminPanelController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($client);
         $entityManager->flush();
+    }
+
+
+    /**
+     * @Route("/reset", name="_reset")
+     * @param Request $request
+     * @IsGranted("ROLE_ADMIN")
+     * @return Response
+     */
+    public function reset(Request $request)
+    {
+        return $this->render('admin/reset.html.twig', []);
+    }
+
+    /**
+     * @Route("/resetdatabase", name="_resetdatabase")
+     * @param Request $request
+     * @param ResetRepository $resetRepository
+     * @return void
+     * @IsGranted("ROLE_ADMIN")
+     */
+    public function resetDatabase(Request $request, ResetRepository $resetRepository)
+    {
+        $message = 'Votre base de données à été initialisée';
+        $type = 'success';
+        try {
+            $resetRepository->resetDatabase();
+        } catch (\Exception $e) {
+            $type = 'error';
+            $message = $e->getMessage();
+        } finally {
+            $this->addFlash($type, $message);
+            return $this->redirectToRoute('admin_reset');
+        }
     }
 }

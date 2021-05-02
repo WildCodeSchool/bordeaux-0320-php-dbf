@@ -1,0 +1,55 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Admin dashboard{% endblock %}
+
+{% block body %}
+<div class="container admin-dashboard">
+    <div class="row center-align">
+        <h1>REMISE A 0 DE LA BASE DE DONNÉES</h1>
+
+        <div class="col s8 left-align">
+            <a href="/admin/" class="btn red">Retour à l'admin</a>
+        </div>
+
+
+    </div>
+    <div class="row">
+        <div class="col s6 offset-s3">
+            <div class="col s12">
+                {% include 'components/_flashes.html.twig' %}
+            </div>
+            <div class="col s12 red-text">
+                <h5>ATTENTION, cette opération est irréversible</h5>
+            </div>
+            <div class="col s12">
+                <p>
+                    <b>En cliquant sur le bouton ci-dessous vous supprimerez définitivement de la base de données :</b>
+                </p>
+                <ul>
+                    <li>
+                        Tous les appels
+                    </li>
+                    <li>
+                        Tous les clients
+                    </li>
+                    <li>
+                        Tous les véhicules
+                    </li>
+                    <li>
+                        Tous les process en cours ou passés
+                    </li>
+                    <li>
+                        Tous les transferts en cours ou passés
+                    </li>
+                </ul>
+                <p>
+                    Les utilisateurs, services, concessions ... ne sont pas impactés.
+                </p>
+                <p>
+                    <a href="/admin/resetdatabase" class="btn red">Procéder</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
