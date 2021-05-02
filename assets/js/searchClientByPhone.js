@@ -108,7 +108,7 @@ const initVehicleDeletors = () => {
             })
                 .then(response => {
                     if (response.status === 200) {
-                        document.getElementById('vehicleRow' + vehicleId).remove()
+                        document.getElementById('vehicleRow' + vehicleId).classList.add('hide')
                         M.toast({html: 'Le véhicule a été supprimé', classes: 'cyan'})
                         return;
                     }

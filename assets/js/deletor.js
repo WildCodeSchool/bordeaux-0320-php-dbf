@@ -32,7 +32,6 @@ const deletor = (button, urlPrefix, name, nameFr) => {
 const deletorAction = (collection, route, name, nameFr) => {
     for (let i = 0; i < collection.length; i++) {
         collection[i].addEventListener('click', (e) => {
-            console.log(collection[i])
             e.preventDefault();
             deletor(collection[i], route, name, nameFr);
         });

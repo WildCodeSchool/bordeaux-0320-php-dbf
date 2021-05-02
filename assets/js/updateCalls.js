@@ -94,7 +94,7 @@ const initButtons = (modal) => {
                                 notification.classList.add('hide')
                             }
                             if (isRouteWelcome()) {
-                                callLine.remove();
+                                callLine.classList.add('hide');
                                 counter.updateTotalCallToProcess('dec');
                                 counter.updateTotalCallInProcess();
                             } else {
@@ -171,7 +171,7 @@ const initTransferButtons = (modal) => {
                         document.getElementById('transfer-preloader').classList.add('hide');
                         modal.close();
                         M.toast({html: 'Appel transféré', classes:'red'})
-                        callLine.remove();
+                        callLine.classList.add('hide');
                     });
                 }
             })

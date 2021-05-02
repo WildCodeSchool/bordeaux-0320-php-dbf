@@ -48,7 +48,7 @@ const transferCall = (callId, userId) => {
                                 }
                                 M.toast({html: 'Appel transféré', classes:'red'})
                                 document.getElementById(`users-in-service-${callId}`).classList.add('hide');
-                                callLine.remove();
+                                callLine.classList.add('hide');
                             }
                         })
                 }
