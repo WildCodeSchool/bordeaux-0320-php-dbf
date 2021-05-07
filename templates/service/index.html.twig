@@ -12,8 +12,14 @@
     </tr>
     </thead>
     <tbody>
+    {% set ref = 0 %}
+    {% set cref = services.0.concession %}
     {% for service in services %}
-        <tr id="service-line-{{ service.id }}">
+        {% if service.concession != cref %}
+            {% set ref = ref + 1 %}
+            {% set cref = service.concession %}
+        {% endif %}
+        <tr id="service-line-{{ service.id }}" {% if ref%2 == 0 %}class="grey lighten-3"{% endif %}>
             <td>{{ service.id }}</td>
             <td> {{ service.concession.name }}</td>
             <td>{{ service.name }}</td>
