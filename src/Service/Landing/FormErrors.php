@@ -23,13 +23,6 @@ class FormErrors
             $landingForm->addError(new FormError('nameError'));
             $errors['name'] = 'Le nom ne doit comporter que des lettres';
         }
-        if ($landingForm->get($dateFieldName)->getData()) {
-            if (!$validator->isValidDay($landingForm->get($dateFieldName)->getData())) {
-                $landingForm->addError(new FormError('dateError'));
-                $errors['day'] = 'Désolé, les rappels ne peuvent pas avoir lieu le week-end';
-            }
-
-        }
 
         return $errors;
     }

@@ -160,11 +160,8 @@ class DbfContactType extends AbstractType
     private function getBaseDate()
     {
         $date = new \DateTime('now');
-        $day = $date->format('N');
-        if($day < 6) {
-            return $date;
-        }
-        return $date->modify('next monday');
+
+        return $date;
     }
 
     private function getConcessions() {
