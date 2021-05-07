@@ -29,6 +29,16 @@ class ServiceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllOrderByConcession()
+    {
+        return $this->createQueryBuilder('s')
+            ->join('s.concession', 'co')
+            ->orderBy('co.name', 'ASC')
+            ->addOrderBy('s.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function getServicesToContact($concession)
     {
         $conn = $this->getEntityManager()

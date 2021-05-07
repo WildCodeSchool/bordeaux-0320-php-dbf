@@ -45,4 +45,15 @@ class ConcessionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllConcessionsOrderByTown()
+    {
+        return $this->createQueryBuilder('c')
+            ->where('t.identifier is NULL')
+            ->join('c.town', 't')
+            ->orderBy('t.name', 'ASC')
+            ->addOrderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 }

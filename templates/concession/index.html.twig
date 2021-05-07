@@ -5,13 +5,13 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Plaque</th>
                 <th>Nom</th>
                 <th>Adresse</th>
                 <th>Code postal</th>
                 <th>Ville</th>
                 <th>Marque</th>
                 <th>Numéro de téléphone</th>
-                <th>Plaque</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -19,13 +19,13 @@
         {% for concession in concessions %}
             <tr id="concession-line-{{ concession.id }}">
                 <td>{{ concession.id }}</td>
+                <td>{{ concession.town.name }}</td>
                 <td>{{ concession.name }}</td>
                 <td>{{ concession.address }}</td>
                 <td>{{ concession.postcode }}</td>
                 <td>{{ concession.city }}</td>
                 <td>{{ concession.brand }}</td>
                 <td>{{ concession.phone }}</td>
-                <td>{{ concession.town.name }}</td>
 
                 <td>
                     <a href="#" class="edit-concession-button" data-target="{{ concession.id }}"><i class="material-icons">edit</i></a>

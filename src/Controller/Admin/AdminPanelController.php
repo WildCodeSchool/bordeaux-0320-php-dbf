@@ -66,7 +66,7 @@ class AdminPanelController extends AbstractController
         return $this->render('admin/index.html.twig', [
             'client'            => $client,
             'form'              => $formClient->createView(),
-            'services'          => $services->findAll(),
+            'services'          => $services->findAllOrderByConcession(),
             'form_civility'     => $formCivility->createView(),
             'form_service'      => $formService->createView(),
             'form_concession'   => $formConcession->createView(),
@@ -74,7 +74,7 @@ class AdminPanelController extends AbstractController
             'form_comment'      => $formComment->createView(),
             'form_city'         => $formCity->createView(),
             'civilities'        => $civilities->findAll(),
-            'concessions'       => $concessions->findAll(),
+            'concessions'       => $concessions->findAllConcessionsOrderByTown(),
             'vehicles'          => $vehicleRepository->findAll(),
             'subjects'          => $subjectRepository->findAll(),
             'comments'          => $commentRepository->findAll(),

@@ -45,12 +45,12 @@ class BackupCommand extends Command
             unlink($this->folder . '/backup.sql.gz');
         }
 
-        $io->write($this->deleteFtpBackup());
+        $io->writeln($this->deleteFtpBackup());
 
         $this->backupManager->makeBackup()->run('development', [new Destination('ftp', 'backup.sql')], 'gzip');
-        $io->write('Sauvegarde FTP OK');
+        $io->writeln('Sauvegarde FTP OK');
         $this->backupManager->makeBackup()->run('development', [new Destination('local', 'backup.sql')], 'gzip');
-        $io->write('Sauvegarde locale OK');
+        $io->writeln('Sauvegarde locale OK');
 
         return Command::SUCCESS;
     }
