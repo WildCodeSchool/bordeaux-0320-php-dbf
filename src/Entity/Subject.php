@@ -28,7 +28,6 @@ class Subject
 
     /**
      * @ORM\Column(type="boolean")
-     * @Assert\NotBlank(message="Veuillez cocher la case Rendez-vous en atelier avant de valider")
      */
     private $isForAppWorkshop;
 
