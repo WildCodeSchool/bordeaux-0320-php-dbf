@@ -5,7 +5,7 @@ const timeout = () => {
 }
 
 document.addEventListener('click', () => {
-
+    console.log(window.location.href)
     clearTimeout(timeout)
     timeout()
 
