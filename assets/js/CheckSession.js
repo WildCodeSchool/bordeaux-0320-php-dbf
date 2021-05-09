@@ -5,7 +5,7 @@ document.addEventListener('click', () => {
         method: 'GET'
     }).then(response => {
 
-        if(response.status === 403 && window.location.href !== 'https://easy-autos.fr/') {
+        if(response.status === 403 && !document.getElementById('inputPassword')) {
                 window.location.href = '/'
         }
     })
