@@ -39,5 +39,5 @@ require('./copyer');
 require('./headDeletor');
 require('./ContactFormServicesLister');
 require('./DatabaseInitializer');
-
+require('./CheckSession');
 
