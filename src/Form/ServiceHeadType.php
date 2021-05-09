@@ -11,14 +11,17 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Repository\ServiceRepository;
 
 class ServiceHeadType extends AbstractType
 {
     private $userRepository;
+    private $serviceRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepository $userRepository, ServiceRepository $serviceRepository)
     {
-        $this->userRepository = $userRepository;
+        $this->userRepository    = $userRepository;
+        $this->serviceRepository = $serviceRepository;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -34,12 +37,20 @@ class ServiceHeadType extends AbstractType
                     return $repo->createAlphabeticalQueryBuilder();
                 }
             ])
-            ->add('service', EntityType::class, [
-                'class'=> Service::class,
-                'choice_label'=> function ($service) {
-                    return $service->getConcessionAndCityFromService();
-                }
+            ->add('service', ChoiceType::class, [
+                'choices' => $this->servicesChoices()
                 ]);
+    }
+
+    private function servicesChoices()
+    {
+        $services = $this->serviceRepository->findAllOrderByCityAndConcession();
+        $choices = [];
+        foreach ($services as $service) {
+            $name = $service->getConcession()->getTown()->getName() . ' > ' . $service->getConcession()->getName() . ' > ' . $service->getName();
+            $choices[$name] = $service;
+        }
+        return $choices;
     }
 
     private function getUsers() {

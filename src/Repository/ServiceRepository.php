@@ -81,4 +81,15 @@ class ServiceRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findAllOrderByCityAndConcession()
+    {
+        return $this->createQueryBuilder('s')
+            ->join('s.concession', 'co')
+            ->join('co.town', 'ci')
+            ->orderBy('ci.name', 'ASC')
+            ->addOrderBy('co.name', 'ASC')
+            ->addOrderBy('s.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
