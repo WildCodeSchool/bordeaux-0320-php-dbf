@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'landing_base.html.twig' %}
 
 {% block analytics %}
     <!-- Google Tag Manager -->
@@ -140,7 +140,7 @@
 
 
                 <div class="col s1 mgt30 {% if brand is null %}hide{% endif %}">
-                    <span><i class="material-icons">Message</i></span><bR>
+                    <span><i class="material-icons">message</i></span><bR>
                 </div>
                 <div class="col s11 mgt30 {% if brand is null %}hide{% endif %}">
                     {{ form_widget(form.message) }}
