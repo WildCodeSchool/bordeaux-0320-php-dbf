@@ -1,3 +1,10 @@
+body {
+  &.dev {
+    background:#f7ecb5;
+  }
+}
+
+
 .time-select {
   .select-wrapper {
     svg {

@@ -11,13 +11,13 @@
         {% block analytics %}{% endblock %}
     </head>
 
-    <body>
+    <body class="">
     {% block footanalytics %}{% endblock %}
 
     {% block navbar %}
     <header class="paddleft">
         <nav class="">
-            <div class="nav-wrapper white ">
+            <div class="nav-wrapper {% if app.environment == 'dev' %} yellow {% else %}white{% endif %} ">
                 <ul id="" class="left noshadow">
                     <li>
                         <h5 class="black-text">Easy Auto</h5>
