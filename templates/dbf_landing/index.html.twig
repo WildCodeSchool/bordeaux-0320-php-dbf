@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'landing_base.html.twig' %}
 
 {% block analytics %}
     <!-- Google Tag Manager -->
@@ -87,14 +87,13 @@
                                 <span class="textAlert red-text">{{ errors.immat }}</span>
                             {% endif %}
                         </div>
-                        <div class="row">
-                            <div class="col s11 offset-s1 mgt30 blue-text text-darken-4">
+
+
+                            <div class="col s12 mgt30 blue-text text-darken-4">
                                 <b>Quand pouvons nous vous appeler ?</b>
                             </div>
-                        </div>
-                        <div class="col s1 mgt15">
 
-                        </div>
+
                         <div class="col s6 mgt15">
                             {{ form_widget(form.callDate, {'attr': {'class': (errors.day is defined or errors.date is defined) ? 'red-text' }}) }}
                             {% if errors.day is defined %}
@@ -104,20 +103,20 @@
                                 <span class="textAlert red-text">{{ errors.date }}</span>
                             {% endif %}
                         </div>
-                        <div class="col s1 mgt15">
+                        <div class="col l1 hide-on-med-and-down mgt15">
                             <i class="material-icons">access_time</i>
                         </div>
-                        <div class="col s2 mgt15">
+                        <div class="col s3 l2 mgt15">
                             {{ form_widget(form.callHour) }}
                         </div>
-                        <div class="col s2 mgt15">
+                        <div class="col s3 l2 mgt15">
                             {{ form_widget(form.callMinutes) }}
                         </div>
-                        <div class="row">
-                            <div class="col s11 mgt30 offset-s1 blue-text text-darken-4">
+
+                            <div class="col s12 mgt30 blue-text text-darken-4">
                                 <b>Précisez la concession ?</b>
                             </div>
-                        </div>
+
 
                         <div class="col s1 mgt15 {% if brand is null %}hide{% endif %}">
                             <span><i class="material-icons">location_on</i></span>

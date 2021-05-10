@@ -80,3 +80,12 @@
   padding: 15px 30px !important;
   border-radius:5px;
 }
+
+
+@media screen and (max-width: 1024px) {
+  main {
+    .container {
+      width: 100%;
+    }
+  }
+}

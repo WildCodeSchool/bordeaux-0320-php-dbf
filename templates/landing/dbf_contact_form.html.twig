@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'landing_base.html.twig' %}
 
 {% block analytics %}
     <!-- Google Tag Manager -->
@@ -82,12 +82,10 @@
                     {% endif %}
                 </div>
 
-                    <div class="col s11 offset-s1 mgt15 blue-text text-darken-4">
+                    <div class="col s12 mgt15 blue-text text-darken-4">
                         <b>Quand pouvons nous vous appeler ?</b>
                     </div>
-                <div class="col s1 mgt15">
 
-                </div>
                 <div class="col s6 mgt15">
                     {{ form_widget(form.date, {'attr': {'class': (errors.day is defined or errors.date is defined) ? 'red-text' }}) }}
                     {% if errors.day is defined %}
@@ -97,17 +95,17 @@
                         <span class="textAlert red-text">{{ errors.date }}</span>
                     {% endif %}
                 </div>
-                <div class="col s1 mgt15">
+                <div class="col l1 mgt15 hide-on-med-and-down">
                     <i class="material-icons">access_time</i>
                 </div>
-                <div class="col s2 mgt15">
+                <div class="col s3 l2 mgt15">
                     {{ form_widget(form.hour) }}
                 </div>
-                <div class="col s2 mgt15">
+                <div class="col s3 l2 mgt15">
                     {{ form_widget(form.minute) }}
                 </div>
 
-                    <div class="col s11 offset-s1 mgt30 blue-text text-darken-4">
+                    <div class="col s12 mgt30 blue-text text-darken-4">
                         <b>Choisissez votre concession</b>
                     </div>
 
