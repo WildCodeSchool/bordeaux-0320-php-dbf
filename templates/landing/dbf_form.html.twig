@@ -77,16 +77,12 @@
                     {% endif %}
                 </div>
                 <div class="row">
-                    <div class="col s1 mgt30">
 
-                    </div>
-                    <div class="col s11 mgt30 blue-text text-darken-4">
+                    <div class="col s12 mgt30 blue-text text-darken-4">
                         <b>Date et heure de rappel souhaitées</b>
                     </div>
                 </div>
-                <div class="col s1 mgt15">
 
-                </div>
                 <div class="col s6 mgt15">
                     {{ form_widget(form.callDate, {'attr': {'class': (errors.day is defined or errors.date is defined) ? 'red-text' }}) }}
                     {% if errors.day is defined %}
@@ -96,22 +92,19 @@
                         <span class="textAlert red-text">{{ errors.date }}</span>
                     {% endif %}
                 </div>
-                <div class="col s1 mgt15">
+                <div class="col l1 mgt15 hide-on-med-and-down">
                     <i class="material-icons">access_time</i>
                 </div>
-                <div class="col s2 mgt15">
+                <div class="col l2 s3 mgt15">
                     {{ form_widget(form.callHour) }}
                 </div>
-                <div class="col s2 mgt15">
+                <div class="col l2 s3 mgt15">
                     {{ form_widget(form.callMinutes) }}
                 </div>
 
 
                     <div class="row">
-                        <div class="col s1 mgt30">
-
-                        </div>
-                        <div class="col s11 mgt30 blue-text text-darken-4">
+                        <div class="col s12 mgt30 blue-text text-darken-4">
                             <b>Choississez une ville et concession</b>
                         </div>
                     </div>
@@ -140,7 +133,11 @@
 
 
                 <div class="col s1 mgt30 {% if brand is null %}hide{% endif %}">
+<<<<<<< HEAD
                     <span><i class="material-icons">message</i></span><bR>
+=======
+                    <span><i class="material-icons">message</i></span><br>
+>>>>>>> easyauto/april2021
                 </div>
                 <div class="col s11 mgt30 {% if brand is null %}hide{% endif %}">
                     {{ form_widget(form.message) }}
