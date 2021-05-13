@@ -91,6 +91,7 @@ class CallType extends AbstractType
                 'choices' => $this->getAllCities(),
                 'mapped'  => false,
                 'data' => $user->getService()->getConcession()->getTown()->getId(),
+
             ])
             ->add('concession', ChoiceType::class, [
                 'choices' => $this->getConcessions($user->getService()->getConcession()->getTown()->getId()),
@@ -108,11 +109,11 @@ class CallType extends AbstractType
                 'choice_label' => 'lastname'
             ]);
 
-        if (isset($data->City)) {
+        if (isset($data->City) && $data->City !== 0) {
             $city = $this->cityRepository->findOneById($data->City);
             $cityId = $data->City;
 
-            if (!$city->isPhoneCity()) {
+            if ($city && !$city->isPhoneCity()) {
                 $builder->
                 add('concession', ChoiceType::class, [
                     'choices' => $this->getConcessions($data->City),

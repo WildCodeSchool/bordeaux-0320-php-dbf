@@ -31,6 +31,17 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const disableFirstOption = (elemId) => {
+                const elem = document.getElementById(elemId);
+                const elemOptions = elem.querySelectorAll('option');
+                elemOptions[0].setAttribute('disabled', 'disabled')
+            }
+            disableFirstOption('call_city')
+        })
+    </script>
     {% endblock %}
 
 

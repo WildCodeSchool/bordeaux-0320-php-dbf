@@ -63,11 +63,21 @@
                         <a href="{{ path('take_call', {'id' : call.id}) }}" class="btn cyan white-text">Prendre en charge</a>
                         <span class="place-name">
                         <i class="material-icons tiny">home</i>
+                            {% if call.service %}
                         {{call.service.concession.name}}
+                            {% endif %}
+                            {% if call.recipient %}
+                                {{call.recipient.service.concession.name}}
+                            {% endif %}
                     </span>
                         <span class="place-name service-name">
                         <i class="material-icons tiny">settings</i>
+                            {% if call.service %}
                         {{ call.service.name }}
+                            {% endif %}
+                            {% if call.recipient %}
+                                {{call.recipient.service.name}}
+                            {% endif %}
                     </span>
                     {% endif %}
 
