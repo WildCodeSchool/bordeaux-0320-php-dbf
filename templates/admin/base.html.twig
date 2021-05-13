@@ -15,7 +15,7 @@
     <body>
     <header class="">
         <nav class="noshadow">
-            <div class="nav-wrapper  white noshadow">
+            <div class="nav-wrapper  {% if app.environment == 'dev' %} yellow {% else %} white {% endif %} noshadow">
                 <ul id="" class="left  noshadow">
                     <li>
                         <a href="{{ path('call_add') }}" class="black-text" data-action="hide" id="control-sidebar">

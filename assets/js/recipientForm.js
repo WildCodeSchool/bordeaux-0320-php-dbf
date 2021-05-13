@@ -150,11 +150,10 @@ class recipientsAjaxTool {
         }
 
         if (this.recipientSelector) {
-            /*
+
             const recipientOptions = this.recipientSelector.querySelectorAll('option')
             recipientOptions[0].setAttribute('disabled', 'disabled')
 
-             */
             this.recipientSelector.addEventListener('change', () => {
                 this.selectValueInSelect(this.recipientField, this.recipientSelector.value)
                 this.recipientField.value = this.recipientSelector.value;

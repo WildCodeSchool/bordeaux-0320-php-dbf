@@ -17,10 +17,10 @@
     {% block navbar %}
     <header class="paddleft">
         <nav class="">
-            <div class="nav-wrapper white ">
+            <div class="nav-wrapper  {% if app.environment == 'dev' %} yellow {% else %} white {% endif %}">
                 <ul id="" class="left noshadow">
                     <li>
-                        <h5 class="black-text">Easy Auto</h5>
+                        <h5 class="black-text">Easy Auto {% if app.environment == 'dev' %} - ATTENTION SITE DE DEVELOPPEMENT {% endif %}</h5>
                     </li>
                 </ul>
                 <ul id="nav-mobile" class="right hide-on-med-and-down noshadow">

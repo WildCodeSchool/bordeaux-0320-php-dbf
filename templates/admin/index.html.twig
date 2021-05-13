@@ -5,7 +5,7 @@
 {% block body %}
 <div class="container admin-dashboard">
     <div class="row center-align">
-            <h1>Admin dashboard</h1>
+        <h1>Admin dashboard {% if app.environment == 'dev' %} - <span class="red-text">SITE DE DEVELOPPEMENT</span> {% endif %}</h1>
 
         <div class="col s8 left-align">
             <a href="/admin/reset" class="btn red">Remise à 0 de la base</a>
