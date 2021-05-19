@@ -278,6 +278,7 @@ class CallType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Call::class,
             'allow_extra_fields' => true,
+            'csrf_protection' => false,
         ]);
     }
 }
