@@ -78,6 +78,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         return $this->createQueryBuilder('u')
             ->select('u')
             ->where('u.canBeRecipient = true')
+            ->orderBy('u.lastname', 'ASC')
+            ->addOrderBy('u.firstname', 'ASC')
             ->getQuery()
             ->getResult();
     }
@@ -89,6 +91,8 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->where('u.canBeRecipient = true')
             ->andWhere('u.service = :service')
             ->setParameter('service', $service)
+            ->orderBy('u.lastname', 'ASC')
+            ->addOrderBy('u.firstname', 'ASC')
             ->getQuery()
             ->getResult();
     }

@@ -24,6 +24,7 @@ class CommentRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('c')
             ->where('c.isHidden IS NULL')
             ->orWhere('c.isHidden = :option')
+            ->orderBy('c.name', 'ASC')
             ->setParameter('option', 0);
     }
 }
