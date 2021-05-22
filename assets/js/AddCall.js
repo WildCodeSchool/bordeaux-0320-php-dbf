@@ -2,6 +2,8 @@ import { Switch3 } from 'triswitch';
 import {CallFormValidator} from './CallFormValidator';
 
 document.addEventListener('DOMContentLoaded', () => {
+
+
     if(document.getElementById('switcher_add_call')) {
         const switcherAddCall = new Switch3(['non', '?', 'oui'], [2, 0, 1], 'switcher_add_call', 0,
             '', 'call_vehicle_hasCome');
@@ -23,7 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const addCallLoader = document.getElementById('call-add-loader')
 
     if(addCallBtn) {
-        addCallBtn.addEventListener('click', () => {
+        addCallBtn.addEventListener('click', (e) => {
+            e.preventDefault();
             const getPhoneCityId = (callback) => {
                 fetch('/phoneCity/getId')
                     .then(response=>{
@@ -36,8 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
             getPhoneCityId((phoneCityId) => {
                 const validator = new CallFormValidator(phoneCityId)
                 validator.checkFields()
+
                 if(validator.finalCheck()) {
                     addCallLoader.classList.remove('hide')
+                    document.querySelector('form[name="call"]').submit()
                 }
             })
         })

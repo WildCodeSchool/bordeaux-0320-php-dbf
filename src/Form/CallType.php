@@ -106,7 +106,7 @@ class CallType extends AbstractType
             ])
             ->add('recipient', EntityType::class, [
                 'class'   => User::class,
-                'choice_label' => 'lastname'
+                'choice_label' => 'lastname',
             ]);
 
         if (isset($data->City) && $data->City !== 0) {

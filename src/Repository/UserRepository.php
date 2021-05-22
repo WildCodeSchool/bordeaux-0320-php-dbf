@@ -126,6 +126,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         }
     }
 
+
     public function createAlphabeticalQueryBuilder()
     {
         return $this->createQueryBuilder('u')

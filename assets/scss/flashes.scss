@@ -5,7 +5,8 @@
   font-weight: bold;
   border-radius:5px;
   opacity:0%;
-  animation: fadeout 6s ease-in-out;
+  animation-delay: 8s;
+  animation: fadeout 4s ease-in-out;
   .flash-success {
     color:#039be5;
   }
