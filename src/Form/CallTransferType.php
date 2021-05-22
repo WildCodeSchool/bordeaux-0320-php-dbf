@@ -11,6 +11,7 @@ use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -41,6 +42,10 @@ class CallTransferType extends AbstractType
         $builder
             ->add('city', EntityType::class, [
                 'class'         => City::class,
+                'query_builder' => function (CityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+                },
                 'choice_label'  => 'name',
                 'data'          => $call->getRecipient()->getService()->getConcession()->getTown(),
                 'mapped'        => false
@@ -60,8 +65,7 @@ class CallTransferType extends AbstractType
                 'data'    => $call->getRecipient()->getId(),
                 'mapped'  => false
             ])
-            ->add('commentTransfer', TextType::class, [
-                'label'    => 'commentaire',
+            ->add('commentTransfer', HiddenType::class, [
                 'required' => false,
                 'mapped'   => false
             ])
@@ -72,9 +76,13 @@ class CallTransferType extends AbstractType
     public function getConcessions($cityId = null)
     {
         if (!$cityId) {
-            $concessions = $this->concessionRepository->findAll();
+            $concessions = $this->concessionRepository->findBy([], [
+                'name' => 'ASC'
+            ]);
         } else {
-            $concessions = $this->concessionRepository->findBy(['town' => $cityId]);
+            $concessions = $this->concessionRepository->findBy(['town' => $cityId], [
+                'name' => 'ASC'
+            ]);
         }
         $choices = [];
         $choices['Choisir une concession'] = '';
@@ -88,9 +96,13 @@ class CallTransferType extends AbstractType
     public function getServices($concessionId = null)
     {
         if (is_null($concessionId)) {
-            $services = $this->serviceRepository->findAll();
+            $services = $this->serviceRepository->findBy([], [
+                'name' => 'ASC'
+            ]);
         } else {
-            $services = $this->serviceRepository->findBy(['concession' => $concessionId]);
+            $services = $this->serviceRepository->findBy(['concession' => $concessionId], [
+                'name' => 'ASC'
+            ]);
         }
         $choices = [];
         $choices['Choisir un service'] = '';

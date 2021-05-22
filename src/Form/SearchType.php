@@ -14,6 +14,11 @@ use App\Entity\Service;
 use App\Entity\Subject;
 use App\Entity\User;
 use App\Entity\Vehicle;
+use App\Repository\CityRepository;
+use App\Repository\CommentRepository;
+use App\Repository\ConcessionRepository;
+use App\Repository\ServiceRepository;
+use App\Repository\SubjectRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -60,6 +65,10 @@ class SearchType extends AbstractType
             ])
             ->add('subject', EntityType::class, [
                 'class' => Subject::class,
+                'query_builder' => function (SubjectRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->orderBy('s.name', 'ASC');
+                },
                 'choice_label' => 'name',
                 'by_reference' => false,
                 'required' => false,
@@ -68,6 +77,10 @@ class SearchType extends AbstractType
             ->add('comment', EntityType::class, [
                 'class' => Comment::class,
                 'choice_label' => 'name',
+                'query_builder' => function (CommentRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+                },
                 'by_reference' => false,
                 'required' => false,
                 'label' => 'Type'
@@ -99,6 +112,10 @@ class SearchType extends AbstractType
             ])
             ->add('town', EntityType::class, [
                 'class' => City::class,
+                'query_builder' => function (CityRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->orderBy('c.name', 'ASC');
+                },
                 'choice_label' => 'name',
                 'by_reference' => false,
                 'required' => false,
@@ -106,6 +123,12 @@ class SearchType extends AbstractType
             ])
             ->add('concession', EntityType::class, [
                 'class' => Concession::class,
+                'query_builder' => function (ConcessionRepository $er) {
+                    return $er->createQueryBuilder('c')
+                        ->join('c.town', 'ci')
+                        ->orderBy('ci.name', 'ASC')
+                        ->addOrderBy('c.name', 'ASC');
+                },
                 'choice_label' => function ($concession) {
                     return $concession->getTown()->getName() . ' > ' . $concession->getName();
                 },
@@ -115,6 +138,14 @@ class SearchType extends AbstractType
             ])
             ->add('service', EntityType::class, [
                 'class' => Service::class,
+                'query_builder' => function (ServiceRepository $er) {
+                    return $er->createQueryBuilder('s')
+                        ->join('s.concession', 'co')
+                        ->join('co.town', 'ci')
+                        ->orderBy('ci.name', 'ASC')
+                        ->addOrderBy('co.name', 'ASC')
+                        ->addOrderBy('s.name', 'ASC');
+                },
                 'choice_label' => function ($service) {
                     return $service->getConcessionAndCityFromService();
                 },

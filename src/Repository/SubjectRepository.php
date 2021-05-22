@@ -26,6 +26,7 @@ class SubjectRepository extends ServiceEntityRepository
             ->where('s.city = :city')
             ->setParameter('city', $cityId)
             ->andWhere('s.isHidden is NULL OR s.isHidden = 0')
+            ->orderBy('s.name', 'ASC')
             ->getQuery()
             ->getResult();
     }

@@ -158,7 +158,6 @@ class DbfContactFormIncoming implements EventSubscriberInterface
         // SUBJECTS AND COMMENTS
         //SUBJECT
         $subject = $this->subjectRepository->findOneByName('Formulaire de contact site DBF');
-
         if (!$subject) {
             $name = 'Formulaire de contact site DBF';
             $subject = SubjectMaker::make($name, 1, 1, $this->cityRepository->findOneByIdentifier('PHONECITY'));

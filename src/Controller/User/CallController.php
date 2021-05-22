@@ -80,9 +80,11 @@ class CallController extends AbstractController
 
         $call          = new Call();
         $form          = $this->createForm(CallType::class, $call);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $subject = $subjectRepository->findOneById($request->request->all()['call']['subject']);
             $call->setSubject($subject);
             $call->setAuthor($author);
@@ -90,7 +92,6 @@ class CallController extends AbstractController
             if ($call->getRecallPeriod()->getIdentifier() === RecallPeriod::URGENT) {
                 $call->setIsUrgent(true);
             }
-
             $client = $call->getClient();
             if ($request->request->get('call')['client_id'] != '') {
                 $client = $clientRepository->findOneById($request->request->get('call')['client_id']);
@@ -123,8 +124,20 @@ class CallController extends AbstractController
             $entityManager->flush();
             $event = new GenericEvent($call);
             $eventDispatcher->dispatch($event, Events::CALL_INCOMING);
-
-            $this->addFlash('success', 'Appel ajouté ');
+            $destName   = $call->getRecipient() && $call->getRecipient()->getService()->getConcession()->getTown()->getIdentifier() !== 'PHONECITY' ? $call->getRecipient()->getFullName() : null;
+            $dest       = $call->getRecipient() ? $call->getRecipient()->getService()->getName() : $call->getService()->getName();
+            $city       = $call->getRecipient() ? $call->getRecipient()->getService()->getConcession()->getTown()->getName() : $call->getService()->getConcession()->getTown()->getName();
+            $concession = $call->getRecipient() ? $call->getRecipient()->getService()->getConcession()->getName() : $call->getService()->getConcession()->getName();
+            if(!$destName) {
+                $text = 'au service ' . $dest . ' de ' . $city . ' / ' . $concession;
+                if ($call->getRecipient()->getService()->getConcession()->getTown()->getIdentifier() === 'PHONECITY') {
+                    $text = 'à la Cellule téléphonique';
+                }
+                $this->addFlash('success', 'Appel ajouté et transmis ' . $text);
+            } else {
+                $text = $destName . ' au service ' . $dest . ' de ' . $city . ' / ' . $concession;
+                $this->addFlash('success', 'Appel ajouté et transmis à ' . $text);
+            }
 
             return $this->redirectToRoute('call_add');
         }

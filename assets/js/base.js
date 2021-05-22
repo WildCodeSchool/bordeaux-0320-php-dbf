@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
         sidebarController.addEventListener('click', (e) => {
             const itsAction = sidebarController.dataset.action;
             if (itsAction === 'hide') {
-                instanceOfSidenav.close();
+                if(instanceOfSidenav) {
+                    instanceOfSidenav.close();
+                }
                 sidebarController.dataset.action = 'show';
                 Array.from(containers)
                     .forEach((e) => {
@@ -26,7 +28,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         sidebarController.innerHTML = '<i class="material-icons">chevron_right</i>';
                     });
             } else {
-                instanceOfSidenav.open();
+                if(instanceOfSidenav) {
+                    instanceOfSidenav.open();
+                }
                 sidebarController.dataset.action = 'hide';
                 Array.from(containers)
                     .forEach((e) => {

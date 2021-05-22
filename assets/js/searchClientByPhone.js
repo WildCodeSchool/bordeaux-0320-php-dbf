@@ -72,7 +72,6 @@ const alertForCalls = (data) => {
         const modalClientPhone = document.getElementById('modal-callclient-phone');
         const modalForPhoneAlert = M.Modal.init(modalClientPhone);
         const tableForCalls = document.getElementById('calls-on-the-way-for-phone');
-        document.getElementById('callclient-civility').innerHTML = data.client.client_civility
         document.getElementById('callclient-name').innerHTML = data.client.client_name
         document.getElementById('callclient-count').innerHTML = data.calls.length + ' appel';
         document.getElementById('callclient-count').innerHTML += data.calls.length > 1 ? 's' : ''

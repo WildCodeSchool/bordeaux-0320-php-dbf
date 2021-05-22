@@ -91,6 +91,7 @@ class CallType extends AbstractType
                 'choices' => $this->getAllCities(),
                 'mapped'  => false,
                 'data' => $user->getService()->getConcession()->getTown()->getId(),
+
             ])
             ->add('concession', ChoiceType::class, [
                 'choices' => $this->getConcessions($user->getService()->getConcession()->getTown()->getId()),
@@ -105,14 +106,14 @@ class CallType extends AbstractType
             ])
             ->add('recipient', EntityType::class, [
                 'class'   => User::class,
-                'choice_label' => 'lastname'
+                'choice_label' => 'lastname',
             ]);
 
-        if (isset($data->City)) {
+        if (isset($data->City) && $data->City !== 0) {
             $city = $this->cityRepository->findOneById($data->City);
             $cityId = $data->City;
 
-            if (!$city->isPhoneCity()) {
+            if ($city && !$city->isPhoneCity()) {
                 $builder->
                 add('concession', ChoiceType::class, [
                     'choices' => $this->getConcessions($data->City),
@@ -213,7 +214,9 @@ class CallType extends AbstractType
 
     public function getAllCities()
     {
-        $cities = $this->cityRepository->findAll();
+        $cities = $this->cityRepository->findBy([], [
+            'name' => 'ASC'
+        ]);
         $choices = [];
         $choices['Choisir une plaque'] = '';
         foreach ($cities as $city) {
@@ -225,9 +228,13 @@ class CallType extends AbstractType
     public function getConcessions($cityId = null)
     {
         if (!$cityId) {
-            $concessions = $this->concessionRepository->findAll();
+            $concessions = $this->concessionRepository->findBy([], [
+                'name' => 'ASC'
+            ]);
         } else {
-            $concessions = $this->concessionRepository->findBy(['town' => $cityId]);
+            $concessions = $this->concessionRepository->findBy(['town' => $cityId], [
+                'name' => 'ASC'
+            ]);
         }
         $choices = [];
         $choices['Choisir une concession'] = '';
@@ -241,9 +248,13 @@ class CallType extends AbstractType
     public function getServices($concessionId = null)
     {
         if (is_null($concessionId)) {
-            $services = $this->serviceRepository->findAll();
+            $services = $this->serviceRepository->findBy([], [
+                'name' => 'ASC'
+            ]);
         } else {
-            $services = $this->serviceRepository->findBy(['concession' => $concessionId]);
+            $services = $this->serviceRepository->findBy(['concession' => $concessionId], [
+                'name' => 'ASC'
+            ]);
         }
         $choices = [];
         $choices['Choisir un service'] = '';
@@ -267,7 +278,7 @@ class CallType extends AbstractType
         $choices['Choisir un destinataire'] = '';
         $choices['Tous les collaborateurs'] = 'service-' . $serviceId;
         foreach ($recipients as $user) {
-            $choices[$user->getFirstname() . ' ' . $user->getLastname()] = $user->getId();
+            $choices[$user->getLastname() . ' ' . $user->getFirstname()] = $user->getId();
         }
         return $choices;
     }
@@ -277,6 +288,7 @@ class CallType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Call::class,
             'allow_extra_fields' => true,
+            'csrf_protection' => false,
         ]);
     }
 }

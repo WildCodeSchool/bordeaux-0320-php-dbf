@@ -101,6 +101,10 @@ class recipientsAjaxTool {
         }
 
         if (this.concessionSelector) {
+
+            const concessionsOptions = this.concessionSelector.querySelectorAll('option')
+            concessionsOptions[0].setAttribute('disabled', 'disabled')
+
             this.concessionSelector.addEventListener('change', () => {
                 this.serviceZone.innerHTML = this.addLoader()
                 const postdata = {
@@ -121,6 +125,10 @@ class recipientsAjaxTool {
         }
 
         if (this.serviceSelector) {
+
+            const servicesOptions = this.serviceSelector.querySelectorAll('option')
+            servicesOptions[0].setAttribute('disabled', 'disabled')
+
             this.serviceSelector.addEventListener('change', () => {
                 this.recipientZone.innerHTML = this.addLoader()
                 const postdata = {
@@ -142,6 +150,10 @@ class recipientsAjaxTool {
         }
 
         if (this.recipientSelector) {
+
+            const recipientOptions = this.recipientSelector.querySelectorAll('option')
+            recipientOptions[0].setAttribute('disabled', 'disabled')
+
             this.recipientSelector.addEventListener('change', () => {
                 this.selectValueInSelect(this.recipientField, this.recipientSelector.value)
                 this.recipientField.value = this.recipientSelector.value;
