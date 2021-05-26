@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -32,7 +33,8 @@ class SearchController extends AbstractController
         Request $request,
         CallRepository $callRepository,
         ExportDataToCsv $exportDataToCsv,
-        OnlyCallKeeper $onlyCallKeeper
+        OnlyCallKeeper $onlyCallKeeper,
+        KernelInterface $kernel
     ): Response {
         $searchedCalls = [];
         $dataReadyForExport='';
@@ -43,11 +45,25 @@ class SearchController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $searchedCalls = $onlyCallKeeper::keepCalls($callRepository->findSearch($form->getData()));
             $dataReadyForExport = json_encode($exportDataToCsv->dataMakerBeforeExport($searchedCalls));
+
+            // Making CSV File
+            $folder = $kernel->getProjectDir() . '/public/build/exports';
+            if(!is_dir($folder)) {
+                mkdir($folder);
+            }
+            $fp = fopen($folder . '/export' . $this->getUser()->getId() . '.csv', 'w');
+            foreach ($exportDataToCsv->dataMakerBeforeExport($searchedCalls) as $row) {
+                fputcsv($fp, $row, ';');
+            }
+            fclose($fp);
+
+
         }
         return $this->render('search/index.html.twig', [
             'form'=> $form->createView(),
             'calls'=> $searchedCalls,
             'export'=> $dataReadyForExport,
+            'filename' => 'build/exports/export' . $this->getUser()->getId() . '.csv',
         ]);
     }
 
@@ -60,6 +76,9 @@ class SearchController extends AbstractController
      */
     public function exportToCSV(ExportDataToCsv $exportDataToCsv, string $exportedCalls = null)
     {
+
+        dd($exportedCalls);
+
         $searchedCalls = json_decode($exportedCalls, true);
         if (is_null($searchedCalls)) {
             $this->addFlash('error', 'Faites d\'abord une recherche');
