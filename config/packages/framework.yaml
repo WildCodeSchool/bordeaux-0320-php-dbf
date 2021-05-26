@@ -9,7 +9,7 @@ framework:
     session:
         handler_id: ~
         cookie_secure: auto
-        cookie_lifetime: 0
+        cookie_lifetime: 2592000
         cookie_samesite: lax
 
     #esi: true
