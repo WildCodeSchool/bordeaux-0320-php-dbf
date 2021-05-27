@@ -21,13 +21,14 @@ class CallProcessingRepository extends ServiceEntityRepository
 
     public function findLastProcessForCall($callId): ?CallProcessing
     {
-        return $this->createQueryBuilder('c')
-            ->andWhere('c.referedCallId = :callId')
+        $results = $this->createQueryBuilder('c')
+            ->where('c.referedCall = :callId')
             ->setParameter('callId', $callId)
             ->orderBy('c.createdAt', 'DESC')
             ->getQuery()
-            ->getOneOrNullResult()
+            ->getResult()
             ;
+        return $results[0] ?? null;
     }
 
     public function findCallProcessingForUser($user)

@@ -24,6 +24,11 @@ security:
                 # where to redirect after logout
                 target: app_login
 
+            remember_me:
+                secret:   '%kernel.secret%'
+                lifetime: 2972000 # 1 month in seconds
+                path:     /
+
             # activate different ways to authenticate
 
             # http_basic: true

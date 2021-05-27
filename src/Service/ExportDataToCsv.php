@@ -2,10 +2,16 @@
 namespace App\Service;
 
 use App\Entity\Call;
+use App\Repository\CallProcessingRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class ExportDataToCsv
 {
+    public function __construct(CallProcessingRepository $callProcessingRepository)
+    {
+        $this->processRepository = $callProcessingRepository;
+    }
+
     /**
      * @param array $data
      * @param string $filename
@@ -49,6 +55,7 @@ class ExportDataToCsv
             'Commentaire',
             'Dernier Destinataire',
             'Statut',
+            'Dernier message laissé',
             'RDV',
             'origine',
         ];
@@ -66,6 +73,7 @@ class ExportDataToCsv
                     $field->getComment()->getName(),
                     $field->getRecipient()->getFullName(),
                     CallTreatmentDataMaker::getLastTreatment($field),
+                    $this->processRepository->findLastProcessForCall($field->getId()) ? $this->processRepository->findLastProcessForCall($field->getId())->getComment() : '',
                     ($field->getIsAppointmentTaken()) ? 'oui' : 'non',
                     $field->getOrigin() ?? '',
                 ];

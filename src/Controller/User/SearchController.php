@@ -53,7 +53,9 @@ class SearchController extends AbstractController
             }
             $fp = fopen($folder . '/export' . $this->getUser()->getId() . '.csv', 'w');
             foreach ($exportDataToCsv->dataMakerBeforeExport($searchedCalls) as $row) {
-                fputcsv($fp, $row, ';');
+                fputs($fp, (chr(0xEF) . chr(0xBB) . chr(0xBF)));
+                fputcsv($fp, $row, ';', '"');
+                //fputcsv($fp, $row, ';');
             }
             fclose($fp);
 
@@ -76,9 +78,6 @@ class SearchController extends AbstractController
      */
     public function exportToCSV(ExportDataToCsv $exportDataToCsv, string $exportedCalls = null)
     {
-
-        dd($exportedCalls);
-
         $searchedCalls = json_decode($exportedCalls, true);
         if (is_null($searchedCalls)) {
             $this->addFlash('error', 'Faites d\'abord une recherche');
