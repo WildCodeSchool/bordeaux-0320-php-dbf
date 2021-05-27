@@ -24,6 +24,14 @@
                             <input type="password" name="password" id="inputPassword" class="form-control" required>
                         </div>
                     </div>
+                    <div class="row mgt15">
+                        <div class="col s12 input-field">
+                            <label for="remember_me">
+                                <input type="checkbox" id="remember_me" name="_remember_me" checked/>
+                                <span>Rester connecté</span>
+                            </label>
+                        </div>
+                    </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                     <div class="row">
