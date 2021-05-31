@@ -46,6 +46,7 @@ class ExportDataToCsv
         $dataReadyToExport = [];
         $dataReadyToExport[]=[
             'Date Appel',
+            'Heure d\'appel',
             'Créateur',
             'Concession Créateur',
             'Plaque Destinataire',
@@ -62,7 +63,8 @@ class ExportDataToCsv
         foreach ($data as $field) {
 
                 $dataReadyToExport[] = [
-                    $field->getCreatedAt()->format('d-m-Y H:i'),
+                    $field->getCreatedAt()->format('d-m-Y'),
+                    $field->getCreatedAt()->format('H:i'),
                     $field->getAuthor()->getFullName(),
                     $field->getAuthor()->getService()->getConcession()->getName(),
                     $field->getRecipient()->getService()->getConcession()->getTown()->getName(),
