@@ -30,4 +30,14 @@ class SubjectRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function getAllNotHiddenForAll()
+    {
+        $qb = $this->createQueryBuilder('s');
+        return $qb
+            ->where('s.isHidden is NULL OR s.isHidden = 0')
+            ->orderBy('s.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

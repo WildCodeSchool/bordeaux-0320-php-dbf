@@ -204,7 +204,12 @@ class CallType extends AbstractType
 
     public function getSubjects(int $cityId)
     {
+        $city = $this->cityRepository->findOneById($cityId);
         $subjects = $this->subjectRepository->getAllNotHidden($cityId);
+
+        if ($city->getIdentifier() ==='PHONECITY') {
+            $subjects = $this->subjectRepository->getAllNotHiddenForAll();
+        }
         $choices = [];
         foreach ($subjects as $subject) {
             $choices[$subject->getName()] = $subject->getId();
