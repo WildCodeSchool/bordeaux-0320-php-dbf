@@ -53,9 +53,9 @@ class SearchController extends AbstractController
             }
             $fp = fopen($folder . '/export' . $this->getUser()->getId() . '.csv', 'w');
             foreach ($exportDataToCsv->dataMakerBeforeExport($searchedCalls) as $row) {
-                fputs($fp, (chr(0xEF) . chr(0xBB) . chr(0xBF)));
+                $row = str_replace(['à', 'é', 'è', 'ç', 'ô', 'û', 'ù', 'ö', 'ü', 'ï', 'ê'], ['a', 'e', 'e', 'c', 'o', 'u', 'u', 'o', 'u', 'i', 'e'], $row);
+                //fputs($fp, (chr(0xEF) . chr(0xBB) . chr(0xBF)));
                 fputcsv($fp, $row, ';', '"');
-                //fputcsv($fp, $row, ';');
             }
             fclose($fp);
 
