@@ -13,6 +13,12 @@
            {% include 'components/_flashes.html.twig' %}
         </div>
 
+        {% if form_errors(form) %}
+            <div class="col s6 red white-text">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+
     </div>
     {{ include('call/_form.html.twig') }}
 </div>
