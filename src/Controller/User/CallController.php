@@ -5,7 +5,10 @@ namespace App\Controller\User;
 use App\Entity\Call;
 use App\Entity\User;
 use App\Events;
+use App\Repository\CityRepository;
+use App\Repository\ConcessionRepository;
 use App\Repository\SubjectRepository;
+use App\Repository\UserRepository;
 use App\Service\CallTreatmentDataMaker;
 use App\Entity\RecallPeriod;
 use App\Form\CallType;
@@ -14,11 +17,13 @@ use App\Repository\CallRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ServiceRepository;
 use App\Repository\VehicleRepository;
+use App\Service\PhoneCityCallErrorPrevent;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Service\CallOnTheWayDataMaker;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,10 +58,12 @@ class CallController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param VehicleRepository $vehicleRepository
      * @param ClientRepository $clientRepository
-     * @param ServiceRepository $serviceRepository
      * @param CallRepository $callRepository
      * @param CallTreatmentDataMaker $callTreatmentDataMaker
      * @param EventDispatcherInterface $eventDispatcher
+     * @param ServiceRepository $serviceRepository
+     * @param SubjectRepository $subjectRepository
+     * @param PhoneCityCallErrorPrevent $callErrorPrevent
      * @return Response
      */
     public function add(
@@ -68,7 +75,8 @@ class CallController extends AbstractController
         CallTreatmentDataMaker $callTreatmentDataMaker,
         EventDispatcherInterface $eventDispatcher,
         ServiceRepository $serviceRepository,
-        SubjectRepository $subjectRepository
+        SubjectRepository $subjectRepository,
+        PhoneCityCallErrorPrevent $callErrorPrevent
     ): Response {
         $author = $this->getUser();
         $addedCalls = $callRepository->findCallsAddedToday($author);
@@ -80,8 +88,13 @@ class CallController extends AbstractController
 
         $call          = new Call();
         $form          = $this->createForm(CallType::class, $call);
-
         $form->handleRequest($request);
+
+        if ($this->getUser()->getService()->getConcession()->getTown()->getIdentifier() === 'PHONECITY' && isset($request->request->all()['call'])) {
+            if(!$callErrorPrevent->isRecipientCoherent($request->request->all()['call'])) {
+                $form->addError(new FormError('Destinataire incohérent ou mal choisi'));
+            }
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
 
