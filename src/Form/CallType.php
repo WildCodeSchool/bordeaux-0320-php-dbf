@@ -288,10 +288,12 @@ class CallType extends AbstractType
         $choices = [];
         $choices['Choisir un destinataire'] = '';
         $choices['Tous les collaborateurs'] = 'service-' . $serviceId;
+
         if ($city->getIdentifier() === 'PHONECITY' && $service->getConcession()->getTown()->getIdentifier() === 'PHONECITY') {
             unset($choices['Tous les collaborateurs']);
         }
-            foreach ($recipients as $user) {
+
+        foreach ($recipients as $user) {
             $choices[$user->getLastname() . ' ' . $user->getFirstname()] = $user->getId();
         }
         return $choices;
