@@ -143,7 +143,7 @@ class CallController extends AbstractController
             $concession = $call->getRecipient() ? $call->getRecipient()->getService()->getConcession()->getName() : $call->getService()->getConcession()->getName();
             if(!$destName) {
                 $text = 'au service ' . $dest . ' de ' . $city . ' / ' . $concession;
-                if ($call->getRecipient()->getService()->getConcession()->getTown()->getIdentifier() === 'PHONECITY') {
+                if ($call->getRecipient() && $call->getRecipient()->getService()->getConcession()->getTown()->getIdentifier() === 'PHONECITY') {
                     $text = 'à la Cellule téléphonique';
                 }
                 $this->addFlash('success', 'Appel ajouté et transmis ' . $text);
