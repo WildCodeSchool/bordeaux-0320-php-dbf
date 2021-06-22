@@ -131,6 +131,20 @@ class CallRepository extends ServiceEntityRepository
             ;
     }
 
+    public function everyCallsByUser($recipient)
+    {
+        return $this->createQueryBuilder('c')
+            ->Where('c.recipient = :recipient')
+            ->setParameter('recipient', $recipient)
+            ->andWhere('c.isProcessEnded = 1')
+            ->andWhere('c.isAppointmentTaken != 1')
+            ->setMaxResults(50)
+            ->orderBy('c.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     public function callsToProcessByUser($recipient)
     {
         $queryRecipient = $this->createQueryBuilder('c')
