@@ -274,14 +274,25 @@ class CallType extends AbstractType
 
     public function getRecipients($serviceId = null)
     {
+        $service = null;
+        $user = $this->security->getUser();
+        $city = $user->getService()->getConcession()->getTown();
+
         if (is_null($serviceId)) {
             $recipients = $this->userRepository->findOperationnalUsers();
         } else {
+            $service = $this->serviceRepository->findOneById($serviceId);
             $recipients = $this->userRepository->findOperationnalUsersInService($serviceId);
         }
+
         $choices = [];
         $choices['Choisir un destinataire'] = '';
         $choices['Tous les collaborateurs'] = 'service-' . $serviceId;
+
+        if ($city->getIdentifier() === 'PHONECITY' && $service->getConcession()->getTown()->getIdentifier() === 'PHONECITY') {
+            unset($choices['Tous les collaborateurs']);
+        }
+
         foreach ($recipients as $user) {
             $choices[$user->getLastname() . ' ' . $user->getFirstname()] = $user->getId();
         }

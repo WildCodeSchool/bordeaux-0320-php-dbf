@@ -302,6 +302,13 @@ class Call
         return $this;
     }
 
+    public function setIsProcessEndedToNull(): self
+    {
+        $this->isProcessEnded = null;
+
+        return $this;
+    }
+
     public function getIsAppointmentTaken(): ?bool
     {
         return $this->isAppointmentTaken;

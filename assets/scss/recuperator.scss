@@ -1,0 +1,9 @@
+table {
+  &.recuperator {
+    tr {
+      &:hover {
+        background: #eee;
+      }
+    }
+  }
+}
