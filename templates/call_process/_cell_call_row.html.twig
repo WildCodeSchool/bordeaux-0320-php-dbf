@@ -142,10 +142,10 @@
                 </div>
                 <div class="col s5" id="call-history-{{ call.id }}">
                     {% for process in call.callProcessings|reverse[:1] %}
-                            <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName}}</span>
+                            <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName | raw }}</span>
                             <span class="bolder">
-                                {{ process.createdAt|dateName }}
-                                à {{ process.createdAt|timeFormat }}
+                                {{ process.createdAt | dateName }}
+                                à {{ process.createdAt | timeFormat }}
                             </span>
                     {% endfor %}
                 </div>
