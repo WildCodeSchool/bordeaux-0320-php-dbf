@@ -5,6 +5,7 @@ namespace App\Controller\User;
 use App\Entity\CallProcessing;
 use App\Entity\CallTransfer;
 use App\Entity\RecallPeriod;
+use App\Events;
 use App\Form\CallProcessingType;
 use App\Repository\CallRepository;
 use App\Repository\ContactTypeRepository;
@@ -16,6 +17,8 @@ use App\Service\CallTreatmentDataMaker;
 use App\Twig\DateFormatter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -175,6 +178,8 @@ class CallProcessController extends AbstractController
         $entityManager->persist($call);
         $entityManager->flush();
 
+
+
         $response = new JsonResponse();
         $response->setStatusCode(JsonResponse::HTTP_OK);
         $response->setData([
@@ -196,7 +201,8 @@ class CallProcessController extends AbstractController
         CallRepository $callRepository,
         UserRepository $userRepository,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $call            = $callRepository->findOneById($callId);
         $fromWhom        = $call->getRecipient();
@@ -213,6 +219,9 @@ class CallProcessController extends AbstractController
         $entityManager->persist($transfer);
         $entityManager->persist($call);
         $entityManager->flush();
+
+        $event = new GenericEvent($call);
+        $eventDispatcher->dispatch($event, Events::CALL_INCOMING);
 
         $response = new JsonResponse();
         $response->setStatusCode(JsonResponse::HTTP_ACCEPTED);

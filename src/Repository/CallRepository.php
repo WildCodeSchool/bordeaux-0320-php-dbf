@@ -133,12 +133,17 @@ class CallRepository extends ServiceEntityRepository
 
     public function everyCallsByUser($recipient)
     {
+
+        $limit = new \DateTime('Europe/Paris');
+        $limit->sub(new \DateInterval('P30D'));
+
         return $this->createQueryBuilder('c')
             ->Where('c.recipient = :recipient')
             ->setParameter('recipient', $recipient)
             ->andWhere('c.isProcessEnded = 1')
             ->andWhere('c.isAppointmentTaken != 1')
-            ->setMaxResults(50)
+            ->andWhere('c.createdAt >= :limit')
+            ->setParameter('limit', $limit)
             ->orderBy('c.createdAt', 'DESC')
             ->getQuery()
             ->getResult()
