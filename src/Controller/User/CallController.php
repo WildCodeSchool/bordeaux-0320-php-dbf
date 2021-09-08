@@ -135,8 +135,10 @@ class CallController extends AbstractController
             $entityManager->persist($call);
 
             $entityManager->flush();
+
             $event = new GenericEvent($call);
             $eventDispatcher->dispatch($event, Events::CALL_INCOMING);
+
             $destName   = $call->getRecipient() && $call->getRecipient()->getService()->getConcession()->getTown()->getIdentifier() !== 'PHONECITY' ? $call->getRecipient()->getFullName() : null;
             $dest       = $call->getRecipient() ? $call->getRecipient()->getService()->getName() : $call->getService()->getName();
             $city       = $call->getRecipient() ? $call->getRecipient()->getService()->getConcession()->getTown()->getName() : $call->getService()->getConcession()->getTown()->getName();
