@@ -54,6 +54,7 @@ class CallIncomingSendMail implements EventSubscriberInterface
         $recipient = $call->getRecipient();
         $subject = "Un appel ajouté";
 
+
         if('true' === $_SERVER['SEND_EMAILS']) {
             if (null !== $recipient) {
                 $email = (new TemplatedEmail())
