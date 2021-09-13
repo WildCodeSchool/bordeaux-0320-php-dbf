@@ -203,7 +203,8 @@ class CallProcessController extends AbstractController
         CallRepository $callRepository,
         UserRepository $userRepository,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $call            = $callRepository->findOneById($callId);
         $fromWhom        = $call->getRecipient();
@@ -220,6 +221,9 @@ class CallProcessController extends AbstractController
         $entityManager->persist($transfer);
         $entityManager->persist($call);
         $entityManager->flush();
+
+        $event = new GenericEvent($call);
+        $eventDispatcher->dispatch($event, Events::CALL_INCOMING);
 
         $response = new JsonResponse();
         $response->setStatusCode(JsonResponse::HTTP_ACCEPTED);
