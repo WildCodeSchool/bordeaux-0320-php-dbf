@@ -84,7 +84,6 @@ class DbfFormController extends Retardator
                 'success' => $success,
                 'referer' => $referer
             ]);
-
         }
 
         return $this->render('landing/dbf_form.html.twig', [
@@ -94,8 +93,4 @@ class DbfFormController extends Retardator
             'success' => $success
         ]);
     }
-
-
-
-
 }

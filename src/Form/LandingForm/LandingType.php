@@ -104,7 +104,8 @@ class LandingType extends AbstractType
                     'mapped' => false,
                     'attr' => [
                         'class' => "materialize-textarea",
-                        'placeholder' => 'Laissez nous un message'
+                        'placeholder' => 'Laissez nous un message',
+                        'maxlength' => 250
                     ]
                 ])
                 ->add('brand', HiddenType::class, [

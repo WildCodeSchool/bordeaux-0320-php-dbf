@@ -131,7 +131,8 @@ class DbfContactType extends AbstractType
                         'mapped' => false,
                         'attr' => [
                             'class' => "materialize-textarea",
-                            'placeholder' => 'Votre message'
+                            'placeholder' => 'Votre message',
+                            'maxlength' => 250
                         ]
                     ])
                 ;
