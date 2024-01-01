@@ -12,20 +12,24 @@
             </tr>
         </thead>
         <tbody>
-        {% for vehicle in vehicles %}
-            <tr>
-                <td>{{ vehicle.id }}</td>
-                <td>{{ vehicle.immatriculation }}</td>
-                <td>{{ vehicle.chassis }}</td>
-                <td>{{ vehicle.hasCome }}</td>
-                <td>{{ vehicle.createdAt ? vehicle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ vehicle.updatedAt ? vehicle.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ vehicle.client.name }}</td>
-            </tr>
-        {% else %}
+        {% if vehicles is defined %}
+            {% for vehicle in vehicles %}
+                <tr>
+                    <td>{{ vehicle.id }}</td>
+                    <td>{{ vehicle.immatriculation }}</td>
+                    <td>{{ vehicle.chassis }}</td>
+                    <td>{{ vehicle.hasCome }}</td>
+                    <td>{{ vehicle.createdAt ? vehicle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ vehicle.updatedAt ? vehicle.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    <td>{{ vehicle.client.name }}</td>
+                </tr>
+            {% else %}
             <tr>
                 <td colspan="7">Aucun enregistrement trouvé</td>
             </tr>
         {% endfor %}
+        {% endif %}
+
+
         </tbody>
     </table>

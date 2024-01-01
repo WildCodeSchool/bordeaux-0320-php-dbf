@@ -75,11 +75,10 @@ class AdminPanelController extends AbstractController
             'form_city'         => $formCity->createView(),
             'civilities'        => $civilities->findAll(),
             'concessions'       => $concessions->findAllConcessionsOrderByTown(),
-            'vehicles'          => $vehicleRepository->findAll(),
+            //'vehicles'          => $vehicleRepository->findAll(),
             'subjects'          => $subjectRepository->findAll(),
             'comments'          => $commentRepository->findAll(),
             'cities'            => $cityRepository->findAll(),
-
         ]);
     }
 

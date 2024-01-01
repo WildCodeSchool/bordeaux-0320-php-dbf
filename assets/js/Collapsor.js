@@ -14,6 +14,37 @@ class Collapsor {
                     this.showChildren(this.collapsors[i])
                 }
             })
+            if(this.isInLocalStorage(this.collapsors[i])) {
+                this.collapsors[i].click()
+            }
+        }
+
+
+    }
+
+    isInLocalStorage(elem)
+    {
+            if (elem.dataset.type === 'city' && localStorage.getItem('opened-city') === elem.dataset.city) {
+                return true
+            }
+            if (elem.dataset.type === 'concession' && localStorage.getItem('opened-concession') === elem.dataset.concession) {
+                return true
+            }
+            if (elem.dataset.type === 'service' && localStorage.getItem('opened-service') === elem.dataset.service) {
+                return true
+            }
+            return false
+    }
+
+    saveInLocalStorage(elem) {
+        if(elem.dataset.type === 'city') {
+            localStorage.setItem('opened-city',  elem.dataset.city)
+        }
+        if(elem.dataset.type === 'concession') {
+            localStorage.setItem('opened-concession',  elem.dataset.concession)
+        }
+        if(elem.dataset.type === 'service') {
+            localStorage.setItem('opened-service',  elem.dataset.service)
         }
     }
 
@@ -62,6 +93,7 @@ class Collapsor {
                 const child = children[i];
                 child.classList.remove('hide');
             }
+            this.saveInLocalStorage(row)
         } else {
             M.toast({html:'Rien à afficher'});
         }

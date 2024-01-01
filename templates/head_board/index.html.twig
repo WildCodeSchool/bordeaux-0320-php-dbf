@@ -35,13 +35,19 @@
             </ul>
         </div>
     </div>
-    {% if cities %}
+    {% if cities is defined and cities %}
         <div class="row">
             <div class="col s12">
                 <h5>Les appels pour les sites dont vous êtes responsable</h5>
                 <table class="headboard-table">
                     {% for cityName, city in cities %}
-                        <tr class="row collapsor city-line" data-collapse="{{ city.slug }}" data-type="city">
+
+                        <tr
+                                class="row collapsor city-line"
+                                data-collapse="{{ city.slug }}"
+                                data-type="city"
+                                data-city="{{ city.slug }}"
+                        >
                             <td class="col s8 subrow" colspan="3">
                                 <i class="material-icons left tiny cyan-text text-darken-3">location_city</i>
                                 <span class="city-name cyan-text text-darken-3">{{ cityName }}</span>
@@ -61,6 +67,8 @@
                                 data-collapse="{{ city.slug }}-{{ concession.slug }}"
                                 data-parent="{{ city.slug }}"
                                 data-type="concession"
+                                data-city="{{ city.slug }}"
+                                data-concession="{{ concession.slug }}"
                             >
                                 <td class="col s8 subrow" colspan="3">
                                     <i class="material-icons left tiny cyan-text">home</i>
@@ -81,6 +89,9 @@
                                     data-collapse="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}"
                                     data-parent="{{ city.slug }}-{{ concession.slug }}"
                                     data-type="service"
+                                    data-city="{{ city.slug }}"
+                                    data-concession="{{ concession.slug }}"
+                                    data-service="{{ service.slug }}"
                                 >
                                     <td class="col s8 subrow" colspan="3">
                                         <i class="material-icons left tiny">settings</i>

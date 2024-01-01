@@ -24,12 +24,12 @@ class BackupCommand extends Command
      */
     private Manager $backupManager;
 
-    public function __construct(string $name = null, KernelInterface $kernel, DropBoxService $dropboxService, Manager $backupManager)
+    public function __construct(KernelInterface $kernel, DropBoxService $dropboxService, Manager $backupManager)
     {
         $this->folder = $kernel->getProjectDir() . '/backup';
         $this->dropboxService = $dropboxService;
         $this->backupManager = $backupManager;
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure()
