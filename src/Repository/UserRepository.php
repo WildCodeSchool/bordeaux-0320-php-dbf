@@ -61,10 +61,16 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getSingleResult();
     }
 
-    public function findAllInCity()
+    public function findAllInCity(?string $name = null)
     {
-        return $this->createQueryBuilder('u')
-            ->select('u, s, conc, c')
+        $qb = $this->createQueryBuilder('u')
+            ->select('u, s, conc, c');
+
+        if($name) {
+            $qb->where('u.lastname LIKE :name')
+                ->setParameter('name', $name . '%');
+        }
+        return $qb
             ->join('u.service', 's')
             ->join('s.concession', 'conc')
             ->join('conc.town', 'c')

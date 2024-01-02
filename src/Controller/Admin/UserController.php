@@ -43,6 +43,22 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/search", name="search_user", methods={"POST"})
+     * @param UserRepository $userRepository
+     * @return Response
+     */
+    public function search(Request $request, UserRepository $userRepository): Response
+    {
+        $name = $request->request->get('name');
+        $name = $name === "" ? null : $name;
+        $users = $userRepository->findAllInCity($name);
+
+        return $this->render('user/_collabs_table.html.twig', [
+            'users' => $users,
+        ]);
+    }
+
+    /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
      * @param Request $request
      * @param EntityManagerInterface $entityManager
