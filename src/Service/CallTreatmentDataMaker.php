@@ -73,7 +73,7 @@ class CallTreatmentDataMaker
      * @param Call $call
      * @return array
      */
-    public function stepMaker(Call $call)
+    public static function stepMaker(Call $call)
     {
         $data           = [];
         $treatments     = $call->getCallProcessings();

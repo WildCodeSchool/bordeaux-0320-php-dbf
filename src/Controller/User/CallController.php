@@ -59,7 +59,6 @@ class CallController extends AbstractController
      * @param VehicleRepository $vehicleRepository
      * @param ClientRepository $clientRepository
      * @param CallRepository $callRepository
-     * @param CallTreatmentDataMaker $callTreatmentDataMaker
      * @param EventDispatcherInterface $eventDispatcher
      * @param ServiceRepository $serviceRepository
      * @param SubjectRepository $subjectRepository
@@ -72,7 +71,6 @@ class CallController extends AbstractController
         VehicleRepository $vehicleRepository,
         ClientRepository $clientRepository,
         CallRepository $callRepository,
-        CallTreatmentDataMaker $callTreatmentDataMaker,
         EventDispatcherInterface $eventDispatcher,
         ServiceRepository $serviceRepository,
         SubjectRepository $subjectRepository,
@@ -82,8 +80,8 @@ class CallController extends AbstractController
         $addedCalls = $callRepository->findCallsAddedToday($author);
         $steps = [];
         foreach ($addedCalls as $addedCall) {
-            $steps[ $addedCall->getId()] = $callTreatmentDataMaker->stepMaker($addedCall);
-            $steps[ $addedCall->getId()]['lastStepName'] = $callTreatmentDataMaker->getLastTreatment($addedCall);
+            $steps[ $addedCall->getId()] = CallTreatmentDataMaker::stepMaker($addedCall);
+            $steps[ $addedCall->getId()]['lastStepName'] = CallTreatmentDataMaker::getLastTreatment($addedCall);
         }
 
         $call          = new Call();
