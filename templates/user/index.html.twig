@@ -5,48 +5,20 @@
 {% block body %}
     <div class="container">
     <h1><i class="medium left material-icons">clear_all</i> Collaborateurs</h1>
-        <a href="{{ path('user_new') }}" class="btn light-blue darken-4">Ajouter</a>
+        <div class="d-flex flex-justify-between">
+            <a href="{{ path('user_new') }}" class="btn light-blue darken-4">Ajouter</a>
+            <div class="w-500">
+                <input type="text" placeholder="Nom de famille" data-controller="search" data-action="keyup->search#search">
+                <div class="progress opacity-0" id="search-loader">
+                    <div class="indeterminate"></div>
+                </div>
+            </div>
+        </div>
         {% include 'components/_flashes.html.twig' %}
-    <table class="table highlight">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Email</th>
-                <th>Téléphone</th>
-                <th>Service</th>
-                <th>Roles</th>
-                <th>Date de création</th>
-                <th>Date de modification</th>
-                <th>Peut être désigné destinataire ?</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for user in users %}
-            <tr id={{ user.id }}>
-                <td>{{ user.lastName | upper ~ ' ' ~ user.firstName }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.phone ? user.phone|phoneNumber : '' }}</td>
-                <td>{{ user.service ? user.service.concession.town.name ~ ' > ' ~ user.service.concession.name ~ ' > '~user.service.name : ''  }}</td>
-                <td>{{ user.roles == ["ROLE_ADMIN","ROLE_USER"]? "Administrateur": '' }}</td>
-                <td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td><span class="material-icons">{{ user.canBeRecipient ? 'done' : '' }}
-                    </span>
-                </td>
-                <td>
-                    <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn mgt15 light-blue darken-1"><i class="material-icons">edit</i></a>
-                    {{ include('user/_delete_form.html.twig') }}
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
+        <div id="collabs-list">
+            {% include 'user/_collabs_table.html.twig' %}
+        </div>
 
     </div>
 {% endblock %}
