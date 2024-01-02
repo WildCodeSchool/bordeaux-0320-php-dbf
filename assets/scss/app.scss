@@ -1,6 +1,8 @@
 /* Materialize import CSS */
 @import "~materialize-css/sass/materialize.scss";
 @import "vars";
+@import "flex";
+@import "helpers/helpers";
 @import "~triswitch";
 @import "switch3";
 @import "animations";
