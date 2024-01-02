@@ -5,6 +5,13 @@
  * (and its CSS file) in your base layout (base.html.twig).
  */
 
+import { Application } from "@hotwired/stimulus"
+import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
+
+window.Stimulus = Application.start()
+const context = require.context("./../controllers", true, /\.js$/)
+Stimulus.load(definitionsFromContext(context))
+
 // any CSS you require will output into a single css file (app.css in this case)
 require('../scss/app.scss');
 
