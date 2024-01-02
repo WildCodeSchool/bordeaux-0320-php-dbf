@@ -1,0 +1,63 @@
+
+@for $i from 0 through 150 {
+
+    .ml-#{$i} {
+        margin-left: #{$i}px !important;
+    }
+    .pl-#{$i} {
+        padding-left: #{$i}px !important;
+    }
+
+    .mr-#{$i} {
+        margin-right: #{$i}px !important;
+    }
+    .pr-#{$i} {
+        padding-right: #{$i}px !important;
+    }
+
+    .mt-#{$i} {
+        margin-top: #{$i}px !important;
+    }
+    .pt-#{$i} {
+        padding-top: #{$i}px !important;
+    }
+
+    .mb-#{$i} {
+        margin-bottom: #{$i}px !important;
+    }
+    .pb-#{$i} {
+        padding-bottom: #{$i}px !important;
+    }
+
+    .ms-#{$i} {
+        margin-left: #{$i}px !important;
+        margin-right: #{$i}px !important;
+    }
+    .ps-#{$i} {
+        padding-left: #{$i}px !important;
+        padding-right: #{$i}px !important;
+    }
+
+    .mud-#{$i} {
+        margin-top: #{$i}px !important;
+        margin-bottom: #{$i}px !important;
+    }
+    .pud-#{$i} {
+        padding-top: #{$i}px !important;
+        padding-bottom: #{$i}px !important;
+    }
+
+    .m-#{$i} {
+        margin: #{$i}px !important;
+    }
+    .p-#{$i} {
+        @media screen and (min-width: 992px) {
+            padding: #{$i}px !important;
+        }
+    }
+
+    .gap-#{$i} {
+        gap: #{$i}px;
+    }
+
+}

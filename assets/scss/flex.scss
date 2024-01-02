@@ -1,0 +1,120 @@
+.d-flex {
+    display:flex !important;
+    .w50 {
+        width: 50vw;
+        @media screen and (max-width: 1000px) {
+            width: 100vw;
+        }
+    }
+    .w100 {
+        width: 100vw;
+    }
+}
+.flex-wrap {
+    flex-wrap: wrap;
+}
+.flex-nowrap {
+    flex-wrap: nowrap;
+}
+.flex-center {
+    align-items: center;
+}
+
+.flex-end {
+    justify-content: flex-end;
+}
+
+.flex-row {
+    flex-direction: row;
+}
+
+.flex-column {
+    flex-direction: column;
+}
+
+.d-flex {
+    &.content-stretch {
+        align-content: stretch;
+    }
+
+    &.items-stretch {
+        align-items: stretch;
+    }
+    &.flex-row {
+        flex-direction: row;
+    }
+    &.flex-column {
+        flex-direction: column;
+    }
+    &.flex-justify-center {
+        justify-content: center;
+    }
+    &.flex-justify-start {
+        justify-content: flex-start;
+    }
+
+    &.flex-justify-m-start {
+        @media screen and (max-width: 1000px ){
+            justify-content: flex-start !important;
+        }
+    }
+
+    &.flex-justify-m-between {
+        @media screen and (max-width: 1000px ){
+            justify-content: space-between !important;
+        }
+    }
+
+    &.flex-justify-end {
+        justify-content: flex-end;
+    }
+    &.flex-justify-between {
+        justify-content: space-between;
+    }
+    &.flex-justify-around {
+        justify-content: space-around;
+    }
+
+    &.flex-content-center {
+        align-content: center;
+    }
+    &.flex-content-start {
+        align-content: flex-start;
+    }
+    &.flex-content-end {
+        align-content: flex-end;
+    }
+
+    &.flex-items-center {
+        align-items: center;
+    }
+    &.flex-items-start {
+        align-items: flex-start;
+    }
+    &.flex-items-end {
+        align-items: flex-end;
+    }
+    &.wrap {
+        flex-wrap: wrap;
+    }
+    &.no-wrap {
+        flex-wrap: nowrap;
+    }
+    &.flex-grow {
+        flex-grow: 1;
+    }
+    &.stretch {
+        align-items: stretch;
+    }
+    &.self-stretch {
+        align-self: stretch;
+    }
+
+    &.flex-grow-1 {
+        flex-grow: 1;
+    }
+
+    &.flex-grow-0 {
+        flex-grow: 0;
+    }
+}
