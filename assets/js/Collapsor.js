@@ -19,33 +19,49 @@ class Collapsor {
             }
         }
 
-
     }
 
     isInLocalStorage(elem)
     {
-            if (elem.dataset.type === 'city' && localStorage.getItem('opened-city') === elem.dataset.city) {
-                return true
-            }
-            if (elem.dataset.type === 'concession' && localStorage.getItem('opened-concession') === elem.dataset.concession) {
-                return true
-            }
-            if (elem.dataset.type === 'service' && localStorage.getItem('opened-service') === elem.dataset.service) {
+            if (
+                elem.dataset.type &&
+                localStorage.getItem(`opened-${elem.dataset.type}`) &&
+                JSON.parse(localStorage.getItem(`opened-${elem.dataset.type}`)).includes(elem.dataset.identifier)) {
                 return true
             }
             return false
     }
 
     saveInLocalStorage(elem) {
-        if(elem.dataset.type === 'city') {
-            localStorage.setItem('opened-city',  elem.dataset.city)
+
+        if(elem.dataset.type) {
+            this.addLocalItem(elem.dataset.type,  elem.dataset.identifier)
         }
-        if(elem.dataset.type === 'concession') {
-            localStorage.setItem('opened-concession',  elem.dataset.concession)
+    }
+    removeFromLocalStorage(elem) {
+        if(elem.dataset.type) {
+            this.removeLocalItem(elem.dataset.type,  elem.dataset.identifier)
         }
-        if(elem.dataset.type === 'service') {
-            localStorage.setItem('opened-service',  elem.dataset.service)
+    }
+
+
+    addLocalItem(type, value)
+    {
+        let val = localStorage.getItem(`opened-${type}`) ? JSON.parse(localStorage.getItem(`opened-${type}`)) : []
+        if(!val.includes(value)) {
+            val.push(value)
         }
+        localStorage.setItem(`opened-${type}`, JSON.stringify(val))
+    }
+
+    removeLocalItem(type, value)
+    {
+        let val = localStorage.getItem(`opened-${type}`) ? JSON.parse(localStorage.getItem(`opened-${type}`)) : []
+        if(val.indexOf(value) !== -1) {
+            const index = val.indexOf(value)
+            val.splice(index, 1)
+        }
+        localStorage.setItem(`opened-${type}`, JSON.stringify(val))
     }
 
     mergeNodeLists(a, b) {
@@ -107,6 +123,7 @@ class Collapsor {
             child.classList.remove('active');
             child.classList.add('hide');
         }
+        this.removeFromLocalStorage(row)
     }
 }
 

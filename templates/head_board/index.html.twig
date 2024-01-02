@@ -46,7 +46,7 @@
                                 class="row collapsor city-line"
                                 data-collapse="{{ city.slug }}"
                                 data-type="city"
-                                data-city="{{ city.slug }}"
+                                data-identifier="{{ city.slug }}"
                         >
                             <td class="col s8 subrow" colspan="3">
                                 <i class="material-icons left tiny cyan-text text-darken-3">location_city</i>
@@ -67,8 +67,7 @@
                                 data-collapse="{{ city.slug }}-{{ concession.slug }}"
                                 data-parent="{{ city.slug }}"
                                 data-type="concession"
-                                data-city="{{ city.slug }}"
-                                data-concession="{{ concession.slug }}"
+                                data-identifier="{{ city.slug }}-{{ concession.slug }}"
                             >
                                 <td class="col s8 subrow" colspan="3">
                                     <i class="material-icons left tiny cyan-text">home</i>
@@ -89,9 +88,7 @@
                                     data-collapse="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}"
                                     data-parent="{{ city.slug }}-{{ concession.slug }}"
                                     data-type="service"
-                                    data-city="{{ city.slug }}"
-                                    data-concession="{{ concession.slug }}"
-                                    data-service="{{ service.slug }}"
+                                    data-identifier="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}"
                                 >
                                     <td class="col s8 subrow" colspan="3">
                                         <i class="material-icons left tiny">settings</i>
