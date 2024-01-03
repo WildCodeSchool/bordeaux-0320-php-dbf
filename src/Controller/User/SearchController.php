@@ -43,23 +43,12 @@ class SearchController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
             $searchedCalls = $onlyCallKeeper::keepCalls($callRepository->findSearch($form->getData()));
-            $dataReadyForExport = json_encode($exportDataToCsv->dataMakerBeforeExport($searchedCalls));
-
-            // Making CSV File
-            $folder = $kernel->getProjectDir() . '/public/build/exports';
-            if(!is_dir($folder)) {
-                mkdir($folder);
-            }
-            $fp = fopen($folder . '/export' . $this->getUser()->getId() . '.csv', 'w');
-            foreach ($exportDataToCsv->dataMakerBeforeExport($searchedCalls) as $row) {
-                $row = str_replace(['à', 'é', 'è', 'ç', 'ô', 'û', 'ù', 'ö', 'ü', 'ï', 'ê'], ['a', 'e', 'e', 'c', 'o', 'u', 'u', 'o', 'u', 'i', 'e'], $row);
-                //fputs($fp, (chr(0xEF) . chr(0xBB) . chr(0xBF)));
-                fputcsv($fp, $row, ';', '"');
-            }
-            fclose($fp);
-
-
+            $dataReadyForExport = array_map(function ($call) {
+                return $call->getId();
+            }, $searchedCalls);
+            $dataReadyForExport = json_encode($dataReadyForExport);
         }
         return $this->render('search/index.html.twig', [
             'form'=> $form->createView(),
@@ -76,13 +65,28 @@ class SearchController extends AbstractController
      * @param string $exportedCalls
      * @return Response
      */
-    public function exportToCSV(ExportDataToCsv $exportDataToCsv, string $exportedCalls = null)
+    public function exportToCSV(CallRepository $callRepository, ExportDataToCsv $exportDataToCsv, string $exportedCalls = null)
     {
-        $searchedCalls = json_decode($exportedCalls, true);
-        if (is_null($searchedCalls)) {
+        $callsIds = json_decode($exportedCalls, true);
+        $calls = $callRepository->findBy(['id' => $callsIds]);
+
+        if (is_null($calls)) {
             $this->addFlash('error', 'Faites d\'abord une recherche');
             return $this->redirectToRoute('search');
         }
-        return $exportDataToCsv->exportDataToCsv($searchedCalls, 'export_' . $this->getUser()->getId());
+        $calls =  $exportDataToCsv->dataMakerBeforeExport($calls);
+
+        $folder = sys_get_temp_dir();
+        $fp = fopen($folder . '/calls.csv', 'w');
+
+        foreach ($calls as $fields) {
+            fputcsv($fp, $fields);
+        }
+        $response = $this->file($folder . '/calls.csv', 'appels.csv');
+        $response->headers->set('Content-type', 'application/csv');
+
+        fclose($fp);
+
+        return $response;
     }
 }
