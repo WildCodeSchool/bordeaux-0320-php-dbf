@@ -9,4 +9,12 @@
     width: percentage($i);
   }
 
+  .vw-#{$i} {
+    width: #{$i}vw;
+  }
+
+  .vh-#{$i} {
+    height: #{$i}vh;
+  }
+
 }
