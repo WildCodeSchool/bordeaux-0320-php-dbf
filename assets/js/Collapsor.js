@@ -41,6 +41,34 @@ class Collapsor {
     removeFromLocalStorage(elem) {
         if(elem.dataset.type) {
             this.removeLocalItem(elem.dataset.type,  elem.dataset.identifier)
+
+            if(elem.dataset.type === 'city') {
+                this.removeAllConcessionsForCity(elem.dataset.identifier)
+            }
+
+            if(elem.dataset.type === 'concession') {
+                this.removeAllServicesForConcession(elem.dataset.identifier)
+            }
+        }
+    }
+
+    removeAllConcessionsForCity(city)
+    {
+        let concessions = JSON.parse(localStorage.getItem(`opened-concession`))
+        for (let i in concessions) {
+            if(concessions[i].indexOf(city + '-') !== -1) {
+                this.removeLocalItem('concession', concessions[i])
+                this.removeAllServicesForConcession(concessions[i])
+            }
+        }
+    }
+    removeAllServicesForConcession(concession)
+    {
+        let services = JSON.parse(localStorage.getItem(`opened-service`))
+        for (let i in services) {
+            if(services[i].indexOf(concession + '-') !== -1) {
+                this.removeLocalItem('service', services[i])
+            }
         }
     }
 
