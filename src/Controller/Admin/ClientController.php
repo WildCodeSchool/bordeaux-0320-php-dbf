@@ -101,6 +101,7 @@ class ClientController extends AbstractController
     public function listAllClients(ClientRepository $clientRepository): JsonResponse
     {
         $clients  = $clientRepository->findAllOrderBy('name', 'ASC');
+
         $dataList = [];
         foreach ($clients as $client) {
             $dataList[$client->getName() . ' (' . $client->getId() . ')'] = null;

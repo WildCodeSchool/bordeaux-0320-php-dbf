@@ -49,23 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const clientAjaxer         = new AjaxTools('/admin/addclient', '/admin/client/list');
 
 // Edition client ///////////////////////////////////////////////////
-    if(autocompleteClients) {
-        clientAjaxer.getData((data) => {
-            M.Autocomplete.init(autocompleteClients,
-                {
-                    data: JSON.parse(data)
-                }
-            )
-        });
 
-        autocompleteClients.addEventListener('change', (e) => {
-            const formZone = document.getElementById('form-edit-client');
-            const client = e.target.value
-            formZone.innerHTML = '<h6>' + clientAjaxer.getName(client) +
-                ' <span class="secondary-content">ID : ' + clientAjaxer.getId(client) +
-                ' </span></h6>'
-        })
-    }
 
 // Ajout client ///////////////////////////////////////////////////
     const button = document.getElementById('client-button');
