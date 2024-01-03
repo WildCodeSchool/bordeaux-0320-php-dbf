@@ -111,14 +111,19 @@
                                     </td>
                                 </tr>
                                 {% for userName, user in service.collaborators %}
-                                    {% if user.canBeRecipient %}
-                                        <tr class="row hide user-line {{ service.slug }}"
+                                        <tr class="row hide user-line {{ service.slug }} {{ user.canBeRecipient ? '' : 'grey' }}"
                                             data-concession="{{ concession.slug }}"
                                             data-parent="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}"
                                         >
                                             <td class="col s8 subrow" colspan="3">
+                                                {% if user.canBeRecipient %}
                                                 <i class="material-icons left tiny">person</i>
-                                                <span class="user-name"><a href="{{ path('user_home', {'id' : user.user_id}) }}">{{ userName }}</a></span>
+                                                {% else %}
+                                                    <i class="material-icons left tiny">block</i>
+                                                {% endif %}
+                                                <span class="user-name">
+                                                    <a class="{{ user.canBeRecipient ? '' : 'black-text' }}" href="{{ path('user_home', {'id' : user.user_id}) }}">{{ userName }}</a>
+                                                </span>
                                             </td>
                                             <td class="col s2">
                                                 <a href="{{ path('user_home', {'id' : user.user_id}) }}">
@@ -138,7 +143,6 @@
                                             </td>
 
                                         </tr>
-                                    {% endif %}
                                 {% endfor %}
                             {% endfor %}
                         {% endfor %}

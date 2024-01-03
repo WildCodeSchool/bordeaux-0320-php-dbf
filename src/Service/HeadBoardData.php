@@ -3,6 +3,7 @@
 
 namespace App\Service;
 
+use App\Entity\Service;
 use App\Repository\CallRepository;
 use App\Repository\CityRepository;
 use App\Repository\ConcessionRepository;
@@ -89,6 +90,7 @@ class HeadBoardData
         $slugify = new Slugify();
         foreach ($data as $datum) {
             $serviceId     = (int)$datum['service_id'];
+            /** @var Service $service */
             $service       = $this->serviceRepository->findOneById($serviceId);
             $concession    = $service->getConcession();
             $city          = $concession->getTown();
@@ -133,7 +135,6 @@ class HeadBoardData
                         self::TO_PROCESS => count($this->callRepository->callsToProcessByUser($collaborator)),
                         self::IN_PROCESS => count($this->callRepository->callsInProcessByUser($collaborator)),
                     ];
-
             }
         }
         return $result;

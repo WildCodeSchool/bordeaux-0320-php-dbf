@@ -58,8 +58,9 @@ class CallRepository extends ServiceEntityRepository
         'in process' => 'IS NOT NULL'
     ];
 
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
         parent::__construct($registry, Call::class);
     }
 
@@ -453,6 +454,27 @@ class CallRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
         return $result['total'];
+    }
+
+    public function getUsersWithCallsInService(Service $service)
+    {
+        $results = $this->createQueryBuilder('c')
+            ->select('DISTINCT(c.recipient) as collaborator')
+            ->Where('c.recipient IS NOT NULL')
+            ->innerJoin('c.recipient', 'r')
+            ->innerJoin('r.service', 's')
+            ->andWhere('s.id = :sid')
+            ->setParameter('sid', $service->getId())
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->getQuery()
+            ->getResult()
+        ;
+        $collaborators = [];
+        foreach ($results as $result) {
+            $collaborator = $this->userRepository->findOneById($result['collaborator']);
+            $collaborators[] = $collaborator;
+        }
+        return $collaborators;
     }
 
     public function countCallstoTake(Service $service)
