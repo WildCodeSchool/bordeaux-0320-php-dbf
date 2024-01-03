@@ -2,12 +2,17 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "^7.4",
+        "php": ">=7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "backup-manager/symfony": "^3.2",
         "cocur/slugify": "^4.0",
+        "doctrine/annotations": "^1.0",
+        "doctrine/doctrine-bundle": "^2.7",
+        "doctrine/doctrine-migrations-bundle": "^3.2",
+        "doctrine/orm": "^2.17",
         "kunalvarma05/dropbox-php-sdk": "^0.2.1",
+        "phpdocumentor/reflection-docblock": "^5.3",
         "phpmd/phpmd": "^2.6",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "5.2.*",
@@ -19,33 +24,41 @@
         "symfony/framework-bundle": "5.2.*",
         "symfony/mailer": "5.2.*",
         "symfony/monolog-bundle": "^3.6",
-        "symfony/orm-pack": "*",
         "symfony/process": "5.2.*",
+        "symfony/property-access": "5.2.*",
+        "symfony/property-info": "5.2.*",
         "symfony/security-bundle": "5.2.*",
-        "symfony/serializer-pack": "*",
+        "symfony/serializer": "5.2.*",
         "symfony/translation": "5.2.*",
         "symfony/twig-bundle": "5.2.*",
-        "symfony/twig-pack": "^1.0",
         "symfony/validator": "5.2.*",
         "symfony/web-link": "5.2.*",
         "symfony/webpack-encore-bundle": "^1.10",
-        "symfony/yaml": "5.2.*"
+        "symfony/yaml": "5.2.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0",
+        "league/flysystem":"^1.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
-        "fzaninotto/faker": "^1.9",
-        "symfony/debug-pack": "*",
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "5.2.*",
+        "symfony/css-selector": "5.2.*",
+        "symfony/debug-bundle": "5.2.*",
         "symfony/maker-bundle": "^1.0",
         "symfony/phpunit-bridge": "^5.2",
-        "symfony/profiler-pack": "*",
-        "symfony/test-pack": "^1.0",
+        "symfony/stopwatch": "5.2.*",
+        "symfony/web-profiler-bundle": "5.2.*",
         "symfony/web-server-bundle": "4.4.*"
     },
     "config": {
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "symfony/flex": true
+        }
     },
     "autoload": {
         "psr-4": {
