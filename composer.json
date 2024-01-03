@@ -6,12 +6,13 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "backup-manager/symfony": "^3.2",
-        "cocur/slugify": "^4.0",
+        "cocur/slugify": "4.0.0",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.17",
         "kunalvarma05/dropbox-php-sdk": "^0.2.1",
+        "league/flysystem": "^1.0",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpmd/phpmd": "^2.6",
         "sensio/framework-extra-bundle": "^5.1",
@@ -36,8 +37,7 @@
         "symfony/webpack-encore-bundle": "^1.10",
         "symfony/yaml": "5.2.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0",
-        "league/flysystem":"^1.0"
+        "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
