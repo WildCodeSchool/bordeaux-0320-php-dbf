@@ -42,13 +42,24 @@ class ServiceController extends AbstractController
      * @param HeadManager $headManager
      * @return Response
      */
-    public function new(Request $request, HeadManager $headManager): Response
+    public function new(Request $request, HeadManager $headManager, ServiceRepository $serviceRepository): Response
     {
         $service = new Service();
         $formService = $this->createForm(ServiceType::class, $service);
         $formService->handleRequest($request);
 
         if ($formService->isSubmitted() && $formService->isValid()) {
+            $existingService = $serviceRepository->findOneBy([
+                        'name' => $formService->get('name')->getData(),
+                        'concession' => $formService->get('concession')->getData(),
+                    ]
+            );
+
+            if($existingService) {
+                $this->addFlash('error', 'Un service avec le même nom existe déjà');
+                return $this->redirectToRoute('admin_dashboard');
+            }
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($service);
             $entityManager->flush();
