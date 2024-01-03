@@ -111,6 +111,7 @@
                                     </td>
                                 </tr>
                                 {% for userName, user in service.collaborators %}
+                                    {% if(userName != 'Internet DBF AUTOS') %}
                                         <tr class="row hide user-line {{ service.slug }} {{ user.canBeRecipient ? '' : 'grey' }}"
                                             data-concession="{{ concession.slug }}"
                                             data-parent="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}"
@@ -143,6 +144,7 @@
                                             </td>
 
                                         </tr>
+                                    {% endif %}
                                 {% endfor %}
                             {% endfor %}
                         {% endfor %}
