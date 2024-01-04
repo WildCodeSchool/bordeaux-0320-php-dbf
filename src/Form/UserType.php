@@ -11,6 +11,7 @@ use App\Repository\ServiceRepository;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -40,6 +41,7 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $post = file_get_contents('php://input');
+        $data = json_decode("[]");
         if ($post) {
             $data = json_decode($post);
         }
@@ -79,7 +81,9 @@ class UserType extends AbstractType
             'choice_label' => 'name',
             'label' => 'Service'
         ])
-        ->add('canBeRecipient');
+        ->add('canBeRecipient', CheckboxType::class, [
+        ])
+        ;
 
         if (isset($data->City)) {
                 $builder->
