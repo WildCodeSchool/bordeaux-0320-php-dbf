@@ -9,6 +9,7 @@ use App\Service\ExportDataToCsv;
 use App\Service\OnlyCallKeeper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -82,11 +83,21 @@ class SearchController extends AbstractController
         foreach ($calls as $fields) {
             fputcsv($fp, $fields);
         }
-        $response = $this->file($folder . '/calls.csv', 'appels.csv');
-        $response->headers->set('Content-type', 'application/csv');
-
         fclose($fp);
 
+        $headers = [
+            'Content-Type'     => 'application/CSV',
+            'Content-Disposition' => 'attachment;filename="appels.csv"'
+        ];
+
+       $response = new BinaryFileResponse(
+            $folder . '/calls.csv',
+            Response::HTTP_OK,
+            $headers,
+            true,
+        );
+       $this->sendMessage();
         return $response;
     }
+
 }
