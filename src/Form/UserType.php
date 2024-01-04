@@ -49,10 +49,17 @@ class UserType extends AbstractType
                 'class'=>Civility::class,
                 'choice_label'=>'name'
             ])
-        ->add('password', PasswordType::class)
-        ->add('firstname', TextType::class)
-        ->add('lastname', TextType::class)
+        ->add('password', PasswordType::class, [
+            'label' => 'Mot de passe'
+        ])
+        ->add('firstname', TextType::class, [
+            'label' => 'Prénom'
+        ])
+        ->add('lastname', TextType::class, [
+            'label' => 'Nom de famille'
+        ])
         ->add('phone', TextType::class, [
+            'label' => 'Téléphone',
             'required' => false,
         ])
         ->add('roles', ChoiceType::class, [
@@ -65,25 +72,29 @@ class UserType extends AbstractType
         ->add('city', ChoiceType::class, [
             'choices' => $this->getAllCities(),
             'mapped' => false,
+            'label' => 'Plaque'
         ])
         ->add('service', EntityType::class, [
             'class' => Service::class,
             'choice_label' => 'name',
+            'label' => 'Service'
         ])
-            ->add('canBeRecipient');
+        ->add('canBeRecipient');
 
         if (isset($data->City)) {
                 $builder->
                 add('concession', ChoiceType::class, [
                 'choices' => $this->getConcessions($data->City),
-                'mapped' => false
+                'mapped' => false,
+                    'label' => 'Concession'
                 ]);
         }
         if (isset($data->Concession)) {
             $builder->
             add('service_choice', ChoiceType::class, [
             'choices' => $this->getServices($data->Concession),
-            'mapped' => false
+            'mapped' => false,
+                'label' => 'Service'
             ]);
         }
     }
