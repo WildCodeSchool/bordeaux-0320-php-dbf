@@ -70,6 +70,7 @@ class SearchController extends AbstractController
     {
         $callsIds = json_decode($exportedCalls, true);
         $calls = $callRepository->findBy(['id' => $callsIds]);
+        $fileName = uniqid();
 
         if (is_null($calls)) {
             $this->addFlash('error', 'Faites d\'abord une recherche');
@@ -78,7 +79,7 @@ class SearchController extends AbstractController
         $calls =  $exportDataToCsv->dataMakerBeforeExport($calls);
 
         $folder = sys_get_temp_dir();
-        $fp = fopen($folder . '/calls.csv', 'w');
+        $fp = fopen($folder . '/' . $fileName . '.csv', 'w');
 
         foreach ($calls as $fields) {
             fputcsv($fp, $fields);
@@ -91,7 +92,7 @@ class SearchController extends AbstractController
         ];
 
        $response = new BinaryFileResponse(
-            $folder . '/calls.csv',
+            $folder . '/' . $fileName . '.csv',
             Response::HTTP_OK,
             $headers,
             true,
