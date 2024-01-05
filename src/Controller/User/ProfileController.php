@@ -43,13 +43,13 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("pass/edit/{id}", name="pass_edit", methods={"GET","POST"})
+     * @Route("pass/edit/{user}", name="pass_edit", methods={"GET","POST"})
      * @param Request $request
      * @param User $user
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
      */
-    public function editPassword(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function editPassword(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $entityManager = $this->getDoctrine()->getManager();
         $form = $this->createForm(ChangePasswordType::class, $user);
@@ -58,8 +58,6 @@ class ProfileController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $oldPassword = $form->get('oldPassword')->getData();
             $plainPassword = $form->get('plainPassword')->getData();
-
-
             // Si l'ancien mot de passe est bon
 
             if ($passwordEncoder->isPasswordValid($user, $oldPassword)) {
@@ -70,7 +68,7 @@ class ProfileController extends AbstractController
                 $this->addFlash('success', 'Votre mot de passe a bien été changé !');
                 return $this->redirectToRoute('profile_edit', ['id' => $user->getId()]);
             } else {
-                $this->addFlash('danger', "Ce n'est pas le bon ancien mot de passe");
+                $this->addFlash('error', "Ce n'est pas le bon ancien mot de passe");
                 return $this->redirectToRoute('pass_edit', ['id' => $user->getId()]);
             }
         }

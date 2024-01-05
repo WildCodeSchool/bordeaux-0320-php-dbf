@@ -135,6 +135,11 @@ class User implements UserInterface
      */
     private $canBeRecipient;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $code;
+
     public function __construct()
     {
         $this->calls = new ArrayCollection();
@@ -639,6 +644,18 @@ class User implements UserInterface
     public function setCanBeRecipient(bool $canBeRecipient): self
     {
         $this->canBeRecipient = $canBeRecipient;
+
+        return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): self
+    {
+        $this->code = $code;
 
         return $this;
     }

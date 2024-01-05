@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+
+    {% include '_flashes.html.twig' %}
+
+    {{ form_start(form) }}
+    <div class="container">
+        <div class="row connectrow flex">
+            <div class="col s6 offset-s3">
+                <div class="row mb-30">
+                    <div class="col s12">
+                        <h6>Mot de passe oublié ?</h6>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            {{ form_widget(form) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <button class="btn btn-small light-blue darken-2 mgl12" type="submit">
+                            VALIDER
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{{ form_end(form) }}
+
+{% endblock %}

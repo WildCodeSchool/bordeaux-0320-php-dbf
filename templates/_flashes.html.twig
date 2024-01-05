@@ -1,0 +1,20 @@
+{% for type, messages in app.session.flashbag.all() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div
+                    class="flash {{ type }}" data-type="{{ type }}"
+                    data-controller="eflash"
+            >
+                <div class="flash-content">
+                    {{ message | raw }}
+                </div>
+                <div class="flash-icon success">
+                    <i class="fa-solid fa-thumbs-up text-primary"></i>
+                </div>
+                <div class="flash-icon error">
+                    <i class="fa-solid fa-circle-exclamation red-text"></i>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endfor %}

@@ -3,6 +3,10 @@
 {% block title %}Connexion{% endblock %}
 
 {% block body %}
+
+    {% include '_flashes.html.twig' %}
+
+
 <form method="post">
 
     <div class="container">
@@ -44,4 +48,18 @@
         </div>
     </div>
 </form>
+
+    <div class="container">
+        <div class="row">
+            <div class="col s6 offset-s3">
+                <a href="{{ path('app_reset') }}" class="modal-trigger">
+                    Mot de passe oublié
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+
+
 {% endblock %}

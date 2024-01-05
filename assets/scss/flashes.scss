@@ -20,3 +20,24 @@
     background:#ef9a9a;
   }
 }
+
+.flash {
+  position: fixed;
+  display: block;
+  top:64px;
+  left:0;
+  padding:25px;
+  z-index: 999999999 !important;
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: bold;
+  &.success {
+    background:#2FA5CA;
+    color:white;
+  }
+  &.error {
+    background:#D32F2F;
+    color:white;
+  }
+
+}
