@@ -96,7 +96,6 @@ class SearchController extends AbstractController
             $headers,
             true,
         );
-       $this->sendMessage();
         return $response;
     }
 
