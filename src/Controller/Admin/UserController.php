@@ -51,7 +51,7 @@ class UserController extends AbstractController
     {
         $name = $request->request->get('name');
         $name = $name === "" ? null : $name;
-        $users = $userRepository->findAllInCity($name);
+        $users = $userRepository->findAllByName($name);
 
         return $this->render('user/_collabs_table.html.twig', [
             'users' => $users,

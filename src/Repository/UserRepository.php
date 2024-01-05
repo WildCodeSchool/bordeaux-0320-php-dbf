@@ -14,6 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @method User|null find($id, $lockMode = null, $lockVersion = null)
@@ -23,9 +24,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, SluggerInterface $slugger)
     {
         parent::__construct($registry, User::class);
+        $this->slugger = $slugger;
     }
 
     /**
@@ -61,22 +63,36 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getSingleResult();
     }
 
-    public function findAllInCity(?string $name = null)
+    public function findAllInCity()
     {
-        $qb = $this->createQueryBuilder('u')
-            ->select('u, s, conc, c');
-
-        if($name) {
-            $qb->where('u.lastname LIKE :name')
-                ->setParameter('name', $name . '%');
-        }
-        return $qb
+        return $this->createQueryBuilder('u')
+            ->select('u, s, conc, c')
             ->join('u.service', 's')
             ->join('s.concession', 'conc')
             ->join('conc.town', 'c')
             ->orderBy('u.lastname', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findAllByName($name = null)
+    {
+        $slug = (string)$this->slugger->slug($name);
+        return $this->createQueryBuilder('u')
+            ->select('u, s, conc, c')
+            ->where('u.lastname LIKE :name')
+            ->orWhere('u.lastname LIKE :slug')
+            ->orWhere('u.firstname LIKE :name')
+            ->orWhere('u.firstname LIKE :slug')
+            ->setParameter('name', $name . '%')
+            ->setParameter('slug', $slug . '%')
+            ->join('u.service', 's')
+            ->join('s.concession', 'conc')
+            ->join('conc.town', 'c')
+            ->orderBy('u.lastname', 'ASC')
+            ->getQuery()
+            ->getResult();
+
     }
 
     public function findOperationnalUsers()
