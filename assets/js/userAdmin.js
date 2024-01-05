@@ -2,7 +2,7 @@ import { AjaxTools } from './clientFormAdmin';
 
 document.addEventListener('DOMContentLoaded', () => {
     const autocompleteUsers = document.getElementById('autocomplete-user-name');
-    const userAjaxer = new AjaxTools('/user/new', '/user/list');
+    const userAjaxer = new AjaxTools('/user/new', '/user/liste');
 
     // Recherche user ///////////////////////////////////////////////////
     if (autocompleteUsers) {

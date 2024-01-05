@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * @Route("/user")
@@ -29,6 +30,11 @@ class UserController extends AbstractController
 {
     const SUCCESS = 'success';
     const USER_INDEX = 'user_index';
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
 
     /**
      * @Route("/", name="user_index", methods={"GET"})
@@ -179,6 +185,22 @@ class UserController extends AbstractController
         $dataList = [];
         foreach ($users as $user) {
             $dataList[$user->getFirstname(). ' ' . $user->getLastname() . ' (' . $user->getId() . ')']  = null;
+        }
+        return new JsonResponse($dataList);
+    }
+
+    /**
+     * @Route("/liste", name="user_liste", methods={"POST"})
+     * @param UserRepository $userRepository
+     * @return JsonResponse
+     */
+    public function listeAllUser(UserRepository $userRepository): JsonResponse
+    {
+        $users = $userRepository->findAllOrderBy('lastname', 'ASC');
+        $dataList = [];
+        foreach ($users as $user) {
+            $dataList[$user->getFirstname(). ' ' . $user->getLastname() . ' (' . $user->getId() . ')']  = null;
+            $dataList[(string)$this->slugger->slug($user->getFirstname()) . ' ' . (string)$this->slugger->slug($user->getLastname()) . ' (' . $user->getId() . ')']  = null;
         }
         return new JsonResponse($dataList);
     }
