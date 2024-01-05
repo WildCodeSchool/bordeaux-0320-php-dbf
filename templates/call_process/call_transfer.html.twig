@@ -13,6 +13,24 @@
                 <b>{{ call.recipient.service.concession.town.name }} > {{ call.recipient.service.concession.name }} > {{ call.recipient.service.name }}</b><br>
                 <small>{{call.subject.name}} - {{call.comment.name}}</small><br>
             </p>
+
+            <table>
+                {% for process in call.callProcessings|reverse %}
+                    <div class="d-flex gap-10 mb-10">
+                        <span class="chip {{process.stepColors.bgColor}} black-text">{{process.stepColors.stepName | raw }}</span>
+                        <span class="bolder">
+                            {{ process.createdAt | dateName }} à {{ process.createdAt | timeFormat }}
+                            {% if process.comment %}
+                                <br><small class="m-0 p-0 no-bold">
+                                    {{ process.comment }}
+                                </small>
+                            {% endif %}
+                        </span>
+
+                    </div>
+                {% endfor %}
+            </table>
+
         </div>
     </div>
     <div class="col s6">
