@@ -13,7 +13,9 @@
     </tr>
     </thead>
     <tbody>
-    {% for user in users %}
+    {% for user_data in users %}
+        {% set user = user_data[0] %}
+        {% set has_calls = user_data.hasCalls %}
         <tr id={{ user.id }}>
             <td>{{ user.lastName | upper ~ ' ' ~ user.firstName }}</td>
             <td>{{ user.email }}</td>
@@ -27,7 +29,9 @@
             </td>
             <td>
                 <a href="{{ path('user_edit', {'id': user.id}) }}" class="btn mgt15 light-blue darken-1"><i class="material-icons">edit</i></a>
-                {{ include('user/_delete_form.html.twig') }}
+                {% if not has_calls %}
+                    {{ include('user/_delete_form.html.twig') }}
+                {% endif %}
             </td>
         </tr>
     {% else %}
