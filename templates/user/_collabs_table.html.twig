@@ -15,7 +15,7 @@
     <tbody>
     {% for user_data in users %}
         {% set user = user_data[0] %}
-        {% set has_calls = user_data.hasCalls %}
+        {% set has_calls = user_data.hasCalls > 0 %}
         <tr id={{ user.id }}>
             <td>{{ user.lastName | upper ~ ' ' ~ user.firstName }}</td>
             <td>{{ user.email }}</td>

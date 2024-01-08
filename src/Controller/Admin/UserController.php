@@ -43,7 +43,6 @@ class UserController extends AbstractController
      */
     public function index(UserRepository $userRepository): Response
     {
-        //dd($userRepository->findAllInCity());
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAllInCity(),
         ]);
