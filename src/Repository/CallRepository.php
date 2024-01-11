@@ -466,6 +466,9 @@ class CallRepository extends ServiceEntityRepository
             ->setParameter('sid', $service->getId())
             ->andWhere('c.isProcessEnded IS NULL')
             ->andWhere('c.isProcessed ' . self::PROCESSES[$processCondition])
+            ->orderBy('r.lastname', 'ASC')
+            ->addOrderBy('r.firstname', 'ASC')
+            ->addOrderBy('c.createdAt', 'ASC')
             ->getQuery()
             ->getResult()
         ;
