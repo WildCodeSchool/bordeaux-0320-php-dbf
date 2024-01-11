@@ -51,6 +51,7 @@
     }
 
     &.collapsor {
+      position: relative;
       td {
         span {
           &.chip {
@@ -60,6 +61,7 @@
           }
         }
       }
+
       &:hover {
         cursor:pointer;
       }

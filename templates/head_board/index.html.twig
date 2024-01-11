@@ -93,16 +93,32 @@
                                     <td class="col s8 subrow" colspan="3">
                                         <i class="material-icons left tiny">settings</i>
                                         <span class="bolder service-name">{{ serviceName }}</span>
+
+                                        <a href="#" class="lister btn btn-floating btn-small sidenav-trigger" data-target="slide-out-{{ service.id }}">
+                                            <i class="material-icons">menu</i>
+                                        </a>
+
+                                        <ul id="slide-out-{{ service.id }}" class="sidenav">
+                                            <li>
+                                                {{ dump(service.list_to_process) }}
+                                            </li>
+                                        </ul>
                                     </td>
                                     <td class="col s2">
                                         <span
                                                 class="chip cyan lighten-3 black-text service-name counter  {% if service.to_process == 0 %} hide {% endif %}"
-                                                id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-to-process">{{ service.to_process }}
+                                                id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-to-process"
+                                        >
+                                            {{ service.to_process }}
                                         </span>
+
                                         <span
                                                 class="chip deep-orange white-text service-name counter to-take {% if service.to_take == 0 %} hide {% endif %}"
-                                                id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-to-take">{{ service.to_take }}
+                                                id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-to-take"
+                                        >
+                                            {{ service.to_take }}
                                         </span>
+
                                     </td>
 
                                     <td class="col s2"><span
@@ -110,6 +126,8 @@
                                                 id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-in-process">{{ service.in_process }}</span>
                                     </td>
                                 </tr>
+
+
                                 {% for userName, user in service.collaborators %}
                                     {% if(userName != 'Internet DBF AUTOS') %}
                                         <tr class="row hide user-line {{ service.slug }} {{ user.canBeRecipient ? '' : 'grey' }}"

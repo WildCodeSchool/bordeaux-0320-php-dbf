@@ -115,12 +115,17 @@ class HeadBoardData
             $result[$datum['city']]['concessions'][$datum['concession']][self::TO_PROCESS] =
                 $this->callRepository->countCallsInConcession($concession, 'to process');
 
+            $callsToProcess = $this->callRepository->listCallsInService($service, 'to process');
+            $callsInProcess = $this->callRepository->listCallsInService($service, 'in process');
             $result[$datum['city']]['concessions'][$datum['concession']]['services'][$serviceName] = [
-                self::TO_PROCESS    => $this->callRepository->countCallsInService($service, 'to process'),
-                self::IN_PROCESS    => $this->callRepository->countCallsInService($service, 'in process'),
+                self::TO_PROCESS    => count($callsToProcess),
+                self::IN_PROCESS    => count($callsInProcess),
                 self::TO_TAKE       => $this->callRepository->countCallstoTake($service),
-                'collaborators' => [],
-                'slug'          => $slugify->slugify($serviceName),
+                'list_to_process'   => $callsToProcess,
+                'list_in_process'   => $callsInProcess,
+                'collaborators'     => [],
+                'slug'              => $slugify->slugify($serviceName),
+                'id'                => $service->getId()
             ];
 
             foreach ($collaborators as $collaborator) {

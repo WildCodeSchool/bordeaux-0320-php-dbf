@@ -8,19 +8,33 @@ class Collapsor {
         for (let i = 0; i < this.collapsors.length; i++) {
             this.collapsors[i].addEventListener('click', (event) => {
                 event.preventDefault();
-                if (this.collapsors[i].classList.contains('active')) {
-                    this.hideChildren(this.collapsors[i])
+
+                if(event.target.parentElement.classList.contains('lister')) {
+                    const elem = event.target.parentElement
+                    const target = document.getElementById(elem.dataset.target)
+                    const instance = M.Sidenav.init(target);
+                    instance.open()
                 } else {
-                    this.showChildren(this.collapsors[i])
+                    if (this.collapsors[i].classList.contains('active')) {
+                        this.hideChildren(this.collapsors[i])
+                    } else {
+                        this.showChildren(this.collapsors[i])
+                    }
                 }
             })
+
             if(this.isInLocalStorage(this.collapsors[i])) {
                 this.collapsors[i].click()
             }
         }
-
     }
 
+
+    /**
+     * Test if an elment is in localstorage and so is opened
+     * @param elem
+     * @returns {boolean}
+     */
     isInLocalStorage(elem)
     {
             if (
@@ -32,12 +46,20 @@ class Collapsor {
             return false
     }
 
+    /**
+     *
+     * @param elem
+     */
     saveInLocalStorage(elem) {
-
         if(elem.dataset.type) {
             this.addLocalItem(elem.dataset.type,  elem.dataset.identifier)
         }
     }
+
+    /**
+     *
+     * @param elem
+     */
     removeFromLocalStorage(elem) {
         if(elem.dataset.type) {
             this.removeLocalItem(elem.dataset.type,  elem.dataset.identifier)
@@ -52,6 +74,10 @@ class Collapsor {
         }
     }
 
+    /**
+     * If closing a "city" tab, we want to remove all concessions and services opened in localstorage
+     * @param city
+     */
     removeAllConcessionsForCity(city)
     {
         let concessions = JSON.parse(localStorage.getItem(`opened-concession`))
@@ -62,6 +88,11 @@ class Collapsor {
             }
         }
     }
+
+    /**
+     * If we close a concession we want to remove all services opened from localstorage
+     * @param concession
+     */
     removeAllServicesForConcession(concession)
     {
         let services = JSON.parse(localStorage.getItem(`opened-service`))
@@ -73,6 +104,11 @@ class Collapsor {
     }
 
 
+    /**
+     * Save opened item in localstorage
+     * @param type
+     * @param value
+     */
     addLocalItem(type, value)
     {
         let val = localStorage.getItem(`opened-${type}`) ? JSON.parse(localStorage.getItem(`opened-${type}`)) : []
@@ -82,6 +118,11 @@ class Collapsor {
         localStorage.setItem(`opened-${type}`, JSON.stringify(val))
     }
 
+    /**
+     * Remove item from localstorage
+     * @param type
+     * @param value
+     */
     removeLocalItem(type, value)
     {
         let val = localStorage.getItem(`opened-${type}`) ? JSON.parse(localStorage.getItem(`opened-${type}`)) : []

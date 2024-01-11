@@ -456,6 +456,22 @@ class CallRepository extends ServiceEntityRepository
         return $result['total'];
     }
 
+    public function listCallsInService(Service $service, string $processCondition)
+    {
+        $result = $this->createQueryBuilder('c')
+            ->Where('c.recipient IS NOT NULL')
+            ->innerJoin('c.recipient', 'r')
+            ->innerJoin('r.service', 's')
+            ->andWhere('s.id = :sid')
+            ->setParameter('sid', $service->getId())
+            ->andWhere('c.isProcessEnded IS NULL')
+            ->andWhere('c.isProcessed ' . self::PROCESSES[$processCondition])
+            ->getQuery()
+            ->getResult()
+        ;
+        return $result;
+    }
+
     public function getUsersWithCallsInService(Service $service)
     {
         $results = $this->createQueryBuilder('c')
