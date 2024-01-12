@@ -49,10 +49,11 @@ class ProfileController extends AbstractController
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
      */
-    public function editPassword(User $user, Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function editPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, User $user): Response
     {
+
         $entityManager = $this->getDoctrine()->getManager();
-        $form = $this->createForm(ChangePasswordType::class, $user);
+        $form = $this->createForm(ChangePasswordType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -65,11 +66,12 @@ class ProfileController extends AbstractController
                 $user->setPassword($newEncodedPassword);
                 $entityManager->persist($user);
                 $entityManager->flush();
+
                 $this->addFlash('success', 'Votre mot de passe a bien été changé !');
                 return $this->redirectToRoute('profile_edit', ['id' => $user->getId()]);
             } else {
                 $this->addFlash('error', "Ce n'est pas le bon ancien mot de passe");
-                return $this->redirectToRoute('pass_edit', ['id' => $user->getId()]);
+                return $this->redirectToRoute('pass_edit', ['user' => $user->getId()]);
             }
         }
 
