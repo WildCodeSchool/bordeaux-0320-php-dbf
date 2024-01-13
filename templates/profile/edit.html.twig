@@ -12,7 +12,7 @@
     <div class="col s4">
         {% include 'components/_flashes.html.twig' %}
     </div>
-    <a class="btn  blue darken-1 right" href="{{ path('pass_edit', { 'id': app.user.id }) }}"> Changer mon mot de passe</a>
+    <a class="btn  blue darken-1 right" href="{{ path('pass_edit', { 'user': app.user.id }) }}"> Changer mon mot de passe</a>
     <div class="form-profile">
     {{ form_start(form) }}
     <div class="section">

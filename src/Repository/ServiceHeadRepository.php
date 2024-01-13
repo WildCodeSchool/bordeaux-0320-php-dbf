@@ -11,6 +11,7 @@ use App\Entity\City;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method ServiceHead|null find($id, $lockMode = null, $lockVersion = null)
@@ -25,7 +26,7 @@ class ServiceHeadRepository extends ServiceEntityRepository
         parent::__construct($registry, ServiceHead::class);
     }
 
-    public function getHeadServiceCalls(User $user)
+    public function getHeadServiceCalls(UserInterface $user)
     {
         $result = $this->createQueryBuilder('sh')
             ->Where('sh.user = :u')

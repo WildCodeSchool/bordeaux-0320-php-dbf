@@ -2,6 +2,7 @@
 
 namespace App\Controller\User;
 
+use App\Entity\Service;
 use App\Repository\CallRepository;
 use App\Repository\ServiceHeadRepository;
 use App\Repository\UserRepository;
@@ -68,4 +69,43 @@ class HeadBoardController extends AbstractController
         $response->setData($data);
         return $response;
     }
+
+
+    /**
+     * @Route("/head/supervision/{service}", name="head_board_supervision", methods={"GET"})
+     */
+    public function supervision(
+        Service $service,
+        ServiceHeadRepository $serviceHeadRepository,
+        HeadBoardData $headBoardData
+    ) {
+        $user = $this->getUser();
+        $res              = $serviceHeadRepository->getHeadServiceCalls($user);
+        $dataForServices  = $headBoardData->makeDataForHead($res);
+        $concession = $service->getConcession();
+        $city = $concession->getTown();
+        $serviceName = $service->getName();
+        $concessionName = $concession->getName();
+        $cityName = $city->getName();
+
+        foreach ($dataForServices as $city => $data) {
+            if($city === $cityName) {
+                foreach ($data['concessions'] as $concession => $services) {
+                    if($concession === $concessionName) {
+                        foreach ($services['services'] as $service => $infos) {
+                            if($service === $serviceName) {
+                                $result = $infos;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $this->render('call_process/__supervision.html.twig', [
+            'service' => $result
+        ]);
+    }
+
+
 }

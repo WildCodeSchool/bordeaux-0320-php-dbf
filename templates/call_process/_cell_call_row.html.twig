@@ -1,11 +1,11 @@
 <li
-        class="collection-item cell-item"
+        class="collection-item cell-item {{ is_small is defined ? 'small' : '' }}"
         data-date="{{ call.recallDate|date('Ymd') }}{{ call.recallDate|date('Hi') }}"
         id="call-{{ call.id }}"
         data-status="{% if app.request.get('_route') == 'user_home' %}new{% else %} inprocess{% endif %}"
 >
     <div class="row call-list-row-cell">
-        <div class="col s10">
+        <div class="col s10 ">
 
             <div class="row">
                 <div class="col s4">
@@ -27,7 +27,8 @@
                         {% for transfer in call.callTransfers|reverse %}
                             <span class='history-line'>
                             - Transféré par {{ transfer.byWhom.firstName }} {{ transfer.byWhom.lastName }} {{ transfer.createdAt|dateName }} à {{ transfer.createdAt|timeFormat }}
-                            <span><br>
+                            <span>
+                            <br>
                         {% endfor %}
                         </div>
                         ">description</i>
@@ -74,7 +75,9 @@
                         <i class="material-icons tiny">settings</i>
                         {{ call.recipient.service.name }}
                             {% if call.recipient %}
-                                <a class="orange darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Transférer</a>
+                                <br><a data-service="{{ call.recipient.service.id }}" class="orange darken-3 call-transfer-btn btn-rounded mgl30" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}" data-in-slider="{{ is_small is defined ? '1' : '0' }}">
+                                    Transférer
+                                </a>
                             {% endif %}
                     </span>
                     {% else %}
@@ -116,11 +119,13 @@
                         {% endif %}
                     </span>
                </div>
-               <div class="col s4">
-                   <i class="material-icons left grey-text">label</i> {{ call.subject.name }}
+               <div class="col s4 d-flex flex-items-center">
+                   <i class="material-icons left grey-text">label</i>
+                   {{ call.subject.name }}
                </div>
-               <div class="col s4">
-                   <i class="material-icons left grey-text">label</i>{{ call.comment.name }}
+               <div class="col s4 d-flex flex-items-center">
+                   <i class="material-icons left grey-text">label</i>
+                   {{ call.comment.name }}
                </div>
            </div>
 
@@ -148,7 +153,7 @@
                     {% endfor %}
                 </div>
                 <div class="col s3 right-align">
-                    <i class="material-icons small left">directions_car</i> <span class="immat left">{{ call.vehicle.immatriculation }}</span>
+                    <i class="material-icons small left">directions_car</i> <span class="immat left">{{ call.vehicle.immatriculation | upper }}</span>
                     {% if call.vehicle.hasCome is constant('App\\Entity\\Vehicle::TRISWITCH_YES_VALUE') %}
                         <i class="material-icons left light-green-text tooltipped small-more" data-tooltip="Déja venu à l'atelier" data-position="top">build</i>
                     {% elseif call.vehicle.hasCome is constant('App\\Entity\\Vehicle::TRISWITCH_NO_VALUE') %}
@@ -161,7 +166,6 @@
             </div>
 
         </div>
-
         <div class="col s2 left-align ">
             <div class="call-calendar small grey lighten-4">
 
@@ -173,10 +177,10 @@
                 >
                     {{ call.clientCallback }}
                 </div>
-                <div class="call-cal-header {% if call.lastProcessColor is not empty %} {{ call.lastProcessColor.class}} {% endif %}{% if call.isUrgent %}urgent{% endif %}" id="cal-head-{{ call.id }}">
+                <div class="d-flex flex-items-center flex-justify-center call-cal-header {% if call.lastProcessColor is not empty %} {{ call.lastProcessColor.class}} {% endif %}{% if call.isUrgent %}urgent{% endif %}" id="cal-head-{{ call.id }}">
                     <i class="material-icons ">event_date </i>
                     <span class="call-cal-date">
-                        {{ call.recallDate|dateName }}
+                        {{ call.recallDate|dateName(is_small is defined) }}
                     </span>
                 </div>
                 <div class="call-cal-body">
@@ -190,7 +194,9 @@
                 </div>
                 <div class="call-cal-action">
                     {% if call.recipient is not null %}
-                    <a class="{% if call.isUrgent %}urgent{% else %} green darken-3 {% endif %} call-treatment-btn" href="#" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}">Traiter</a>
+                    <a class="{% if call.isUrgent %}urgent{% else %} green darken-3 {% endif %} call-treatment-btn" href="#" data-service="{{ call.recipient.service.id }}" data-call="{{ call.id }}" id="treatment-btn-{{ call.id }}" data-in-slider="{{ is_small is defined ? '1' : '0' }}">
+                        Traiter
+                    </a>
                {% endif %}
                 </div>
             </div>

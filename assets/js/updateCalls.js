@@ -30,7 +30,9 @@ const initButtons = (modal) => {
     for (let i=0; i<buttons.length; i++) {
         buttons[i].addEventListener('click', (e) => {
             e.preventDefault();
+            const isInSlider = buttons[i].dataset.inSlider && buttons[i].dataset.inSlider === '1'
             const callId = buttons[i].dataset.call;
+            modalHtmlZone.innerHTML = ' ... chargement'
             getProcessForm(callId, (html) => {
                 modalHtmlZone.innerHTML = html
                 initializeSelects()
@@ -77,33 +79,42 @@ const initButtons = (modal) => {
                         modal.close();
                         M.toast({html: 'Traitement enregistré', classes:'light-blue'})
 
-                        if (data.is_ended){
+                        if (data.is_ended && !isInSlider){
                             document.getElementById(`call-${data.callId}`).classList.add('hide')
-                            if (isRouteWelcome()) {
+                            if (isRouteWelcome() && counter) {
                                 counter.updateTotalCallToProcess('dec');
                             } else {
-                                counter.updateTotalCallInProcess('dec');
+                                if(counter) {
+                                    counter.updateTotalCallInProcess('dec');
+                                }
                             }
                         } else {
-                            changeCallStatus(data.callId, data.colors.class);
-                            const target = document.getElementById('call-history-' + data.callId);
-                            const callLine = document.getElementById('call-' + data.callId);
+                            if(!isInSlider) {
+                                changeCallStatus(data.callId, data.colors.class);
+                                const target = document.getElementById('call-history-' + data.callId);
+                                const callLine = document.getElementById('call-' + data.callId);
 
-                            const notification = document.getElementById(`client-callback-${data.callId}`);
-                            if (notification && !notification.classList.contains('hide')) {
-                                notification.classList.add('hide')
-                            }
-                            if (isRouteWelcome()) {
-                                callLine.classList.add('hide');
-                                counter.updateTotalCallToProcess('dec');
-                                counter.updateTotalCallInProcess();
+                                const notification = document.getElementById(`client-callback-${data.callId}`);
+                                if (notification && !notification.classList.contains('hide')) {
+                                    notification.classList.add('hide')
+                                }
+                                if (isRouteWelcome()) {
+                                    callLine.classList.add('hide');
+                                    if (counter) {
+                                        counter.updateTotalCallToProcess('dec');
+                                        counter.updateTotalCallInProcess();
+                                    }
+                                } else {
+                                    const targetHtml = '<span class="chip ' + data.colors.bgColor + ' black-text">' + data.colors.stepName + '</span>\n' +
+                                        '                            <b>\n' +
+                                        '                                ' + data.date + '\n' +
+                                        '                                à ' + data.time + '\n' +
+                                        '                            </b>';
+                                    target.innerHTML = targetHtml;
+                                }
+                                return
                             } else {
-                                const targetHtml = '<span class="chip ' + data.colors.bgColor + ' black-text">' + data.colors.stepName + '</span>\n' +
-                                    '                            <b>\n' +
-                                    '                                ' + data.date + '\n' +
-                                    '                                à ' + data.time + '\n' +
-                                    '                            </b>';
-                                target.innerHTML = targetHtml;
+                                refreshSlider(buttons[i].dataset.service)
                             }
                         }
                     });
@@ -137,7 +148,9 @@ const initTransferButtons = (modal) => {
     for (let i=0; i<transferButtons.length; i++) {
         transferButtons[i].addEventListener('click', (e) => {
             e.preventDefault();
+            const isInSlider = transferButtons[i].dataset.inSlider && transferButtons[i].dataset.inSlider === '1'
             const callId = transferButtons[i].dataset.call;
+            transferModalHtmlZone.innerHTML = ' ... chargement'
             getTransferForm(callId, (html) => {
                 transferModalHtmlZone.innerHTML = html;
                 const clientAjaxer = new transferTool(`/call/process/${callId}/transfer`, '');
@@ -160,23 +173,48 @@ const initTransferButtons = (modal) => {
                         .then(response => {
                             return response.json()
                         }).then(data => {
-
-                            const callLine = document.getElementById('call-' + data.callId);
-                            const status = callLine.dataset.status;
-                            if (status === 'new') {
-                                counter.updateTotalCallToProcess('dec');
-                            } else {
-                                counter.updateTotalCallInProcess('dec');
+                            if(!isInSlider) {
+                                const callLine = document.getElementById('call-' + data.callId);
+                                const status = callLine.dataset.status;
+                                if (status === 'new' && counter) {
+                                    counter.updateTotalCallToProcess('dec');
+                                } else {
+                                    if (counter) {
+                                        counter.updateTotalCallInProcess('dec');
+                                    }
+                                }
                             }
                         document.getElementById('transfer-preloader').classList.add('hide');
                         modal.close();
                         M.toast({html: 'Appel transféré', classes:'red'})
-                        callLine.classList.add('hide');
+                        if(!isInSlider) {
+                            callLine.classList.add('hide');
+                        } else {
+                            refreshSlider(transferButtons[i].dataset.service)
+                        }
                     });
                 }
             })
 
             modal.open();
+        })
+    }
+}
+
+const refreshSlider = (service) => {
+    const target = document.getElementById('slide-out-' + service)
+    if(target) {
+        M.toast({html: 'Rechargement du volet en cours', classes:'orange'})
+
+        fetch('/head/supervision/' + service, {
+
+        }).then(response => {
+            return response.text()
+        }).then(html => {
+            target.innerHTML = html
+            const ev = new CustomEvent('sliderIsOpen')
+            document.dispatchEvent(ev)
+            M.toast({html: 'Rechargement du volet terminé', classes:'light-green'})
         })
     }
 }
@@ -236,8 +274,7 @@ const clientCallbacks = () => {
         })
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-
+const start = () => {
     const modalCallTreatment         = document.getElementById('modal-call-treatment');
     const modalCallTreatmentInstance = M.Modal.init(modalCallTreatment, {});
     initButtons(modalCallTreatmentInstance);
@@ -253,7 +290,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const text = 'Vous avez un nouvel appel à traiter'
                 M.toast({html: `${icon} ${text}`, classes: 'light-blue darken-3', displayLength:10000})
                 const listOfCallsZone = document.getElementById('list-calls-to-process')
-                counter.updateTotalCallToProcess();
+                if(counter) {
+                    counter.updateTotalCallToProcess();
+                }
                 //TODO Insert row at the good place not a the end
                 listOfCallsZone.innerHTML += html
                 initButtons(modalCallTreatmentInstance);
@@ -262,5 +301,10 @@ document.addEventListener('DOMContentLoaded', () => {
         clientCallbacks()
 
     }, 15000);
-
+}
+document.addEventListener('DOMContentLoaded', () => {
+    start()
+})
+document.addEventListener('sliderIsOpen', () => {
+    start()
 })

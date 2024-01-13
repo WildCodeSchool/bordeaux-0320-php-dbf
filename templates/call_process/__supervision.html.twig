@@ -1,0 +1,6 @@
+{% for call in service.list_to_process %}
+    {% include 'call_process/_cell_call_row.html.twig' with {'is_small': true } %}
+{% endfor %}
+{% for call in service.list_in_process %}
+    {% include 'call_process/_cell_call_row.html.twig' with {'is_small': true } %}
+{% endfor %}

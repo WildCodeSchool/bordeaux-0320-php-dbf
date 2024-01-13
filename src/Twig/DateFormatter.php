@@ -20,7 +20,7 @@ class DateFormatter extends AbstractExtension
         ];
     }
 
-    public static function formatDate(DateTime $dateTime): string
+    public static function formatDate(DateTime $dateTime, $isSmall = false): string
     {
         $today     = new DateTime('now');
         $yesterday = new DateTime('now');
@@ -28,7 +28,7 @@ class DateFormatter extends AbstractExtension
         $tomorrow  = new DateTime('now');
         $tomorrow->add(new DateInterval('P1D'));
 
-        $dateName  = 'le ' . $dateTime->format('d/m/Y');
+        $dateName  = $isSmall ? $dateTime->format('d/m/y') : 'le ' . $dateTime->format('d/m/Y');
 
         if ($dateTime->format(self::DATE_FORMAT) === $yesterday->format(self::DATE_FORMAT)) {
             $dateName = 'hier';

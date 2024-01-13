@@ -93,16 +93,6 @@
                                     <td class="col s8 subrow" colspan="3">
                                         <i class="material-icons left tiny">settings</i>
                                         <span class="bolder service-name">{{ serviceName }}</span>
-
-                                        <a href="#" class="lister btn btn-floating btn-small sidenav-trigger" data-target="slide-out-{{ service.id }}">
-                                            <i class="material-icons">menu</i>
-                                        </a>
-
-                                        <ul id="slide-out-{{ service.id }}" class="sidenav">
-                                            <li>
-                                                {{ dump(service.list_to_process) }}
-                                            </li>
-                                        </ul>
                                     </td>
                                     <td class="col s2">
                                         <span
@@ -121,12 +111,24 @@
 
                                     </td>
 
-                                    <td class="col s2"><span
+                                    <td class="col s2 ">
+                                        <span
                                                 class="chip light-green lighten-3 black-text counter {% if service.in_process == 0 %} hide {% endif %}"
-                                                id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-in-process">{{ service.in_process }}</span>
+                                                id="{{ city.slug }}-{{ concession.slug }}-{{ service.slug }}-in-process">
+                                            {{ service.in_process }}
+                                        </span>
+
+                                        {% if service.list_to_process | length > 0 or service.list_in_process | length > 0 %}
+                                            <a href="#" class=" mt-5 d-flex flex-justify-center flex-items-center right lister btn btn-floating btn-small sidenav-trigger black" data-target="slide-out-{{ service.id }}">
+                                                <i class="material-icons tiny">remove_red_eye</i>
+                                            </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
 
+                                <ul id="slide-out-{{ service.id }}" class="sidenav wide">
+                                   {% include 'call_process/__supervision.html.twig' %}
+                                </ul>
 
                                 {% for userName, user in service.collaborators %}
                                     {% if(userName != 'Internet DBF AUTOS') %}
@@ -171,9 +173,34 @@
             </div>
         </div>
     {% endif %}
+
+
+    <div id="modal-call-treatment" class="modal">
+        <div class="modal-content" id="modal-content-call-treatment">
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">fermer</a>
+        </div>
+    </div>
+
+
+    <div id="modal-call-transfer" class="modal">
+        <div class="modal-content" id="modal-content-call-transfer">
+
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-green btn-flat">fermer</a>
+        </div>
+    </div>
+
+
 {% endblock %}
+
+
 
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('headBoardUpdater') }}
+    {{ encore_entry_script_tags('newcalls') }}
 {% endblock %}

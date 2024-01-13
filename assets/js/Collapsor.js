@@ -5,21 +5,24 @@ class Collapsor {
 
     init() {
         this.collapsors = document.getElementsByClassName(this.classToCollapse);
+        const SliderIsOpenEvent = new CustomEvent('sliderIsOpen')
+
         for (let i = 0; i < this.collapsors.length; i++) {
             this.collapsors[i].addEventListener('click', (event) => {
                 event.preventDefault();
+                const elem = event.target.parentElement
+                const target = document.getElementById(elem.dataset.target)
 
-                if(event.target.parentElement.classList.contains('lister')) {
-                    const elem = event.target.parentElement
-                    const target = document.getElementById(elem.dataset.target)
+                if(elem.classList.contains('lister')) {
                     const instance = M.Sidenav.init(target);
                     instance.open()
                 } else {
-                    if (this.collapsors[i].classList.contains('active')) {
-                        this.hideChildren(this.collapsors[i])
-                    } else {
-                        this.showChildren(this.collapsors[i])
-                    }
+                        if (this.collapsors[i].classList.contains('active')) {
+                            this.hideChildren(this.collapsors[i])
+                        } else {
+                            this.showChildren(this.collapsors[i])
+                        }
+
                 }
             })
 
