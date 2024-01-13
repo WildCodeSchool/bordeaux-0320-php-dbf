@@ -52,7 +52,7 @@ class CallIncomingSendMail implements EventSubscriberInterface
         /** @var Call $call */
         $call = $event->getSubject();
         $recipient = $call->getRecipient();
-        $subject = "Un appel ajouté";
+        $subject = "EASY-AUTO - Demande de rappel";
 
 
         if('true' === $_SERVER['SEND_EMAILS']) {
