@@ -83,7 +83,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $slug = (string)$this->slugger->slug($name);
         return $this->createQueryBuilder('u')
-            ->select('u, s, conc, c')
+            ->select('u, s, conc, c, CASE WHEN EXISTS (
+            SELECT 1
+            FROM App:Call as ca
+            WHERE ca.recipient = u.id AND ca.isProcessEnded IS NULL
+        ) THEN true ELSE false END AS hasCalls')
             ->where('u.lastname LIKE :name')
             ->orWhere('u.lastname LIKE :slug')
             ->orWhere('u.firstname LIKE :name')
