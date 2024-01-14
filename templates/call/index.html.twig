@@ -58,7 +58,7 @@
                                 <b>Client</b>
                             </td>
                             <td>
-                                {{ addedCall.client.civility.name ~ ' ' ~ addedCall.client.name}}
+                                {{ addedCall.client.civility.name | upper ~ ' ' ~ addedCall.client.name | upper }}
                             </td>
                         </tr>
                         <tr class="bdb0">

@@ -20,7 +20,7 @@
                         {{ call.id }}
                     </td>
                     <td>
-                        Appel de {{ call.client.civility.name }} {{ call.client.name }}
+                        Appel de {{ call.client.civility.name | upper }} {{ call.client.name | upper }}
                     </td>
                     <td>
                         du {{ call.createdAt | date('d-m-Y') }} à {{ call.createdAt | date('H:i') }}

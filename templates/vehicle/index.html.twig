@@ -21,7 +21,7 @@
                     <td>{{ vehicle.hasCome }}</td>
                     <td>{{ vehicle.createdAt ? vehicle.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                     <td>{{ vehicle.updatedAt ? vehicle.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                    <td>{{ vehicle.client.name }}</td>
+                    <td>{{ vehicle.client.name | upper }}</td>
                 </tr>
             {% else %}
             <tr>

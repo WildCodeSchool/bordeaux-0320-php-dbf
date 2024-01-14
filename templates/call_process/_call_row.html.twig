@@ -1,7 +1,7 @@
 <li class="collection-item" data-date="{{ call.recallDate|date('Ymd') }}{{ call.recallDate|date('Hi') }}" id="call-{{ call.id }}">
     <div class="row call-list-row">
         <div class="col s8">
-            <span class="title">{{call.client.civility.name}} {{call.client.name}}</span>
+            <span class="title">{{call.client.civility.name | upper}} {{call.client.name | upper}}</span>
             <p>
                 <span class="chip grey lighten-3 grey-text text-darken-4">{{call.client.phone}}</span>
                 {% if call.client.phone2 != '' %}

@@ -23,7 +23,7 @@
         {% for client in clients %}
             <tr>
                 <td>{{ client.id }}</td>
-                <td>{{ client.name }}</td>
+                <td>{{ client.name | upper }}</td>
                 <td>{{ client.phone }}</td>
                 <td>{{ client.phone2 }}</td>
                 <td>{{ client.email }}</td>
