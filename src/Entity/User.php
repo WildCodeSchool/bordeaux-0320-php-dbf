@@ -499,7 +499,7 @@ class User implements UserInterface
 
     public function isAdmin(): bool
     {
-        return in_array("ROLE_ADMIN", $this->roles);
+        return in_array("ROLE_ADMIN", $this->getRoles());
     }
 
     public function getService(): ?Service
