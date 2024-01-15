@@ -147,9 +147,10 @@ class LandingType extends AbstractType
     private function getDemands()
     {
         return [
-            'Entretien' => 'ENTRETIEN - INTERNET',
-            'Mécanique' => 'MECANIQUE - INTERNET',
+            'Entretien'   => 'ENTRETIEN - INTERNET',
+            'Mécanique'   => 'MECANIQUE - INTERNET',
             'Carrosserie' => 'CARROSSERIE - INTERNET',
+            'Accessoires' => 'ACCESSOIRES - INTERNET',
         ];
     }
 

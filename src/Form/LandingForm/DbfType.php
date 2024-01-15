@@ -151,6 +151,7 @@ class DbfType extends AbstractType
             'Entretien' => 'ENTRETIEN - INTERNET',
             'Mécanique' => 'MECANIQUE - INTERNET',
             'Carrosserie' => 'CARROSSERIE - INTERNET',
+            'Accessoires' => 'ACCESSOIRES - INTERNET',
         ];
     }
 
