@@ -2,10 +2,23 @@
   &.wide {
     width: 87vw;
     padding: 15px 15px 50px 15px;
-
+    .list-dest {
+      ul {
+        li {
+          &.dest-item {
+            padding: 0px 10px 0px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+        }
+      }
+    }
     li {
-      .immat {
-        padding: 0px 12px !important;
+      &:not(.dest-item) {
+        .immat {
+          padding: 0px 12px !important;
+        }
       }
     }
   }
