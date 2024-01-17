@@ -104,7 +104,9 @@ class RgpdCommand extends Command
 
         $io->title('Suppression des clients qui n\'ont plus aucun appel les concernant');
             $clients = $this->clientRepository->getOldClients();
+            $loopIndex = 0;
             foreach ($clients as $client) {
+                $loopIndex++;
                 $client = $this->clientRepository->findOneById($client['id']);
                 $this->deleteVehiculesForClient($client);
                 if($this->callRepository->findBy([
@@ -112,7 +114,11 @@ class RgpdCommand extends Command
                     ]) === null) {
                     $this->manager->remove($client);
                 }
+                if($loopIndex%100 === 0) {
+                    $this->manager->flush();
+                }
             }
+
             $this->manager->flush();
             $nbClients = count($clients);
             $io->writeln($nbClients . ' clients supprimés');

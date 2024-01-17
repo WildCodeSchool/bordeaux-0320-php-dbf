@@ -25,8 +25,7 @@ class VehicleRepository extends ServiceEntityRepository
             ->getConnection();
         $query = 'select * from vehicle where id not in (select vehicle_id from `call`)';
         $stmt = $conn->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 
 }

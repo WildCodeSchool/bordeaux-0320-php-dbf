@@ -55,7 +55,6 @@ class ClientRepository extends ServiceEntityRepository
             ->getConnection();
         $query = 'select * from client where id not in (select client_id from `call`)';
         $stmt = $conn->prepare($query);
-        $stmt->execute();
-        return $stmt->fetchAll();
+        return $stmt->executeQuery()->fetchAllAssociative();
     }
 }
