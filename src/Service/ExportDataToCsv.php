@@ -41,23 +41,33 @@ class ExportDataToCsv
 
                 $dataReadyToExport[] = [
                     $field->getCreatedAt()->format('d-m-Y'),
-                    $field->getCreatedAt()->format('H:i'),
-                    $field->getAuthor()->getFullName(),
-                    $field->getAuthor()->getService()->getConcession()->getName(),
-                    $field->getRecipient()->getService()->getConcession()->getTown()->getName(),
-                    $field->getRecipient()->getService()->getConcession()->getName(),
+                    $this->replace($field->getCreatedAt()->format('H:i')),
+                    $this->replace($field->getAuthor()->getFullName()),
+                    $this->replace($field->getAuthor()->getService()->getConcession()->getName()),
+                    $this->replace($field->getRecipient()->getService()->getConcession()->getTown()->getName()),
+                    $this->replace($field->getRecipient()->getService()->getConcession()->getName()),
                     (!is_null($field->getRecipient()->getService())) ?
-                        $field->getRecipient()->getService()->getName() : '',
-                    $field->getSubject()->getName(),
-                    $field->getComment()->getName(),
-                    $field->getRecipient()->getFullName(),
-                    CallTreatmentDataMaker::getLastTreatment($field),
-                    $this->processRepository->findLastProcessForCall($field->getId()) ? $this->processRepository->findLastProcessForCall($field->getId())->getComment() : '',
+                        $this->replace($field->getRecipient()->getService()->getName()) : '',
+                    $this->replace($field->getSubject()->getName()),
+                    $this->replace($field->getComment()->getName()),
+                    $this->replace($field->getRecipient()->getFullName()),
+                    $this->replace(CallTreatmentDataMaker::getLastTreatment($field)),
+                    $this->replace($this->processRepository->findLastProcessForCall($field->getId()) ? $this->processRepository->findLastProcessForCall($field->getId())->getComment() : ''),
                     ($field->getIsAppointmentTaken()) ? 'oui' : 'non',
-                    $field->getOrigin() ?? '',
+                    $field->getOrigin() ? $this->replace($field->getOrigin()) : '',
                 ];
 
         }
         return $dataReadyToExport;
+    }
+
+    private function replace(?string $text)
+    {
+        if(!$text) {
+            return '';
+        }
+        $text = str_replace(['à', 'é', 'è', 'ç', 'ô', 'û', 'ù', 'ö', 'ü', 'ï', 'ê'], ['a', 'e', 'e', 'c', 'o', 'u', 'u', 'o', 'u', 'i', 'e'], $text);
+        return $text;
+
     }
 }
