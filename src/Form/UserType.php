@@ -82,6 +82,7 @@ class UserType extends AbstractType
             'label' => 'Service'
         ])
         ->add('canBeRecipient', CheckboxType::class, [
+            'required' => false
         ])
         ;
 
