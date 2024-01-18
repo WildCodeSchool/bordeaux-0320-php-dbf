@@ -12,13 +12,16 @@
         {% include('/search/_form_search.html.twig') %}
         </div>
             {% if export is defined  and export != "" and is_granted('ROLE_ADMIN') %}
-                <a
-                        href="{{ path('export_to_csv', {'exportedCalls': export}) }}"
+                <form action="{{ path('export_to_csv') }}" method="POST">
+                    <input type="hidden" name="calls" value="{{ export }}">
+                <button
+                        type="submit"
                         class="btn btn-large blue darken-4"
                 >
                     <i class="material-icons left">archive</i>
                     Exporter en CSV
-                </a>
+                </button>
+                </form>
             {% endif %}
         {% include 'components/_flashes.html.twig' %}
         <div>

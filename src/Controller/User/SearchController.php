@@ -61,14 +61,13 @@ class SearchController extends AbstractController
 
     /**
      * @IsGranted("ROLE_ADMIN")
-     * @Route("/export/{exportedCalls}", name="export_to_csv", requirements={"exportedCalls"=".+"})
+     * @Route("/export", name="export_to_csv")
      * @param ExportDataToCsv $exportDataToCsv
-     * @param string $exportedCalls
      * @return Response
      */
-    public function exportToCSV(CallRepository $callRepository, ExportDataToCsv $exportDataToCsv, string $exportedCalls = null)
+    public function exportToCSV(Request $request, CallRepository $callRepository, ExportDataToCsv $exportDataToCsv)
     {
-        $callsIds = json_decode($exportedCalls, true);
+        $callsIds = json_decode($request->request->get('calls'), true);
         $calls = $callRepository->findBy(['id' => $callsIds]);
         $fileName = uniqid();
 
