@@ -61,7 +61,7 @@ class SearchController extends AbstractController
 
     /**
      * @IsGranted("ROLE_ADMIN")
-     * @Route("/export", name="export_to_csv")
+     * @Route("/export", name="export_to_csv", methods={"POST"})
      * @param ExportDataToCsv $exportDataToCsv
      * @return Response
      */
