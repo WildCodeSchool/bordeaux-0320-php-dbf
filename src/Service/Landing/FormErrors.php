@@ -6,11 +6,12 @@ namespace App\Service\Landing;
 
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 
 class FormErrors
 {
 
-    public static function getErrors(Form $landingForm, Validator $validator, string $dateFieldName = 'callDate')
+    public static function getErrors(FormInterface $landingForm, Validator $validator, string $dateFieldName = 'callDate')
     {
         $errors = [];
 

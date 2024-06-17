@@ -45,6 +45,21 @@ class ConcessionRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findAllConcessionsByReferer($referer)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('t.identifier is NULL')
+            ->andWhere('t.name = :name')
+            ->setParameter('name', $referer)
+            ->innerJoin('c.town', 't')
+            ->addSelect('t.name as cityName')
+            ->addSelect('t.identifier')
+            ->orderBy('t.name', 'ASC')
+            ->addOrderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     public function findAllConcessionsOrderByTown()
     {
         return $this->createQueryBuilder('c')

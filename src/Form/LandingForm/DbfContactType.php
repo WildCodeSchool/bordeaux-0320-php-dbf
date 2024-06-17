@@ -38,6 +38,8 @@ class DbfContactType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $referer = $options['referer'];
+
         $builder
                 ->add('civility', EntityType::class, [
                     'class' => Civility::class,
@@ -103,7 +105,7 @@ class DbfContactType extends AbstractType
                     'label' => 'Ville et concession souhaités',
                     'required' => true,
                     'mapped' => false,
-                    'choices' => $this->getConcessions()
+                    'choices' => $this->getConcessions($options['referer'] ?? null)
                 ])
 
                 ->add('origin', HiddenType::class, [
@@ -165,8 +167,9 @@ class DbfContactType extends AbstractType
         return $date;
     }
 
-    private function getConcessions() {
-        $concessions = $this->concessionRepository->findAllConcessions();
+    private function getConcessions($referer = null) {
+
+        $concessions = $referer ? $this->concessionRepository->findAllConcessionsByReferer($referer) : $this->concessionRepository->findAllConcessions();
         $choices = [];
         $choices['Choisir une concession'] = null;
         foreach ($concessions as $concession) {

@@ -59,12 +59,7 @@ class DbfContactFormController extends Retardator
 
             $this->addFlash('landing_success', $validator->makeContactSuccessMessage($landingForm));
 
-            return $this->render('landing/dbf_contact_form.html.twig', [
-                'form' => $landingForm->createView(),
-                'errors' => $errors,
-                'success' => $success
-            ]);
-
+            return $this->redirectToRoute('dbf_contact_form', ['referer' => $referer]);
         }
 
         return $this->render('landing/dbf_contact_form.html.twig', [

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Service;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -39,15 +40,18 @@ class ServiceRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @throws Exception
+     */
     public function getServicesToContact($concession)
     {
         $conn = $this->getEntityManager()
             ->getConnection();
-        $sql = "SELECT * FROM service WHERE (is_direction IS NULL or is_direction = 0) and concession_id = ?";
+        $sql = "SELECT * FROM service WHERE (is_direction IS NULL or is_direction = 0) and concession_id = :id";
         $stmt = $conn->prepare($sql);
-        $stmt->bindValue(1, $concession->getId());
-        $stmt->execute();
-        return $stmt->fetchAll();
+        $stmt->bindValue('id', $concession->getId());
+        $result = $stmt->executeQuery()->fetchAllAssociative();
+        return $result;
     }
 
     public function getConcessionCarBodyWorkshops($concession, $brand)
