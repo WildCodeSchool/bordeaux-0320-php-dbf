@@ -1,4 +1,4 @@
-{% extends 'landing_base.html.twig' %}
+{% extends 'landing_simple_base.html.twig' %}
 
 {% block title %}demander un rendez-vous{% endblock %}
 
@@ -10,107 +10,112 @@
 {% block navbar %}
 {% endblock %}
 {% block body %}
-    <div class="container landingform-page">
+    <div class="new-landing-form carrosserie-page carrosserie">
         <div class="row">
-            <div class="col s12 l6 offset-l3">
+            <div class="col s12">
+                {% for type, messages in app.session.flashbag.all() %}
+                    {% if type == 'landing_success' or type == 'landing_error' %}
+                        {% for message in messages %}
+                            <div class="col s12 landing_flash {{ type }}">
+                                    <span class="black-text flash-{{ type }}">
+                                        {{ message | raw }}
+                                    </span>
+                            </div>
+                            <a class="btn btn-large mgt15" style="background-color: #{{ color }}" href="/carrosserie/{{ city }}/{{ color }}">nouvelle demande</a>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
 
-                <div class="col s12">
-                    {% for type, messages in app.session.flashbag.all() %}
-                        {% if type == 'landing_success' or type == 'landing_error' %}
-                            {% for message in messages %}
-                                <div class="col s12 landing_flash {{ type }}">
-                                    <span class="white-text flash-{{ type }}">{{ message | raw }}</span>
-                                </div>
-                                <a class="btn btn-large light-blue mgt15" href="/dbf/form/{{ brand }}/{{ referer }}">nouvelle demande</a>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                </div>
+            <div class="col s12">
 
                 {% if success == 0 %}
                 {{ form_start(form) }}
-                <div class="col s1 mgt15">
-                    <i class="material-icons">person</i>
-                </div>
-                <div class="col s2 mgt15">
-                    {{ form_widget(form.civility) }}
-                </div>
-                <div class="col s9 mgt15">
-                    {{ form_widget(form.name, {'attr': {'class': (errors.name is defined) ? 'red-text upper' : 'upper' }}) }}
-                    {% if errors.name is defined %}
-                        <span class="textAlert red-text">{{ errors.name }}</span>
-                    {% endif %}
-                </div>
-                <div class="col s1 mgt30">
-                    <i class="material-icons">local_phone</i>
-                </div>
-                <div class="col s11 m7 mgt30">
-                    {{ form_widget(form.phone, {'attr': {'class': (errors.phone is defined) ? 'red-text' }}) }}
-                    {% if errors.phone is defined %}
-                        <span class="textAlert red-text">{{ errors.phone }}</span>
-                    {% endif %}
-                </div>
-                <div class="col s1 mgt30">
-                    <i class="material-icons">directions_car</i>
-                </div>
-                <div class="col s11 m3 mgt30">
-                    {{ form_widget(form.immatriculation, {'attr': {'class': (errors.immat is defined) ? 'red-text upper' : 'upper' }}) }}
-                    {% if errors.immat is defined %}
-                        <span class="textAlert red-text">{{ errors.immat }}</span>
-                    {% endif %}
-                </div>
-                <div class="row">
 
-                    <div class="col s12 mgt30 blue-text text-darken-4">
-                        <b>Date et heure de rappel souhaitées</b>
+                <div class="row mt-15">
+                    <div class="col s2">
+                        {{ form_widget(form.civility) }}
+                    </div>
+                    <div class="col s9 offset-s1">
+                        {{ form_widget(form.name, {'attr': {'class': (errors.name is defined) ? 'red-text upper' : 'upper' }}) }}
+                        {% if errors.name is defined %}
+                            <span class="textAlert red-text">{{ errors.name }}</span>
+                        {% endif %}
                     </div>
                 </div>
 
-
-
-                    <div class="row">
-                        <div class="col s12 mgt30 blue-text text-darken-4">
-                            <b>Choississez la concession</b>
-                        </div>
+                <div class="row mt-15">
+                    <div class="col s12">
+                        {{ form_widget(form.email) }}
                     </div>
-                <div class="col s1 mgt15 {% if brand is null %}hide{% endif %}">
-                    <span><i class="material-icons">location_on</i></span>
-                </div>
-                <div class="col s11 mgt15 {% if brand is null %}hide{% endif %}">
-                    {{ form_widget(form.place) }}
                 </div>
 
-                    <div class="row">
-                        <div class="col s1 mgt30">
+                <div class="row mt-15">
+                    <div class="col s12 m5">
+                        {{ form_widget(form.phone, {'attr': {'class': (errors.phone is defined) ? 'red-text' }}) }}
+                        {% if errors.phone is defined %}
+                            <span class="textAlert red-text">{{ errors.phone }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="col m2 hide-on-small-only"></div>
 
-                        </div>
-                        <div class="col s11 mgt30 blue-text text-darken-4">
-                            <b>Type d'intervention</b>
-                        </div>
+                    <div class="col s12 m5">
+                        {{ form_widget(form.immatriculation, {'attr': {'class': (errors.immat is defined) ? 'red-text upper' : 'upper' }}) }}
+                        {% if errors.immat is defined %}
+                            <span class="textAlert red-text">{{ errors.immat }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="row mt-15">
+                    <div class="col s12 ">
+                        {{ form_widget(form.place) }}
+                    </div>
+                </div>
+
+                <div class="row mt-15">
+                    <div class="col s12  ">
+                        {{ form_widget(form.askFor) }}
+                    </div>
+                </div>
+
+                <div class="row mt-15">
+
+                    <div class="col s12 m6">
+                        {{ form_widget(form.callDate) }}
                     </div>
 
-                <div class="col s1 mgt15 {% if brand is null %}hide{% endif %}">
-                    <span><i class="material-icons">build</i></span>
-                </div>
-                <div class="col s11 mgt15 {% if brand is null %}hide{% endif %}">
-                    {{ form_widget(form.askFor) }}
+                    <div class="col s5 m2 offset-m1">
+                        {{ form_widget(form.callHour) }}
+                    </div>
+
+                    <div class="col s5 offset-s2 m2 offset-m1">
+                        {{ form_widget(form.callMinutes) }}
+                    </div>
+
                 </div>
 
-
-                <div class="col s1 mgt30 {% if brand is null %}hide{% endif %}">
-                    <span><i class="material-icons">message</i></span><br>
-                </div>
-                <div class="col s11 mgt30 {% if brand is null %}hide{% endif %}">
-                    {{ form_widget(form.message) }}
+                <div class="row mt-15">
+                    <div class="col s12">
+                        {{ form_widget(form.message) }}
+                    </div>
                 </div>
 
-                <div class="col s12 mgt15 center-align">
-                    <button class="btn btn-large green {% if brand is null %}hide{% endif %}" style="width:100%;"
-                            id="submit_landing_form_apv">{{ button_label|default('envoyer') }}</button>
+                <div class="row mt-15">
+                    <div class="col s12 ">
+                        <button
+                                class="btn btn-large"
+                                style="background-color:#{{ color }};"
+                                id="submit_landing_form_apv">{{ button_label|default('envoyer') }}
+                        </button>
+                    </div>
                 </div>
-                <div class="col s12  hide mgt15" id="landing_loader">
-                    <div class="progress grey lighten-3">
-                        <div class="indeterminate green"></div>
+
+                <div class="row mt-15">
+                    <div class="col s12  hide mgt15" id="landing_loader">
+                        <div class="progress grey lighten-3">
+                            <div class="indeterminate green"></div>
+                        </div>
                     </div>
                 </div>
                 {{ form_end(form) }}

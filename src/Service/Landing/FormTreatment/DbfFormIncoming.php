@@ -7,6 +7,7 @@ namespace App\Service\Landing\FormTreatment;
 use App\Entity\Call;
 use App\Entity\Comment;
 use App\Entity\Client;
+use App\Entity\Service;
 use App\Entity\Subject;
 use App\Entity\User;
 use App\Entity\Vehicle;
@@ -96,6 +97,7 @@ class DbfFormIncoming implements EventSubscriberInterface
     {
         return [
             Events::DBF_FORM_SUBMIT => 'addCallFromDbfForm',
+            Events::CARROSSERIE_FORM_SUBMIT => 'addCallFromDbfCarosserieForm',
         ];
     }
 
@@ -164,6 +166,7 @@ class DbfFormIncoming implements EventSubscriberInterface
         if (strstr($askFor, 'CARROSSERIE')) {
             $demand = 'Carrosserie';
         }
+        ///////
         $subject = $this->subjectRepository->findOneByName('Rendez-vous ' . $demand . ' ' . $place->getName());
         if (!$subject) {
             $name = 'Rendez-vous ' . $demand . ' ' . $place->getName();
@@ -233,6 +236,112 @@ class DbfFormIncoming implements EventSubscriberInterface
 
     }
 
+    public function addCallFromDbfCarosserieForm(GenericEvent $event)
+    {
+        $call = new Call();
 
+        $call->setIsUrgent(0);
+
+        $recallPeriod = $this->recallPeriodRepository->findOneByIdentifier('autourde');
+        $call->setRecallPeriod($recallPeriod);
+
+        // AUTEUR DU FORMULAIRE
+        $author = $this->userRepository->findOneBy([
+            'firstname' => 'INTERNET',
+            'lastname' => 'DBF AUTOS'
+        ]);
+        if (!$author) {
+            $author = $this->userCreator->create();
+            $this->entityManager->persist($author);
+            $this->entityManager->flush();
+        }
+        $call->setAuthor($author);
+
+        // DATE DE RAPPEL SOUHAITÉ
+        $call->setRecallDate($event->getSubject()->get('callDate')->getData());
+
+        // Heure de rappel souhaitée
+        $time = RecallTimeMaker::makeTime($event);
+        $call->setRecallHour(new \DateTime('2000-01-01T' . $time));
+
+        // CLIENT
+        $clientName        = $event->getSubject()->get('name')->getData();
+        $clientPhoneNumber = $event->getSubject()->get('phone')->getData();
+        $client            = $this->clientVerificator->checkClient($clientName, $clientPhoneNumber);
+        if ($client) {
+            $call->setClient($client);
+        } else {
+            $client = ClientMaker::make($clientName, $clientPhoneNumber, $event->getSubject()->get('civility')->getData());
+
+            $this->entityManager->persist($client);
+            $this->entityManager->flush();
+            $call->setClient($client);
+        }
+
+        //VEHICULE
+        $vehicle = $this->vehicleRepository->findOneByImmatriculation($event->getSubject()->get('immatriculation')->getData());
+        if ($vehicle) {
+            $call->setVehicle($vehicle);
+        } else {
+            $vehicle = VehicleMaker::make($client, $event->getSubject()->get('immatriculation')->getData());
+
+            $this->entityManager->persist($vehicle);
+            $this->entityManager->flush();
+            $call->setVehicle($vehicle);
+        }
+// SUBJECTS AND COMMENTS
+        //SUBJECT
+        $concession  = $event->getSubject()->get('place')->getData();
+        $askFor = $event->getSubject()->get('askFor')->getData();
+        $demand = 'Carrosserie';
+
+        $subject = $this->subjectRepository->findOneByName('Rendez-vous ' . $demand . ' ' . $concession->getName());
+        if (!$subject) {
+            $name = 'Rendez-vous ' . $demand . ' ' . $concession->getName();
+            $subject = SubjectMaker::make($name, 1, 1, $this->cityRepository->findOneByIdentifier('PHONECITY'));
+
+            $this->entityManager->persist($subject);
+            $this->entityManager->flush();
+        }
+        $call->setSubject($subject);
+
+        //COMMENT
+        $comment = $this->commentRepository->findOneByName('INTERNET');
+        if (!$comment) {
+            $comment = CommentMaker::make('INTERNET', 1, 'INTERNET');
+
+            $this->entityManager->persist($comment);
+            $this->entityManager->flush();
+        }
+        $call->setComment($comment);
+
+        //FREE COMMENT
+        $callAskFor = $event->getSubject()->get('askFor')->getData();
+
+        $textMessage = '<b>Rendez-vous souhaité à</b> : ' . $concession->getTown()->getName() . ' - ' . $concession->getName() . '<br>';
+        $textMessage .= '<b>Objet de la demande</b> : ' . $callAskFor . '<br>';
+        $textMessage .= '<b>Commentaire laissé</b> : ' . $event->getSubject()->get('message')->getData();
+        $call->setFreeComment($textMessage);
+
+        /** @var Service $workshop */
+        $workshop = $this->serviceRepository->getCarBodyWorkshopsInside($concession);
+
+        $users = $workshop->getUsers()->toArray();
+        shuffle($users);
+
+        $call->setService($workshop);
+        $call->setRecipient($users[0] ?? null);
+
+
+        // PERSIST AND FLUSH
+        $this->entityManager->persist($call);
+        $this->entityManager->flush();
+
+//        // SEND EMAIL
+//
+//        $event = new GenericEvent($call);
+//        $this->dispatcher->dispatch($event, Events::CALL_INCOMING);
+
+    }
 
 }

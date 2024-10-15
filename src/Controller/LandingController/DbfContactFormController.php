@@ -68,8 +68,4 @@ class DbfContactFormController extends Retardator
             'success' => $success
         ]);
     }
-
-
-
-
 }

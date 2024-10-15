@@ -68,6 +68,18 @@ class ServiceRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function getCarBodyWorkshopsInside($concession)
+    {
+        return $this->createQueryBuilder('s')
+            ->Where('s.isCarBodyWorkshop is not NULL')
+            ->andWhere('s.isCarBodyWorkshop = :val')
+            ->setParameter('val', 1)
+            ->andWhere('s.concession = :concession')
+            ->setParameter('concession', $concession->getId())
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     public function getNearestCarBodyWorkshop($concession)
     {
         if ($concession->getNearestCarBodyWorkshop()) {

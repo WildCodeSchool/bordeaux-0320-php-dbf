@@ -32,6 +32,26 @@ class ConcessionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findCarosserieConcessions(string $cityName)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery(
+            'SELECT DISTINCT c
+     FROM App\Entity\Concession c
+     JOIN c.town t
+     JOIN App\Entity\Service s WITH s.concession = c
+     WHERE t.name = :townName
+     AND s.isCarBodyWorkshop = true
+     GROUP BY c.id
+     HAVING COUNT(s.id) > 0'
+        )->setParameter('townName', $cityName);
+
+        $concessions = $query->getResult();
+        return $concessions;
+    }
+
     public function findAllConcessions()
     {
         return $this->createQueryBuilder('c')

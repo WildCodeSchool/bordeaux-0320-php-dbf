@@ -1,0 +1,64 @@
+.new-landing-form {
+padding: 50px;
+  &.carrosserie-page {
+    .row {
+      .col {
+        padding:0;
+      }
+    }
+    input {
+      &[type="text"], &[type="email"], &[type="tel"], &[type="date"] {
+        border-radius: 10px !important;
+        padding: 8px 6px;
+        background: white;
+        &:focus {
+          box-shadow:none;
+          border: 1px solid $grey;
+        }
+        &::placeholder {
+          color: $grey;
+        }
+        &.required {
+          &::placeholder {
+            &:after {
+              content: ' *'
+            }
+          }
+        }
+      }
+    }
+    .select-wrapper .caret {
+      z-index: 9;
+    }
+    button {
+      border-radius: 200px;
+      box-shadow: none;
+      padding: 0 35px;
+    }
+
+    textarea {
+      border-radius: 10px;
+      min-height: 80px;
+      width: calc(100% + 15px);
+      padding: 8px 12px;
+      background: white;
+      &:focus {
+        box-shadow:none;
+        border: 1px solid $grey;
+      }
+    }
+  }
+}
+
+body {
+  &.bgf9 {
+    background: #F9F9F9;
+    .landing_flash {
+      padding: 15px 0 !important;
+      .flash-landing_success {
+        font-family: Arial, sans-serif;
+        font-size: 18px !important;
+      }
+    }
+  }
+}
