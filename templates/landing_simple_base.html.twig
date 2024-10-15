@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+    {% block analytics %}{% endblock %}
+</head>
+
+<body class="">
+{% block footanalytics %}{% endblock %}
+
+{% block navbar %}
+    <header class="paddleft">
+        <nav class="">
+            <div class="nav-wrapper {% if app.environment == 'dev' %} yellow {% else %}white{% endif %} ">
+                <ul id="" class="left noshadow">
+                    <li>
+                        <h5 class="black-text">Easy Auto</h5>
+                    </li>
+                </ul>
+                <ul id="nav-mobile" class="right hide-on-med-and-down noshadow">
+                    {% if app.user %}
+                        <li><a href="{{ path('profile_edit', { 'id': app.user.id }) }}" class="black-text"><i class="material-icons left">edit</i>{{ app.user.firstname }} {{ app.user.lastname }}</a></li>
+
+                        <li><a href="{{ path('app_logout') }}" class="black-text"><i class="material-icons left">logout</i>Déconnexion</a></li>
+                    {% else %}
+                        <a class="black-text" href="{{ path('app_login') }}"> Se connecter</a>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+
+        <ul class="sidenav sidenav-fixed" id="easy-auto-sidenav">
+            <li>
+                <img src="{{ asset('build/logo.jpg') }}" width="50"><br>
+            </li>
+            {% if app.user %}
+                <li class="{% if app.request.get('_route') == 'call_add' %} active {% endif %}"><a href="{{ path('call_add') }}" class=" tooltipped" data-position="right" data-tooltip="Ajouter un appel"><i class="material-icons">add</i></a></li>
+                <li  class="{% if (app.request.get('_route')  == 'user_home' or app.request.get('_route')  == 'user_calls_in_process') %} active {% endif %}"><a href="{{ path('user_home') }}" class="tooltipped" data-position="right" data-tooltip="Vos appels"><i class="material-icons">settings_phone</i></a></li>
+                <li  class="{% if app.request.get('_route')  == 'head_board' %} active {% endif %}"><a href="{{ path('head_board') }}" class="tooltipped" data-position="right" data-tooltip="Suivi"><i class="material-icons">view_day</i></a></li>
+                <li  class="{% if app.request.get('_route') == 'search' %} active {% endif %}"><a href="{{ path('search') }}" class="tooltipped" data-position="right" data-tooltip="Rechercher"><i class="material-icons">search</i></a></li>
+                <li  class="{% if app.request.get('_route')  == 'stat' %} active {% endif %} hide"><a href="gestions.html" class="tooltipped" data-position="right" data-tooltip="statistiques"><i class="material-icons">insert_chart</i></a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ path('admin_dashboard') }}" class="tooltipped" data-position="right" data-tooltip="Admin dashboard"><i class="material-icons">settings</i></a></li>
+                {% endif %}
+            {% endif %}
+        </ul>
+
+    </header>
+{% endblock %}
+<main class="">
+    {% block body %}{% endblock %}
+</main>
+<footer>
+
+</footer>
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+</body>
+</html>
